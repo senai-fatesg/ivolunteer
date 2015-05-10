@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context displayName="ivolunteer" path="/ivolunteer" reloadable="true">
+
+   <Resource 
+      auth="Container" 
+      driverClassName="org.postgresql.Driver"
+      maxActive="10" 
+      maxIdle="3" 
+      name="jdbc/ivolunteer" 
+      password="123456"
+      type="javax.sql.DataSource" 
+      url="jdbc:postgresql://localhost/ivolunteer"
+      username="postgres" />
+
+</Context>

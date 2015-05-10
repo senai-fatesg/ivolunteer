@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>ivolunteer</display-name>
+
+	<icon>
+		<small-icon>favicon.ico</small-icon>
+	</icon>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+    			classpath:/applicationContext.xml
+    			classpath:/applicationContext-security.xml
+    </param-value>
+	</context-param>
+
+	<!--  
+	<context-param>
+		<param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>
+		<param-value>-1</param-value>
+	</context-param>
+	-->
+
+<!-- 
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>bluesky</param-value>
+	</context-param>
+ -->
+
+	<context-param>
+		<param-name>openEntityManagerInViewPhaseListenerBeanName</param-name>
+		<param-value>openEntityManagerInViewPhaseListener</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+		<param-value>.jspx</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>javax.faces.FACELETS_VIEW_MAPPINGS</param-name>
+		<param-value>*.jspx</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>br.com.ambientinformatica.ambientjsf.util.SpringFiltro</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>PrimeFaces FileUpload Filter</filter-name>
+		<filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>PrimeFaces FileUpload Filter</filter-name>
+		<servlet-name>Faces Servlet</servlet-name>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>Ambient Jsf Filter</filter-name>
+		<filter-class>br.com.ambientinformatica.ambientjsf.controle.AmbientJsfFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>Ambient Jsf Filter</filter-name>
+		<servlet-name>/*</servlet-name>
+	</filter-mapping>
+
+	<servlet>
+		<servlet-name>Resource Servlet</servlet-name>
+		<servlet-class>org.primefaces.resource.ResourceServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Resource Servlet</servlet-name>
+		<url-pattern>/primefaces_resource/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.jsf</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Ambient Servlet</servlet-name>
+		<servlet-class>br.com.ambientinformatica.ambientjsf.controle.AmbientJsfServletResources</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Ambient Servlet</servlet-name>
+		<url-pattern>/ambient_resource</url-pattern>
+	</servlet-mapping>
+
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+
+	<locale-encoding-mapping-list>
+		<locale-encoding-mapping>
+			<locale>pt_BR</locale>
+			<encoding>utf-8</encoding>
+		</locale-encoding-mapping>
+	</locale-encoding-mapping-list>
+
+
+</web-app>

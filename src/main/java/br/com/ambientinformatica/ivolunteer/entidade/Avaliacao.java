@@ -15,8 +15,8 @@ import javax.persistence.TemporalType;
 public class Avaliacao {
 	
 	@Id
-	@GeneratedValue(generator="contato_seq", strategy=GenerationType.SEQUENCE)
-	@SequenceGenerator(name="contato_seq", sequenceName="contato_seq", allocationSize=1,initialValue=1)
+	@GeneratedValue(generator="avaliacao_seq", strategy=GenerationType.SEQUENCE)
+	@SequenceGenerator(name="avaliacao_seq", sequenceName="avaliacao_seq", allocationSize=1,initialValue=1)
 	private Integer id;
 
 	private String titulo;

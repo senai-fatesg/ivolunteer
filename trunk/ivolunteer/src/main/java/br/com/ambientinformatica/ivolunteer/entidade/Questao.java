@@ -20,7 +20,7 @@ public class Questao {
 
 	private Objetiva objetiva;
 
-	private Discursiva discursivas;
+	private Discursiva discursiva;
 
 	private Questao questao;
 
@@ -58,12 +58,12 @@ public class Questao {
 		this.objetiva = objetiva;
 	}
 
-	public Discursiva getDiscursivas() {
-		return discursivas;
+	public Discursiva getDiscursiva() {
+		return discursiva;
 	}
 
-	public void setDiscursivas(Discursiva discursivas) {
-		this.discursivas = discursivas;
+	public void setDiscursivas(Discursiva discursiva) {
+		this.discursiva = discursiva;
 	}
 
 	public Questao getQuestao() {

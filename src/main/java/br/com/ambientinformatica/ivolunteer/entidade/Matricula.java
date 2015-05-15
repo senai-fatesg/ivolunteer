@@ -1,12 +1,14 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
-import java.sql.Date;
-
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class Matricula {
@@ -30,14 +32,16 @@ public class Matricula {
 
 	private String bolsaFamilia;
 
+	@Temporal(TemporalType.DATE)
 	private Date dataMatricula;
 
+	@Temporal(TemporalType.DATE)
 	private Date ano;
 
+	@OneToOne
 	private Aluno aluno;
 
-	private Matricula matricula;
-
+	@OneToOne
 	private Turma turma;
 
 	public Integer getId() {
@@ -129,14 +133,6 @@ public class Matricula {
 
 	public void setAluno(Aluno aluno) {
 		this.aluno = aluno;
-	}
-
-	public Matricula getMatricula() {
-		return matricula;
-	}
-
-	public void setMatricula(Matricula matricula) {
-		this.matricula = matricula;
 	}
 
 	public Turma getTurma() {

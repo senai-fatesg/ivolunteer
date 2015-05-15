@@ -2,11 +2,10 @@ package br.com.ambientinformatica.ivolunteer.entidade;
 
 import br.com.ambientinformatica.util.IEnum;
 
-public enum EnumSexo implements IEnum{
-	
-	M("Masculino"),
-	F("Feminino");
-	
+public enum EnumSexo implements IEnum {
+
+	M("Masculino"), F("Feminino");
+
 	private String descricao;
 
 	private EnumSexo(String descricao) {
@@ -16,7 +15,5 @@ public enum EnumSexo implements IEnum{
 	public String getDescricao() {
 		return descricao;
 	}
-	
-	
 
 }

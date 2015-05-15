@@ -1,6 +1,6 @@
 public enum EnumFiliacao {
  
-	;
+	
 	 
 	private String PAI;
 	 

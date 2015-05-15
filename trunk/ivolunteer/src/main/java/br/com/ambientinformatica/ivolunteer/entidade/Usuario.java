@@ -27,113 +27,110 @@ import br.com.ambientinformatica.util.UtilHash;
 import br.com.ambientinformatica.util.UtilHash.Algoritimo;
 
 @Entity
-public class Usuario extends Entidade{
+public class Usuario extends Entidade {
 
-   @Id
-   @Column(nullable=false, unique = true)
-   @NotNull(message="Login do usuário é obrigatório", groups=AmbientValidator.class)
-   @NotEmpty(message="Login do usuário é obrigatório", groups=AmbientValidator.class)
-   @AlfaNumerico(message = "O login do usuário não pode conter caracteres especiais, acentos ou espaços", semAcentos = true, semEspacos = true, groups=AmbientValidator.class)
-   private String login;
-   
-   public void addPapel(EnumPapelUsuario papel){
-	   if(!isContemPapel(papel)){
-		   PapelUsuario pu = new PapelUsuario();
-		   pu.setPapel(papel);
-		   papeis.add(pu);
-	   }
-   }
-   
-   private String senha;
-   
-   private String nome;
-   
-   @Temporal(TemporalType.DATE)
-   private Date dataAlteracaoSenha = new Date();
-   
-   @Temporal(TemporalType.DATE)
-   private Date dataCriacao = new Date();
-   
-   @Temporal(TemporalType.DATE)
-   private Date dataUltimoAcesso = new Date();
-   
-   @OneToMany(cascade=CascadeType.ALL)
-   @JoinColumn(name="usuario_id")
-   @Cascade(value=org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
-   private Set<PapelUsuario> papeis = new HashSet<PapelUsuario>();
+	@Id
+	@Column(nullable = false, unique = true)
+	@NotNull(message = "Login do usuário é obrigatório", groups = AmbientValidator.class)
+	@NotEmpty(message = "Login do usuário é obrigatório", groups = AmbientValidator.class)
+	@AlfaNumerico(message = "O login do usuário não pode conter caracteres especiais, acentos ou espaços", semAcentos = true, semEspacos = true, groups = AmbientValidator.class)
+	private String login;
 
-   public String getLogin() {
-      return login;
-   }
+	public void addPapel(EnumPapelUsuario papel) {
+		if (!isContemPapel(papel)) {
+			PapelUsuario pu = new PapelUsuario();
+			pu.setPapel(papel);
+			papeis.add(pu);
+		}
+	}
 
-   public void setLogin(String login) {
-      this.login = login;
-   }
+	private String senha;
 
-   public String getSenha() {
-      return senha;
-   }
+	private String nome;
 
-   public void setSenhaNaoCriptografada(String senha) {
-      this.senha = UtilHash.gerarStringHash(senha, Algoritimo.MD5);
-   }
+	@Temporal(TemporalType.DATE)
+	private Date dataAlteracaoSenha = new Date();
 
-   public String getNome() {
-      return nome;
-   }
+	@Temporal(TemporalType.DATE)
+	private Date dataCriacao = new Date();
 
-   public void setNome(String nome) {
-      this.nome = nome;
-   }
+	@Temporal(TemporalType.DATE)
+	private Date dataUltimoAcesso = new Date();
 
-   public Date getDataAlteracaoSenha() {
-      return dataAlteracaoSenha;
-   }
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "usuario_id")
+	@Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
+	private Set<PapelUsuario> papeis = new HashSet<PapelUsuario>();
 
-   public void setDataAlteracaoSenha(Date dataAlteracaoSenha) {
-      this.dataAlteracaoSenha = dataAlteracaoSenha;
-   }
+	public String getLogin() {
+		return login;
+	}
 
-   public Date getDataCriacao() {
-      return dataCriacao;
-   }
+	public void setLogin(String login) {
+		this.login = login;
+	}
 
-   public void setDataCriacao(Date dataCriacao) {
-      this.dataCriacao = dataCriacao;
-   }
+	public String getSenha() {
+		return senha;
+	}
 
-   public Date getDataUltimoAcesso() {
-      return dataUltimoAcesso;
-   }
+	public void setSenhaNaoCriptografada(String senha) {
+		this.senha = UtilHash.gerarStringHash(senha, Algoritimo.MD5);
+	}
 
-   public void setDataUltimoAcesso(Date dataUltimoAcesso) {
-      this.dataUltimoAcesso = dataUltimoAcesso;
-   }
+	public String getNome() {
+		return nome;
+	}
 
-   public boolean isContemPapel(EnumPapelUsuario papel){
-      for(PapelUsuario p : papeis){
-         if(p.getPapel() == papel){
-            return true;
-         }
-      }
-      return false;
-   }
-   
-   public Set<PapelUsuario> getPapeis() {
-	      return papeis;
-	   }
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
-   public Object getId() {
-	      return login;
-	   }
+	public Date getDataAlteracaoSenha() {
+		return dataAlteracaoSenha;
+	}
 
+	public void setDataAlteracaoSenha(Date dataAlteracaoSenha) {
+		this.dataAlteracaoSenha = dataAlteracaoSenha;
+	}
 
-   public List<PapelUsuario> getPapeisList() {
-      List<PapelUsuario> result = new ArrayList<PapelUsuario>(papeis);
-      Collections.sort(result);
-      return result;
-   }
+	public Date getDataCriacao() {
+		return dataCriacao;
+	}
 
-   
-   
+	public void setDataCriacao(Date dataCriacao) {
+		this.dataCriacao = dataCriacao;
+	}
+
+	public Date getDataUltimoAcesso() {
+		return dataUltimoAcesso;
+	}
+
+	public void setDataUltimoAcesso(Date dataUltimoAcesso) {
+		this.dataUltimoAcesso = dataUltimoAcesso;
+	}
+
+	public boolean isContemPapel(EnumPapelUsuario papel) {
+		for (PapelUsuario p : papeis) {
+			if (p.getPapel() == papel) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public Set<PapelUsuario> getPapeis() {
+		return papeis;
+	}
+
+	public Object getId() {
+		return login;
+	}
+
+	public List<PapelUsuario> getPapeisList() {
+		List<PapelUsuario> result = new ArrayList<PapelUsuario>(papeis);
+		Collections.sort(result);
+		return result;
+	}
+
 }

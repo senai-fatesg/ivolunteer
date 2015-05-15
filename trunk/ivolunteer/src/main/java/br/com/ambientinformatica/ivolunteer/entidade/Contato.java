@@ -9,34 +9,33 @@ import javax.persistence.SequenceGenerator;
 @Entity
 public class Contato {
 
-   @Id
-   @GeneratedValue(generator="contato_seq", strategy=GenerationType.SEQUENCE)
-   @SequenceGenerator(name="contato_seq", sequenceName="contato_seq", allocationSize=1, initialValue=1)
-   private Integer id;
-   
-   private String nome;
-   
-   private String telefone;
+	@Id
+	@GeneratedValue(generator = "contato_seq", strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "contato_seq", sequenceName = "contato_seq", allocationSize = 1, initialValue = 1)
+	private Integer id;
 
-   public String getNome() {
-      return nome;
-   }
+	private String nome;
 
-   public void setNome(String nome) {
-      this.nome = nome;
-   }
+	private String telefone;
 
-   public String getTelefone() {
-      return telefone;
-   }
+	public String getNome() {
+		return nome;
+	}
 
-   public void setTelefone(String telefone) {
-      this.telefone = telefone;
-   }
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
-   public Integer getId() {
-      return id;
-   }
-   
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public Integer getId() {
+		return id;
+	}
 
 }

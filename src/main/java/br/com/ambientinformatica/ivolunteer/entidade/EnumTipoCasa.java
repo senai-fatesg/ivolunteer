@@ -1,6 +1,5 @@
 public enum EnumTipoCasa {
  
-	;
 	 
 	private String PROPRIA;
 	 

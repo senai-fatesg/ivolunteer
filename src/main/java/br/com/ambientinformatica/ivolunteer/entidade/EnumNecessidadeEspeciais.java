@@ -1,6 +1,5 @@
 public enum EnumNecessidadeEspeciais {
- 
+
 	;
-	 
+
 }
- 

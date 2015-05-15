@@ -1,3 +1,5 @@
+package br.com.ambientinformatica.ivolunteer.entidade;
+
 public class Alternativa {
 
 	private String alternativa;

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
 @Entity
@@ -46,6 +47,7 @@ public class Pessoa {
 	private boolean paisVivemJuntos;
 	private boolean requisitouOutraVaga;
 	
+	@OneToMany
 	private Endereco endereco;
 	private Pessoa pessoaRelacionada;
 	private Telefone telefone;

@@ -1,3 +1,5 @@
+package br.com.ambientinformatica.ivolunteer.entidade;
+
 import java.util.Date;
 
 public class Funcionario {

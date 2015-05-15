@@ -1,3 +1,5 @@
+package br.com.ambientinformatica.ivolunteer.entidade;
+
 import java.util.Date;
 
 public class Avaliacao {
@@ -11,10 +13,6 @@ public class Avaliacao {
 	private Pessoa pessoa;
 
 	private Questao questao;
-
-	private Questao questao;
-
-	private AvalicacaoQuestao avalicacaoQuestao;
 
 	private AvaliacaoQestao avaliacaoQestao;
 

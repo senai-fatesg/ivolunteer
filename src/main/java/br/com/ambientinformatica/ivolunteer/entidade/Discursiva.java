@@ -6,19 +6,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
+
 @Entity
-public class Objetiva {
+public class Discursiva {
 
 	@Id
-	@GeneratedValue(generator = "objetiva_seq", strategy = GenerationType.SEQUENCE)
-	@SequenceGenerator(name = "objetiva_seq", sequenceName = "objetiva_seq", allocationSize = 1, initialValue = 1)
+	@GeneratedValue(generator = "discursiva_seq", strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "discursiva_seq", sequenceName = "discursiva_seq", allocationSize = 1, initialValue = 1)
 	private Integer id;
 	
-	private String descricao;
+	private int numeroLinhas;
 
 	private Questao questao;
-
-	private Alternativa alternativa;
 
 	public Integer getId() {
 		return id;
@@ -28,12 +27,12 @@ public class Objetiva {
 		this.id = id;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public int getNumeroLinhas() {
+		return numeroLinhas;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setNumeroLinhas(int numeroLinhas) {
+		this.numeroLinhas = numeroLinhas;
 	}
 
 	public Questao getQuestao() {
@@ -42,14 +41,6 @@ public class Objetiva {
 
 	public void setQuestao(Questao questao) {
 		this.questao = questao;
-	}
-
-	public Alternativa getAlternativa() {
-		return alternativa;
-	}
-
-	public void setAlternativa(Alternativa alternativa) {
-		this.alternativa = alternativa;
 	}
 	
 	

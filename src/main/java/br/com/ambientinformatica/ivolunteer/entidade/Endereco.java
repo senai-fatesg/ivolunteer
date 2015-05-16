@@ -32,8 +32,8 @@ public class Endereco {
 	@OneToOne
 	private Cidade cidade;
 	
-	@ManyToOne
-	private Pessoa pessoaRelacionada;
+	//@ManyToOne
+	//private Pessoa pessoaRelacionada;
 
 	private CadastroPessoa cadastroPessoa;
 
@@ -122,13 +122,5 @@ public class Endereco {
 
 	public void setCidade(Cidade cidade) {
 		this.cidade = cidade;
-	}
-
-	public Pessoa getPessoaRelacionada() {
-		return pessoaRelacionada;
-	}
-
-	public void setPessoaRelacionada(Pessoa pessoaRelacionada) {
-		this.pessoaRelacionada = pessoaRelacionada;
 	}
 }

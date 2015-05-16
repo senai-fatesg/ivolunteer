@@ -35,7 +35,6 @@ public class Endereco {
 	//@ManyToOne
 	//private Pessoa pessoaRelacionada;
 
-	private CadastroPessoa cadastroPessoa;
 
 	
 	//Construtor da classe
@@ -108,13 +107,6 @@ public class Endereco {
 		this.complemento = complemento;
 	}
 
-	public CadastroPessoa getCadastroPessoa() {
-		return cadastroPessoa;
-	}
-
-	public void setCadastroPessoa(CadastroPessoa cadastroPessoa) {
-		this.cadastroPessoa = cadastroPessoa;
-	}
 
 	public Cidade getCidade() {
 		return cidade;

@@ -10,21 +10,19 @@ import javax.persistence.SequenceGenerator;
 
 @Entity
 public class AgrupamentoTurma {
- 
+
 	@Id
 	@GeneratedValue(generator = "agrupamento_turma_seq", strategy = GenerationType.SEQUENCE)
 	@SequenceGenerator(name = "agrupamento_turma_seq", sequenceName = "agrupamento_turma_seq", allocationSize = 1, initialValue = 1)
 	private Integer id;
-	
+
 	private String identificador;
-	 
+
 	private Double idadeInicial;
-	 
+
 	private Double idadeFinal;
-	 
+
 	private Integer numeroCriancas;
-	 
-	private List<Turma> turma;
 
 	public Integer getId() {
 		return id;
@@ -65,14 +63,4 @@ public class AgrupamentoTurma {
 	public void setNumeroCriancas(Integer numeroCriancas) {
 		this.numeroCriancas = numeroCriancas;
 	}
-
-	public List<Turma> getTurma() {
-		return turma;
-	}
-
-	public void setTurma(List<Turma> turma) {
-		this.turma = turma;
-	}
-	
 }
- 

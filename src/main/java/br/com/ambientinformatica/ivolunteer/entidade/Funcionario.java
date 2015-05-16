@@ -6,21 +6,12 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Funcionario {
-
-	@Id
-	@GeneratedValue(generator = "funcionario_seq", strategy = GenerationType.SEQUENCE)
-	@SequenceGenerator(name = "funcionario_seq", sequenceName = "funcionario_seq", allocationSize = 1, initialValue = 1)
-	private Integer id;
+public class Funcionario extends Pessoa {
 
 	private String pis;
 
@@ -85,7 +76,7 @@ public class Funcionario {
 	@Enumerated
 	private EnumFuncao funcao;
 
-	@OneToMany
+//	@OneToMany
 	private List<Dependente> dependente = new ArrayList<Dependente>();
 
 	@OneToMany
@@ -97,7 +88,10 @@ public class Funcionario {
 	@OneToMany
 	private List<AtividadeDiaria> atividadeDiaria = new ArrayList<AtividadeDiaria>();
 
-	private Turma turma;
+	public Funcionario() {
+		super();
+
+	}
 
 	public String getPis() {
 		return pis;
@@ -345,18 +339,6 @@ public class Funcionario {
 
 	public void setAtividadeDiaria(List<AtividadeDiaria> atividadeDiaria) {
 		this.atividadeDiaria = atividadeDiaria;
-	}
-
-	public Turma getTurma() {
-		return turma;
-	}
-
-	public void setTurma(Turma turma) {
-		this.turma = turma;
-	}
-
-	public Integer getId() {
-		return id;
 	}
 
 }

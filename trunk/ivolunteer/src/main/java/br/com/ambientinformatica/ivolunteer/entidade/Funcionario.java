@@ -7,10 +7,12 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
+@PrimaryKeyJoinColumn(name="id")
 public class Funcionario extends Pessoa {
 
 	private String pis;

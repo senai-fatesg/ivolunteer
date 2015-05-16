@@ -14,7 +14,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class TesteLoginSage {
+public class LoginTestIT {
   private WebDriver driver;
   private String baseUrl;
   private boolean acceptNextAlert = true;

@@ -1,4 +1,4 @@
-package ivolunteer;
+package br.com.ambientinformatica.ivolunteer.test;
 
 import static org.junit.Assert.*;
 

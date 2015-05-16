@@ -31,7 +31,7 @@ public class Aluno {
 	private List<Frequencia> frequencia;
 
 	@OneToMany
-	private List<RelatorioApredizagem> relatorioApredizagem;
+	private List<RelatorioAprendizagem> relatorioApredizagem;
 
 	@OneToOne
 	private Matricula matricula;
@@ -60,11 +60,11 @@ public class Aluno {
 		this.frequencia = frequencia;
 	}
 
-	public List<RelatorioApredizagem> getRelatorioApredizagem() {
+	public List<RelatorioAprendizagem> getRelatorioApredizagem() {
 		return relatorioApredizagem;
 	}
 
-	public void setRelatorioApredizagem(List<RelatorioApredizagem> relatorioApredizagem) {
+	public void setRelatorioApredizagem(List<RelatorioAprendizagem> relatorioApredizagem) {
 		this.relatorioApredizagem = relatorioApredizagem;
 	}
 

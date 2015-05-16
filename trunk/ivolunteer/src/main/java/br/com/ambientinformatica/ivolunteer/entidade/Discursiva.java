@@ -17,8 +17,6 @@ public class Discursiva {
 	
 	private int numeroLinhas;
 
-	private Questao questao;
-
 	public Integer getId() {
 		return id;
 	}
@@ -34,15 +32,5 @@ public class Discursiva {
 	public void setNumeroLinhas(int numeroLinhas) {
 		this.numeroLinhas = numeroLinhas;
 	}
-
-	public Questao getQuestao() {
-		return questao;
-	}
-
-	public void setQuestao(Questao questao) {
-		this.questao = questao;
-	}
-	
-	
 
 }

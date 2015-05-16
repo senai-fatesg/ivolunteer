@@ -18,8 +18,6 @@ public class Alternativa {
 
 	private boolean status;
 
-	private Objetiva objetiva;
-
 	public Integer getId() {
 		return id;
 	}
@@ -43,15 +41,5 @@ public class Alternativa {
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
-
-	public Objetiva getObjetiva() {
-		return objetiva;
-	}
-
-	public void setObjetiva(Objetiva objetiva) {
-		this.objetiva = objetiva;
-	}
-	
-	
 
 }

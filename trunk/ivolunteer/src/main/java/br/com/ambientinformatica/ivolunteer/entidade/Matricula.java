@@ -38,8 +38,6 @@ public class Matricula {
 	@Temporal(TemporalType.DATE)
 	private Date ano;
 
-	private Aluno aluno;
-
 	@OneToOne
 	private Turma turma;
 
@@ -124,14 +122,6 @@ public class Matricula {
 
 	public void setAno(Date ano) {
 		this.ano = ano;
-	}
-
-	public Aluno getAluno() {
-		return aluno;
-	}
-
-	public void setAluno(Aluno aluno) {
-		this.aluno = aluno;
 	}
 
 	public Turma getTurma() {

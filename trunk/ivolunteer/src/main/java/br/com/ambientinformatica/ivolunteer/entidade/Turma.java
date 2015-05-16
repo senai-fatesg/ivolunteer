@@ -29,10 +29,6 @@ public class Turma {
 	@OneToMany
 	private List<Funcionario> funcionario;
 
-	private Matricula matricula;
-
-	private RelatorioAprendizagem relatorioAprendizagem;
-
 	public Integer getId() {
 		return id;
 	}
@@ -79,23 +75,6 @@ public class Turma {
 
 	public void setFuncionario(List<Funcionario> funcionario) {
 		this.funcionario = funcionario;
-	}
-
-	public Matricula getMatricula() {
-		return matricula;
-	}
-
-	public void setMatricula(Matricula matricula) {
-		this.matricula = matricula;
-	}
-
-	public RelatorioAprendizagem getRelatorioAprendizagem() {
-		return relatorioAprendizagem;
-	}
-
-	public void setRelatorioAprendizagem(
-			RelatorioAprendizagem relatorioAprendizagem) {
-		this.relatorioAprendizagem = relatorioAprendizagem;
 	}
 
 }

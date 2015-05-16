@@ -26,7 +26,7 @@ public class Turma {
 	@ManyToOne
 	private AgrupamentoTurma agrupamentoTurma;
 	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="funcionario")
+	@OneToMany
 	private List<Funcionario> funcionario;
 	
 	@OneToOne

@@ -1,5 +1,7 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,7 +26,7 @@ public class AgrupamentoTurma {
 	private int numeroCriancas;
 	 
 	@OneToMany
-	private Turma turma;
+	private List<Turma> turma;
 
 	public Integer getId() {
 		return id;
@@ -66,11 +68,11 @@ public class AgrupamentoTurma {
 		this.numeroCriancas = numeroCriancas;
 	}
 
-	public Turma getTurma() {
+	public List<Turma> getTurma() {
 		return turma;
 	}
 
-	public void setTurma(Turma turma) {
+	public void setTurma(List<Turma> turma) {
 		this.turma = turma;
 	}
 	 

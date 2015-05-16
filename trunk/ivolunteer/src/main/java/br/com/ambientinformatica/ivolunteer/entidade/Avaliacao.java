@@ -1,11 +1,13 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
@@ -28,8 +30,8 @@ public class Avaliacao {
 	@OneToOne
 	private Pessoa pessoa;
 
-	@OneToOne
-	private AvaliacaoQestao avaliacaoQestao;
+	@ManyToOne
+	private List<AvaliacaoQestao> avaliacaoQestao;
 
 	public Integer getId() {
 		return id;
@@ -71,13 +73,14 @@ public class Avaliacao {
 		this.pessoa = pessoa;
 	}
 
-	public AvaliacaoQestao getAvaliacaoQestao() {
+	public List<AvaliacaoQestao> getAvaliacaoQestao() {
 		return avaliacaoQestao;
 	}
 
-	public void setAvaliacaoQestao(AvaliacaoQestao avaliacaoQestao) {
-		this.avaliacaoQestao = avaliacaoQestao;
-	}
+	public void setAvaliacaoQestao(List<AvaliacaoQestao> avaliacaoQestao) {
+		this.avaliacaoQestao = avaliacaoQestao;	}
+
+	
 	
 	
 

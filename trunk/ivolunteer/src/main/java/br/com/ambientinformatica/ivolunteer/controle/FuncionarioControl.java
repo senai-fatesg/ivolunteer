@@ -13,7 +13,7 @@ import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.ivolunteer.persistencia.FuncionarioDao;
 
-@Controller("ContatoControl")
+@Controller("FuncionarioControl")
 @Scope("conversation")
 public class FuncionarioControl {
 

@@ -1,9 +1,14 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 @Entity
@@ -16,16 +21,15 @@ public class Questao {
 
 	private String pergunta;
 
+	@ManyToOne
 	private Avaliacao avaliacao;
 
-	private Objetiva objetiva;
+	@OneToMany
+	private List<Objetiva> objetiva;
 
+	@OneToOne
 	private Discursiva discursiva;
-
-	private Questao questao;
-
-	private AvaliacaoQestao avaliacaoQestao;
-
+	
 	public Integer getId() {
 		return id;
 	}

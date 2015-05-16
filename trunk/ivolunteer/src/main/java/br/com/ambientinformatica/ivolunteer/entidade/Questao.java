@@ -19,10 +19,7 @@ public class Questao {
 	@SequenceGenerator(name = "questao_seq", sequenceName = "questao_seq", allocationSize = 1, initialValue = 1)
 	private Integer id;
 
-	private String pergunta;
-
-	@ManyToOne
-	private Avaliacao avaliacao;
+	private String pergunta;	
 
 	@OneToMany
 	private List<Objetiva> objetiva;
@@ -44,16 +41,7 @@ public class Questao {
 
 	public void setPergunta(String pergunta) {
 		this.pergunta = pergunta;
-	}
-
-	public Avaliacao getAvaliacao() {
-		return avaliacao;
-	}
-
-	public void setAvaliacao(Avaliacao avaliacao) {
-		this.avaliacao = avaliacao;
-	}
-
+	}	
 	
 	public Discursiva getDiscursiva() {
 		return discursiva;

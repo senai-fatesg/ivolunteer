@@ -1,13 +1,27 @@
-public enum EnumEstadoCivil {
- 
-	
-	private String SOLTEIRO;
+package br.com.ambientinformatica.ivolunteer.entidade;
+
+import br.com.ambientinformatica.util.IEnum;
+
+public enum EnumEstadoCivil implements IEnum{
+  SOLTEIRO("Solteiro"),
 	 
-	private String CASADO;
+  CASADO("casado"),
 	 
-	private String DIVORCIADO;
+	DIVORCIADO("Divorciado"),
 	 
-	private String VIUVO;
-	 
+	 VIUVO("Viuvo");
+  private String descricao;
+
+	private EnumEstadoCivil(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
 }
  

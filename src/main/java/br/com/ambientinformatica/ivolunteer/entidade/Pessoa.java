@@ -54,9 +54,10 @@ public class Pessoa {
 	
 	@OneToMany
 	private List<Endereco> endereco = new ArrayList();
-	private Pessoa pessoaRelacionada;
-	private Telefone telefone;
-	private Avaliacao avaliacao;
+	@OneToMany
+	private List<Pessoa> listaPessoaRelacionada;
+	@OneToMany
+	private List<Telefone> telefone;
 	
 	//construtor da classe
 	public Pessoa(){

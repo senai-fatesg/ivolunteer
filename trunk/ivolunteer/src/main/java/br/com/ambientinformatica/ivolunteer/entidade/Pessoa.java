@@ -284,13 +284,15 @@ public class Pessoa {
 		this.requisitouOutraVaga = requisitouOutraVaga;
 	}
 
-	public Endereco getEndereco() {
+	public List<Endereco> getEndereco() {
 		return endereco;
 	}
 
-	public void setEndereco(Endereco endereco) {
+
+	public void setEndereco(List<Endereco> endereco) {
 		this.endereco = endereco;
 	}
+
 
 	public Pessoa getPessoaRelacionada() {
 		return pessoaRelacionada;

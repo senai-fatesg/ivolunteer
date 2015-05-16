@@ -60,11 +60,11 @@ public class AgrupamentoTurma {
 		this.idadeFinal = idadeFinal;
 	}
 
-	public int getNumeroCriancas() {
+	public Integer getNumeroCriancas() {
 		return numeroCriancas;
 	}
 
-	public void setNumeroCriancas(int numeroCriancas) {
+	public void setNumeroCriancas(Integer numeroCriancas) {
 		this.numeroCriancas = numeroCriancas;
 	}
 
@@ -75,6 +75,7 @@ public class AgrupamentoTurma {
 	public void setTurma(List<Turma> turma) {
 		this.turma = turma;
 	}
-	 
+
+	
 }
  

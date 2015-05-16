@@ -1,6 +1,7 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +15,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 public class Aluno {
-	
+
 	@Id
 	@GeneratedValue(generator = "aluno_seq", strategy = GenerationType.SEQUENCE)
 	@SequenceGenerator(name = "aluno_seq", sequenceName = "aluno_seq", allocationSize = 1, initialValue = 1)
@@ -27,10 +28,10 @@ public class Aluno {
 	private Date dataExame;
 
 	@OneToMany
-	private Frequencia frequencia;
+	private List<Frequencia> frequencia;
 
 	@OneToMany
-	private RelatorioApredizagem relatorioApredizagem;
+	private List<RelatorioApredizagem> relatorioApredizagem;
 
 	@OneToOne
 	private Matricula matricula;
@@ -51,19 +52,19 @@ public class Aluno {
 		this.dataExame = dataExame;
 	}
 
-	public Frequencia getFrequencia() {
+	public List<Frequencia> getFrequencia() {
 		return frequencia;
 	}
 
-	public void setFrequencia(Frequencia frequencia) {
+	public void setFrequencia(List<Frequencia> frequencia) {
 		this.frequencia = frequencia;
 	}
 
-	public RelatorioApredizagem getRelatorioApredizagem() {
+	public List<RelatorioApredizagem> getRelatorioApredizagem() {
 		return relatorioApredizagem;
 	}
 
-	public void setRelatorioApredizagem(RelatorioApredizagem relatorioApredizagem) {
+	public void setRelatorioApredizagem(List<RelatorioApredizagem> relatorioApredizagem) {
 		this.relatorioApredizagem = relatorioApredizagem;
 	}
 
@@ -74,5 +75,5 @@ public class Aluno {
 	public void setMatricula(Matricula matricula) {
 		this.matricula = matricula;
 	}
-	
+
 }

@@ -1,6 +1,8 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -48,14 +50,14 @@ public class Pessoa {
 	private boolean requisitouOutraVaga;
 	
 	@OneToMany
-	private Endereco endereco;
+	private List<Endereco> endereco = new ArrayList();
 	private Pessoa pessoaRelacionada;
 	private Telefone telefone;
 	private Avaliacao avaliacao;
 	
 	//construtor da classe
 	public Pessoa(){
-		endereco = new Endereco();
+		endereco = new ArrayList<Endereco>();
 	}
 
 

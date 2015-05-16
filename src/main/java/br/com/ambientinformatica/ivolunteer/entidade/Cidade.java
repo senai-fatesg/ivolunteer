@@ -24,9 +24,6 @@ public class Cidade {
 	private String nomeCidade;
 	private EnumEstado enumEstado;
 	
-	@OneToOne
-	private Endereco endereco;
-	
 	//metodos gets e sets
 	public Integer getId() {
 		return id;
@@ -42,14 +39,6 @@ public class Cidade {
 	
 	public void setNomeCidade(String nomeCidade) {
 		this.nomeCidade = nomeCidade;
-	}
-	
-	public Endereco getEndereco() {
-		return endereco;
-	}
-	
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
 	}
 	
 	public EnumEstado getEnumEstado() {

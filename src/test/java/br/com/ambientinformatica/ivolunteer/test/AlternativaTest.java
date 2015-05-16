@@ -22,8 +22,7 @@ public class AlternativaTest {
       } catch (Exception e) {
 	      fail("Erro de Execução no Metodo inserir");
       }
-		
-	}	
 	
+	}	
 
 }

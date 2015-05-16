@@ -42,4 +42,31 @@ public class Alternativa {
 		this.status = status;
 	}
 
+	@Override
+   public int hashCode() {
+	   final int prime = 31;
+	   int result = 1;
+	   result = prime * result
+	         + ((alternativa == null) ? 0 : alternativa.hashCode());
+	   return result;
+   }
+
+	@Override
+   public boolean equals(Object obj) {
+	   if (this == obj)
+		   return true;
+	   if (obj == null)
+		   return false;
+	   if (getClass() != obj.getClass())
+		   return false;
+	   Alternativa other = (Alternativa) obj;
+	   if (alternativa == null) {
+		   if (other.alternativa != null)
+			   return false;
+	   } else if (!alternativa.equals(other.alternativa))
+		   return false;
+	   return true;
+   }
+
+	
 }

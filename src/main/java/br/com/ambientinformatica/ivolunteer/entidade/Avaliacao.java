@@ -1,5 +1,6 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class Avaliacao {
 	private Pessoa pessoa;
 
 	@OneToMany
-	private List<AvaliacaoQestao> avaliacaoQestao;
+	private List<Questao> questao = new ArrayList<Questao>();
 
 	public Integer getId() {
 		return id;
@@ -73,15 +74,18 @@ public class Avaliacao {
 		this.pessoa = pessoa;
 	}
 
-	public List<AvaliacaoQestao> getAvaliacaoQestao() {
-		return avaliacaoQestao;
+	public List<Questao> getQuestao() {
+		return questao;
 	}
 
-	public void setAvaliacaoQestao(List<AvaliacaoQestao> avaliacaoQestao) {
-		this.avaliacaoQestao = avaliacaoQestao;	}
-
+	public void setQuestao(List<Questao> questao) {
+		this.questao = questao;
+	}
 	
-	
-	
-
+	//Métododo que ira adicionar questões
+	public void addQuestao(Questao questao){
+		if(!this.questao.contains(questao)){
+			this.questao.add(questao);
+		}
+	}
 }

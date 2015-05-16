@@ -1,4 +1,5 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
+
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -6,10 +7,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 @Entity
 public class GradeHorario {
 
@@ -20,15 +21,12 @@ public class GradeHorario {
 
 	@Enumerated
 	private EnumDiaSemana diaSemana;
-	
-   @Temporal(TemporalType.TIME)
-	private Date horarioEntrada;
-   
-   @Temporal(TemporalType.TIME)
-	private Date horarioSaida;
 
-   @ManyToOne
-	private Funcionario funcionario;
+	@Temporal(TemporalType.TIME)
+	private Date horarioEntrada;
+
+	@Temporal(TemporalType.TIME)
+	private Date horarioSaida;
 
 	public Date getTotal() {
 		return null;
@@ -56,14 +54,6 @@ public class GradeHorario {
 
 	public void setHorarioSaida(Date horarioSaida) {
 		this.horarioSaida = horarioSaida;
-	}
-
-	public Funcionario getFuncionario() {
-		return funcionario;
-	}
-
-	public void setFuncionario(Funcionario funcionario) {
-		this.funcionario = funcionario;
 	}
 
 }

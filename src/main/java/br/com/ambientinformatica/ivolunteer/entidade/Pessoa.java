@@ -288,6 +288,26 @@ public class Pessoa {
 		this.requisitouOutraVaga = requisitouOutraVaga;
 	}
 
+	public List<Pessoa> getListaPessoaRelacionada() {
+		return listaPessoaRelacionada;
+	}
+
+
+	public void setListaPessoaRelacionada(List<Pessoa> listaPessoaRelacionada) {
+		this.listaPessoaRelacionada = listaPessoaRelacionada;
+	}
+
+
+	public List<Telefone> getTelefone() {
+		return telefone;
+	}
+
+
+	public void setTelefone(List<Telefone> telefone) {
+		this.telefone = telefone;
+	}
+
+
 	public List<Endereco> getEndereco() {
 		return endereco;
 	}
@@ -298,27 +318,6 @@ public class Pessoa {
 	}
 
 
-	public Pessoa getPessoaRelacionada() {
-		return pessoaRelacionada;
-	}
 
-	public void setPessoaRelacionada(Pessoa pessoaRelacionada) {
-		this.pessoaRelacionada = pessoaRelacionada;
-	}
 
-	public Telefone getTelefone() {
-		return telefone;
-	}
-
-	public void setTelefone(Telefone telefone) {
-		this.telefone = telefone;
-	}
-
-	public Avaliacao getAvaliacao() {
-		return avaliacao;
-	}
-
-	public void setAvaliacao(Avaliacao avaliacao) {
-		this.avaliacao = avaliacao;
-	}	
 }

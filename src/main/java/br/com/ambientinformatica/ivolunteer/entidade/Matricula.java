@@ -38,7 +38,6 @@ public class Matricula {
 	@Temporal(TemporalType.DATE)
 	private Date ano;
 
-	@OneToOne
 	private Aluno aluno;
 
 	@OneToOne

@@ -24,7 +24,7 @@ public class FrequenciaTest {
 		} catch (PersistenciaException e) {
 			e.printStackTrace();
 		}
-		
+		fail("Falha no testes pois era esperada uma exceção.");
 	}
 	
 	

@@ -21,6 +21,7 @@ public class FuncionarioTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void test() {
+		
 		Funcionario funcionario = new Funcionario();
 
 		Endereco endereco = new Endereco();

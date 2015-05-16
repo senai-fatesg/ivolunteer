@@ -54,14 +54,7 @@ public class Questao {
 		this.avaliacao = avaliacao;
 	}
 
-	public Objetiva getObjetiva() {
-		return objetiva;
-	}
-
-	public void setObjetiva(Objetiva objetiva) {
-		this.objetiva = objetiva;
-	}
-
+	
 	public Discursiva getDiscursiva() {
 		return discursiva;
 	}
@@ -70,21 +63,19 @@ public class Questao {
 		this.discursiva = discursiva;
 	}
 
-	public Questao getQuestao() {
-		return questao;
+	public List<Objetiva> getObjetiva() {
+		return objetiva;
 	}
 
-	public void setQuestao(Questao questao) {
-		this.questao = questao;
+	public void setObjetiva(List<Objetiva> objetiva) {
+		this.objetiva = objetiva;
 	}
 
-	public AvaliacaoQestao getAvaliacaoQestao() {
-		return avaliacaoQestao;
+	public void setDiscursiva(Discursiva discursiva) {
+		this.discursiva = discursiva;
 	}
 
-	public void setAvaliacaoQestao(AvaliacaoQestao avaliacaoQestao) {
-		this.avaliacaoQestao = avaliacaoQestao;
-	}
+	
 	
 	
 

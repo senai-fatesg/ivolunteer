@@ -23,7 +23,7 @@ public class AgrupamentoTurma {
 	 
 	private Double idadeFinal;
 	 
-	private int numeroCriancas;
+	private Integer numeroCriancas;
 	 
 	@OneToMany
 	private List<Turma> turma;

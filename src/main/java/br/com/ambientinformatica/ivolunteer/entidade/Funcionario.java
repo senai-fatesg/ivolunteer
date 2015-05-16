@@ -76,9 +76,6 @@ public class Funcionario extends Pessoa {
 	@Enumerated
 	private EnumFuncao funcao;
 
-//	@OneToMany
-	private List<Dependente> dependente = new ArrayList<Dependente>();
-
 	@OneToMany
 	private List<Frequencia> frequencia = new ArrayList<Frequencia>();
 
@@ -307,14 +304,6 @@ public class Funcionario extends Pessoa {
 
 	public void setFuncao(EnumFuncao funcao) {
 		this.funcao = funcao;
-	}
-
-	public List<Dependente> getDependente() {
-		return dependente;
-	}
-
-	public void setDependente(List<Dependente> dependente) {
-		this.dependente = dependente;
 	}
 
 	public List<Frequencia> getFrequencia() {

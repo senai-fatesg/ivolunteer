@@ -17,7 +17,6 @@
 				<p:commandButton actionListener="#{ContatoControl.confirmar }" value="Confirmar" update="contatos, panel"></p:commandButton>
 			</h:panelGrid>
 		</p:panel>	
-		
 
 	</ui:define>
 </ui:composition>

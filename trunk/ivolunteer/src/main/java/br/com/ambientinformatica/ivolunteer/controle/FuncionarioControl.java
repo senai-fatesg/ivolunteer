@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.ivolunteer.persistencia.FuncionarioDao;
+import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 
 @Controller("FuncionarioControl")
 @Scope("conversation")
@@ -33,9 +34,44 @@ public class FuncionarioControl {
 		}
 	}
 
+	public void consultar(ActionEvent evt) {
+		try {
+			funcionarioDao.consultar(funcionario.getId());
+			funcionario = new Funcionario();
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
+
+	public void incluir(ActionEvent evt) {
+		try {
+			funcionarioDao.incluir(funcionario);
+		} catch (PersistenciaException e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+
+	}
+
+	public void excluir(ActionEvent evt) {
+		try {
+			funcionarioDao.excluirPorId(funcionario);
+		} catch (PersistenciaException e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+
+	}
+
 	public void listar(ActionEvent evt) {
 		try {
 			funcionarios = funcionarioDao.listar();
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
+
+	public void alterarLista(ActionEvent evt) {
+		try {
+			funcionarioDao.alterar(funcionarios);
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}

@@ -14,7 +14,7 @@ import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.RelatorioAprendizagem;
 import br.com.ambientinformatica.ivolunteer.persistencia.RealatorioAprendizagemDao;
 
-@Controller("TurmaControl")
+@Controller("RelatorioAprendizagemControl")
 @Scope("conversation")
 public class RelatorioAprendizagemControl {
 	

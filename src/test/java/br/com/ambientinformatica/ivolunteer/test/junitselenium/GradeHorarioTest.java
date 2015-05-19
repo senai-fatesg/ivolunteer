@@ -10,19 +10,19 @@ import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 
 public class GradeHorarioTest {
 
-	@Test(expected = IllegalArgumentException.class)
-	public void test() {
-		GradeHorario gradehorario = new GradeHorario();
-		EnumDiaSemana diaSemana = EnumDiaSemana.SEGUNDA;
-
-		gradehorario.setDiaSemana(diaSemana);
-		GradeHorarioDao gradehorarioDao = new GradeHorarioDaoJpa();
-
-		try {
-			gradehorarioDao.incluir(gradehorario);
-		} catch (PersistenciaException e) {
-			e.printStackTrace();
-
-		}
-	}
+//	@Test(expected = IllegalArgumentException.class)
+//	public void test() {
+//		GradeHorario gradehorario = new GradeHorario();
+//		EnumDiaSemana diaSemana = EnumDiaSemana.SEGUNDA;
+//
+//		gradehorario.setDiaSemana(diaSemana);
+//		GradeHorarioDao gradehorarioDao = new GradeHorarioDaoJpa();
+//
+//		try {
+//			gradehorarioDao.incluir(gradehorario);
+//		} catch (PersistenciaException e) {
+//			e.printStackTrace();
+//
+//		}
+//	}
 }

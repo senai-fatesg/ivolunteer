@@ -138,11 +138,6 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>sonar-maven-plugin</artifactId>
-				<version>1.0</version>
-			</plugin>
 		</plugins>
 	</build>
 	<!-- Dependencias para trabalhar com o Arquillian	 -->

@@ -12,6 +12,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -42,7 +44,9 @@ public class Pessoa {
 	private EnumSexo enumSexo;
 	private EnumEscolaridade enumEscolaridade;
 	
+	@Temporal(TemporalType.DATE)
 	private Date dataExpedicao;
+	@Temporal(TemporalType.DATE)
 	private Date dataNascimento;
 	
 	private double renda;

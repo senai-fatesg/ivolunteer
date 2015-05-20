@@ -43,6 +43,7 @@ public class Pessoa {
 	private EnumFiliacao filiacao;
 	private EnumSexo enumSexo;
 	private EnumEscolaridade enumEscolaridade;
+	private EnumTipoTelefone enumTipoPessoa;
 	
 	@Temporal(TemporalType.DATE)
 	private Date dataExpedicao;

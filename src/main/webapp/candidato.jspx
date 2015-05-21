@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="corpo">
+
+		<p:panel header="Formulário" id="panel">
+			<h:panelGrid columns="2">
+				
+				<h:outputText value="Nome"></h:outputText>
+				<p:inputText value="#{contatoControl.pessoa.nome }" required="true"></p:inputText>
+				<h:outputText value="Data de nascimento"></h:outputText>
+				<p:calendar id="button" value="#{contatoControl.pessoa.dataNascimento}" showOn="button" />
+				<h:outputText value="Naturalidade"></h:outputText>
+				<p:inputText value="#{contatoControl.pessoa.naturalidade }" required="true"></p:inputText>
+				
+				<h:outputText value="Estado"></h:outputText>
+				<h:selectOneMenu id="estado" value="#{contatoControl.endereco.enumestado}" required="true" label="Text 3">
+                	<f:selectItem itemLabel="Select One" itemValue="" noSelectionOption="true" />
+                	<f:selectItem itemLabel="" itemValue="1" />
+                	<f:selectItem itemLabel="" itemValue="2" />
+            	</h:selectOneMenu>
+            	<!--comentario-->
+            	<h:outputText value="Sexo"></h:outputText>
+            	<h:selectOneMenu id="sexo" value="#{contatoControl.pessoa.sexo}" required="true" label="Sexo">
+                	<f:selectItem itemLabel="Select One" itemValue="" noSelectionOption="true" />
+                	<f:selectItem itemLabel="" itemValue="1" />
+                	<f:selectItem itemLabel="" itemValue="2" />
+            	</h:selectOneMenu>
+            	
+            	<h:outputText value="Contato"></h:outputText>
+            	<h:selectOneMenu id="tipoContato" value="#{contatoControl.pessoa.enumTipoPessoa}" required="true" label="tipoContato">
+                	<f:selectItem itemLabel="Select One" itemValue="" noSelectionOption="true" />
+                	<f:selectItem itemLabel="" itemValue="1" />
+                	<f:selectItem itemLabel="" itemValue="2" />
+            	</h:selectOneMenu>
+            	
+            	<h:outputText value="Numero"></h:outputText>
+				<p:inputMask value="#{contatoControl.telefone.numeroTelefone }" mask="(99) 9999-9999"></p:inputMask>
+				
+				
+				
+				<p:inputText value="#{contatoControl.pessoa.nome }" required="true"></p:inputText>
+				<h:outputText value="Telefone"></h:outputText>
+				<p:inputMask value="#{ContatoControl.contato.telefone.numeroTelefone }" mask="(99) 9999-9999"></p:inputMask>
+				<p:commandButton actionListener="#{ContatoControl.confirmar }" value="Confirmar" update="contatos, panel"></p:commandButton>
+			</h:panelGrid>
+		</p:panel>
+		
+		<p:dataTable id="contatos" value="#{ContatoControl.contatos }" var="cont"  width="100%" emptyMessage="Sem registros" >
+			<f:facet name="header">
+				<h:outputText value="Lista de Contatos"></h:outputText>
+			</f:facet>
+			<p:column sortBy="#{cont.nome }">
+				<f:facet name="header">
+					<h:outputText value="Nome"></h:outputText>
+				</f:facet>
+				<h:outputText value="#{cont.nome }"></h:outputText>
+			</p:column>	
+			<p:column sortBy="#{cont.telefone }">
+				<f:facet name="header">
+					<h:outputText value="Telefone"></h:outputText>
+				</f:facet>
+				<h:outputText value="#{cont.telefone }"></h:outputText>
+			</p:column>	
+		</p:dataTable>
+
+	</ui:define>
+</ui:composition>

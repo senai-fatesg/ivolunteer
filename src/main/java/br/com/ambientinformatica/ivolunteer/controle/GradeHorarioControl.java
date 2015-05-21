@@ -21,7 +21,7 @@ public class GradeHorarioControl {
 	private GradeHorario gradeHorario = new GradeHorario();
 
 	@Autowired
-	private GradeHorarioDao gradehorarioDao;
+	private GradeHorarioDao gradeHorarioDao;
 
 	private List<GradeHorario> gradeHorarios = new ArrayList<GradeHorario>();
 
@@ -32,7 +32,7 @@ public class GradeHorarioControl {
 
 	public void confirmar(ActionEvent evt) {
 		try {
-			gradehorarioDao.alterar(gradeHorario);
+			gradeHorarioDao.alterar(gradeHorario);
 			listar(evt);
 			gradeHorario = new GradeHorario();
 		} catch (Exception e) {
@@ -42,7 +42,7 @@ public class GradeHorarioControl {
 
 	public void listar(ActionEvent evt) {
 		try {
-			gradeHorarios = gradehorarioDao.listar();
+			gradeHorarios = gradeHorarioDao.listar();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.RelatorioAprendizagem;
-import br.com.ambientinformatica.ivolunteer.persistencia.RealatorioAprendizagemDao;
+import br.com.ambientinformatica.ivolunteer.persistencia.RelatorioAprendizagemDao;
 
 @Controller("RelatorioAprendizagemControl")
 @Scope("conversation")
@@ -21,7 +21,7 @@ public class RelatorioAprendizagemControl {
 	private RelatorioAprendizagem relatorioaprendizagem = new RelatorioAprendizagem();
 
 	@Autowired
-	private RealatorioAprendizagemDao relatorioaprendizagemDao;
+	private RelatorioAprendizagemDao relatorioaprendizagemDao;
 
 	private List<RelatorioAprendizagem> relatoriosaprendizagems = new ArrayList<RelatorioAprendizagem>();
 

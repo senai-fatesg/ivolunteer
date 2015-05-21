@@ -4,14 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
-
-/*
- * Autor: Aureliano / Luiz Fernando
- * Atualizado em: 15/05/205 00:00
- * */
 
 @Entity
 public class Endereco {
@@ -22,33 +16,24 @@ public class Endereco {
    private Integer id;
 	
 	private String bairro;
+	
 	private String ruaOuAvenida;
-	private String cEP;
+	
+	private String Cep;
+	
 	private long numero;
+	
 	private String quadra;
+	
 	private String lote;
+	
 	private String complemento;
 	
 	@OneToOne
 	private Cidade cidade;
 	
-	//@ManyToOne
-	//private Pessoa pessoaRelacionada;
-
-
-	
-	//Construtor da classe
-	public Endereco(){
-		cidade = new Cidade();
-	}
-	
-	//Metodos gets e sets
 	public Integer getId() {
 		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getBairro() {
@@ -67,12 +52,12 @@ public class Endereco {
 		this.ruaOuAvenida = ruaOuAvenida;
 	}
 
-	public String getcEP() {
-		return cEP;
+	public String getCep() {
+		return Cep;
 	}
 
-	public void setcEP(String cEP) {
-		this.cEP = cEP;
+	public void setCep(String cep) {
+		Cep = cep;
 	}
 
 	public long getNumero() {

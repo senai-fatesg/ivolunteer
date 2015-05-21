@@ -17,7 +17,7 @@ public class RelatorioAprendizagem {
 	private int valorPeriodo;
 	private EnumTipoPeriodo tipoPeriodo;
 	private int ano;
-	private String realtorio;
+	private String relatorio;
 
 	@OneToOne
 	private Turma turma;
@@ -54,12 +54,12 @@ public class RelatorioAprendizagem {
 		this.ano = ano;
 	}
 
-	public String getRealtorio() {
-		return realtorio;
+	public String getRelatorio() {
+		return relatorio;
 	}
 
-	public void setRealtorio(String realtorio) {
-		this.realtorio = realtorio;
+	public void setRelatorio(String relatorio) {
+		this.relatorio = relatorio;
 	}
 
 	public Turma getTurma() {

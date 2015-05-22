@@ -9,17 +9,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Aluno {
+@PrimaryKeyJoinColumn(name="id")
+public class Aluno extends Pessoa{
 
-	@Id
-	@GeneratedValue(generator = "aluno_seq", strategy = GenerationType.SEQUENCE)
-	@SequenceGenerator(name = "aluno_seq", sequenceName = "aluno_seq", allocationSize = 1, initialValue = 1)
-	private Integer id;
 
 	@Temporal(TemporalType.DATE)
 	private Date dataSaida;

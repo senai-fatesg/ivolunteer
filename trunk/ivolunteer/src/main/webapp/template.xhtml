@@ -7,15 +7,53 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
+	<link href="css/bootstrap.css" rel="stylesheet" />
+	<link href="css/bootstrap-responsive.css" rel="stylesheet" />
+	<link href="css/styles.css" rel="stylesheet" />
 
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="Cache-Control"
+		content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<script>
+		function focar() {
+			document.getElementById("usuario").focus();
+		}
+	</script>
 
 </h:head>
 <h:body>
-
+<ui:insert name="menu">
+		<div class="wrapper">
+			<div class="header">
+				<div class="container">
+					<div class="row branding">
+						<div class="span6">
+							<h1 class="pull-left">
+								<strong>SGEP</strong>
+							</h1>
+						</div>
+					</div>
+					<div class="row navigation">
+						<div class="span12">
+							<ul class="nav nav-tabs">
+								<li><a href="/sgep/inicio.jsf">Início</a></li>
+								<li><a href="/sgep/sessao.jsf">Sessao</a></li>
+								<li><a href="/sgep/prova.jsf">Prova</a></li>
+								<li><a href="/sgep/questao.jsf">Questao</a></li>
+								<li><a href="/sgep/itensprova.jsf">Elaborar Prova</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ui:insert>
 	<h:form id="formCorpo">
-		<p:growl autoUpdate="true"></p:growl>
-		<ui:insert name="corpo" />
+		<ui:insert name="corpo">
+			<p:growl id="growl" showDetail="true" />
+		</ui:insert>
 	</h:form>
-
 </h:body>
 </html>

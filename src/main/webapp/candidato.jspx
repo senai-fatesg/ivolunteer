@@ -9,28 +9,32 @@
 	<ui:define name="corpo">
 
 		<p:panel header="Solicitação de vaga" id="panel">
-			<p:tabView dynamic="true" cache="true">
+			<p:tabView cache="true">
 				<p:tab title="Informações do candidato" id="candidato">
-					
+					<p:panel rendered="true">
 						<a:field label="Nome" width="300px;">
-							<p:inputText id="nomePessoa" value="#{CandidatoControl.pessoa.nomePessoa}"></p:inputText>
+							<p:inputText id="nomePessoa"
+								value="#{CandidatoControl.pessoa.nomePessoa}"></p:inputText>
 						</a:field>
-						
+
 						<a:field label="Data de nascimento" width="300px;">
-						<p:calendar id="dataNascimento" value="#{CandidatoControl.pessoa.dataNascimento}"
-							locale="de" navigator="true" pattern="dd-MM-yyyy" />
+							<p:calendar id="dataNascimento"
+								value="#{CandidatoControl.pessoa.dataNascimento}" locale="de"
+								navigator="true" pattern="dd-MM-yyyy" />
 						</a:field>
-						
+
 						<!--a data de vencimento se refere a validade que o documento tera-->
 						<a:field label="Data de vencimento" width="300px;">
-						<p:calendar id="dataVencimento" value="#{CandidatoControl.pessoa.dataVencimento}"
-							locale="de" navigator="true" pattern="dd-MM-yyyy" />
+							<p:calendar id="dataVencimento"
+								value="#{CandidatoControl.pessoa.dataVencimento}" locale="de"
+								navigator="true" pattern="dd-MM-yyyy" />
 						</a:field>
-						
-							<a:newLine />
-							
-						<a:field label="Naturalidade" width="300px;" >
-							<p:inputText id="naturalidade" value="#{CandidatoControl.pessoa.naturalidade}"></p:inputText>
+
+						<a:newLine />
+
+						<a:field label="Naturalidade" width="300px;">
+							<p:inputText id="naturalidade"
+								value="#{CandidatoControl.pessoa.naturalidade}"></p:inputText>
 						</a:field>
 
 						<a:field label="Estado">
@@ -39,69 +43,88 @@
 								completeMethod="#{CandidatoControl.completeEnumEstado}" />
 						</a:field>
 
-						<a:field label="Certidao de nascimento" width="300px;" spaceLeft="45px" >
-							<p:inputText id="certidaoNascimento" value="#{CandidatoControl.pessoa.certidaoNascimento}"></p:inputText>
+						<a:field label="Certidao de nascimento" width="300px;"
+							spaceLeft="45px">
+							<p:inputText id="certidaoNascimento"
+								value="#{CandidatoControl.pessoa.certidaoNascimento}"></p:inputText>
 						</a:field>
 
 						<a:newLine />
-						
+
 						<a:field label="Sexo">
 							<p:autoComplete id="sexo" dropdown="true"
 								value="#{CandidatoControl.sexoSelecionado}"
 								completeMethod="#{CandidatoControl.completeEnumSexo}" />
 						</a:field>
-						
+
 						<a:newLine />
-						
-						
+
+					</p:panel>
 				</p:tab>
 
 				<p:tab title="Informações do responsavel" id="responsaveis">
-					<h:panelGrid columns="6">
-						
-						<a:field label="Nome" width="300px;" spaceLeft="15px" >
-							<p:inputText id="nomePessoaResponsavel" value="#{CandidatoControl.pessoa.nomePessoa}"></p:inputText>
+					<p:panel rendered="true">
+						<a:field label="Nome" width="300px;" spaceLeft="15px">
+							<p:inputText id="nomePessoaResponsavel"
+								value="#{CandidatoControl.pessoa.nomePessoa}"></p:inputText>
 						</a:field>
-						
-						<a:field label="Profissão" width="300px;" spaceLeft="15px" >
-							<p:inputText id="profissao" value="#{CandidatoControl.pessoa.profissao}"></p:inputText>
+
+						<a:field label="Profissão" width="300px;" spaceLeft="15px">
+							<p:inputText id="profissao"
+								value="#{CandidatoControl.pessoa.profissao}"></p:inputText>
 						</a:field>
-						
-						<a:newLine />
-						
+
 						<a:field label="Escolaridade">
 							<p:autoComplete id="escolaridade" dropdown="true"
 								value="#{CandidatoControl.escolaridadeSelecionado}"
 								completeMethod="#{CandidatoControl.completeEnumEscolaridade}" />
 						</a:field>
-						
-						<a:newLine />
-						
-						<h:panelGrid columns="6">
-							
-						</h:panelGrid>
-						
-						
-						
-						
 
-					</h:panelGrid>
+					<a:newLine />
+					</p:panel>
 				</p:tab>
-				
-				<p:tab title="Informações da Pai">
-					<h:panelGrid columns="6">
-						<h:outputText value="Nome"></h:outputText>
-						<p:inputText value="#{ContatoControl.contato.nome}"></p:inputText>
 
-					</h:panelGrid>
+
+				<p:tab title="Perguntas socieu econimica" id="perguntas">
+					<p:panel rendered="true">
+					
+					<h4>Renda Familiar</h4>
+					<a:newLine />
+					
+					<a:field label="Renda do Pai" width="300px;" spaceLeft="15px">
+						<p:inputText id="rendaPai"
+							value="#{CandidatoControl.pessoa.nomePessoa}"></p:inputText>
+					</a:field>
+
+					<a:field label="Renda Mãe" width="300px;" spaceLeft="15px">
+						<p:inputText id="rendaMae"
+							value="#{CandidatoControl.pessoa.profissao}"></p:inputText>
+					</a:field>
+
+					<a:newLine />
+
+					<a:field label="Renda do Responsavel" width="300px;"
+						spaceLeft="15px">
+						<p:inputText id="rendaResponsavel"
+							value="#{CandidatoControl.pessoa.profissao}"></p:inputText>
+					</a:field>
+
+					<a:field label="Outa" width="300px;"
+						spaceLeft="15px">
+						<p:inputText id="outraRenda"
+							value="#{CandidatoControl.pessoa.profissao}"></p:inputText>
+					</a:field>
+					
+					<h4></h4>
+					
+					
+					<a:newLine />
+					</p:panel>
 				</p:tab>
-				
-							
-				
 			</p:tabView>
-			
-				<a:newLine />
-			
+
+			<a:newLine />
+
 			<p:commandButton actionListener="#{ContatoControl.confirmar}"
 				value="Confirmar"></p:commandButton>
 		</p:panel>

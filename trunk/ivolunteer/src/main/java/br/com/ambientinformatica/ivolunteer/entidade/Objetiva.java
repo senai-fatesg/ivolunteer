@@ -21,7 +21,7 @@ public class Objetiva {
 	private String descricao;
 
 	@OneToMany
-	private List<Alternativa> alternativa = new ArrayList<Alternativa>();
+	private List<Alternativa> alternativas = new ArrayList<Alternativa>();
 
 	public Integer getId() {
 		return id;
@@ -39,18 +39,18 @@ public class Objetiva {
 		this.descricao = descricao;
 	}
 
-	public List<Alternativa> getAlternativa() {
-		return alternativa;
+	public List<Alternativa> getAlternativas() {
+		return alternativas;
 	}
 
-	public void setAlternativa(List<Alternativa> alternativa) {
-		this.alternativa = alternativa;
+	public void setAlternativa(List<Alternativa> alternativas) {
+		this.alternativas = alternativas;
 	}
 
 	//Método que ira adicionar as alternativas
 	public void addAlternativa(Alternativa alternativa){
-		if(!this.alternativa.contains(alternativa)){
-			this.alternativa.add(alternativa);
+		if(!this.alternativas.contains(alternativa)){
+			this.alternativas.add(alternativa);
 		}
 	}
 

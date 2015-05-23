@@ -7,41 +7,79 @@
 	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
-		<p:panel header="Cadastro de Avaliação" id="cadstroAvaliacao">
-			<a:field label="Título" width="100%">
-				<p:inputText value="#{AvaliacaoControl.avaliacao.titulo}"
-					style="width:100%;" />
-			</a:field>
-			<a:newLine></a:newLine>
-			<a:newLine></a:newLine>
-			<a:field label="Descricao" width="100%">
-				<p:inputTextarea value="#{AvaliacaoControl.avaliacao.descricao} "
-					style="width:100%;"></p:inputTextarea>
-			</a:field>
-			<a:newLine></a:newLine>
-			<a:newLine></a:newLine>
-			<a:field label="Ordem" width="100%">
-				<p:spinner max="999" min="0" />
-			</a:field>
-			<a:newLine></a:newLine>
-			<a:newLine></a:newLine>
-			<a:field label="Tipo de Questão">
-				<p:autoComplete id="tipoQuestao" dropdown="true"
-					value="#{AvaliacaoControl.tipoQuestaoSelecionada}"
-					completeMethod="#{AvaliacaoControl.completeEnumTipoQuestao}" />
-			</a:field>
-			<a:newLine></a:newLine>
-			<a:newLine></a:newLine>
-			<p:panel header="Discursiva" id="discursiva">
-				<a:field label="Pergunta" width="100%">
-					<p:editor id="pergunta"
-						value="#{AvaliacaoControl.questao.pergunta}"></p:editor>
+		<h:form>
+			<p:panel header="Cadastro de Avaliação" id="cadstroAvaliacao">
+				<a:field label="Título" width="100%">
+					<p:inputText value="#{AvaliacaoControl.avaliacao.titulo}"
+						style="width:100%;" />
 				</a:field>
 				<a:newLine></a:newLine>
-				
+				<a:field label="Descricao" width="100%">
+					<p:inputTextarea value="#{AvaliacaoControl.avaliacao.descricao}"
+						style="width:100%;"></p:inputTextarea>
+				</a:field>
 				<a:newLine></a:newLine>
-
+				<a:newLine></a:newLine>
+				<a:field label="Tipo de Questão">
+					<p:autoComplete id="tipoQuestao" dropdown="true"
+						value="#{AvaliacaoControl.tipoQuestaoSelecionada}"
+						completeMethod="#{AvaliacaoControl.completeEnumTipoQuestao}" />
+				</a:field>
+				<a:newLine></a:newLine>
+				<a:newLine></a:newLine>
+				<p:panel header="Discursiva" id="discursiva">
+					<a:field label="Ordem" width="100%">
+						<p:spinner max="999" min="0" id="ordemDiscursiva"
+							value="#{AvaliacaoControl.questao.ordem}" />
+					</a:field>
+					<a:newLine></a:newLine>
+					<a:field label="Pergunta" width="100%">
+						<p:editor id="perguntaDiscrusiva"
+							value="#{AvaliacaoControl.questao.pergunta}"></p:editor>
+					</a:field>
+					<a:newLine></a:newLine>
+					<a:newLine></a:newLine>
+					<a:field label="Número de Linhas">
+						<p:spinner max="99" min="1" id="numeroLinhas"
+							value="#{AvaliacaoControl.discursiva.numeroLinhas}"></p:spinner>
+					</a:field>
+					<a:field spaceLeft="15px">
+						<p:commandButton
+							actionListener="#{AvaliacaoControl.adicionarQuestaoDiscursiva}"
+							value="Adicionar Pergunta" icon="ui-icon-plusthick"></p:commandButton>
+					</a:field>
+					<a:newLine></a:newLine>
+				</p:panel>
+				<p:panel header="Objetiva" id="objetiva" rendered="mostraObjetiva">
+					<a:field label="Ordem" width="100%">
+						<p:spinner max="999" min="0" id="ordemObjetiva"
+							value="#{AvaliacaoControl.questao.ordem}" />
+					</a:field>
+					<a:newLine></a:newLine>
+					<a:field label="Pergunta" width="100%">
+						<p:editor id="perguntaObjetiva"
+							value="#{AvaliacaoControl.questao.pergunta}"></p:editor>
+					</a:field>
+					<a:newLine></a:newLine>
+					<a:newLine></a:newLine>
+					<a:field label="Alternativa">
+					<p:inputText id="alternativa" value="#{AvaliacaoControl.alternativa.alternativa}"></p:inputText>
+					</a:field>
+					<a:field spaceLeft="15px">
+					<p:commandButton actionListener="#{AvaliacaoControl.adicionarAlternativaQuestao}" value="Adicionar Alternativa" icon="ui-icon-plusthick"></p:commandButton>
+					</a:field>
+					<a:newLine></a:newLine>
+					<p:dataTable var="alternativa" value="AvalizacaoControl.objetiva.alternativas" >
+						<p:column headerText="Alternativa">
+						<h:outputText value="alternativa.alternativa"></h:outputText>						
+						</p:column>
+						<p:column headerText="Remover" width="100px" style="align:center">
+							<p:commandButton icon="ui-icon-closethick"></p:commandButton>						
+						</p:column>
+					</p:dataTable>
+					<a:newLine></a:newLine>
+				</p:panel>
 			</p:panel>
-		</p:panel>
+		</h:form>
 	</ui:define>
 </ui:composition>

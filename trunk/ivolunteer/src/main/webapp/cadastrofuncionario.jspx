@@ -8,7 +8,7 @@
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
 
-		<p:panel header="Formulário" id="panel">
+		<p:panel header="Cadastro de Funcionário" id="panel">
 			<p:tabView dynamic="true" cache="true">
 				<p:tab title="Dados Pessoais">
 					<p:panel rendered="true">
@@ -35,8 +35,7 @@
 								value="#{FuncionarioControl.funcionario.naturalidade}"
 								style="width:200px" />
 						</a:field>
-
-
+						
 						<a:newLine />
 
 						<a:field label="Naturalidade" width="150px">
@@ -107,7 +106,92 @@
 								
 							</p:selectOneRadio>
 						</a:field>
+						
+						<a:field label="Data do Exame" width="150px" spaceLeft="15px">
+							<p:calendar
+								value="#{FuncionarioControl.funcionario.dataExameAdmissional}"
+								locale="de" navigator="true" pattern="yyyy-MMM-dd"
+								style="width:150px" />
+						</a:field>
+						
+						<a:field label="Pis" width="200px" spaceLeft="85px">
+							<p:inputText value="#{FuncionarioControl.funcionario.pis}"
+								style="width:200px" />
+						</a:field>
 
+						<a:field label="CTPS" width="200px" spaceLeft="30px">
+							<p:inputText value="#{FuncionarioControl.funcionario.carteiraDeTrabalho}"
+								style="width:200px" />
+						</a:field>
+
+						<a:field label="Série" width="50px" spaceLeft="15px">
+							<p:inputText value="#{FuncionarioControl.funcionario.serieCarteiraDeTrabalho}"
+								style="width:50px" />
+						</a:field>
+
+						<a:newLine />
+						
+						<a:field label="CNH" width="150px">
+							<p:inputText
+								value="#{FuncionarioControl.funcionario.cNH}"
+								style="width:150px" />
+						</a:field>
+
+						<a:field label="Data de Emissão" width="150px" spaceLeft="15px">
+							<p:calendar
+								value="#{FuncionarioControl.funcionario.emissaoCNH}"
+								locale="de" navigator="true" pattern="yyyy-MMM-dd"
+								style="width:150px" />
+						</a:field>
+
+						<a:field label="Validade CNH" width="150px" spaceLeft="75px">
+							<p:calendar
+								value="#{FuncionarioControl.funcionario.emissaoCNH}"
+								locale="de" navigator="true" pattern="yyyy-MMM-dd"
+								style="width:150px" />
+						</a:field>
+						
+						<a:field label="Nome do Pai" width="250px" spaceLeft="75px">
+							<p:inputText value="#{FuncionarioControl.funcionario.nomePai}"
+								style="width:250px" />
+						</a:field>
+
+						<a:field label="Nome da Mãe" width="250px" spaceLeft="15px">
+							<p:inputText value="#{FuncionarioControl.funcionario.nomeMae}"
+								style="width:250px" />
+						</a:field>
+						
+						<a:newLine />
+						
+						<a:field label="Inicio da Experiencia" width="150px">
+							<p:calendar
+								value="#{FuncionarioControl.funcionario.inicioExperiencia}"
+								locale="de" navigator="true" pattern="yyyy-MMM-dd"
+								style="width:150px" />
+						</a:field>
+
+						<a:field label="Final da Experiencia" width="150px" spaceLeft="75px">
+							<p:calendar
+								value="#{FuncionarioControl.funcionario.terminoExperiencia}"
+								locale="de" navigator="true" pattern="yyyy-MMM-dd"
+								style="width:150px" />
+						</a:field>
+						
+						<a:field label="Data Admissão" width="150px" spaceLeft="75px">
+							<p:calendar
+								value="#{FuncionarioControl.funcionario.dataAdmissao}"
+								locale="de" navigator="true" pattern="yyyy-MMM-dd"
+								style="width:150px" />
+						</a:field>
+
+						<a:field label="Data Demissão" width="150px" spaceLeft="75px">
+							<p:calendar
+								value="#{FuncionarioControl.funcionario.dataDemissao}"
+								locale="de" navigator="true" pattern="yyyy-MMM-dd"
+								style="width:150px" />
+						</a:field>
+
+						
 						<a:newLine />
 
 
@@ -136,7 +220,7 @@
 
 			</p:tabView>
 			<p:commandButton actionListener="#{ContatoControl.confirmar}"
-				value="Confirmar"></p:commandButton>
+				value="Confirmar" ></p:commandButton>
 
 		</p:panel>
 

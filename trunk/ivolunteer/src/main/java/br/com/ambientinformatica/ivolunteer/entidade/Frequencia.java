@@ -21,7 +21,7 @@ public class Frequencia {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
 
-	private boolean presente = false;
+	private boolean presente = true;
 
 	public void setPresenca() {
 		this.presente =true;

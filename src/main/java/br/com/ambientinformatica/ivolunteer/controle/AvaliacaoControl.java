@@ -10,9 +10,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
+import br.com.ambientinformatica.ivolunteer.entidade.Alternativa;
 import br.com.ambientinformatica.ivolunteer.entidade.Avaliacao;
 import br.com.ambientinformatica.ivolunteer.entidade.Discursiva;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumQuestao;
+import br.com.ambientinformatica.ivolunteer.entidade.Objetiva;
 import br.com.ambientinformatica.ivolunteer.entidade.Questao;
 import br.com.ambientinformatica.ivolunteer.persistencia.AvaliacaoDao;
 
@@ -25,12 +27,73 @@ public class AvaliacaoControl {
 	private Avaliacao avaliacao = new Avaliacao();
 	private Questao questao = new Questao();
 	private Discursiva discursiva = new Discursiva();
+	private Objetiva objetiva = new Objetiva();
+	private Alternativa alternativa =  new Alternativa();
+	private boolean mostraObjetiva,mostraDiscursiva = false;
 	
+ 	
+	public boolean isMostraDiscursiva() {
+		return mostraDiscursiva;
+	}
+
+
+
+	public void setMostraDiscursiva(boolean mostraDiscursiva) {
+		this.mostraDiscursiva = mostraDiscursiva;
+	}
+
+
+
+	public boolean isMostraObjetiva() {
+		return mostraObjetiva;
+	}
+
+
+
+	public void setMostraObjetiva(boolean mostraObjetiva) {
+		this.mostraObjetiva = mostraObjetiva;
+	}
+
 	private EnumQuestao tipoQuestaoSelecionada;	
 
 	@Autowired
 	private AvaliacaoDao avaliacaoDao;
 	
+	public void adicionarQuestaoDiscursiva(ActionEvent evt){
+		try {
+			this.questao.setDiscursiva(this.discursiva);
+			this.avaliacao.addQuestao(this.questao);
+			this.questao = null;
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
+	
+	
+
+	public Objetiva getObjetiva() {
+		return objetiva;
+	}
+
+
+
+	public void setObjetiva(Objetiva objetiva) {
+		this.objetiva = objetiva;
+	}
+
+
+
+	public Alternativa getAlternativa() {
+		return alternativa;
+	}
+
+
+
+	public void setAlternativa(Alternativa alternativa) {
+		this.alternativa = alternativa;
+	}
+
+
 
 	public Avaliacao getAvaliacao() {
 		return this.avaliacao;		

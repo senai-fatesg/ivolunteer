@@ -3,13 +3,18 @@ package br.com.ambientinformatica.ivolunteer.controle;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
+import br.com.ambientinformatica.ivolunteer.entidade.Frequencia;
 import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.ivolunteer.persistencia.FuncionarioDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
@@ -24,6 +29,11 @@ public class FuncionarioControl {
 	private FuncionarioDao funcionarioDao;
 
 	private List<Funcionario> funcionarios = new ArrayList<Funcionario>();
+	
+	@PostConstruct
+	public void init() {
+		listar(null);
+	}
 
 	public void confirmar(ActionEvent evt) {
 		try {
@@ -87,6 +97,17 @@ public class FuncionarioControl {
 
 	public List<Funcionario> getFuncionarios() {
 		return funcionarios;
+	}
+
+	public void setPresenca() {
+		Frequencia f = new Frequencia();
+		f.setPresenca();
+		this.funcionario.getFrequencia().add(f);
+	}
+
+	public List<Funcionario> consultarFuncionario(String query) {
+		List<Funcionario> func = funcionarioDao.listarPorNome(query);
+		return func;
 	}
 
 }

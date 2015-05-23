@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="corpo">
+
+		<p:panel header="Formulário" id="panel">
+			<p:tabView dynamic="true" cache="true">
+				<p:tab title="Dados Pessoais">
+					<p:panel rendered="true">
+
+						<a:field label="Nome" width="300px">
+							<p:inputText value="#{FuncionarioControl.funcionario.nomePessoa}"
+								style="width:300px" />
+						</a:field>
+
+						<a:field label="RG" width="150px" spaceLeft="15px">
+							<p:inputText value="#{FuncionarioControl.funcionario.rg}"
+								style="width:150px" />
+						</a:field>
+
+
+						<a:field label="Data Expedição" width="100px" spaceLeft="15px">
+							<p:calendar
+								value="#{FuncionarioControl.funcionario.dataExpedicao}"
+								locale="de" navigator="true" pattern="yyyy-MMM-dd" />
+						</a:field>
+
+						<a:field label="CPF" width="200px" spaceLeft="125px">
+							<p:inputText
+								value="#{FuncionarioControl.funcionario.naturalidade}"
+								style="width:200px" />
+						</a:field>
+
+
+						<a:newLine />
+
+						<a:field label="Naturalidade" width="150px">
+							<p:inputText
+								value="#{FuncionarioControl.funcionario.naturalidade}"
+								style="width:150px" />
+						</a:field>
+
+						<a:field label="Estado Civil" width="200px;" spaceLeft="15px">
+							<p:inputText
+								value="#{FuncionarioControl.funcionario.estadoCivil}"
+								style="width:200px" />
+						</a:field>
+
+						<a:field label="Data Nascimento" width="150px" spaceLeft="15px">
+							<p:calendar
+								value="#{FuncionarioControl.funcionario.dataNascimento}"
+								locale="de" navigator="true" pattern="yyyy-MMM-dd"
+								style="width:150px" />
+						</a:field>
+
+						<a:field label="Sexo" width="50px" spaceLeft="75px">
+							<p:inputText value="#{FuncionarioControl.funcionario.sexo}"
+								style="width:50px" />
+						</a:field>
+
+						<a:field label="Profissão" width="235px" spaceLeft="15px">
+							<p:inputText value="#{FuncionarioControl.funcionario.profissao}"
+								style="width:235px" />
+						</a:field>
+
+						<a:newLine />
+
+						<a:field label="Titulo Eleitoral" width="150px">
+							<p:inputText value="#{FuncionarioControl.funcionario.titulo}"
+								style="width:150px" />
+						</a:field>
+
+						<a:field label="Zona" width="50px" spaceLeft="15px">
+							<p:inputText value="#{FuncionarioControl.funcionario.zona}"
+								style="width:50px" />
+						</a:field>
+
+						<a:field label="Seção" width="50px" spaceLeft="15px">
+							<p:inputText value="#{FuncionarioControl.funcionario.secao}"
+								style="width:50px" />
+						</a:field>
+
+						<a:field label="Nº Reservista" width="150px" spaceLeft="30px">
+							<p:inputText value="#{FuncionarioControl.funcionario.reservista}"
+								style="width:150px" />
+						</a:field>
+
+						<a:field label="Data Emissão" width="150px" spaceLeft="15px">
+							<p:calendar
+								value="#{FuncionarioControl.funcionario.emissaoReservista}"
+								locale="de" navigator="true" pattern="yyyy-MMM-dd"
+								style="width:150px" />
+						</a:field>
+
+						<a:newLine />
+
+						<a:field label="Exame Admissional">
+							
+							<p:selectOneRadio id="console" value="#{radioView.console}">
+								<f:selectItem itemLabel="Sim" itemValue="Sim" />
+								<f:selectItem itemLabel="Nao" itemValue="Nao" />
+								
+							</p:selectOneRadio>
+						</a:field>
+
+						<a:newLine />
+
+
+
+					</p:panel>
+
+
+
+
+
+
+
+
+
+
+
+				</p:tab>
+
+				<p:tab title="Dados Bancarios">
+					<h:panelGrid columns="6">
+						<h:outputText value="Nome"></h:outputText>
+						<p:inputText value="#{ContatoControl.contato.nome}"></p:inputText>
+
+					</h:panelGrid>
+				</p:tab>
+
+			</p:tabView>
+			<p:commandButton actionListener="#{ContatoControl.confirmar}"
+				value="Confirmar"></p:commandButton>
+
+		</p:panel>
+
+
+	</ui:define>
+</ui:composition>

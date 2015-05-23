@@ -33,13 +33,14 @@ public class Pessoa {
 	private String descricao;
 	private String profissao;
 	private String indicacao;
+	private String certidaoNascimento;
 	
 	private EnumSexo sexo;
 	private EnumEscolaridade escolaridade;
 	private EnumTipoPessoa tipoPessoa;
 	private EnumEstadoCivil estadoCivil;
 	private EnumTipoCasa tipoMoradia;
-	private EnumNecessidadeEspeciais necessidadesEspeciais;
+	private String necessidadesEspeciais;
 	private EnumFiliacao filiacao;
 	private EnumSexo enumSexo;
 	private EnumEscolaridade enumEscolaridade;
@@ -50,6 +51,10 @@ public class Pessoa {
 	@Temporal(TemporalType.DATE)
 	private Date dataNascimento;
 	
+	//data de vencimento criada devido o documento de cadastro de candidato ter validade de 6 meses
+	@Temporal(TemporalType.DATE)
+	private Date dataVencimento;
+	
 	private double renda;
 	private double valorAluguel;
 	private int numeroDePessoasMoradia;
@@ -58,15 +63,16 @@ public class Pessoa {
 	private boolean requisitouOutraVaga;
 	
 	@OneToMany
-	private List<Endereco> endereco = new ArrayList();
+	private List<Endereco> listaEndereco = new ArrayList<Endereco>();
 	@OneToMany
 	private List<Pessoa> listaPessoaRelacionada;
 	@OneToMany
-	private List<Telefone> telefone;
+	private List<Telefone> listaTelefone = new ArrayList<Telefone>();
 	
 	//construtor da classe
 	public Pessoa(){
-		endereco = new ArrayList<Endereco>();
+		listaEndereco = new ArrayList<Endereco>();
+		listaTelefone = new ArrayList<Telefone>();
 	}
 
 
@@ -204,15 +210,6 @@ public class Pessoa {
 		this.tipoMoradia = tipoMoradia;
 	}
 
-	public EnumNecessidadeEspeciais getNecessidadesEspeciais() {
-		return necessidadesEspeciais;
-	}
-
-	public void setNecessidadesEspeciais(
-	      EnumNecessidadeEspeciais necessidadesEspeciais) {
-		this.necessidadesEspeciais = necessidadesEspeciais;
-	}
-
 	public EnumFiliacao getFiliacao() {
 		return filiacao;
 	}
@@ -302,27 +299,62 @@ public class Pessoa {
 		this.listaPessoaRelacionada = listaPessoaRelacionada;
 	}
 
-
-	public List<Telefone> getTelefone() {
-		return telefone;
+	public String getCertidaoNascimento() {
+		return certidaoNascimento;
 	}
 
 
-	public void setTelefone(List<Telefone> telefone) {
-		this.telefone = telefone;
+	public void setCertidaoNascimento(String certidaoNascimento) {
+		this.certidaoNascimento = certidaoNascimento;
 	}
 
 
-	public List<Endereco> getEndereco() {
-		return endereco;
+	public EnumTipoTelefone getEnumTipoPessoa() {
+		return enumTipoPessoa;
 	}
 
 
-	public void setEndereco(List<Endereco> endereco) {
-		this.endereco = endereco;
+	public void setEnumTipoPessoa(EnumTipoTelefone enumTipoPessoa) {
+		this.enumTipoPessoa = enumTipoPessoa;
 	}
 
 
+	public Date getDataVencimento() {
+		return dataVencimento;
+	}
 
 
+	public void setDataVencimento(Date dataVencimento) {
+		this.dataVencimento = dataVencimento;
+	}
+
+
+	public List<Endereco> getListaEndereco() {
+		return listaEndereco;
+	}
+
+
+	public void setListaEndereco(List<Endereco> listaEndereco) {
+		this.listaEndereco = listaEndereco;
+	}
+
+
+	public List<Telefone> getListaTelefone() {
+		return listaTelefone;
+	}
+
+
+	public void setListaTelefone(List<Telefone> listaTelefone) {
+		this.listaTelefone = listaTelefone;
+	}
+
+
+	public void setNecessidadesEspeciais(String necessidadesEspeciais) {
+		this.necessidadesEspeciais = necessidadesEspeciais;
+	}
+
+
+	public String getNecessidadesEspeciais() {
+		return necessidadesEspeciais;
+	}
 }

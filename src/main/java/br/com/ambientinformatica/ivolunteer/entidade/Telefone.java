@@ -21,7 +21,7 @@ public class Telefone {
 	
 	private EnumTipoTelefone tipoTelefone;
 	private String numeroTelefone;
-	
+	private String nomePessoaRecado;
 	
 	public Integer getId() {
 		return id;
@@ -45,5 +45,13 @@ public class Telefone {
 	
 	public void setNumeroTelefone(String numeroTelefone) {
 		this.numeroTelefone = numeroTelefone;
+	}
+
+	public String getNomePessoaRecado() {
+		return nomePessoaRecado;
+	}
+
+	public void setNomePessoaRecado(String nomePessoaRecado) {
+		this.nomePessoaRecado = nomePessoaRecado;
 	}
 }

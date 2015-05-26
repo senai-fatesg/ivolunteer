@@ -42,10 +42,18 @@ public class AvaliacaoControl {
 		}
 	}
 
-	public void adicionarAlternativaQuestao(ActionEvent ev) {
+	public void addAlternativaQuestao(ActionEvent ev) {
 		try {
 			this.objetiva.addAlternativa(alternativa);
 			this.alternativa = new Alternativa();
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
+	
+	public void removerAlterntaivaQuetao(Alternativa alternativa){
+		try {
+			this.objetiva.removerAlternativa(alternativa);
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}

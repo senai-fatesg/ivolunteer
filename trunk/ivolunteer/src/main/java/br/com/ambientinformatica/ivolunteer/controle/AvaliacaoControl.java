@@ -3,10 +3,8 @@ package br.com.ambientinformatica.ivolunteer.controle;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.event.ActionEvent;
 
-import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -21,36 +19,18 @@ import br.com.ambientinformatica.ivolunteer.entidade.Questao;
 import br.com.ambientinformatica.ivolunteer.persistencia.AvaliacaoDao;
 
 @Controller("AvaliacaoControl")
-// @ManagedBean
 @Scope("conversation")
 public class AvaliacaoControl {
 
 	private Avaliacao avaliacao = new Avaliacao();
 	private Questao questao = new Questao();
 	private Discursiva discursiva = new Discursiva();
+	private List<Alternativa> alternativas = new ArrayList<Alternativa>();
 	private Objetiva objetiva = new Objetiva();
-	private Alternativa alternativa = new Alternativa();
-	private Boolean mostraObjetiva, mostraDiscursiva = new Boolean(true);
-	private EnumQuestao tipoQuestaoSelecionada;
+	private Alternativa alternativa = new Alternativa();	
 
 	@Autowired
-	private AvaliacaoDao avaliacaoDao;
-
-	public Boolean getMostraObjetiva() {
-		return mostraObjetiva;
-	}
-
-	public void setMostraObjetiva(Boolean mostraObjetiva) {
-		this.mostraObjetiva = mostraObjetiva;
-	}
-
-	public Boolean getMostraDiscursiva() {
-		return mostraDiscursiva;
-	}
-
-	public void setMostraDiscursiva(Boolean mostraDiscursiva) {
-		this.mostraDiscursiva = mostraDiscursiva;
-	}
+	private AvaliacaoDao avaliacaoDao;	
 
 	public void adicionarQuestaoDiscursiva(ActionEvent evt) {
 		try {
@@ -61,15 +41,16 @@ public class AvaliacaoControl {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
-	
-	public void adicionarAlternativaQuestao(ActionEvent evt){
+
+	public void adicionarAlternativaQuestao(ActionEvent ev) {
 		try {
-			this.objetiva.addAlternativa(this.alternativa);
+			this.objetiva.addAlternativa(alternativa);
 			this.alternativa = new Alternativa();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
-		}		
+		}
 	}
+
 	public Objetiva getObjetiva() {
 		return objetiva;
 	}
@@ -93,44 +74,14 @@ public class AvaliacaoControl {
 	public void setAvaliacao(Avaliacao avaliacao) {
 		this.avaliacao = avaliacao;
 
-	}
-
-	public void confirmar(ActionEvent evt) {
-		try {
-			if (tipoQuestaoSelecionada == null) {
-				throw new Exception("Parametro Invalido");
-			}
-			avaliacaoDao.alterar(avaliacao);
-			avaliacao = new Avaliacao();
-		} catch (Exception e) {
-			UtilFaces.addMensagemFaces(e);
-		}
-	}
-
-	public List<String> completeEnumTipoQuestao(String query) {
-		List<String> retorno = new ArrayList<String>();
-		EnumQuestao[] enunsQuestao = EnumQuestao.values();
-		for (int i = 0; i < enunsQuestao.length; i++) {
-			retorno.add(enunsQuestao[i].getDescricao());
-		}
-		return retorno;
-	}
-
-	public EnumQuestao getTipoQuestaoSelecionada() {
-		return tipoQuestaoSelecionada;
-	}
-
+	}	
 	public Questao getQuestao() {
 		return questao;
 	}
 
 	public void setQuestao(Questao questao) {
 		this.questao = questao;
-	}
-
-	public void setTipoQuestaoSelecionada(EnumQuestao tipoQuestaoSelecionada) {
-		this.tipoQuestaoSelecionada = tipoQuestaoSelecionada;
-	}
+	}	
 
 	public Discursiva getDiscursiva() {
 		return discursiva;
@@ -140,5 +91,4 @@ public class AvaliacaoControl {
 		this.discursiva = discursiva;
 
 	}
-
 }

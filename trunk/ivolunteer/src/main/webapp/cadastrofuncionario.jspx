@@ -7,223 +7,312 @@
 	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
+		<h:form>
+			<p:panel header="Cadastro de Funcionário" id="panelFuncionario">
+				<p:tabView id="tabCadastro">
+					<p:tab title="Dados Pessoais" id="dadosPessoais">
+						<p:panel id="painelDadosPessoais">
 
-		<p:panel header="Cadastro de Funcionário" id="panel">
-			<p:tabView dynamic="true" cache="true">
-				<p:tab title="Dados Pessoais">
-					<p:panel rendered="true">
+							<a:field label="Nome" width="300px">
+								<p:inputText
+									value="#{FuncionarioControl.funcionario.nomePessoa}"
+									style="width:300px" />
+							</a:field>
 
-						<a:field label="Nome" width="300px">
-							<p:inputText value="#{FuncionarioControl.funcionario.nomePessoa}"
-								style="width:300px" />
-						</a:field>
-
-						<a:field label="RG" width="150px" spaceLeft="15px">
-							<p:inputText value="#{FuncionarioControl.funcionario.rg}"
-								style="width:150px" />
-						</a:field>
-
-
-						<a:field label="Data Expedição" width="100px" spaceLeft="15px">
-							<p:calendar
-								value="#{FuncionarioControl.funcionario.dataExpedicao}"
-								locale="de" navigator="true" pattern="yyyy-MMM-dd" />
-						</a:field>
-
-						<a:field label="CPF" width="200px" spaceLeft="125px">
-							<p:inputText
-								value="#{FuncionarioControl.funcionario.naturalidade}"
-								style="width:200px" />
-						</a:field>
-						
-						<a:newLine />
-
-						<a:field label="Naturalidade" width="150px">
-							<p:inputText
-								value="#{FuncionarioControl.funcionario.naturalidade}"
-								style="width:150px" />
-						</a:field>
-
-						<a:field label="Estado Civil" width="200px;" spaceLeft="15px">
-							<p:inputText
-								value="#{FuncionarioControl.funcionario.estadoCivil}"
-								style="width:200px" />
-						</a:field>
-
-						<a:field label="Data Nascimento" width="150px" spaceLeft="15px">
-							<p:calendar
-								value="#{FuncionarioControl.funcionario.dataNascimento}"
-								locale="de" navigator="true" pattern="yyyy-MMM-dd"
-								style="width:150px" />
-						</a:field>
-
-						<a:field label="Sexo" width="50px" spaceLeft="75px">
-							<p:inputText value="#{FuncionarioControl.funcionario.sexo}"
-								style="width:50px" />
-						</a:field>
-
-						<a:field label="Profissão" width="235px" spaceLeft="15px">
-							<p:inputText value="#{FuncionarioControl.funcionario.profissao}"
-								style="width:235px" />
-						</a:field>
-
-						<a:newLine />
-
-						<a:field label="Titulo Eleitoral" width="150px">
-							<p:inputText value="#{FuncionarioControl.funcionario.titulo}"
-								style="width:150px" />
-						</a:field>
-
-						<a:field label="Zona" width="50px" spaceLeft="15px">
-							<p:inputText value="#{FuncionarioControl.funcionario.zona}"
-								style="width:50px" />
-						</a:field>
-
-						<a:field label="Seção" width="50px" spaceLeft="15px">
-							<p:inputText value="#{FuncionarioControl.funcionario.secao}"
-								style="width:50px" />
-						</a:field>
-
-						<a:field label="Nº Reservista" width="150px" spaceLeft="30px">
-							<p:inputText value="#{FuncionarioControl.funcionario.reservista}"
-								style="width:150px" />
-						</a:field>
-
-						<a:field label="Data Emissão" width="150px" spaceLeft="15px">
-							<p:calendar
-								value="#{FuncionarioControl.funcionario.emissaoReservista}"
-								locale="de" navigator="true" pattern="yyyy-MMM-dd"
-								style="width:150px" />
-						</a:field>
-
-						<a:newLine />
-
-						<a:field label="Exame Admissional">
-							
-							<p:selectOneRadio id="console" value="#{radioView.console}">
-								<f:selectItem itemLabel="Sim" itemValue="Sim" />
-								<f:selectItem itemLabel="Nao" itemValue="Nao" />
-								
-							</p:selectOneRadio>
-						</a:field>
-						
-						<a:field label="Data do Exame" width="150px" spaceLeft="15px">
-							<p:calendar
-								value="#{FuncionarioControl.funcionario.dataExameAdmissional}"
-								locale="de" navigator="true" pattern="yyyy-MMM-dd"
-								style="width:150px" />
-						</a:field>
-						
-						<a:field label="Pis" width="200px" spaceLeft="85px">
-							<p:inputText value="#{FuncionarioControl.funcionario.pis}"
-								style="width:200px" />
-						</a:field>
-
-						<a:field label="CTPS" width="200px" spaceLeft="30px">
-							<p:inputText value="#{FuncionarioControl.funcionario.carteiraDeTrabalho}"
-								style="width:200px" />
-						</a:field>
-
-						<a:field label="Série" width="50px" spaceLeft="15px">
-							<p:inputText value="#{FuncionarioControl.funcionario.serieCarteiraDeTrabalho}"
-								style="width:50px" />
-						</a:field>
-
-						<a:newLine />
-						
-						<a:field label="CNH" width="150px">
-							<p:inputText
-								value="#{FuncionarioControl.funcionario.cNH}"
-								style="width:150px" />
-						</a:field>
-
-						<a:field label="Data de Emissão" width="150px" spaceLeft="15px">
-							<p:calendar
-								value="#{FuncionarioControl.funcionario.emissaoCNH}"
-								locale="de" navigator="true" pattern="yyyy-MMM-dd"
-								style="width:150px" />
-						</a:field>
-
-						<a:field label="Validade CNH" width="150px" spaceLeft="75px">
-							<p:calendar
-								value="#{FuncionarioControl.funcionario.emissaoCNH}"
-								locale="de" navigator="true" pattern="yyyy-MMM-dd"
-								style="width:150px" />
-						</a:field>
-						
-						<a:field label="Nome do Pai" width="250px" spaceLeft="75px">
-							<p:inputText value="#{FuncionarioControl.funcionario.nomePai}"
-								style="width:250px" />
-						</a:field>
-
-						<a:field label="Nome da Mãe" width="250px" spaceLeft="15px">
-							<p:inputText value="#{FuncionarioControl.funcionario.nomeMae}"
-								style="width:250px" />
-						</a:field>
-						
-						<a:newLine />
-						
-						<a:field label="Inicio da Experiencia" width="150px">
-							<p:calendar
-								value="#{FuncionarioControl.funcionario.inicioExperiencia}"
-								locale="de" navigator="true" pattern="yyyy-MMM-dd"
-								style="width:150px" />
-						</a:field>
-
-						<a:field label="Final da Experiencia" width="150px" spaceLeft="75px">
-							<p:calendar
-								value="#{FuncionarioControl.funcionario.terminoExperiencia}"
-								locale="de" navigator="true" pattern="yyyy-MMM-dd"
-								style="width:150px" />
-						</a:field>
-						
-						<a:field label="Data Admissão" width="150px" spaceLeft="75px">
-							<p:calendar
-								value="#{FuncionarioControl.funcionario.dataAdmissao}"
-								locale="de" navigator="true" pattern="yyyy-MMM-dd"
-								style="width:150px" />
-						</a:field>
-
-						<a:field label="Data Demissão" width="150px" spaceLeft="75px">
-							<p:calendar
-								value="#{FuncionarioControl.funcionario.dataDemissao}"
-								locale="de" navigator="true" pattern="yyyy-MMM-dd"
-								style="width:150px" />
-						</a:field>
-
-						
-						<a:newLine />
+							<a:field label="RG" width="150px" spaceLeft="15px">
+								<p:inputText value="#{FuncionarioControl.funcionario.rg}"
+									style="width:150px" />
+							</a:field>
 
 
+							<a:field label="Data Expedição" width="100px" spaceLeft="15px">
+								<p:calendar
+									value="#{FuncionarioControl.funcionario.dataExpedicao}"
+									locale="de" navigator="true" pattern="yyyy-MMM-dd" />
+							</a:field>
 
-					</p:panel>
+							<a:field label="CPF" width="200px" spaceLeft="125px">
+								<p:inputText
+									value="#{FuncionarioControl.funcionario.naturalidade}"
+									style="width:200px" />
+							</a:field>
+
+							<a:newLine />
+
+							<a:field label="Naturalidade" width="200px">
+								<p:inputText
+									value="#{FuncionarioControl.funcionario.naturalidade}"
+									style="width:200px" />
+							</a:field>
+
+							<a:field label="Estado Civil" width="200px;" spaceLeft="15px">
+								<p:inputText
+									value="#{FuncionarioControl.funcionario.estadoCivil}"
+									style="width:200px" />
+							</a:field>
+
+							<a:field label="Data Nascimento" width="150px" spaceLeft="15px">
+								<p:calendar
+									value="#{FuncionarioControl.funcionario.dataNascimento}"
+									locale="de" navigator="true" pattern="yyyy-MMM-dd"
+									style="width:150px" />
+							</a:field>
+
+							<a:field label="Sexo" spaceLeft="75px">
+								<p:autoComplete id="sexo" dropdown="true"
+									value="#{FuncionarioControl.funcionario.sexo}"
+									completeMethod="#{FuncionarioControl.completeEnumSexo}"
+									style="height:15px" />
+							</a:field>
+
+							<a:newLine />
+
+							<a:field label="Titulo Eleitoral" width="150px">
+								<p:inputText value="#{FuncionarioControl.funcionario.titulo}"
+									style="width:150px" />
+							</a:field>
+
+							<a:field label="Zona" width="50px" spaceLeft="15px">
+								<p:inputText value="#{FuncionarioControl.funcionario.zona}"
+									style="width:50px" />
+							</a:field>
+
+							<a:field label="Seção" width="50px" spaceLeft="15px">
+								<p:inputText value="#{FuncionarioControl.funcionario.secao}"
+									style="width:50px" />
+							</a:field>
+
+							<a:field label="Nº Reservista" width="150px" spaceLeft="30px">
+								<p:inputText
+									value="#{FuncionarioControl.funcionario.reservista}"
+									style="width:150px" />
+							</a:field>
+
+							<a:field label="Data Emissão" width="150px" spaceLeft="15px">
+								<p:calendar
+									value="#{FuncionarioControl.funcionario.emissaoReservista}"
+									locale="de" navigator="true" pattern="yyyy-MMM-dd"
+									style="width:150px" />
+							</a:field>
 
 
+							<a:field label="Profissão" width="200px" spaceLeft="75px">
+								<p:inputText value="#{FuncionarioControl.funcionario.profissao}"
+									style="width:200px" />
+							</a:field>
 
+							<a:newLine />
+
+							<a:field label="Exame Admissional">
+
+								<p:selectOneRadio id="console" value="#{radioView.console}">
+									<f:selectItem itemLabel="Sim" itemValue="Sim" />
+									<f:selectItem itemLabel="Nao" itemValue="Nao" />
+
+								</p:selectOneRadio>
+							</a:field>
+
+							<a:field label="Data do Exame" width="150px" spaceLeft="15px">
+								<p:calendar
+									value="#{FuncionarioControl.funcionario.dataExameAdmissional}"
+									locale="de" navigator="true" pattern="yyyy-MMM-dd"
+									style="width:150px" />
+							</a:field>
+
+							<a:field label="Pis" width="200px" spaceLeft="85px">
+								<p:inputText value="#{FuncionarioControl.funcionario.pis}"
+									style="width:200px" />
+							</a:field>
+
+							<a:field label="CTPS" width="200px" spaceLeft="30px">
+								<p:inputText
+									value="#{FuncionarioControl.funcionario.carteiraDeTrabalho}"
+									style="width:200px" />
+							</a:field>
+
+							<a:field label="Série" width="50px" spaceLeft="15px">
+								<p:inputText
+									value="#{FuncionarioControl.funcionario.serieCarteiraDeTrabalho}"
+									style="width:50px" />
+							</a:field>
+
+							<a:newLine />
+
+							<a:field label="CNH" width="150px">
+								<p:inputText value="#{FuncionarioControl.funcionario.cNH}"
+									style="width:150px" />
+							</a:field>
+
+							<a:field label="Data de Emissão" width="150px" spaceLeft="15px">
+								<p:calendar value="#{FuncionarioControl.funcionario.emissaoCNH}"
+									locale="de" navigator="true" pattern="yyyy-MMM-dd"
+									style="width:150px" />
+							</a:field>
+
+							<a:field label="Validade CNH" width="150px" spaceLeft="75px">
+								<p:calendar value="#{FuncionarioControl.funcionario.emissaoCNH}"
+									locale="de" navigator="true" pattern="yyyy-MMM-dd"
+									style="width:150px" />
+							</a:field>
+
+							<a:field label="Nome do Pai" width="250px" spaceLeft="75px">
+								<p:inputText value="#{FuncionarioControl.funcionario.nomePai}"
+									style="width:250px" />
+							</a:field>
+
+							<a:field label="Nome da Mãe" width="250px" spaceLeft="15px">
+								<p:inputText value="#{FuncionarioControl.funcionario.nomeMae}"
+									style="width:250px" />
+							</a:field>
+
+							<a:newLine />
+
+							<a:field label="Inicio da Experiencia" width="150px">
+								<p:calendar
+									value="#{FuncionarioControl.funcionario.inicioExperiencia}"
+									locale="de" navigator="true" pattern="yyyy-MMM-dd"
+									style="width:150px" />
+							</a:field>
+
+							<a:field label="Final da Experiencia" width="150px"
+								spaceLeft="75px">
+								<p:calendar
+									value="#{FuncionarioControl.funcionario.terminoExperiencia}"
+									locale="de" navigator="true" pattern="yyyy-MMM-dd"
+									style="width:150px" />
+							</a:field>
+
+							<a:field label="Data Admissão" width="150px" spaceLeft="75px">
+								<p:calendar
+									value="#{FuncionarioControl.funcionario.dataAdmissao}"
+									locale="de" navigator="true" pattern="yyyy-MMM-dd"
+									style="width:150px" />
+							</a:field>
+
+							<a:field label="Data Demissão" width="150px" spaceLeft="75px">
+								<p:calendar
+									value="#{FuncionarioControl.funcionario.dataDemissao}"
+									locale="de" navigator="true" pattern="yyyy-MMM-dd"
+									style="width:150px" />
+							</a:field>
+
+
+							<a:newLine />
 
 
 
+						</p:panel>
+					</p:tab>
+
+
+					<p:tab title="Endereco" id="tabEndereco">
+						<p:panel id="painelEndereco">
+
+							<a:field label="Bairro" width="300px">
+								<p:inputText value="#{FuncionarioControl.endereco.bairro}"
+									style="width:300px" />
+							</a:field>
+
+
+							<a:field label="Rua" width="200px" spaceLeft="15px">
+								<p:inputText value="#{FuncionarioControl.endereco.ruaOuAvenida}"
+									style="width:200px" />
+							</a:field>
+
+							<a:field label="Numero" width="100px" spaceLeft="15px">
+								<p:inputText value="#{FuncionarioControl.endereco.numero}"
+									style="width:100px" />
+							</a:field>
+
+							<a:field label="Quadra" width="200px" spaceLeft="15px">
+								<p:inputText value="#{FuncionarioControl.endereco.quadra}"
+									style="width:200px" />
+							</a:field>
+
+							<a:newLine />
+
+							<a:field label="Lote" width="60px">
+								<p:inputText value="#{FuncionarioControl.endereco.lote}"
+									style="width:60px" />
+							</a:field>
+
+							<a:field label="Complemento" width="300px" spaceLeft="15px">
+								<p:inputText value="#{FuncionarioControl.endereco.complemento}"
+									style="width:300px" />
+							</a:field>
+							<a:field label="Cidade" width="200px" spaceLeft="15px">
+								<p:inputText value="#{FuncionarioControl.endereco.cidade}"
+									style="width:200px" />
+							</a:field>
+
+							<a:field label="UF" spaceLeft="15px">
+								<p:autoComplete id="uf" dropdown="true"
+									value="#{FuncionarioControl.cidade.enumEstado}"
+									completeMethod="#{FuncionarioControl.completeEnumUf}"
+									style="margin-top: -10px" />
+							</a:field>
+
+
+							<a:newLine />
+
+							<p:commandButton
+								actionListener="#{FuncionarioControl.adicionarListaEndereco}"
+								value="Confirmar"></p:commandButton>
+
+
+							<a:newLine />
+						</p:panel>
+
+					</p:tab>
+
+
+					<p:tab title="Telefone" id="tabTelefone">
+						<p:panel id="painelTelefone">
+
+							<a:field label="Numero Telefone" width="300px">
+								<p:inputText
+									value="#{FuncionarioControl.telefone.numeroTelefone}"
+									style="width:300px" />
+							</a:field>
+
+
+							<a:field label="Pessoa Para Recado" width="200px"
+								spaceLeft="15px">
+								<p:inputText
+									value="#{FuncionarioControl.telefone.nomePessoaRecado}"
+									style="width:200px" />
+							</a:field>
+
+
+							<a:field label="Tipo" spaceLeft="15px">
+								<p:autoComplete id="fone" dropdown="true"
+									value="#{FuncionarioControl.telefone.tipoTelefone}"
+									completeMethod="#{FuncionarioControl.completeEnumTipoTelefone}"
+									style="margin-top: -10px" />
+							</a:field>
+
+
+							<a:newLine />
+
+							<p:commandButton
+								actionListener="#{FuncionarioControl.adicionarListaTelefone}"
+								value="Confirmar"></p:commandButton>
+
+
+							<a:newLine />
+						</p:panel>
+
+
+					</p:tab>
 
 
 
+				</p:tabView>
+				<p:commandButton actionListener="#{ContatoControl.confirmar}"
+					value="Confirmar"></p:commandButton>
 
+			</p:panel>
 
-				</p:tab>
-
-				<p:tab title="Dados Bancarios">
-					<h:panelGrid columns="6">
-						<h:outputText value="Nome"></h:outputText>
-						<p:inputText value="#{ContatoControl.contato.nome}"></p:inputText>
-
-					</h:panelGrid>
-				</p:tab>
-
-			</p:tabView>
-			<p:commandButton actionListener="#{ContatoControl.confirmar}"
-				value="Confirmar" ></p:commandButton>
-
-		</p:panel>
-
-
+		</h:form>
 	</ui:define>
 </ui:composition>

@@ -17,9 +17,11 @@ import org.springframework.security.GrantedAuthorityImpl;
 import org.springframework.security.userdetails.UserDetails;
 import org.springframework.security.userdetails.UserDetailsService;
 import org.springframework.security.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import br.com.ambientinformatica.util.UtilLog;
 
+@Service("usuarioService")
 public class UsuarioService implements UserDetailsService{
 
 	private DataSource dataSource;

@@ -63,7 +63,7 @@ public class Alternativa {
 		if (descricao == null) {
 			if (other.descricao != null)
 				return false;
-		} else if (!descricao.equalsIgnoreCase(other.descricao))
+		} else if (!descricao.toLowerCase().replace(" ", "").equals(other.descricao.toLowerCase().replace(" ", "")))
 			return false;
 		return true;
 	}

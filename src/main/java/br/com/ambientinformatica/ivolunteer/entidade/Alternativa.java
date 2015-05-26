@@ -14,7 +14,7 @@ public class Alternativa {
 	@SequenceGenerator(name = "alternativa_seq", sequenceName = "alternativa_seq", allocationSize = 1, initialValue = 1)
 	private Integer id;
 	
-	private String alternativa;
+	private String descricao;
 
 	private boolean status;
 
@@ -26,12 +26,12 @@ public class Alternativa {
 		this.id = id;
 	}
 
-	public String getAlternativa() {
-		return alternativa;
+	public String getDescricao() {
+		return descricao;
 	}
 
-	public void setAlternativa(String alternativa) {
-		this.alternativa = alternativa;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	public boolean isStatus() {
@@ -43,30 +43,32 @@ public class Alternativa {
 	}
 
 	@Override
-   public int hashCode() {
-	   final int prime = 31;
-	   int result = 1;
-	   result = prime * result
-	         + ((alternativa == null) ? 0 : alternativa.hashCode());
-	   return result;
-   }
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((descricao == null) ? 0 : descricao.hashCode());
+		return result;
+	}
 
 	@Override
-   public boolean equals(Object obj) {
-	   if (this == obj)
-		   return true;
-	   if (obj == null)
-		   return false;
-	   if (getClass() != obj.getClass())
-		   return false;
-	   Alternativa other = (Alternativa) obj;
-	   if (alternativa == null) {
-		   if (other.alternativa != null)
-			   return false;
-	   } else if (!alternativa.equals(other.alternativa))
-		   return false;
-	   return true;
-   }
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Alternativa other = (Alternativa) obj;
+		if (descricao == null) {
+			if (other.descricao != null)
+				return false;
+		} else if (!descricao.equalsIgnoreCase(other.descricao))
+			return false;
+		return true;
+	}
+
+	
 
 	
 }

@@ -43,7 +43,7 @@ public class Objetiva {
 		return alternativas;
 	}
 
-	public void setAlternativa(List<Alternativa> alternativas) {
+	public void setAlternativas(List<Alternativa> alternativas) {
 		this.alternativas = alternativas;
 	}
 

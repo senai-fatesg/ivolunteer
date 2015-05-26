@@ -53,5 +53,8 @@ public class Objetiva {
 			this.alternativas.add(alternativa);
 		}
 	}
-
+	//Método que ira remover as alternativas
+	public void removerAlternativa(Alternativa alternativa){
+		this.alternativas.remove(alternativa);
+	}
 }

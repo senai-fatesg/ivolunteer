@@ -13,19 +13,18 @@
 					<p:inputText value="#{AvaliacaoControl.avaliacao.titulo}"
 						style="width:100%;" />
 				</a:field>
-				<a:newLine></a:newLine>
+				<a:newLine />
 				<a:field label="Descricao" width="100%">
 					<p:inputTextarea value="#{AvaliacaoControl.avaliacao.descricao}"
-						style="width:100%;"></p:inputTextarea>
+						style="width:100%;" />
 				</a:field>
-				<a:newLine></a:newLine>
-				<a:newLine></a:newLine>
+				<a:newLine />
+				<a:newLine />
 				<p:tabView id="tabQuestoes">
 					<p:tab title="Discursiva">
 						<a:field label="Ordem" width="100%">
 							<p:spinner max="999" min="0" id="ordemDiscursiva"
-								value="#{AvaliacaoControl.questao.ordem}">
-							</p:spinner>
+								value="#{AvaliacaoControl.questao.ordem}" />
 						</a:field>
 						<a:newLine></a:newLine>
 						<a:field label="Pergunta" width="100%">
@@ -35,50 +34,53 @@
 						<a:newLine></a:newLine>
 						<a:newLine></a:newLine>
 						<a:field label="Número de Linhas">
-							<p:spinner max="99" min="1" id="numeroLinhas"
+							<p:spinner max="99" min="1" id="numeroLinhas" 
+							
 								value="#{AvaliacaoControl.discursiva.numeroLinhas}"></p:spinner>
 						</a:field>
 						<a:field spaceLeft="15px">
 							<p:commandButton
-								actionListener="#{AvaliacaoControl.adicionarQuestaoDiscursiva}"
-								value="Adicionar Pergunta" icon="ui-icon-plusthick"></p:commandButton>
+								action="#{AvaliacaoControl.adicionarQuestaoDiscursiva}"
+								value="Adicionar Pergunta" icon="ui-icon-plusthick" />
 						</a:field>
-						<a:newLine></a:newLine>
+						<a:newLine />
 					</p:tab>
-					<p:tab title="Objetiva">
+					<p:tab title="Objetiva" id="tabOjbetiva">
 						<a:field label="Ordem" width="100%">
 							<p:spinner max="999" min="0" id="ordemObjetiva"
 								value="#{AvaliacaoControl.questao.ordem}" />
 						</a:field>
-						<a:newLine></a:newLine>
-						<a:field label="Pergunta" width="100%">
+						<a:newLine />
+						<a:field label="Pergunta">
 							<p:editor id="perguntaObjetiva"
-								value="#{AvaliacaoControl.questao.pergunta}"></p:editor>
+								value="#{AvaliacaoControl.questao.pergunta}" />
 						</a:field>
-						<a:newLine></a:newLine>
-						<a:newLine></a:newLine>
-						<a:field label="Alternativa">
-							<p:inputText id="alternativa"
-								value="#{AvaliacaoControl.alternativa.alternativa}"></p:inputText>
-						</a:field>
-						<a:field spaceLeft="15px">
-								<p:commandButton
-									actionListener="#{AvaliacaoControl.adicionarAlternativaQuestao}"
-									value="Adicionar Alternativa" icon="ui-icon-plusthick"
-									update="tab2"></p:commandButton>
+						<a:newLine />
+						<a:newLine />
+						<a:field label="Alterntiva" width="100px">
+							<p:inputText id="alternativa" style="width:100px"
+								value="#{AvaliacaoControl.alternativa.descricao}" />
+						</a:field>	
+						<a:field spaceLeft="20px">					
+						<p:commandButton
+							actionListener="#{AvaliacaoControl.adicionarAlternativaQuestao}"
+							value="Adicionar Alternativa" icon="ui-icon-plusthick"
+							update="alternativa, alternativas" />
+							</a:field>
+						<a:newLine />
 						
-						</a:field>
-						<a:newLine></a:newLine>
-						<p:panel id="tab2">
-							<p:dataTable id="alternativaTab" var="alter"
-								value="#{AvalizacaoControl.objetiva.alternativa}">
-								<p:column headerText="Alternativa">
-								#{alter.alternativa}
+						<p:dataTable id="alternativas"
+							value="#{AvaliacaoControl.objetiva.alternativas}" var="item">
+							<p:column headerText="Avaliacao" >
+							<h:outputText value="#{item.descricao}"></h:outputText>
 							</p:column>
-							</p:dataTable>
-						</p:panel>
-						<a:newLine></a:newLine>
+							<p:column headerText="Remover" />
+						</p:dataTable>
+						
+						<a:newLine />
+
 					</p:tab>
+
 				</p:tabView>
 				<a:newLine></a:newLine>
 				<p:dataTable id="questoesTable">

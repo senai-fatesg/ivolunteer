@@ -110,6 +110,10 @@ public class Pessoa {
 		this.listaEndereco.remove(endereco);
 	}
 	
+	public void removerTelefone(Telefone telefone){
+		this.listaTelefone.remove(telefone);
+	}
+	
 	//metodos gets e set
 	public Integer getId() {
 		return id;

@@ -20,8 +20,9 @@
 				</a:field>
 				<a:newLine />
 				<a:newLine />
-				<p:tabView id="tabQuestoes">
-					<p:tab title="Discursiva">
+				<p:tabView id="tabQuestoes" >
+					<p:ajax event="tabChange" listener="#{AvaliacaoControl.alteraTab}"/>
+					<p:tab title="Discursiva" >
 						<a:field label="Ordem" width="100%">
 							<p:spinner max="999" min="0" id="ordemDiscursiva"
 								value="#{AvaliacaoControl.questao.ordem}" style="width:238px" />
@@ -37,11 +38,6 @@
 							<p:spinner id="numeroLinhas" min="1" max="99" size="30"
 								value="#{AvaliacaoControl.discursiva.numeroLinhas}"
 								style="width:238px" />
-						</a:field>
-						<a:field spaceLeft="15px">
-							<p:commandButton
-								action="#{AvaliacaoControl.adicionarQuestaoDiscursiva}"
-								value="Adicionar Pergunta" icon="ui-icon-plusthick" />
 						</a:field>
 						<a:newLine />
 					</p:tab>
@@ -63,12 +59,11 @@
 						</a:field>
 						<a:field spaceLeft="20px">
 							<p:commandButton
-								actionListener="#{AvaliacaoControl.addAlternativaQuestao}"
+								actionListener="#{AvaliacaoControl.addAlternativa}"
 								value="Adicionar Alternativa" icon="ui-icon-plusthick"
 								update="alternativa, alternativas" />
 						</a:field>
 						<a:newLine />
-
 						<p:dataTable id="alternativas" style="width:30%"
 							emptyMessage="Sem Registros"
 							value="#{AvaliacaoControl.objetiva.alternativas}" var="item">
@@ -81,20 +76,24 @@
 									update="alternativas" />
 							</p:column>
 						</p:dataTable>
-
 						<a:newLine />
-
 					</p:tab>
-
 				</p:tabView>
 				<a:newLine />
-				<p:commandButton value="Adicionar Questão" icon="ui-icon-plusthick" />
+				<p:commandButton value="Adicionar Questão" icon="ui-icon-plusthick"
+					action="#{AvaliacaoControl.addQuestao}" update="questoesTable" />
 				<a:newLine />
 				<a:newLine />
-				<p:dataTable id="questoesTable" emptyMessage="Sem questões adicionadas">
-					<p:column headerText="Ordem" width="50"></p:column>
+				<p:dataTable id="questoesTable"
+					emptyMessage="Sem questões adicionadas" style="width:70%"
+					value="#{AvaliacaoControl.avaliacao.questoes}" var="questaoItem">
+					<p:column headerText="Ordem" width="50">
+						<h:outputLabel value="#{questaoItem.ordem}" />
+					</p:column>
 					<p:column headerText="Tipo"></p:column>
-					<p:column headerText="Descritivo"></p:column>
+					<p:column headerText="Pergunta">
+						<h:outputLabel value="#{questaoItem.pergunta}" />
+					</p:column>
 					<p:column headerText="Remover">
 						<p:commandButton icon="ui-icon-closethick"></p:commandButton>
 					</p:column>

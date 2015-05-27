@@ -14,6 +14,7 @@ import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.Cidade;
 import br.com.ambientinformatica.ivolunteer.entidade.Endereco;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumEstadoCivil;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumSexo;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoTelefone;
 import br.com.ambientinformatica.ivolunteer.entidade.Frequencia;
@@ -99,7 +100,7 @@ public class FuncionarioControl {
 		funcionario.setListaEndereco(retornoListaEndereco);
 
 	}
-	
+
 	public void adicionarListaTelefone(ActionEvent evt) {
 		List<Telefone> retornoListaTelefone = new ArrayList<Telefone>();
 		retornoListaTelefone.add(telefone);
@@ -124,7 +125,7 @@ public class FuncionarioControl {
 		}
 		return retornoUf;
 	}
-	
+
 	public List<String> completeEnumTipoTelefone(String query) {
 		List<String> retornoTipoTelefone = new ArrayList<String>();
 		EnumTipoTelefone[] enunTelefone = EnumTipoTelefone.values();
@@ -132,6 +133,15 @@ public class FuncionarioControl {
 			retornoTipoTelefone.add(enunTelefone[i].getDescricao());
 		}
 		return retornoTipoTelefone;
+	}
+
+	public List<String> completeEnumEstadoCivil(String query) {
+		List<String> retornoEstadoCivil = new ArrayList<String>();
+		EnumEstadoCivil[] enunEstadoCivil = EnumEstadoCivil.values();
+		for (int i = 0; i < enunEstadoCivil.length; i++) {
+			retornoEstadoCivil.add(enunEstadoCivil[i].getDescricao());
+		}
+		return retornoEstadoCivil;
 	}
 
 	public Funcionario getFuncionario() {
@@ -169,8 +179,6 @@ public class FuncionarioControl {
 	public void setTelefone(Telefone telefone) {
 		this.telefone = telefone;
 	}
-	
-	
 
 	public void setPresenca() {
 		Frequencia f = new Frequencia();

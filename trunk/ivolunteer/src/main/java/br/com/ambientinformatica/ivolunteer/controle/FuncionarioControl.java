@@ -161,6 +161,23 @@ public class FuncionarioControl {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
+	
+	public void addTelefone(ActionEvent ev) {
+		try {
+			this.funcionario.addTelefone(telefone);			
+			this.telefone = new Telefone();
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
+	
+	public void removerTelefone(Telefone telefone) {
+		try {
+			this.funcionario.removerTelefone(telefone);
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
 
 	public Funcionario getFuncionario() {
 		return funcionario;

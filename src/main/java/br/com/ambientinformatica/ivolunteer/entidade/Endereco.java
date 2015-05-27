@@ -11,27 +11,27 @@ import javax.persistence.SequenceGenerator;
 public class Endereco {
 
 	@Id
-   @GeneratedValue(generator="endereco_seq", strategy=GenerationType.SEQUENCE)
-   @SequenceGenerator(name="endereco_seq", sequenceName="endereco_seq", allocationSize=1, initialValue=1)
-   private Integer id;
-	
+	@GeneratedValue(generator = "endereco_seq", strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "endereco_seq", sequenceName = "endereco_seq", allocationSize = 1, initialValue = 1)
+	private Integer id;
+
 	private String bairro;
-	
+
 	private String ruaOuAvenida;
-	
+
 	private String Cep;
-	
+
 	private long numero;
-	
+
 	private String quadra;
-	
+
 	private String lote;
-	
+
 	private String complemento;
-	
+
 	@OneToOne
-	private Cidade cidade;
-	
+	private Cidade cidade = new Cidade();
+
 	public Integer getId() {
 		return id;
 	}
@@ -91,7 +91,6 @@ public class Endereco {
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
 	}
-
 
 	public Cidade getCidade() {
 		return cidade;

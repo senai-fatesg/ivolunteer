@@ -13,15 +13,15 @@
 					<p:tab title="Dados Pessoais" id="dadosPessoais">
 						<p:panel id="painelDadosPessoais">
 
-							<a:field label="Nome" width="300px">
+							<a:field label="Nome" width="200px">
 								<p:inputText
 									value="#{FuncionarioControl.funcionario.nomePessoa}"
-									style="width:300px" />
+									style="width:200px" />
 							</a:field>
 
-							<a:field label="RG" width="150px" spaceLeft="15px">
+							<a:field label="RG" width="200px" spaceLeft="15px">
 								<p:inputText value="#{FuncionarioControl.funcionario.rg}"
-									style="width:150px" />
+									style="width:200px" />
 							</a:field>
 
 
@@ -45,10 +45,11 @@
 									style="width:200px" />
 							</a:field>
 
-							<a:field label="Estado Civil" width="200px;" spaceLeft="15px">
-								<p:inputText
+							<a:field label="Estado Civil" spaceLeft="15px">
+								<p:autoComplete id="estadoCivil" dropdown="true"
 									value="#{FuncionarioControl.funcionario.estadoCivil}"
-									style="width:200px" />
+									completeMethod="#{FuncionarioControl.completeEnumEstadoCivil}"
+									style="height:15px; margin-top: -10px; width:150px" />
 							</a:field>
 
 							<a:field label="Data Nascimento" width="150px" spaceLeft="15px">
@@ -62,7 +63,7 @@
 								<p:autoComplete id="sexo" dropdown="true"
 									value="#{FuncionarioControl.funcionario.sexo}"
 									completeMethod="#{FuncionarioControl.completeEnumSexo}"
-									style="height:15px" />
+									style="height:15px; margin-top: -10px; width:150px" />
 							</a:field>
 
 							<a:newLine />
@@ -204,7 +205,8 @@
 						</p:panel>
 					</p:tab>
 
-
+                              <!--INICIO DO TAB DE CADASTRO DE ENDEREÇO -->
+                              
 					<p:tab title="Endereco" id="tabEndereco">
 						<p:panel id="painelEndereco">
 
@@ -262,6 +264,8 @@
 
 							<a:newLine />
 						</p:panel>
+						
+						<!--INICIO DO TAB DE CADASTRO DE TELEFONE -->
 
 					</p:tab>
 
@@ -304,6 +308,69 @@
 
 
 					</p:tab>
+
+					<!--INICIO DO TAB DE CADASTRO BANCARIO -->
+
+					<p:tab title="Dados Bancários" id="tabDadosBancarios">
+						<p:panel id="painelDadosBancarios">
+
+							<a:field label="Banco" width="250px">
+								<p:inputText value="#{FuncionarioControl.funcionario.banco}"
+									style="width:250px" />
+							</a:field>
+
+
+							<a:field label="Agencia" width="200px" spaceLeft="15px">
+								<p:inputText value="#{FuncionarioControl.funcionario.agencia}"
+									style="width:200px" />
+							</a:field>
+
+
+							<a:field label="Conta" width="200px" spaceLeft="15px">
+								<p:inputText value="#{FuncionarioControl.funcionario.agencia}"
+									style="width:200px" />
+							</a:field>
+
+							<a:newLine />
+
+							<a:field label="Data Demissão" width="150px">
+								<p:calendar
+									value="#{FuncionarioControl.funcionario.dataDemissao}"
+									locale="de" navigator="true" pattern="yyyy-MMM-dd"
+									style="width:150px" />
+							</a:field>
+
+
+							<a:field label="Valor do Acerto" width="200px" spaceLeft="75px">
+								<p:inputText
+									value="#{FuncionarioControl.funcionario.valorAcerto}"
+									style="width:200px" />
+							</a:field>
+
+							<a:newLine />
+							<a:newLine />
+
+							<a:field label="Observações" width="100%">
+								<p:editor id="observacoes"
+									value="#{FuncionarioControl.funcionario.observacao}"></p:editor>
+							</a:field>
+
+							<a:newLine />
+							<a:newLine />
+
+							<a:field label="Histórico" width="100%">
+								<p:editor id="historico"
+									value="#{FuncionarioControl.funcionario.historico}"></p:editor>
+							</a:field>
+
+
+							<a:newLine />
+						</p:panel>
+
+
+					</p:tab>
+
+
 
 
 

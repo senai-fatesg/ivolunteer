@@ -26,7 +26,7 @@ public class AvaliacaoControl {
 	private Discursiva discursiva = new Discursiva();
 	private Questao questao = new Questao();
 	private Objetiva objetiva = new Objetiva();
-	EnumQuestao tipoQuestao = EnumQuestao.D;
+	private EnumQuestao tipoQuestao = EnumQuestao.D;
 	private Alternativa alternativa = new Alternativa();
 
 	@Autowired
@@ -41,10 +41,8 @@ public class AvaliacaoControl {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}	
-	//Insere Questao em Avaliacao
-	
-
-	public void removerAlterntaivaQuetao(Alternativa alternativa) {
+	//Remove Questao em Avaliacao
+	public void remAlternativa(Alternativa alternativa) {
 		try {
 			this.objetiva.removerAlternativa(alternativa);
 		} catch (Exception e) {
@@ -52,9 +50,31 @@ public class AvaliacaoControl {
 		}
 	}
 	
+	//Atualizar em qual tab o Usuário está
 	public void alteraTab(TabChangeEvent event){
 		Tab tabAtual = event.getTab();
-//		tabAtual.get
+		if(tabAtual.getId().equals("tabDiscursiva")){
+			this.tipoQuestao = EnumQuestao.D;
+		} else {
+			this.tipoQuestao = EnumQuestao.O;
+		}
+	}
+	//Inclui questao a avaliacao
+	public void addQuestao(ActionEvent event){
+		if(this.tipoQuestao == EnumQuestao.D){						
+			this.discursiva.setOrdem(this.questao.getOrdem());
+			this.discursiva.setPergunta(this.questao.getPergunta());
+			this.discursiva.setTipoQuestao(this.tipoQuestao);
+			this.avaliacao.addQuestao(this.discursiva);
+		} else {		
+			this.discursiva = new Discursiva();
+			this.objetiva.setOrdem(this.questao.getOrdem());
+			this.objetiva.setPergunta(this.questao.getPergunta());
+			this.objetiva.setTipoQuestao(this.tipoQuestao);
+			this.avaliacao.addQuestao(this.objetiva);
+		}
+		this.objetiva = new Objetiva();
+		this.discursiva = new Discursiva();
 	}
 	
 	public Objetiva getObjetiva() {

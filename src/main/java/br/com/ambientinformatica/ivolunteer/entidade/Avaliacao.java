@@ -13,13 +13,13 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
 public class Avaliacao {
-	
 	@Id
-	@GeneratedValue(generator="avaliacao_seq", strategy=GenerationType.SEQUENCE)
-	@SequenceGenerator(name="avaliacao_seq", sequenceName="avaliacao_seq", allocationSize=1,initialValue=1)
+	@GeneratedValue(generator = "avaliacao_seq", strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "avaliacao_seq", sequenceName = "avaliacao_seq", allocationSize = 1, initialValue = 1)
 	private Integer id;
 
 	private String titulo;
@@ -27,12 +27,18 @@ public class Avaliacao {
 	private String descricao;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
-	
+
 	@OneToOne
 	private Pessoa pessoa;
 
+	@Transient
+	private List<Questao> questoes = new ArrayList<Questao>();
+
 	@OneToMany
-	private List<Questao> questao = new ArrayList<Questao>();
+	private List<Objetiva> objetivas = new ArrayList<Objetiva>();
+
+	@OneToMany
+	private List<Discursiva> discursivas = new ArrayList<Discursiva>();
 
 	public Integer getId() {
 		return id;
@@ -74,18 +80,41 @@ public class Avaliacao {
 		this.pessoa = pessoa;
 	}
 
-	public List<Questao> getQuestao() {
-		return questao;
+	public List<Questao> getQuestoes() {
+		return questoes;
 	}
 
-	public void setQuestao(List<Questao> questao) {
-		this.questao = questao;
+	public void setQuestoes(List<Questao> questoes) {
+		this.questoes = questoes;
 	}
-	
-	//Métododo que ira adicionar questões
-	public void addQuestao(Questao questao){
-		if(!this.questao.contains(questao)){
-			this.questao.add(questao);
+
+	// Métododo que ira adicionar questões
+	public void addQuestao(Object questao) {
+		Questao questaoProcessar = (Questao) questao; 
+		if (!this.questoes.contains(questaoProcessar)) {
+			this.questoes.add(questaoProcessar);
+			if(questao instanceof Discursiva){
+				this.discursivas.add((Discursiva) questao);
+			} else {
+				this.objetivas.add((Objetiva) questao);
+			}
 		}
 	}
+
+	public List<Objetiva> getObjetivas() {
+		return objetivas;
+	}
+
+	public void setObjetivas(List<Objetiva> objetivas) {
+		this.objetivas = objetivas;
+	}
+
+	public List<Discursiva> getDiscursivas() {
+		return discursivas;
+	}
+
+	public void setDiscursivas(List<Discursiva> discursivas) {
+		this.discursivas = discursivas;
+	}
+
 }

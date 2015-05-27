@@ -76,7 +76,6 @@ public class Pessoa {
 	}
 
 
-	//metodos
 	public double getTotalRenda() {
 		return 0;
 	}
@@ -89,6 +88,24 @@ public class Pessoa {
 		return 0;
 	}
 
+	public void addTelefone(Telefone telefone){
+		if(!this.listaTelefone.contains(telefone)){
+			this.listaTelefone.add(telefone);
+		}
+	}
+	
+	public void addEndereco(Endereco endereco){
+		if(!this.listaEndereco.contains(endereco)){
+			this.listaEndereco.add(endereco);
+		}
+	}
+	
+	public void addPessoa(Pessoa pessoaRelacionada){
+		if(!this.listaPessoaRelacionada.contains(pessoaRelacionada)){
+			this.listaPessoaRelacionada.add(pessoaRelacionada);
+		}
+	}
+	
 	//metodos gets e set
 	public Integer getId() {
 		return id;

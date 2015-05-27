@@ -16,11 +16,9 @@ public class Cidade {
 	@SequenceGenerator(name = "cidade_seq", sequenceName = "cidade_seq", allocationSize = 1, initialValue = 1)
 	private Integer id;
 
-	@Enumerated(EnumType.STRING)
-	private EnumEstado estado;
-
 	private String nomeCidade;
 
+	@Enumerated(EnumType.STRING)
 	private EnumEstado enumEstado;
 
 	public Integer getId() {

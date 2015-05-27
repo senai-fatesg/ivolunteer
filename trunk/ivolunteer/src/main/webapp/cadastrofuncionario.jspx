@@ -268,31 +268,31 @@
 								<p:dataTable id="enderecos" style="width:30%"
 							emptyMessage="Sem Registros"
 							value="#{FuncionarioControl.funcionario.listaEndereco}" var="item">
-							<p:column headerText="Bairro">
+							<p:column headerText="Bairro" width="35">
 								<h:outputText value="#{item.bairro}"></h:outputText>
 							</p:column>
 							
-							<p:column headerText="Rua">
+							<p:column headerText="Rua" width="100px">
 								<h:outputText value="#{item.ruaOuAvenida}"></h:outputText>
 							</p:column>
 							
-							<p:column headerText="Numero">
+							<p:column headerText="Numero" width="35px">
 								<h:outputText value="#{item.numero}"></h:outputText>
 							</p:column>
 							
-							<p:column headerText="Quadra">
+							<p:column headerText="Quadra" width="35px">
 								<h:outputText value="#{item.quadra}"></h:outputText>
 							</p:column>
 							
-							<p:column headerText="Complemento">
+							<p:column headerText="Complemento" width="100px">
 								<h:outputText value="#{item.complemento}"></h:outputText>
 							</p:column>
 							
-							<p:column headerText="Cidade">
+							<p:column headerText="Cidade" width="100px">
 								<h:outputText value="#{item.cidade.nomeCidade}"></h:outputText>
 							</p:column>
 							
-						  	<p:column headerText="Uf">
+						  	<p:column headerText="Uf" width="35px">
 								<h:outputText value="#{item.cidade.enumEstado}"></h:outputText>
 							</p:column> 
 							
@@ -305,7 +305,7 @@
 						<a:newLine />
 
 
-							<a:newLine />
+							
 						</p:panel>
 						
 						<!--INICIO DO TAB DE CADASTRO DE TELEFONE -->
@@ -341,12 +341,38 @@
 
 							<a:newLine />
 
+							<a:field spaceLeft="20px">
 							<p:commandButton
-								actionListener="#{FuncionarioControl.adicionarListaTelefone}"
-								value="Confirmar"></p:commandButton>
-
-
-							<a:newLine />
+								actionListener="#{FuncionarioControl.addTelefone}"
+								value="Adicionar Telefone" icon="ui-icon-plusthick"
+								update="telefones" />
+						</a:field>
+								
+								
+								<p:dataTable id="telefones" style="width:30%"
+							emptyMessage="Sem Registros"
+							value="#{FuncionarioControl.funcionario.listaTelefone}" var="item">
+							
+							<p:column headerText="Numero" width="35">
+								<h:outputText value="#{item.numeroTelefone}"></h:outputText>
+							</p:column>
+							
+							<p:column headerText="Pessoa Para Recado" width="100px">
+								<h:outputText value="#{item.nomePessoaRecado}"></h:outputText>
+							</p:column>
+							
+							<p:column headerText="Tipo" width="35px">
+								<h:outputText value="#{item.tipoTelefone}"></h:outputText>
+							</p:column>
+							
+							
+							<p:column headerText="Remover">
+								<p:commandButton icon="ui-icon-closethick"
+									action="#{FuncionarioControl.removerTelefone(item)}"
+									update="telefones" />
+							</p:column>
+						</p:dataTable>
+						<a:newLine />
 						</p:panel>
 
 

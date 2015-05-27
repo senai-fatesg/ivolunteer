@@ -243,23 +243,66 @@
 									style="width:300px" />
 							</a:field>
 							<a:field label="Cidade" width="200px" spaceLeft="15px">
-								<p:inputText value="#{FuncionarioControl.endereco.cidade}"
+								<p:inputText value="#{FuncionarioControl.endereco.cidade.nomeCidade}"
 									style="width:200px" />
 							</a:field>
 
-							<a:field label="UF" spaceLeft="15px">
+					  		<a:field label="UF" spaceLeft="15px">
 								<p:autoComplete id="uf" dropdown="true"
 									value="#{FuncionarioControl.cidade.enumEstado}"
 									completeMethod="#{FuncionarioControl.completeEnumUf}"
 									style="margin-top: -10px" />
-							</a:field>
+							</a:field>  
 
 
 							<a:newLine />
 
+							<a:field spaceLeft="20px">
 							<p:commandButton
-								actionListener="#{FuncionarioControl.adicionarListaEndereco}"
-								value="Confirmar"></p:commandButton>
+								actionListener="#{FuncionarioControl.addEndereco}"
+								value="Adicionar Endereco" icon="ui-icon-plusthick"
+								update="enderecos" />
+						</a:field>
+								
+								
+								<p:dataTable id="enderecos" style="width:30%"
+							emptyMessage="Sem Registros"
+							value="#{FuncionarioControl.funcionario.listaEndereco}" var="item">
+							<p:column headerText="Bairro">
+								<h:outputText value="#{item.bairro}"></h:outputText>
+							</p:column>
+							
+							<p:column headerText="Rua">
+								<h:outputText value="#{item.ruaOuAvenida}"></h:outputText>
+							</p:column>
+							
+							<p:column headerText="Numero">
+								<h:outputText value="#{item.numero}"></h:outputText>
+							</p:column>
+							
+							<p:column headerText="Quadra">
+								<h:outputText value="#{item.quadra}"></h:outputText>
+							</p:column>
+							
+							<p:column headerText="Complemento">
+								<h:outputText value="#{item.complemento}"></h:outputText>
+							</p:column>
+							
+							<p:column headerText="Cidade">
+								<h:outputText value="#{item.cidade.nomeCidade}"></h:outputText>
+							</p:column>
+							
+						  	<p:column headerText="Uf">
+								<h:outputText value="#{item.cidade.enumEstado}"></h:outputText>
+							</p:column> 
+							
+							<p:column headerText="Remover">
+								<p:commandButton icon="ui-icon-closethick"
+									action="#{FuncionarioControl.removerEndereco(item)}"
+									update="enderecos" />
+							</p:column>
+						</p:dataTable>
+						<a:newLine />
 
 
 							<a:newLine />

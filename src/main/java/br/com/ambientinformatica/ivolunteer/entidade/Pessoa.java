@@ -106,6 +106,10 @@ public class Pessoa {
 		}
 	}
 	
+	public void removerEdereco(Endereco endereco){
+		this.listaEndereco.remove(endereco);
+	}
+	
 	//metodos gets e set
 	public Integer getId() {
 		return id;

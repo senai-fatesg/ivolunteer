@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
+import br.com.ambientinformatica.ivolunteer.entidade.Alternativa;
 import br.com.ambientinformatica.ivolunteer.entidade.Cidade;
 import br.com.ambientinformatica.ivolunteer.entidade.Endereco;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
@@ -142,6 +143,23 @@ public class FuncionarioControl {
 			retornoEstadoCivil.add(enunEstadoCivil[i].getDescricao());
 		}
 		return retornoEstadoCivil;
+	}
+	
+	public void addEndereco(ActionEvent ev) {
+		try {
+			this.funcionario.addEndereco(endereco);			
+			this.endereco = new Endereco();
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
+	
+	public void removerEndereco(Endereco endereco) {
+		try {
+			this.funcionario.removerEdereco(endereco);
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
 	}
 
 	public Funcionario getFuncionario() {

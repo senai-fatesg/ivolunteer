@@ -54,7 +54,7 @@ public class AvaliacaoControl {
 	
 	public void alteraTab(TabChangeEvent event){
 		Tab tabAtual = event.getTab();
-		tabAtual.get
+//		tabAtual.get
 	}
 	
 	public Objetiva getObjetiva() {

@@ -22,7 +22,7 @@
 				<a:newLine />
 				<p:tabView id="tabQuestoes" >
 					<p:ajax event="tabChange" listener="#{AvaliacaoControl.alteraTab}"/>
-					<p:tab title="Discursiva" >
+					<p:tab title="Discursiva" id="tabDiscursiva">
 						<a:field label="Ordem" width="100%">
 							<p:spinner max="999" min="0" id="ordemDiscursiva"
 								value="#{AvaliacaoControl.questao.ordem}" style="width:238px" />
@@ -70,9 +70,9 @@
 							<p:column headerText="Avaliacao">
 								<h:outputText value="#{item.descricao}"></h:outputText>
 							</p:column>
-							<p:column headerText="Remover">
+							<p:column width="35" >
 								<p:commandButton icon="ui-icon-closethick"
-									action="#{AvaliacaoControl.removerAlterntaivaQuetao(item)}"
+									action="#{AvaliacaoControl.remAlternativa(item)}"
 									update="alternativas" />
 							</p:column>
 						</p:dataTable>
@@ -81,7 +81,7 @@
 				</p:tabView>
 				<a:newLine />
 				<p:commandButton value="Adicionar Questão" icon="ui-icon-plusthick"
-					action="#{AvaliacaoControl.addQuestao}" update="questoesTable" />
+					actionListener="#{AvaliacaoControl.addQuestao}" update="questoesTable, tabQuestoes" />
 				<a:newLine />
 				<a:newLine />
 				<p:dataTable id="questoesTable"
@@ -98,15 +98,7 @@
 						<p:commandButton icon="ui-icon-closethick"></p:commandButton>
 					</p:column>
 				</p:dataTable>
-				<a:newLine />
-				<p:panel header="Discursiva" id="panelDiscursiva"
-					rendered="#mostraDiscursiva">
-
-				</p:panel>
-				<p:panel header="Objetiva" id="panelObjetiva"
-					rendered="#mostraObjetiva">
-
-				</p:panel>
+				<a:newLine />				
 			</p:panel>
 		</h:form>
 	</ui:define>

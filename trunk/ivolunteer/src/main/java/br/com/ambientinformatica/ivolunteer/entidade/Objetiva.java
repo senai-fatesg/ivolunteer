@@ -8,35 +8,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 
 @Entity
-public class Objetiva {
-
-	@Id
-	@GeneratedValue(generator = "objetiva_seq", strategy = GenerationType.SEQUENCE)
-	@SequenceGenerator(name = "objetiva_seq", sequenceName = "objetiva_seq", allocationSize = 1, initialValue = 1)
-	private Integer id;
+@PrimaryKeyJoinColumn(name="id")
+public class Objetiva extends Questao{
 	
-	private String descricao;
-
 	@OneToMany
 	private List<Alternativa> alternativas = new ArrayList<Alternativa>();
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	
+	public Objetiva(){
+		super();
 	}
 
 	public List<Alternativa> getAlternativas() {

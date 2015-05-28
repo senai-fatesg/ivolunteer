@@ -24,7 +24,7 @@ public class Frequencia {
 	private boolean presente = true;
 
 	public void setPresenca() {
-		this.presente =true;
+		this.presente = true;
 		this.data = new Date();
 	}
 
@@ -38,6 +38,14 @@ public class Frequencia {
 
 	public boolean isPresente() {
 		return presente;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
+	}
+
+	public void setPresente(boolean presente) {
+		this.presente = presente;
 	}
 
 }

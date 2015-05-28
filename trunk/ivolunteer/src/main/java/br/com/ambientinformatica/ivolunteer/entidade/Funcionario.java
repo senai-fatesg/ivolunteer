@@ -6,13 +6,15 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@PrimaryKeyJoinColumn(name="id")
+@PrimaryKeyJoinColumn(name = "id")
 public class Funcionario extends Pessoa {
 
 	private String pis;
@@ -78,18 +80,20 @@ public class Funcionario extends Pessoa {
 	@Enumerated
 	private EnumFuncao funcao;
 
-	@OneToMany
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id")
 	private List<Frequencia> frequencia = new ArrayList<Frequencia>();
 
-	@OneToMany
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id")
 	private List<GradeHorario> gradeHorario = new ArrayList<GradeHorario>();
 
-	@OneToMany
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id")
 	private List<AtividadeDiaria> atividadeDiaria = new ArrayList<AtividadeDiaria>();
 
 	public Funcionario() {
 		super();
-
 	}
 
 	public String getPis() {

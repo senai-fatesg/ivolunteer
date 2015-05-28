@@ -23,8 +23,8 @@ public class Turma {
 
 	private String nome;
 
-	@ManyToOne
-	private AgrupamentoTurma agrupamentoTurma;
+	@OneToMany
+	private List<AgrupamentoTurma> agrupamentoTurma;
 
 	@OneToMany
 	private List<Funcionario> funcionario;
@@ -61,11 +61,11 @@ public class Turma {
 		this.nome = nome;
 	}
 
-	public AgrupamentoTurma getAgrupamentoTurma() {
+	public List<AgrupamentoTurma> getAgrupamentoTurma() {
 		return agrupamentoTurma;
 	}
 
-	public void setAgrupamentoTurma(AgrupamentoTurma agrupamentoTurma) {
+	public void setAgrupamentoTurma(List<AgrupamentoTurma> agrupamentoTurma) {
 		this.agrupamentoTurma = agrupamentoTurma;
 	}
 

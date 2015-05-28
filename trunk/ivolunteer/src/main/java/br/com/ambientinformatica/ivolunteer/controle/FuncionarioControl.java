@@ -1,24 +1,26 @@
 package br.com.ambientinformatica.ivolunteer.controle;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
-import br.com.ambientinformatica.ivolunteer.entidade.Alternativa;
 import br.com.ambientinformatica.ivolunteer.entidade.Cidade;
 import br.com.ambientinformatica.ivolunteer.entidade.Endereco;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstadoCivil;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumSexo;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoTelefone;
-import br.com.ambientinformatica.ivolunteer.entidade.Frequencia;
 import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.ivolunteer.entidade.Telefone;
 import br.com.ambientinformatica.ivolunteer.persistencia.FuncionarioDao;
@@ -32,6 +34,7 @@ public class FuncionarioControl {
 	Endereco endereco = new Endereco();
 	Cidade cidade = new Cidade();
 	Telefone telefone = new Telefone();
+	List<Funcionario> frequencias = new ArrayList<Funcionario>();
 
 	@Autowired
 	private FuncionarioDao funcionarioDao;
@@ -144,16 +147,16 @@ public class FuncionarioControl {
 		}
 		return retornoEstadoCivil;
 	}
-	
+
 	public void addEndereco(ActionEvent ev) {
 		try {
-			this.funcionario.addEndereco(endereco);			
+			this.funcionario.addEndereco(endereco);
 			this.endereco = new Endereco();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
-	
+
 	public void removerEndereco(Endereco endereco) {
 		try {
 			this.funcionario.removerEdereco(endereco);
@@ -161,16 +164,16 @@ public class FuncionarioControl {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
-	
+
 	public void addTelefone(ActionEvent ev) {
 		try {
-			this.funcionario.addTelefone(telefone);			
+			this.funcionario.addTelefone(telefone);
 			this.telefone = new Telefone();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
-	
+
 	public void removerTelefone(Telefone telefone) {
 		try {
 			this.funcionario.removerTelefone(telefone);
@@ -215,15 +218,35 @@ public class FuncionarioControl {
 		this.telefone = telefone;
 	}
 
-	public void setPresenca() {
-		Frequencia f = new Frequencia();
-		f.setPresenca();
-		this.funcionario.getFrequencia().add(f);
+	public void setSelectedCars(List<Funcionario> selectedCars) {
+		frequencias = selectedCars;
+	}
+
+	public List<Funcionario> getSelectedCars() {
+		return frequencias;
+	}
+
+	public void addPresenca(SelectEvent evt) {
+
+	}
+
+	public List<Funcionario> carregarFuncionario(ActionEvent evt) {
+		List<Funcionario> func = funcionarioDao.carregarFuncionario(funcionario
+				.getId());
+		return func;
 	}
 
 	public List<Funcionario> consultarFuncionario(String query) {
 		List<Funcionario> func = funcionarioDao.listarPorNome(query);
 		return func;
+	}
+
+	public void onDateSelect(SelectEvent event) {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		facesContext.addMessage(null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected",
+						format.format(event.getObject())));
 	}
 
 }

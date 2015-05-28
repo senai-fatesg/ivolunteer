@@ -23,4 +23,19 @@ public class FuncionarioDaoJpa extends PersistenciaJpa<Funcionario> implements F
 		
 		return  (List<Funcionario>) query.getResultList();
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Funcionario> carregarFuncionario(int id) {
+		
+		Query query = em.createQuery("select f from Funcionario f "
+				+ " left join fetch f.frequencia freq "
+				+ " left join fetch f.gradeHorario grade "
+				+ " left join fetch f.atividadeDiaria atividade "
+				+ " where f.id = :id");
+		query.setParameter("id", id);
+		return (List<Funcionario>) query.getResultList();
+	}
+	
+	
 }

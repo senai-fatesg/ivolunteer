@@ -21,9 +21,7 @@ public class Questao {
 
 	private String pergunta;
 
-	private EnumQuestao tipoQuestao;	
-	
-	
+	private EnumQuestao tipoQuestao;
 
 	public Integer getId() {
 		return id;
@@ -59,12 +57,6 @@ public class Questao {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
 		Questao other = (Questao) obj;
 		if (ordem != other.ordem)
 			return false;

@@ -265,35 +265,35 @@
 						</a:field>
 								
 								
-								<p:dataTable id="enderecos" style="width:30%"
+								<p:dataTable id="enderecos" style="width:100%"
 							emptyMessage="Sem Registros"
-							value="#{FuncionarioControl.funcionario.listaEndereco}" var="item">
-							<p:column headerText="Bairro" width="35">
-								<h:outputText value="#{item.bairro}"></h:outputText>
+							value="#{FuncionarioControl.funcionario.listaEndereco}" var="endereco">
+							<p:column headerText="Bairro" width="50px">
+								<h:outputText value="#{endereco.bairro}"></h:outputText>
 							</p:column>
 							
-							<p:column headerText="Rua" width="100px">
-								<h:outputText value="#{item.ruaOuAvenida}"></h:outputText>
+							<p:column headerText="Rua" width="50px">
+								<h:outputText value="#{endereco.ruaOuAvenida}"></h:outputText>
 							</p:column>
 							
 							<p:column headerText="Numero" width="35px">
-								<h:outputText value="#{item.numero}"></h:outputText>
+								<h:outputText value="#{endereco.numero}"></h:outputText>
 							</p:column>
 							
 							<p:column headerText="Quadra" width="35px">
-								<h:outputText value="#{item.quadra}"></h:outputText>
+								<h:outputText value="#{endereco.quadra}"></h:outputText>
 							</p:column>
 							
 							<p:column headerText="Complemento" width="100px">
-								<h:outputText value="#{item.complemento}"></h:outputText>
+								<h:outputText value="#{endereco.complemento}"></h:outputText>
 							</p:column>
 							
 							<p:column headerText="Cidade" width="100px">
-								<h:outputText value="#{item.cidade.nomeCidade}"></h:outputText>
+								<h:outputText value="#{endereco.cidade.nomeCidade}"></h:outputText>
 							</p:column>
 							
 						  	<p:column headerText="Uf" width="35px">
-								<h:outputText value="#{item.cidade.enumEstado}"></h:outputText>
+								<h:outputText value="#{endereco.cidade.enumEstado}"></h:outputText>
 							</p:column> 
 							
 							<p:column headerText="Remover">
@@ -349,7 +349,7 @@
 						</a:field>
 								
 								
-								<p:dataTable id="telefones" style="width:30%"
+								<p:dataTable id="telefones" style="width:100%" 
 							emptyMessage="Sem Registros"
 							value="#{FuncionarioControl.funcionario.listaTelefone}" var="item">
 							
@@ -357,16 +357,16 @@
 								<h:outputText value="#{item.numeroTelefone}"></h:outputText>
 							</p:column>
 							
-							<p:column headerText="Pessoa Para Recado" width="100px">
+							<p:column headerText="Pessoa Para Recado" width="50px">
 								<h:outputText value="#{item.nomePessoaRecado}"></h:outputText>
 							</p:column>
 							
-							<p:column headerText="Tipo" width="35px">
+							<p:column headerText="Tipo" width="50px">
 								<h:outputText value="#{item.tipoTelefone}"></h:outputText>
 							</p:column>
 							
 							
-							<p:column headerText="Remover">
+							<p:column headerText="Remover" width="35">
 								<p:commandButton icon="ui-icon-closethick"
 									action="#{FuncionarioControl.removerTelefone(item)}"
 									update="telefones" />

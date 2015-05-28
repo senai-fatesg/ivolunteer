@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="corpo">
+		<p:panel header="Frequencia" id="panel">
+
+			<p:tabView dynamic="true" cache="true">
+				<p:tab title="Funcionário">
+
+					<p:panel id="buscaFuncionario" rendered="true">
+						<p:calendar id="inline" mode="inline" />
+
+						<a:field label="Nome" width="100%">
+							<p:autoComplete id="acMinLength" minQueryLength="3"
+								value="#{FuncionarioControl.funcionario}"
+								completeMethod="#{FuncionarioControl.consultarFuncionario}"
+								var="func" itemLabel="#{func.nomePessoa}" itemValue="#{func}"
+								converter="FuncionarioConverter" forceSelection="true"
+								effect="fade" />
+							
+
+						</a:field>
+						<a:newLine></a:newLine>
+					</p:panel>
+
+					<p:dataTable id="listFuncionario" var="car"
+						value="#{FuncionarioControl.funcionarios}"
+						selection="#{FuncionarioControl.selectedCars}" rowKey="#{car.id}"
+						style="margin-bottom:0">
+						<f:facet name="header">Lista de frequencia</f:facet>
+
+						<p:column headerText="Id" style="width:16%;text-align:center">
+							<h:outputText value="#{car.id}" />
+						</p:column>
+
+						<p:column headerText="Nome">
+							<h:outputText value="#{car.nomePessoa}" />
+						</p:column>
+
+						<p:column selectionMode="multiple"
+							style="width:16%;text-align:center">
+							
+						</p:column>
+
+						
+
+					</p:dataTable>
+
+					<a:newLine></a:newLine>
+
+				</p:tab>
+				<p:tab title="Aluno">
+					<p:panel id="buscarTurma" rendered="true">
+
+					</p:panel>
+				</p:tab>
+			</p:tabView>
+
+		</p:panel>
+
+	</ui:define>
+</ui:composition>

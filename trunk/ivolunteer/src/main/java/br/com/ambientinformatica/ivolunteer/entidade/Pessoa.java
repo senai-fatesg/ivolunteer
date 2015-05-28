@@ -55,6 +55,7 @@ public class Pessoa {
 	@Temporal(TemporalType.DATE)
 	private Date dataVencimento;
 	
+	private double valorBeneficio;
 	private double renda;
 	private double valorAluguel;
 	private int numeroDePessoasMoradia;
@@ -381,5 +382,14 @@ public class Pessoa {
 
 	public String getNecessidadesEspeciais() {
 		return necessidadesEspeciais;
+	}
+	
+	public double getValorBeneficio() {
+		return valorBeneficio;
+	}
+
+
+	public void setValorBeneficio(double valorBeneficio) {
+		this.valorBeneficio = valorBeneficio;
 	}
 }

@@ -1,8 +1,14 @@
 package br.com.ambientinformatica.ivolunteer.controle;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.faces.component.UIColumn;
 import javax.faces.event.ActionEvent;
 
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.tabview.Tab;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TabChangeEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -23,15 +29,13 @@ import br.com.ambientinformatica.ivolunteer.persistencia.AvaliacaoDao;
 public class AvaliacaoControl {
 
 	private Avaliacao avaliacao = new Avaliacao();	
-	private Discursiva discursiva = new Discursiva();
-	private Questao questao = new Questao();
+	private Discursiva discursiva = new Discursiva();	
 	private Objetiva objetiva = new Objetiva();
 	private EnumQuestao tipoQuestao = EnumQuestao.D;
 	private Alternativa alternativa = new Alternativa();
 
 	@Autowired
 	private AvaliacaoDao avaliacaoDao;
-
 	//Insere Alternativas em Questao do tipo Objetiva 
 	public void addAlternativa(ActionEvent ev) {
 		try {
@@ -44,7 +48,7 @@ public class AvaliacaoControl {
 	//Remove Questao em Avaliacao
 	public void remAlternativa(Alternativa alternativa) {
 		try {
-			this.objetiva.removerAlternativa(alternativa);
+			this.objetiva.remAlternativa(alternativa);
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -52,24 +56,30 @@ public class AvaliacaoControl {
 	
 	//Atualizar em qual tab o Usuário está
 	public void alteraTab(TabChangeEvent event){
-		Tab tabAtual = event.getTab();
+		Tab tabAtual = event.getTab();		
 		if(tabAtual.getId().equals("tabDiscursiva")){
 			this.tipoQuestao = EnumQuestao.D;
 		} else {
 			this.tipoQuestao = EnumQuestao.O;
 		}
 	}
+	
+	
+	public void remQuestao(Object objeto){
+		try {
+			this.avaliacao.remQuestao(objeto);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
+	
 	//Inclui questao a avaliacao
 	public void addQuestao(ActionEvent event){
-		if(this.tipoQuestao == EnumQuestao.D){						
-			this.discursiva.setOrdem(this.questao.getOrdem());
-			this.discursiva.setPergunta(this.questao.getPergunta());
+		if(this.tipoQuestao == EnumQuestao.D){			
 			this.discursiva.setTipoQuestao(this.tipoQuestao);
 			this.avaliacao.addQuestao(this.discursiva);
-		} else {		
-			this.discursiva = new Discursiva();
-			this.objetiva.setOrdem(this.questao.getOrdem());
-			this.objetiva.setPergunta(this.questao.getPergunta());
+		} else {						
 			this.objetiva.setTipoQuestao(this.tipoQuestao);
 			this.avaliacao.addQuestao(this.objetiva);
 		}
@@ -95,21 +105,10 @@ public class AvaliacaoControl {
 
 	public Avaliacao getAvaliacao() {
 		return this.avaliacao;
-	}
-
-	public void setAvaliacao(Avaliacao avaliacao) {
-		this.avaliacao = avaliacao;
-
-	}
-
-	public Questao getQuestao() {
-		return questao;
-	}
-
-	public void setQuestao(Questao questao) {
-		this.questao = questao;
-	}
-
+	}	
+	
+	
+	
 	public Discursiva getDiscursiva() {
 		return discursiva;
 	}

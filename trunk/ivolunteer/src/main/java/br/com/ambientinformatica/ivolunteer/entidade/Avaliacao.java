@@ -90,15 +90,24 @@ public class Avaliacao {
 
 	// Métododo que ira adicionar questões
 	public void addQuestao(Object questao) {
-		Questao questaoProcessar = (Questao) questao; 
+		Questao questaoProcessar = (Questao) questao;
 		if (!this.questoes.contains(questaoProcessar)) {
 			this.questoes.add(questaoProcessar);
-			if(questao instanceof Discursiva){
+			if (questao instanceof Discursiva) {
 				this.discursivas.add((Discursiva) questao);
 			} else {
 				this.objetivas.add((Objetiva) questao);
 			}
 		}
+	}
+
+	// Método que ira remover questão
+	public void remQuestao(Object questao) {
+		Questao questaoProcessar = (Questao) questao;
+		this.discursivas.remove(questaoProcessar);
+		this.objetivas.remove(questaoProcessar);
+		this.questoes.remove(questaoProcessar);	
+
 	}
 
 	public List<Objetiva> getObjetivas() {

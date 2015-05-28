@@ -37,7 +37,7 @@ public class Objetiva extends Questao{
 		}
 	}
 	//Método que ira remover as alternativas
-	public void removerAlternativa(Alternativa alternativa){
+	public void remAlternativa(Alternativa alternativa){
 		this.alternativas.remove(alternativa);
 	}
 }

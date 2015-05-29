@@ -26,14 +26,14 @@ public class FuncionarioDaoJpa extends PersistenciaJpa<Funcionario> implements F
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Funcionario> carregarFuncionario(int id) {
+	public List<Funcionario> carregarFuncionario(Funcionario funcionario) {
 		
 		Query query = em.createQuery("select f from Funcionario f "
-				+ " left join fetch f.frequencia freq "
-				+ " left join fetch f.gradeHorario grade "
-				+ " left join fetch f.atividadeDiaria atividade "
-				+ " where f.id = :id");
-		query.setParameter("id", id);
+				+ " left join fetch f.frequencias freq "
+				+ " left join fetch f.gradesHorario grade "
+				+ " left join fetch f.atividadesDiaria atividade "
+				+ " where f  = :funcionario");
+		query.setParameter("funcionario", funcionario);
 		return (List<Funcionario>) query.getResultList();
 	}
 	

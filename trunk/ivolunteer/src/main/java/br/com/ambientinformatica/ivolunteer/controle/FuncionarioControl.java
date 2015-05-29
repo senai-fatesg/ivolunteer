@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -22,6 +21,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.EnumEstadoCivil;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumSexo;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoTelefone;
 import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
+import br.com.ambientinformatica.ivolunteer.entidade.GradeHorario;
 import br.com.ambientinformatica.ivolunteer.entidade.Telefone;
 import br.com.ambientinformatica.ivolunteer.persistencia.FuncionarioDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
@@ -30,22 +30,30 @@ import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 @Scope("conversation")
 public class FuncionarioControl {
 
-	Funcionario funcionario = new Funcionario();
-	Endereco endereco = new Endereco();
-	Cidade cidade = new Cidade();
-	Telefone telefone = new Telefone();
-	List<Funcionario> frequencias = new ArrayList<Funcionario>();
+	private Funcionario funcionario = new Funcionario();
+	private Endereco endereco = new Endereco();
+	private Cidade cidade = new Cidade();
+	private Telefone telefone = new Telefone();
+	private List<Funcionario> frequencias = new ArrayList<Funcionario>();
 
+	private GradeHorario gradeHorario = new GradeHorario();
+	
 	@Autowired
 	private FuncionarioDao funcionarioDao;
 
 	private List<Funcionario> funcionarios = new ArrayList<Funcionario>();
 
-	@PostConstruct
-	public void init() {
-		listar(null);
-	}
+//	@PostConstruct
+//	public void init() {
+//		listar(null);
+//	}
 
+	
+	public void adicionarGradeHorario(ActionEvent evt){
+		funcionario.addGradeHorario(gradeHorario);
+		gradeHorario = new GradeHorario();
+	}
+	
 	public void confirmar(ActionEvent evt) {
 		try {
 			funcionarioDao.alterar(funcionario);
@@ -218,6 +226,7 @@ public class FuncionarioControl {
 		this.telefone = telefone;
 	}
 
+	// Frequencia - Carregar lista para registar presença
 	public void setSelectedCars(List<Funcionario> selectedCars) {
 		frequencias = selectedCars;
 	}
@@ -231,8 +240,7 @@ public class FuncionarioControl {
 	}
 
 	public List<Funcionario> carregarFuncionario(ActionEvent evt) {
-		List<Funcionario> func = funcionarioDao.carregarFuncionario(funcionario
-				.getId());
+		List<Funcionario> func = funcionarioDao.carregarFuncionario(funcionario);
 		return func;
 	}
 
@@ -249,4 +257,13 @@ public class FuncionarioControl {
 						format.format(event.getObject())));
 	}
 
+	public GradeHorario getGradeHorario() {
+		return gradeHorario;
+	}
+
+	public void setGradeHorario(GradeHorario gradeHorario) {
+		this.gradeHorario = gradeHorario;
+	}
+
+	
 }

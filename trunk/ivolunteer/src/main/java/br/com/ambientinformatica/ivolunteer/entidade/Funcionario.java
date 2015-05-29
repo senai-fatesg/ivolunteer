@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -80,18 +81,37 @@ public class Funcionario extends Pessoa {
 	@Enumerated
 	private EnumFuncao funcao;
 
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id")
-	private List<Frequencia> frequencia = new ArrayList<Frequencia>();
+	@OneToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
+	@JoinColumn(name = "funcionario_id")
+	private List<Frequencia> frequencias = new ArrayList<Frequencia>();
 
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id")
-	private List<GradeHorario> gradeHorario = new ArrayList<GradeHorario>();
+	@OneToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
+	@JoinColumn(name = "funcionario_id")
+	private List<GradeHorario> gradesHorario = new ArrayList<GradeHorario>();
 
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id")
-	private List<AtividadeDiaria> atividadeDiaria = new ArrayList<AtividadeDiaria>();
+	@OneToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
+	@JoinColumn(name = "funcionario_id")
+	private List<AtividadeDiaria> atividadesDiaria = new ArrayList<AtividadeDiaria>();
 
+	public void addAtividadeDiaria(AtividadeDiaria atividadeDiaria){
+		if(!atividadesDiaria.contains(atividadeDiaria)){
+			atividadesDiaria.add(atividadeDiaria);
+		}
+	}
+	
+	public void addGradeHorario(GradeHorario gradeHorario){
+		if(!gradesHorario.contains(gradeHorario)){
+			gradesHorario.add(gradeHorario);
+		}
+	}
+	
+	public void addFrequencia(Frequencia frequencia){
+		if(!frequencias.contains(frequencia)){
+			frequencias.add(frequencia);
+		}
+	}
+	
+	
 	public Funcionario() {
 		super();
 	}
@@ -312,28 +332,17 @@ public class Funcionario extends Pessoa {
 		this.funcao = funcao;
 	}
 
-	public List<Frequencia> getFrequencia() {
-		return frequencia;
+	public List<Frequencia> getFrequencias() {
+		return frequencias;
 	}
 
-	public void setFrequencia(List<Frequencia> frequencia) {
-		this.frequencia = frequencia;
+	public List<GradeHorario> getGradesHorario() {
+		return gradesHorario;
 	}
 
-	public List<GradeHorario> getGradeHorario() {
-		return gradeHorario;
+	public List<AtividadeDiaria> getAtividadesDiaria() {
+		return atividadesDiaria;
 	}
 
-	public void setGradeHorario(List<GradeHorario> gradeHorario) {
-		this.gradeHorario = gradeHorario;
-	}
-
-	public List<AtividadeDiaria> getAtividadeDiaria() {
-		return atividadeDiaria;
-	}
-
-	public void setAtividadeDiaria(List<AtividadeDiaria> atividadeDiaria) {
-		this.atividadeDiaria = atividadeDiaria;
-	}
-
+	
 }

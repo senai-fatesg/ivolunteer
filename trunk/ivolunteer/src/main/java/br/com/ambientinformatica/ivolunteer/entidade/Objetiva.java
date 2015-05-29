@@ -20,6 +20,7 @@ public class Objetiva extends Questao{
 	
 	public Objetiva(){
 		super();
+		setTipoQuestao(EnumQuestao.O);
 	}
 
 	public List<Alternativa> getAlternativas() {

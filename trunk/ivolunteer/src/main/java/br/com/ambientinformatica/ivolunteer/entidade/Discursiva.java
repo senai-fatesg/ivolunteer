@@ -9,6 +9,7 @@ public class Discursiva extends Questao {
 
 	public Discursiva() {
 		super();
+		setTipoQuestao(EnumQuestao.D);
 	}
 
 	private Integer numeroLinhas;

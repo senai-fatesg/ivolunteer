@@ -17,7 +17,7 @@ public class Questao {
 	@SequenceGenerator(name = "questao_seq", sequenceName = "questao_seq", allocationSize = 1, initialValue = 1)
 	private Integer id;
 
-	private int ordem;
+	private Integer ordem;
 
 	private String pergunta;
 
@@ -37,14 +37,6 @@ public class Questao {
 
 	public void setPergunta(String pergunta) {
 		this.pergunta = pergunta;
-	}
-
-	public int getOrdem() {
-		return ordem;
-	}
-
-	public void setOrdem(int ordem) {
-		this.ordem = ordem;
 	}
 
 	@Override
@@ -69,6 +61,14 @@ public class Questao {
 
 	public void setTipoQuestao(EnumQuestao tipoQuestao) {
 		this.tipoQuestao = tipoQuestao;
+	}
+
+	public Integer getOrdem() {
+		return ordem;
+	}
+
+	public void setOrdem(Integer ordem) {
+		this.ordem = ordem;
 	}
 
 }

@@ -13,10 +13,10 @@ public class Alternativa {
 	@GeneratedValue(generator = "alternativa_seq", strategy = GenerationType.SEQUENCE)
 	@SequenceGenerator(name = "alternativa_seq", sequenceName = "alternativa_seq", allocationSize = 1, initialValue = 1)
 	private Integer id;
-	
+
 	private String descricao;
 
-	private boolean status;
+	private Boolean status;
 
 	public Integer getId() {
 		return id;
@@ -32,14 +32,6 @@ public class Alternativa {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-
-	public boolean isStatus() {
-		return status;
-	}
-
-	public void setStatus(boolean status) {
-		this.status = status;
 	}
 
 	@Override
@@ -63,12 +55,18 @@ public class Alternativa {
 		if (descricao == null) {
 			if (other.descricao != null)
 				return false;
-		} else if (!descricao.toLowerCase().replace(" ", "").equals(other.descricao.toLowerCase().replace(" ", "")))
+		} else if (!descricao.toLowerCase().replace(" ", "")
+				.equals(other.descricao.toLowerCase().replace(" ", "")))
 			return false;
 		return true;
 	}
 
-	
+	public Boolean getStatus() {
+		return status;
+	}
 
-	
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+
 }

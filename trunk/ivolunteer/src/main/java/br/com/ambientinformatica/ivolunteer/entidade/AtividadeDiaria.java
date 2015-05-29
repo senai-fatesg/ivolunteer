@@ -17,7 +17,7 @@ public class AtividadeDiaria {
 	@Id
 	@GeneratedValue(generator = "atividade_diaria_seq", strategy = GenerationType.SEQUENCE)
 	@SequenceGenerator(name = "atividade_diaria_seq", sequenceName = "atividade_diaria_seq", allocationSize = 1, initialValue = 1)
-	private int id;
+	private Integer id;
 
 	@Temporal(TemporalType.TIME)
 	private Date horaInicial;
@@ -31,13 +31,7 @@ public class AtividadeDiaria {
 
 	private String observacao;
 
-	@ManyToOne
-	private Funcionario funcionario;
-	
-	@ManyToOne
-	private Aluno aluno;
-
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -80,23 +74,5 @@ public class AtividadeDiaria {
 	public void setObservacao(String observacao) {
 		this.observacao = observacao;
 	}
-
-	public Funcionario getFuncionario() {
-		return funcionario;
-	}
-
-	public void setFuncionario(Funcionario funcionario) {
-		this.funcionario = funcionario;
-	}
-
-	public Aluno getAluno() {
-		return aluno;
-	}
-
-	public void setAluno(Aluno aluno) {
-		this.aluno = aluno;
-	}
-	
-	
 
 }

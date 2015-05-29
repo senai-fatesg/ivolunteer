@@ -16,19 +16,19 @@ public class Frequencia {
 	@Id
 	@GeneratedValue(generator = "frequencia_seq", strategy = GenerationType.SEQUENCE)
 	@SequenceGenerator(name = "frequencia_seq", sequenceName = "frequencia_seq", allocationSize = 1, initialValue = 1)
-	private int id;
+	private Integer id;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
 
-	private boolean presente = true;
+	private Boolean presente = true;
 
 	public void setPresenca() {
 		this.presente = true;
 		this.data = new Date();
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -36,7 +36,7 @@ public class Frequencia {
 		return data;
 	}
 
-	public boolean isPresente() {
+	public Boolean isPresente() {
 		return presente;
 	}
 
@@ -44,7 +44,7 @@ public class Frequencia {
 		this.data = data;
 	}
 
-	public void setPresente(boolean presente) {
+	public void setPresente(Boolean presente) {
 		this.presente = presente;
 	}
 

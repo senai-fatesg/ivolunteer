@@ -34,10 +34,9 @@ public class AvaliacaoControl {
 	private EnumQuestao tipoQuestao = EnumQuestao.D;
 	private Alternativa alternativa = new Alternativa();
 
-//	@Autowired
-//	private AvaliacaoDao avaliacaoDao;
 	@Autowired
-	private Alternativa alternativaDao;
+	private AvaliacaoDao avaliacaoDao;
+
 	
 	
 	
@@ -94,8 +93,7 @@ public class AvaliacaoControl {
 	
 	//Salvar Avaliacao
 	public void salvar(ActionEvent event){
-		try {
-			this.alternativaDao.
+		try {			
 			this.avaliacao = new Avaliacao();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);

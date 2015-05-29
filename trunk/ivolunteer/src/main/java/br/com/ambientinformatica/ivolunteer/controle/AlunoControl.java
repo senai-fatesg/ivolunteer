@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.Aluno;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
 import br.com.ambientinformatica.ivolunteer.persistencia.AlunoDao;
 
 @Controller("AlunoControl")
@@ -57,6 +58,16 @@ public class AlunoControl {
 	}
 
 	public List<Aluno> getAlunos() {
-		return alunos;	
+		return alunos;
 	}
+
+	public List<String> completeEnumUf(String query) {
+		List<String> retornoUf = new ArrayList<String>();
+		EnumEstado[] enunUf = EnumEstado.values();
+		for (int i = 0; i < enunUf.length; i++) {
+			retornoUf.add(enunUf[i].getDescricao());
+		}
+		return retornoUf;
+	}
+
 }

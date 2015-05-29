@@ -60,6 +60,8 @@ public class Pessoa {
 	private BigDecimal valorBeneficio;
 	private BigDecimal renda;
 	private BigDecimal valorAluguel;
+	private BigDecimal valorInicial;
+	private BigDecimal valorFinal;
 	private Integer numeroDePessoasMoradia;
 	private Integer numeroFilhosMatriculados;
 	
@@ -67,6 +69,9 @@ public class Pessoa {
 	private Boolean requisitouOutraVaga;
 	private Boolean recebeBeneficio;
 	private Boolean requisitouVagaParaOutraCriancao;
+	
+	
+	
 	
 	@OneToMany
 	private List<Endereco> listaEndereco = new ArrayList<Endereco>();

@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
-import br.com.ambientinformatica.ivolunteer.entidade.Cidade;
 import br.com.ambientinformatica.ivolunteer.entidade.Matricula;
 import br.com.ambientinformatica.ivolunteer.persistencia.MatriculaDao;
 
@@ -20,7 +19,6 @@ import br.com.ambientinformatica.ivolunteer.persistencia.MatriculaDao;
 public class MatriculaControl {
 
 	private Matricula matricula = new Matricula();
-	Cidade cidade = new Cidade();
 
 	@Autowired
 	private MatriculaDao matriculaDao;
@@ -62,12 +60,4 @@ public class MatriculaControl {
 		return matriculas;
 	}
 
-	public Cidade getCidade() {
-		return cidade;
-	}
-
-	public void setCidade(Cidade cidade) {
-		this.cidade = cidade;
-	}
-
-	}
+}

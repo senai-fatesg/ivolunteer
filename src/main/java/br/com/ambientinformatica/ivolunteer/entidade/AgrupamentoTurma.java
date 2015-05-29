@@ -1,7 +1,5 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

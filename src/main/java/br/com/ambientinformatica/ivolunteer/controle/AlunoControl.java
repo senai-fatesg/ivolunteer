@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.Aluno;
+import br.com.ambientinformatica.ivolunteer.entidade.Cidade;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumSexo;
 import br.com.ambientinformatica.ivolunteer.persistencia.AlunoDao;
 
 @Controller("AlunoControl")
@@ -20,6 +22,7 @@ import br.com.ambientinformatica.ivolunteer.persistencia.AlunoDao;
 public class AlunoControl {
 
 	private Aluno aluno = new Aluno();
+	Cidade cidade = new Cidade();
 
 	@Autowired
 	private AlunoDao alunoDao;
@@ -61,6 +64,14 @@ public class AlunoControl {
 		return alunos;
 	}
 
+	public Cidade getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(Cidade cidade) {
+		this.cidade = cidade;
+	}
+
 	public List<String> completeEnumUf(String query) {
 		List<String> retornoUf = new ArrayList<String>();
 		EnumEstado[] enunUf = EnumEstado.values();
@@ -68,6 +79,15 @@ public class AlunoControl {
 			retornoUf.add(enunUf[i].getDescricao());
 		}
 		return retornoUf;
+	}
+
+	public List<String> completeEnumSexo(String query) {
+		List<String> retorno = new ArrayList<String>();
+		EnumSexo[] enunSexo = EnumSexo.values();
+		for (int i = 0; i < enunSexo.length; i++) {
+			retorno.add(enunSexo[i].getDescricao());
+		}
+		return retorno;
 	}
 
 }

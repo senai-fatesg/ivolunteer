@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="corpo">
+
+		<p:panel header="Cadastro De Turma" id="painel">
+
+			<p:panel rendered="true">
+				<a:field label="Nome" width="300px;">
+					<p:inputText id="nome" value="#{TurmaControl.turma.nome}"></p:inputText>
+				</a:field>
+
+				<a:newLine />
+
+				<a:field label="Agrupamento De Turma">
+					<p:autoComplete id="agrupamentodeturma" dropdown="true" 
+					value="#{TurmaControl.agrupamentoTurma }"
+					completeMethod="#{AgrupamentoTurmaControl.consultarAgrupamento}"
+					var="agru" itemLabel="#{agrup.identificador}" itemValue="#{agrup}"
+								 forceSelection="true"
+								effect="fade"
+					/>
+				</a:field>
+
+				<a:newLine />
+
+				<a:field label="Turmo">
+					<p:autoComplete id="turmo" dropdown="true" 
+					value="#{TurmaControl.turnoselecionado}" 
+					completeMethod="#{TurmaControl.completeEnumTurno}"
+					/>
+				</a:field>
+
+				<a:newLine />
+
+				<a:field label="Quantidade Maxima De Alunos ">
+					<p:spinner id="maximoAlunos" dropdown="true" 
+					value="#{TurmaControl.turma.maximoAlunos}"/>
+				</a:field>
+
+				<a:newLine />
+
+				<a:field label="Professor">
+					<p:autoComplete id="funcionario" dropdown="true" />
+				</a:field>
+
+
+				<a:newLine />
+
+			</p:panel>
+
+			<a:newLine />
+
+			<p:commandButton value="Confirmar"></p:commandButton>
+
+		</p:panel>
+
+	</ui:define>
+</ui:composition>

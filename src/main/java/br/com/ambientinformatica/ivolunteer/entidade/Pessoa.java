@@ -1,5 +1,6 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,6 +35,7 @@ public class Pessoa {
 	private String profissao;
 	private String indicacao;
 	private String certidaoNascimento;
+	private String informacoesSobreIntituicao;
 	
 	private EnumSexo sexo;
 	private EnumEscolaridade escolaridade;
@@ -55,13 +57,16 @@ public class Pessoa {
 	@Temporal(TemporalType.DATE)
 	private Date dataVencimento;
 	
-	private double valorBeneficio;
-	private double renda;
-	private double valorAluguel;
-	private int numeroDePessoasMoradia;
+	private BigDecimal valorBeneficio;
+	private BigDecimal renda;
+	private BigDecimal valorAluguel;
+	private Integer numeroDePessoasMoradia;
+	private Integer numeroFilhosMatriculados;
 	
-	private boolean paisVivemJuntos;
-	private boolean requisitouOutraVaga;
+	private Boolean paisVivemJuntos;
+	private Boolean requisitouOutraVaga;
+	private Boolean recebeBeneficio;
+	private Boolean requisitouVagaParaOutraCriancao;
 	
 	@OneToMany
 	private List<Endereco> listaEndereco = new ArrayList<Endereco>();
@@ -77,15 +82,17 @@ public class Pessoa {
 	}
 
 
-	public double getTotalRenda() {
+	private BigDecimal totalRenda;
+	public BigDecimal getTotalRenda() {
+		return null;
+	}
+
+	public Integer getIrmaosMatriculados() {
 		return 0;
 	}
 
-	public int getIrmaosMatriculados() {
-		return 0;
-	}
-
-	public int getIdade() {
+	public Integer getIdade() {
+		
 		return 0;
 	}
 
@@ -276,43 +283,43 @@ public class Pessoa {
 		this.dataNascimento = dataNascimento;
 	}
 
-	public double getRenda() {
+	public BigDecimal getRenda() {
 		return renda;
 	}
 
-	public void setRenda(double renda) {
+	public void setRenda(BigDecimal renda) {
 		this.renda = renda;
 	}
 
-	public double getValorAluguel() {
+	public BigDecimal getValorAluguel() {
 		return valorAluguel;
 	}
 
-	public void setValorAluguel(double valorAluguel) {
+	public void setValorAluguel(BigDecimal valorAluguel) {
 		this.valorAluguel = valorAluguel;
 	}
 
-	public int getNumeroDePessoasMoradia() {
+	public Integer getNumeroDePessoasMoradia() {
 		return numeroDePessoasMoradia;
 	}
 
-	public void setNumeroDePessoasMoradia(int numeroDePessoasMoradia) {
+	public void setNumeroDePessoasMoradia(Integer numeroDePessoasMoradia) {
 		this.numeroDePessoasMoradia = numeroDePessoasMoradia;
 	}
 
-	public boolean isPaisVivemJuntos() {
+	public Boolean getPaisVivemJuntos() {
 		return paisVivemJuntos;
 	}
 
-	public void setPaisVivemJuntos(boolean paisVivemJuntos) {
+	public void setPaisVivemJuntos(Boolean paisVivemJuntos) {
 		this.paisVivemJuntos = paisVivemJuntos;
 	}
 
-	public boolean isRequisitouOutraVaga() {
+	public Boolean isRequisitouOutraVaga() {
 		return requisitouOutraVaga;
 	}
 
-	public void setRequisitouOutraVaga(boolean requisitouOutraVaga) {
+	public void setRequisitouOutraVaga(Boolean requisitouOutraVaga) {
 		this.requisitouOutraVaga = requisitouOutraVaga;
 	}
 
@@ -384,12 +391,53 @@ public class Pessoa {
 		return necessidadesEspeciais;
 	}
 	
-	public double getValorBeneficio() {
+	public BigDecimal getValorBeneficio() {
 		return valorBeneficio;
 	}
 
 
-	public void setValorBeneficio(double valorBeneficio) {
+	public void setValorBeneficio(BigDecimal valorBeneficio) {
 		this.valorBeneficio = valorBeneficio;
+	}
+
+	public String getInformacoesSobreIntituicao() {
+		return informacoesSobreIntituicao;
+	}
+
+	public void setInformacoesSobreIntituicao(String informacoesSobreIntituicao) {
+		this.informacoesSobreIntituicao = informacoesSobreIntituicao;
+	}
+
+	public boolean getRecebeBeneficio() {
+		return recebeBeneficio;
+	}
+
+	public void setRecebeBeneficio(Boolean recebeBeneficio) {
+		this.recebeBeneficio = recebeBeneficio;
+	}
+
+	public Boolean isRequisitouVagaParaOutraCriancao() {
+		return requisitouVagaParaOutraCriancao;
+	}
+
+	public void setRequisitouVagaParaOutraCriancao(
+	      Boolean requisitouVagaParaOutraCriancao) {
+		this.requisitouVagaParaOutraCriancao = requisitouVagaParaOutraCriancao;
+	}
+
+	public Integer getNumeroFilhosMatriculados() {
+		return numeroFilhosMatriculados;
+	}
+
+	public void setNumeroFilhosMatriculados(Integer numeroFilhosMatriculados) {
+		this.numeroFilhosMatriculados = numeroFilhosMatriculados;
+	}
+
+	public Boolean getRequisitouOutraVaga() {
+		return requisitouOutraVaga;
+	}
+
+	public Boolean getRequisitouVagaParaOutraCriancao() {
+		return requisitouVagaParaOutraCriancao;
 	}
 }

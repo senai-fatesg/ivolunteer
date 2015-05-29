@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
+import br.com.ambientinformatica.ivolunteer.entidade.Cidade;
 import br.com.ambientinformatica.ivolunteer.entidade.Endereco;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEscolaridade;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
@@ -24,20 +25,20 @@ import br.com.ambientinformatica.ivolunteer.persistencia.PessoaDao;
 @Controller("CandidatoControl")
 @Scope("conversation")
 public class CandidatoControl {
-	//TODO corrigir os enumeradores, pegando por meio da pessoa pronto
 	//TODO corrigir as grids e tira os nomes duplicados 
 	//TODO termina a modelagem da tela
 	//TODO realziar a implementação da grid
 	//TODO realizar o primeiro insert na tabela de pessoa
-	//TODO corrigir todos os atributos de pessoa que estão na classe controlador
 	
 	private Pessoa pessoa = new Pessoa();
+	private Pessoa pessoaCandidato = new Pessoa();
 	
 	private List<Pessoa> listaPessoa = new ArrayList<Pessoa>();
 	private Telefone telefone = new Telefone();
 	private List<Telefone> listaTelefone = new ArrayList<Telefone>();
 	private Endereco endereco = new Endereco();
 	private List<Endereco> listaEndereco = new ArrayList<Endereco>();
+	private Cidade cidade = new Cidade();
 
 	@Autowired
 	private PessoaDao PessoaDao;
@@ -49,9 +50,13 @@ public class CandidatoControl {
 
 	public void confirmar(ActionEvent evt) {
 		try {
-			PessoaDao.alterar(pessoa);
+			//inserindo todos os responsaveis dentro de candidato
+			pessoaCandidato.setListaPessoaRelacionada(listaPessoa);
+			//alterando o candidato
+			PessoaDao.alterar(pessoaCandidato);
 			listar(evt);
 			pessoa = new Pessoa();
+			pessoaCandidato = new Pessoa();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -89,7 +94,6 @@ public class CandidatoControl {
 			UtilFaces.addMensagemFaces(erro);
 		}
 	}
-	
 	
 	public void listar(ActionEvent evt) {
 		try {
@@ -144,10 +148,15 @@ public class CandidatoControl {
 		return retorno;
 	}
 
+		
 	public void adicioneEndereco(Endereco endereco) {
 		this.endereco = endereco;
 		listaEndereco.add(this.endereco);
 		pessoa.setListaEndereco(listaEndereco);
+	}
+	
+	public void gerarPdf(){
+		return;
 	}
 
 	public Pessoa getPessoa() {
@@ -188,5 +197,21 @@ public class CandidatoControl {
 
 	public void setListaEndereco(List<Endereco> listaEndereco) {
 		this.listaEndereco = listaEndereco;
+	}
+
+	public List<Pessoa> getListaPessoa() {
+		return listaPessoa;
+	}
+
+	public void setListaPessoa(List<Pessoa> listaPessoa) {
+		this.listaPessoa = listaPessoa;
+	}
+
+	public Pessoa getPessoaCandidato() {
+		return pessoaCandidato;
+	}
+
+	public void setPessoaCandidato(Pessoa pessoaCandidato) {
+		this.pessoaCandidato = pessoaCandidato;
 	}
 }

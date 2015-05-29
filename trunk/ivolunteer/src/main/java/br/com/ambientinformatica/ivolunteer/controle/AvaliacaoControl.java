@@ -34,8 +34,13 @@ public class AvaliacaoControl {
 	private EnumQuestao tipoQuestao = EnumQuestao.D;
 	private Alternativa alternativa = new Alternativa();
 
+//	@Autowired
+//	private AvaliacaoDao avaliacaoDao;
 	@Autowired
-	private AvaliacaoDao avaliacaoDao;
+	private Alternativa alternativaDao;
+	
+	
+	
 	//Insere Alternativas em Questao do tipo Objetiva 
 	public void addAlternativa(ActionEvent ev) {
 		try {
@@ -64,12 +69,12 @@ public class AvaliacaoControl {
 		}
 	}
 	
-	
+	//Remove a Questão
 	public void remQuestao(Object objeto){
 		try {
 			this.avaliacao.remQuestao(objeto);
 		} catch (Exception e) {
-			// TODO: handle exception
+			UtilFaces.addMensagemFaces(e);
 		}
 	}
 	
@@ -85,6 +90,16 @@ public class AvaliacaoControl {
 		}
 		this.objetiva = new Objetiva();
 		this.discursiva = new Discursiva();
+	}
+	
+	//Salvar Avaliacao
+	public void salvar(ActionEvent event){
+		try {
+			this.alternativaDao.
+			this.avaliacao = new Avaliacao();
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
 	}
 	
 	public Objetiva getObjetiva() {

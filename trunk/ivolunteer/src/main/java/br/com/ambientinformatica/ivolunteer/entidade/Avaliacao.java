@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,9 +26,6 @@ public class Avaliacao {
 	private String descricao;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
-
-	@OneToOne
-	private Pessoa pessoa;
 
 	@Transient
 	private List<Questao> questoes = new ArrayList<Questao>();
@@ -72,14 +68,6 @@ public class Avaliacao {
 		this.data = data;
 	}
 
-	public Pessoa getPessoa() {
-		return pessoa;
-	}
-
-	public void setPessoa(Pessoa pessoa) {
-		this.pessoa = pessoa;
-	}
-
 	public List<Questao> getQuestoes() {
 		return questoes;
 	}
@@ -106,7 +94,7 @@ public class Avaliacao {
 		Questao questaoProcessar = (Questao) questao;
 		this.discursivas.remove(questaoProcessar);
 		this.objetivas.remove(questaoProcessar);
-		this.questoes.remove(questaoProcessar);	
+		this.questoes.remove(questaoProcessar);
 
 	}
 

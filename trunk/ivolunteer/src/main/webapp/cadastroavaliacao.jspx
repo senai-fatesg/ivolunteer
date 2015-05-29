@@ -20,11 +20,11 @@
 				</a:field>
 				<a:newLine />
 				<a:newLine />
-				<p:tabView id="tabQuestoes" >
-					<p:ajax event="tabChange" listener="#{AvaliacaoControl.alteraTab}"/>
+				<p:tabView id="tabQuestoes">
+					<p:ajax event="tabChange" listener="#{AvaliacaoControl.alteraTab}" />
 					<p:tab title="Discursiva" id="tabDiscursiva">
 						<a:field label="Ordem" width="100%">
-							<p:spinner max="999" min="0" id="ordemDiscursiva" 
+							<p:spinner max="999" min="0" id="ordemDiscursiva"
 								value="#{AvaliacaoControl.discursiva.ordem}" style="width:238px" />
 						</a:field>
 						<a:newLine />
@@ -70,7 +70,7 @@
 							<p:column headerText="Avaliacao">
 								<h:outputText value="#{item.descricao}"></h:outputText>
 							</p:column>
-							<p:column width="35" >
+							<p:column width="35">
 								<p:commandButton icon="ui-icon-closethick"
 									action="#{AvaliacaoControl.remAlternativa(item)}"
 									update="alternativas" />
@@ -81,7 +81,7 @@
 				</p:tabView>
 				<a:newLine />
 				<p:commandButton value="Adicionar Questão" icon="ui-icon-plusthick"
-					actionListener="#{AvaliacaoControl.addQuestao}" update="questoesTable" />
+					actionListener="#{AvaliacaoControl.addQuestao}" update="@all" />
 				<a:newLine />
 				<a:newLine />
 				<p:dataTable id="questoesTable"
@@ -91,19 +91,27 @@
 						<h:outputLabel value="#{questaoItem.ordem}" />
 					</p:column>
 					<p:column headerText="Tipo" width="60">
-					<h:outputLabel value="#{questaoItem.tipoQuestao.descricao}"/>
+						<h:outputLabel value="#{questaoItem.tipoQuestao.descricao}" />
 					</p:column>
 					<p:column headerText="Pergunta">
 						<h:outputLabel value="#{questaoItem.pergunta}" />
 					</p:column>
 					<p:column width="35">
-						<p:commandButton icon="ui-icon-closethick" 
-									action="#{AvaliacaoControl.remAlternativa(item)}"
-									update="alternativas" />
+						<p:commandButton icon="ui-icon-closethick"
+							action="#{AvaliacaoControl.remQuestao(questaoItem)}"
+							update="questoesTable" />
 					</p:column>
 				</p:dataTable>
-				<a:newLine />				
+				<a:newLine />
 			</p:panel>
+			<p:separator />
+			<a:field spaceLeft="15px">
+				<p:commandButton value="Salvar" icon="ui-icon-disk" actionListener="#{AvaliacaoControl.salvar}"/>
+			</a:field>						
+			<a:field spaceLeft="15px">
+				<p:commandButton value="Excluir" icon="ui-icon-trash"/>
+			</a:field>
+			<a:newLine />
 		</h:form>
 	</ui:define>
 </ui:composition>

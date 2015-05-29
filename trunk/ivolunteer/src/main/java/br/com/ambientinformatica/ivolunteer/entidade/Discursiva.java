@@ -3,21 +3,21 @@ package br.com.ambientinformatica.ivolunteer.entidade;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 
-
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
 public class Discursiva extends Questao {
-	
-	public Discursiva (){
+
+	public Discursiva() {
 		super();
 	}
-	private int numeroLinhas;
 
-	public int getNumeroLinhas() {
+	private Integer numeroLinhas;
+
+	public Integer getNumeroLinhas() {
 		return numeroLinhas;
 	}
 
-	public void setNumeroLinhas(int numeroLinhas) {
+	public void setNumeroLinhas(Integer numeroLinhas) {
 		this.numeroLinhas = numeroLinhas;
 	}
 

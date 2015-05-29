@@ -9,5 +9,5 @@ public interface FuncionarioDao extends Persistencia<Funcionario> {
 
 	List<Funcionario> listarPorNome(String query);
 	
-	List<Funcionario> carregarFuncionario(Funcionario funcionario);
+	Funcionario carregarFuncionario(Funcionario funcionario);
 }

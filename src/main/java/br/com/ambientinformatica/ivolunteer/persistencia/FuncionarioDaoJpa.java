@@ -2,12 +2,14 @@ package br.com.ambientinformatica.ivolunteer.persistencia;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
 import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.jpa.persistencia.PersistenciaJpa;
+import br.com.ambientinformatica.util.UtilLog;
 
 @Repository("funcionarioDao")
 public class FuncionarioDaoJpa extends PersistenciaJpa<Funcionario> implements FuncionarioDao{
@@ -26,15 +28,19 @@ public class FuncionarioDaoJpa extends PersistenciaJpa<Funcionario> implements F
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Funcionario> carregarFuncionario(Funcionario funcionario) {
+	public Funcionario carregarFuncionario(Funcionario funcionario) {
 		
+		try{
 		Query query = em.createQuery("select f from Funcionario f "
 				+ " left join fetch f.frequencias freq "
 				+ " left join fetch f.gradesHorario grade "
 				+ " left join fetch f.atividadesDiaria atividade "
 				+ " where f  = :funcionario");
 		query.setParameter("funcionario", funcionario);
-		return (List<Funcionario>) query.getResultList();
+		return (Funcionario) query.getSingleResult();
+		}catch(NoResultException nre){
+			return null;
+		}
 	}
 	
 	

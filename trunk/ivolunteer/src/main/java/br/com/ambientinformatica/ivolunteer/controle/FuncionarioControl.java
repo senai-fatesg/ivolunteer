@@ -239,9 +239,8 @@ public class FuncionarioControl {
 
 	}
 
-	public List<Funcionario> carregarFuncionario(ActionEvent evt) {
-		List<Funcionario> func = funcionarioDao.carregarFuncionario(funcionario);
-		return func;
+	public Funcionario carregarFuncionario(ActionEvent evt) {
+		return funcionarioDao.carregarFuncionario(funcionario);
 	}
 
 	public List<Funcionario> consultarFuncionario(String query) {

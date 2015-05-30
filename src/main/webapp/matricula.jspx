@@ -11,7 +11,7 @@
 			<p:panel header="Formulário" id="panel">
 				<p:tabView cache="true">
 					<p:tab title="Aluno" id="aluno">
-						<p:panel id="painelAluno" style="padding-left:20%">
+						<p:panel id="painelAluno" style="padding-left:15%">
 
 							<a:field label="Nome">
 								<p:inputText value="#{AlunoControl.aluno.nomePessoa}"
@@ -42,40 +42,106 @@
 
 							<a:newLine />
 
-							<a:field label="UF">
+							<a:field label="Bairro">
+								<p:inputText value="#{AlunoControl.endereco.bairro}"
+									style="width:150px" />
+							</a:field>
+
+							<a:field label="Rua" spaceLeft="15px">
+								<p:inputText value="#{AlunoControl.endereco.ruaOuAvenida}"
+									style="width:310px" />
+							</a:field>
+
+							<a:field label="Numero" spaceLeft="15px">
+								<p:inputText value="#{AlunoControl.endereco.numero}"
+									style="width:100px" />
+							</a:field>
+
+							<a:field label="Quadra" spaceLeft="15px">
+								<p:inputText value="#{AlunoControl.endereco.quadra}"
+									style="width:200px" />
+							</a:field>
+
+							<a:newLine />
+
+							<a:field label="Lote" >
+								<p:inputText value="#{AlunoControl.endereco.lote}"
+									style="width:60px" />
+							</a:field>
+
+							<a:field label="Complemento"  spaceLeft="15px">
+								<p:inputText value="#{AlunoControl.endereco.complemento}"
+									style="width:300px" />
+							</a:field>
+							<a:field label="Cidade"  spaceLeft="15px">
+								<p:inputText value="#{AlunoControl.endereco.cidade.nomeCidade}"
+									style="width:200px" />
+							</a:field>
+
+							<a:field label="UF" spaceLeft="15px">
 								<p:autoComplete id="uf" dropdown="true"
-									value="#{AlunoControl.cidade.enumEstado}"
+									value="#{AlunoControl.endereco.cidade.enumEstado}"
 									completeMethod="#{AlunoControl.completeEnumUf}"
 									style="margin-top: -10px" />
 							</a:field>
 
 							<a:newLine />
 							<a:newLine />
-							
-							<a:field label="Rua" spaceLeft="15px">
-								<p:inputText value="#{AlunoControl.aluno.listaEndereco.ruaOuAvenida}"></p:inputText>
-							</a:field>
-							
-							<a:field label="Rua" spaceLeft="15px">
-								<p:inputText value="#{AlunoControl.aluno.listaEndereco.ruaOuAvenida}"></p:inputText>
-							</a:field>
-							
-							<a:field label="Bairro" spaceLeft="15px">
-								<p:inputText value="#{AlunoControl.aluno.listaEndereco.bairro}"></p:inputText>
-							</a:field>
-							
-							<a:field label="CEP" spaceLeft="15px">
-								<p:inputText value="#{AlunoControl.aluno.listaEndereco.Cep}"></p:inputText>
-							</a:field>
-							
-							<a:field label="CEP" spaceLeft="15px">
-								<p:inputText value="#{AlunoControl.aluno.listaEndereco.Cep}"></p:inputText>
+
+							<a:field>
+								<p:commandButton actionListener="#{AlunoControl.addEndereco}"
+									value="Adicionar Endereco" icon="ui-icon-plusthick"
+									update="enderecos,painelEndereco" ajax="false"
+									style="margin-Bottom:15px; margin-left:-90%;" />
 							</a:field>
 
+							<p:panel id="paineEndereco" style="margin-left:-18%; margin-bottom:15px;">
+
+								<p:dataTable id="enderecos" style="width:100%"
+									emptyMessage="Sem Registros"
+									value="#{AlunoControl.aluno.listaEndereco}" var="endereco">
+									<p:column headerText="Bairro" width="50px">
+										<h:outputText value="#{endereco.bairro}"></h:outputText>
+									</p:column>
+
+									<p:column headerText="Rua" width="50px">
+										<h:outputText value="#{endereco.ruaOuAvenida}"></h:outputText>
+									</p:column>
+
+									<p:column headerText="Numero" width="35px">
+										<h:outputText value="#{endereco.numero}"></h:outputText>
+									</p:column>
+
+									<p:column headerText="Quadra" width="35px">
+										<h:outputText value="#{endereco.quadra}"></h:outputText>
+									</p:column>
+
+									<p:column headerText="Complemento" width="100px">
+										<h:outputText value="#{endereco.complemento}"></h:outputText>
+									</p:column>
+
+									<p:column headerText="Cidade" width="100px">
+										<h:outputText value="#{endereco.cidade.nomeCidade}"></h:outputText>
+									</p:column>
+
+									<p:column headerText="Uf" width="35px">
+										<h:outputText value="#{endereco.cidade.enumEstado.descricao}"></h:outputText>
+									</p:column>
+
+									<p:column headerText="Remover">
+										<p:commandButton icon="ui-icon-closethick"
+											action="#{AlunoControl.removerEndereco(item)}"
+											update="enderecos" />
+									</p:column>
+								</p:dataTable>
+								<a:newLine />
+
+							</p:panel>
 						</p:panel>
 					</p:tab>
 
-					<p:tab title="Matricula" id="tabMatricula">
+					<p:tab title="Matricula" id="tabMatricula"
+						style="margin-left:-110px">
 						<p:panel id="painelMatricula">
 
 							<a:field label="Certidão de Nascimento Antiga:">

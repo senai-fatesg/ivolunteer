@@ -14,6 +14,8 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.IndexColumn;
+
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
 public class Funcionario extends Pessoa {
@@ -81,37 +83,39 @@ public class Funcionario extends Pessoa {
 	@Enumerated
 	private EnumFuncao funcao;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "funcionario_id")
+	@IndexColumn(name = "id")
 	private List<Frequencia> frequencias = new ArrayList<Frequencia>();
 
-	@OneToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "funcionario_id")
+	@IndexColumn(name = "id")
 	private List<GradeHorario> gradesHorario = new ArrayList<GradeHorario>();
 
-	@OneToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "funcionario_id")
+	@IndexColumn(name = "id")
 	private List<AtividadeDiaria> atividadesDiaria = new ArrayList<AtividadeDiaria>();
 
-	public void addAtividadeDiaria(AtividadeDiaria atividadeDiaria){
-		if(!atividadesDiaria.contains(atividadeDiaria)){
+	public void addAtividadeDiaria(AtividadeDiaria atividadeDiaria) {
+		if (!atividadesDiaria.contains(atividadeDiaria)) {
 			atividadesDiaria.add(atividadeDiaria);
 		}
 	}
-	
-	public void addGradeHorario(GradeHorario gradeHorario){
-		if(!gradesHorario.contains(gradeHorario)){
+
+	public void addGradeHorario(GradeHorario gradeHorario) {
+		if (!gradesHorario.contains(gradeHorario)) {
 			gradesHorario.add(gradeHorario);
 		}
 	}
-	
-	public void addFrequencia(Frequencia frequencia){
-		if(!frequencias.contains(frequencia)){
+
+	public void addFrequencia(Frequencia frequencia) {
+		if (!frequencias.contains(frequencia)) {
 			frequencias.add(frequencia);
 		}
 	}
-	
-	
+
 	public Funcionario() {
 		super();
 	}
@@ -344,5 +348,4 @@ public class Funcionario extends Pessoa {
 		return atividadesDiaria;
 	}
 
-	
 }

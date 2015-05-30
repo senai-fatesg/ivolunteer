@@ -12,16 +12,16 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 
 @Entity
-@PrimaryKeyJoinColumn(name="id")
-public class Objetiva extends Questao{
-	
-	@OneToMany
-	private List<Alternativa> alternativas = new ArrayList<Alternativa>();
-	
-	public Objetiva(){
+@PrimaryKeyJoinColumn(name = "id")
+public class Objetiva extends Questao {
+
+	public Objetiva() {
 		super();
 		setTipoQuestao(EnumQuestao.O);
 	}
+
+	@OneToMany
+	private List<Alternativa> alternativas = new ArrayList<Alternativa>();
 
 	public List<Alternativa> getAlternativas() {
 		return alternativas;
@@ -31,14 +31,15 @@ public class Objetiva extends Questao{
 		this.alternativas = alternativas;
 	}
 
-	//Método que ira adicionar as alternativas
-	public void addAlternativa(Alternativa alternativa){
-		if(!this.alternativas.contains(alternativa)){
+	// Método que ira adicionar as alternativas
+	public void addAlternativa(Alternativa alternativa) {
+		if (!this.alternativas.contains(alternativa)) {
 			this.alternativas.add(alternativa);
 		}
 	}
-	//Método que ira remover as alternativas
-	public void remAlternativa(Alternativa alternativa){
+
+	// Método que ira remover as alternativas
+	public void remAlternativa(Alternativa alternativa) {
 		this.alternativas.remove(alternativa);
 	}
 }

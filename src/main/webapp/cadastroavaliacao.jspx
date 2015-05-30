@@ -8,6 +8,7 @@
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
 		<h:form>
+			<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 			<p:panel header="Cadastro de Avaliação" id="cadstroAvaliacao">
 				<a:field label="Título" width="100%">
 					<p:inputText value="#{AvaliacaoControl.avaliacao.titulo}"
@@ -106,10 +107,11 @@
 			</p:panel>
 			<p:separator />
 			<a:field spaceLeft="15px">
-				<p:commandButton value="Salvar" icon="ui-icon-disk" actionListener="#{AvaliacaoControl.salvar}"/>
-			</a:field>						
+				<p:commandButton value="Salvar" icon="ui-icon-disk"
+					actionListener="#{AvaliacaoControl.salvar}" update="@all" />
+			</a:field>
 			<a:field spaceLeft="15px">
-				<p:commandButton value="Excluir" icon="ui-icon-trash"/>
+				<p:commandButton value="Excluir" icon="ui-icon-trash" />
 			</a:field>
 			<a:newLine />
 		</h:form>

@@ -9,7 +9,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.SequenceGenerator;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Questao {
 
 	@Id
@@ -39,22 +39,6 @@ public class Questao {
 		this.pergunta = pergunta;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ordem;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		Questao other = (Questao) obj;
-		if (ordem != other.ordem)
-			return false;
-		return true;
-	}
-
 	public EnumQuestao getTipoQuestao() {
 		return tipoQuestao;
 	}
@@ -69,6 +53,22 @@ public class Questao {
 
 	public void setOrdem(Integer ordem) {
 		this.ordem = ordem;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ordem;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		Questao other = (Questao) obj;
+		if (ordem != other.ordem)
+			return false;
+		return true;
 	}
 
 }

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.jpa.persistencia.PersistenciaJpa;
-import br.com.ambientinformatica.util.UtilLog;
 
 @Repository("funcionarioDao")
 public class FuncionarioDaoJpa extends PersistenciaJpa<Funcionario> implements FuncionarioDao{
@@ -26,7 +25,6 @@ public class FuncionarioDaoJpa extends PersistenciaJpa<Funcionario> implements F
 		return  (List<Funcionario>) query.getResultList();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Funcionario carregarFuncionario(Funcionario funcionario) {
 		

@@ -1,11 +1,10 @@
 package br.com.ambientinformatica.ivolunteer.controle;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
+import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
 
 import org.primefaces.event.SelectEvent;
@@ -20,6 +19,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstadoCivil;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumSexo;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoTelefone;
+import br.com.ambientinformatica.ivolunteer.entidade.Frequencia;
 import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.ivolunteer.entidade.GradeHorario;
 import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
@@ -36,26 +36,22 @@ public class FuncionarioControl {
 	private Cidade cidade = new Cidade();
 	private Telefone telefone = new Telefone();
 	private Pessoa pessoa = new Pessoa();
-	private List<Funcionario> frequencias = new ArrayList<Funcionario>();
+	private Frequencia frequencia = new Frequencia();
+	
+	private List<Frequencia> frequencias = new ArrayList<Frequencia>();
 
 	private GradeHorario gradeHorario = new GradeHorario();
-	
+
 	@Autowired
 	private FuncionarioDao funcionarioDao;
 
 	private List<Funcionario> funcionarios = new ArrayList<Funcionario>();
 
-//	@PostConstruct
-//	public void init() {
-//		listar(null);
-//	}
-
-	
-	public void adicionarGradeHorario(ActionEvent evt){
-		funcionario.addGradeHorario(gradeHorario);
-		gradeHorario = new GradeHorario();
+	@PostConstruct
+	public void init() {
+		// listar(null);
 	}
-	
+
 	public void confirmar(ActionEvent evt) {
 		try {
 			funcionarioDao.alterar(funcionario);
@@ -120,6 +116,16 @@ public class FuncionarioControl {
 		retornoListaTelefone.add(telefone);
 		funcionario.setListaTelefone(retornoListaTelefone);
 
+	}
+
+	public void adicionarFrequencia(ActionEvent evt) {
+		funcionario.addFrequencia(frequencia);
+		frequencia = new Frequencia();
+	}
+
+	public void adicionarGradeHorario(ActionEvent evt) {
+		funcionario.addGradeHorario(gradeHorario);
+		gradeHorario = new GradeHorario();
 	}
 
 	public List<String> completeEnumSexo(String query) {
@@ -229,16 +235,12 @@ public class FuncionarioControl {
 	}
 
 	// Frequencia - Carregar lista para registar presença
-	public void setSelectedCars(List<Funcionario> selectedCars) {
+	public void setFrequencias(List<Frequencia> selectedCars) {
 		frequencias = selectedCars;
 	}
 
-	public List<Funcionario> getSelectedCars() {
+	public List<Frequencia> getFrequencias() {
 		return frequencias;
-	}
-
-	public void addPresenca(SelectEvent evt) {
-
 	}
 
 	public Pessoa getPessoa() {
@@ -248,8 +250,8 @@ public class FuncionarioControl {
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
 	}
-
-	public Funcionario carregarFuncionario(ActionEvent evt) {
+	
+	public Funcionario carregarFuncionario(SelectEvent evt) {
 		return funcionarioDao.carregarFuncionario(funcionario);
 	}
 
@@ -258,12 +260,19 @@ public class FuncionarioControl {
 		return func;
 	}
 
+	public void carregarFrequenciaMes() {
+
+	}
+
+	// metodo para preencher a data
 	public void onDateSelect(SelectEvent event) {
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-		facesContext.addMessage(null,
-		      new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected",
-		            format.format(event.getObject())));
+		// FacesContext facesContext = FacesContext.getCurrentInstance();
+		// SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		// preenchendo data;
+		frequencia.setData((Date) event.getObject());
+		// facesContext.addMessage(null,
+		// new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected",
+		// format.format(event.getObject())));
 	}
 
 	public GradeHorario getGradeHorario() {
@@ -274,5 +283,12 @@ public class FuncionarioControl {
 		this.gradeHorario = gradeHorario;
 	}
 
-	
+	public Frequencia getFrequencia() {
+		return frequencia;
+	}
+
+	public void setFrequencia(Frequencia frequencia) {
+		this.frequencia = frequencia;
+	}
+
 }

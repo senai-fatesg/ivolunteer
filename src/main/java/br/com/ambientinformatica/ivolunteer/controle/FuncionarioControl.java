@@ -22,6 +22,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.EnumSexo;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoTelefone;
 import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.ivolunteer.entidade.GradeHorario;
+import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.Telefone;
 import br.com.ambientinformatica.ivolunteer.persistencia.FuncionarioDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
@@ -34,6 +35,7 @@ public class FuncionarioControl {
 	private Endereco endereco = new Endereco();
 	private Cidade cidade = new Cidade();
 	private Telefone telefone = new Telefone();
+	private Pessoa pessoa = new Pessoa();
 	private List<Funcionario> frequencias = new ArrayList<Funcionario>();
 
 	private GradeHorario gradeHorario = new GradeHorario();
@@ -129,20 +131,20 @@ public class FuncionarioControl {
 		return retorno;
 	}
 
-	public List<String> completeEnumUf(String query) {
-		List<String> retornoUf = new ArrayList<String>();
+	public List<EnumEstado> completeEnumUf(String query) {
+		List<EnumEstado> retornoUf = new ArrayList<EnumEstado>();
 		EnumEstado[] enunUf = EnumEstado.values();
 		for (int i = 0; i < enunUf.length; i++) {
-			retornoUf.add(enunUf[i].getDescricao());
+			retornoUf.add(enunUf[i]);
 		}
 		return retornoUf;
 	}
 
-	public List<String> completeEnumTipoTelefone(String query) {
-		List<String> retornoTipoTelefone = new ArrayList<String>();
+	public List<EnumTipoTelefone> completeEnumTipoTelefone(String query) {
+		List<EnumTipoTelefone> retornoTipoTelefone = new ArrayList<EnumTipoTelefone>();
 		EnumTipoTelefone[] enunTelefone = EnumTipoTelefone.values();
 		for (int i = 0; i < enunTelefone.length; i++) {
-			retornoTipoTelefone.add(enunTelefone[i].getDescricao());
+			retornoTipoTelefone.add(enunTelefone[i]);
 		}
 		return retornoTipoTelefone;
 	}
@@ -239,6 +241,14 @@ public class FuncionarioControl {
 
 	}
 
+	public Pessoa getPessoa() {
+		return pessoa;
+	}
+
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
+	}
+
 	public Funcionario carregarFuncionario(ActionEvent evt) {
 		return funcionarioDao.carregarFuncionario(funcionario);
 	}
@@ -252,8 +262,8 @@ public class FuncionarioControl {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		facesContext.addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected",
-						format.format(event.getObject())));
+		      new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected",
+		            format.format(event.getObject())));
 	}
 
 	public GradeHorario getGradeHorario() {

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -17,6 +18,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.EnumEscolaridade;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumFiliacao;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumSexo;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoCasa;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoTelefone;
 import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.Telefone;
@@ -25,37 +27,29 @@ import br.com.ambientinformatica.ivolunteer.persistencia.PessoaDao;
 @Controller("CandidatoControl")
 @Scope("conversation")
 public class CandidatoControl {
-	//TODO corrigir as grids e tira os nomes duplicados 
-	//TODO termina a modelagem da tela
-	//TODO realziar a implementação da grid
-	//TODO realizar o primeiro insert na tabela de pessoa
 	
 	private Pessoa pessoa = new Pessoa();
 	private Pessoa pessoaCandidato = new Pessoa();
 	
-	private List<Pessoa> listaPessoa = new ArrayList<Pessoa>();
 	private Telefone telefone = new Telefone();
-	private List<Telefone> listaTelefone = new ArrayList<Telefone>();
 	private Endereco endereco = new Endereco();
-	private List<Endereco> listaEndereco = new ArrayList<Endereco>();
 	private Cidade cidade = new Cidade();
+	private List<Endereco> listaEndereco = new ArrayList<Endereco>();
+	private List<Telefone> listaTelefone = new ArrayList<Telefone>();
+	private List<Pessoa> listaPessoa = new ArrayList<Pessoa>();
 
 	@Autowired
 	private PessoaDao PessoaDao;
 
 	@PostConstruct
 	public void init() {
-		listar(null);
+
 	}
 
 	public void confirmar(ActionEvent evt) {
 		try {
-			//inserindo todos os responsaveis dentro de candidato
-			pessoaCandidato.setListaPessoaRelacionada(listaPessoa);
 			//alterando o candidato
 			PessoaDao.alterar(pessoaCandidato);
-			listar(evt);
-			pessoa = new Pessoa();
 			pessoaCandidato = new Pessoa();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
@@ -65,9 +59,9 @@ public class CandidatoControl {
 	//Metodo responsavel por adicionar o telefone do responsavel
 	public void adicioneTelefone(ActionEvent evt) {
 		try {
-			listaTelefone.add(telefone);
-			this.telefone = new Telefone();
-			pessoa.setListaTelefone(listaTelefone);;
+			pessoa.addTelefone(telefone);
+			telefone = new Telefone();
+			listaTelefone = pessoa.getListaTelefone();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -76,84 +70,67 @@ public class CandidatoControl {
 	//Metodo responsavel por adicionar o endereco do responsavel
 	public void adicioneEndereco(ActionEvent evt) {
 		try{
-			listaEndereco.add(this.endereco);
-			this.endereco = new Endereco();
-			pessoa.setListaEndereco(listaEndereco);
+			pessoa.addEndereco(endereco);
+			endereco = new Endereco();
+			listaEndereco = pessoa.getListaEndereco();
 		}catch(Exception erro){
 			UtilFaces.addMensagemFaces(erro);
 		}
 	}
 	
-	//Metodo responsavel por adionar as pessoas relacionadas
+	//Metodo responsavel por adionar as pessoas relacionadas ao candidato
 	public void adicionePessoa(ActionEvent evt) {
 		try{
-			listaPessoa.add(this.pessoa);
-			this.pessoa = new Pessoa();
-			pessoa.setListaPessoaRelacionada(listaPessoa);
+			pessoaCandidato.addPessoa(pessoa);
+			pessoa = new Pessoa();
+			listaPessoa = pessoa.getListaPessoaRelacionada();
 		}catch(Exception erro){
 			UtilFaces.addMensagemFaces(erro);
 		}
 	}
 	
-	public void listar(ActionEvent evt) {
-		try {
-			listaPessoa = PessoaDao.listar();
-		} catch (Exception e) {
-			UtilFaces.addMensagemFaces(e.getMessage());
-		}
+	public List<SelectItem> getCompleteEnumFiliacao() {
+		return UtilFaces.getListEnum(EnumFiliacao.values());
 	}
 	
-	public List<String> completeEnumFiliacao(String query) {
-		List<String> retorno = new ArrayList<String>();
-		EnumFiliacao[] enunsFiliacao = EnumFiliacao.values();
-		for (int i = 0; i < enunsFiliacao.length; i++) {
-			retorno.add(enunsFiliacao[i].getDescricao());
-		}
-		return retorno;
+	public List<SelectItem> getCompleteEnumTipoCasa() {
+		return UtilFaces.getListEnum(EnumTipoCasa.values());
+	}
+	
+	public List<SelectItem> getCompleteEnumEstado() {
+		return UtilFaces.getListEnum(EnumEstado.values());
 	}
 
-	public List<String> completeEnumEstado(String query) {
-		List<String> retorno = new ArrayList<String>();
-		EnumEstado[] enunsEstado = EnumEstado.values();
-		for (int i = 0; i < enunsEstado.length; i++) {
-			retorno.add(enunsEstado[i].getDescricao());
-		}
-		return retorno;
+	public List<SelectItem> getCompleteEnumSexo() {
+		return UtilFaces.getListEnum(EnumSexo.values());
 	}
 
-	public List<String> completeEnumSexo(String query) {
-		List<String> retorno = new ArrayList<String>();
-		EnumSexo[] enunsSexo = EnumSexo.values();
-		for (int i = 0; i < enunsSexo.length; i++) {
-			retorno.add(enunsSexo[i].getDescricao());
-		}
-		return retorno;
+	public List<SelectItem> getCompleteEnumEscolaridade() {
+		return UtilFaces.getListEnum(EnumEscolaridade.values());
 	}
 
-	public List<String> completeEnumEscolaridade(String query) {
-		List<String> retorno = new ArrayList<String>();
-		EnumEscolaridade[] enunsEscolaridade = EnumEscolaridade.values();
-		for (int i = 0; i < enunsEscolaridade.length; i++) {
-			retorno.add(enunsEscolaridade[i].getDescricao());
-		}
-		return retorno;
-	}
-
-	public List<String> completeEnumTipoTelefone(String query) {
-		List<String> retorno = new ArrayList<String>();
-		EnumTipoTelefone[] enunsTipoTelefone = EnumTipoTelefone.values();
-		for (int i = 0; i < enunsTipoTelefone.length; i++) {
-			retorno.add(enunsTipoTelefone[i].getDescricao());
-		}
-		return retorno;
+	public List<SelectItem> getCompleteEnumTipoTelefone() {
+		return UtilFaces.getListEnum(EnumTipoTelefone.values());
 	}
 
 		
 	public void adicioneEndereco(Endereco endereco) {
-		this.endereco = endereco;
-		listaEndereco.add(this.endereco);
-		pessoa.setListaEndereco(listaEndereco);
+		pessoa.addEndereco(endereco);
+		endereco = new Endereco();
 	}
+	
+	public List<Telefone> getListaTelefone() {
+		return pessoa.getListaTelefone();
+	}
+	
+	public List<Endereco> getListaEndereco() {
+		return pessoa.getListaEndereco();
+	}
+
+	public List<Pessoa> getListaPessoa() {
+		return pessoa.getListaPessoaRelacionada();
+	}
+	
 	
 	public void gerarPdf(){
 		return;
@@ -175,36 +152,12 @@ public class CandidatoControl {
 		this.telefone = telefone;
 	}
 
-	public List<Telefone> getListaTelefone() {
-		return listaTelefone;
-	}
-
-	public void setListaTelefone(List<Telefone> listaTelefone) {
-		this.listaTelefone = listaTelefone;
-	}
-
 	public Endereco getEndereco() {
 		return endereco;
 	}
 
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
-	}
-
-	public List<Endereco> getListaEndereco() {
-		return listaEndereco;
-	}
-
-	public void setListaEndereco(List<Endereco> listaEndereco) {
-		this.listaEndereco = listaEndereco;
-	}
-
-	public List<Pessoa> getListaPessoa() {
-		return listaPessoa;
-	}
-
-	public void setListaPessoa(List<Pessoa> listaPessoa) {
-		this.listaPessoa = listaPessoa;
 	}
 
 	public Pessoa getPessoaCandidato() {

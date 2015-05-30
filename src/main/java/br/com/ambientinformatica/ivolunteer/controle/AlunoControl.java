@@ -75,6 +75,14 @@ public class AlunoControl {
 		this.cidade = cidade;
 	}
 
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
 	public List<String> completeEnumUf(String query) {
 		List<String> retornoUf = new ArrayList<String>();
 		EnumEstado[] enunUf = EnumEstado.values();
@@ -91,12 +99,6 @@ public class AlunoControl {
 			retorno.add(enunSexo[i].getDescricao());
 		}
 		return retorno;
-	}
-
-	public void adicionarListaEndereco(ActionEvent evt) {
-		List<Endereco> retornoListaEndereco = new ArrayList<Endereco>();
-		retornoListaEndereco.add(endereco);
-		//this.addEndereco(retornoListaEndereco);
 	}
 
 	public void addEndereco(ActionEvent ev) {

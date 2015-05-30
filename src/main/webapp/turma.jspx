@@ -15,42 +15,32 @@
 					<p:inputText id="nome" value="#{TurmaControl.turma.nome}"></p:inputText>
 				</a:field>
 
-				<a:newLine />
+				<a:field label="Agrupamento De Turma" style="width:125px">
+					<p:selectOneMenu id="agrupamentodeturma" >
+					</p:selectOneMenu>
 
-				<a:field label="Agrupamento De Turma">
-					<p:autoComplete id="agrupamentodeturma" dropdown="true" 
-					value="#{TurmaControl.agrupamentoTurma }"
-					completeMethod="#{AgrupamentoTurmaControl.consultarAgrupamento}"
-					var="agru" itemLabel="#{agrup.identificador}" itemValue="#{agrup}"
-								 forceSelection="true"
-								effect="fade"
-					/>
 				</a:field>
 
 				<a:newLine />
 
 				<a:field label="Turmo">
-					<p:autoComplete id="turmo" dropdown="true" 
-					value="#{TurmaControl.turnoselecionado}" 
-					completeMethod="#{TurmaControl.completeEnumTurno}"
-					/>
+					<p:autoComplete id="turmo" dropdown="true"
+						value="#{TurmaControl.turnoselecionado}"
+						completeMethod="#{TurmaControl.completeEnumTurno}" />
 				</a:field>
 
-				<a:newLine />
+				<a:field label="Quantidade Maxima De Alunos " width="100%">
 
-				<a:field label="Quantidade Maxima De Alunos ">
-					<p:spinner id="maximoAlunos" dropdown="true" 
-					value="#{TurmaControl.turma.maximoAlunos}"/>
+					<p:spinner max="999" min="0" id="maximoAlunos"
+						value="#{TurmaControl.turma.maximoAlunos}" style="width:238px" />
 				</a:field>
-
-				<a:newLine />
 
 				<a:field label="Professor">
-					<p:autoComplete id="funcionario" dropdown="true" />
+					<p:selectOneMenu id="funcionario">
+						
+					</p:selectOneMenu>
+
 				</a:field>
-
-
-				<a:newLine />
 
 			</p:panel>
 

@@ -26,7 +26,7 @@
 					<a:newLine />
 
 					<a:field label="Nome" width="300px;">
-						<p:inputText id="nomePessoa"
+						<p:inputText id="nomePessoa" disabled="#{!state.checkStatus}"
 							value="#{PesquisaSelecao.pessoa.nomePessoa}"></p:inputText>
 					</a:field>
 					<a:newLine />

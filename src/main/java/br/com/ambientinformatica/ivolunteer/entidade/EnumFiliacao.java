@@ -1,6 +1,8 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
-public enum EnumFiliacao {
+import br.com.ambientinformatica.util.IEnum;
+
+public enum EnumFiliacao implements IEnum{
 
 	PAI("Pai"),
 	MAE("Mae"), 

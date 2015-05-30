@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,37 +39,54 @@ public class Pessoa {
 	private String certidaoNascimento;
 	private String informacoesSobreIntituicao;
 	
+	@Enumerated(EnumType.STRING)
 	private EnumSexo sexo;
+	
+	@Enumerated(EnumType.STRING)
 	private EnumEscolaridade escolaridade;
+	
+	@Enumerated(EnumType.STRING)
 	private EnumTipoPessoa tipoPessoa;
+	
+	@Enumerated(EnumType.STRING)
 	private EnumEstadoCivil estadoCivil;
+	
+	@Enumerated(EnumType.STRING)
 	private EnumTipoCasa tipoMoradia;
+
 	private String necessidadesEspeciais;
+
+	@Enumerated(EnumType.STRING)
 	private EnumFiliacao filiacao;
+	@Enumerated(EnumType.STRING)
+	
 	private EnumSexo enumSexo;
+	@Enumerated(EnumType.STRING)
+
 	private EnumEscolaridade enumEscolaridade;
+	@Enumerated(EnumType.STRING)
 	private EnumTipoTelefone enumTipoPessoa;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataExpedicao;
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataNascimento;
 	
 	//data de vencimento criada devido o documento de cadastro de candidato ter validade de 6 meses
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataVencimento;
 	
-	private BigDecimal valorBeneficio;
-	private BigDecimal renda;
-	private BigDecimal valorAluguel;
-	private BigDecimal valorInicial;
-	private BigDecimal valorFinal;
+	private BigDecimal valorBeneficio = BigDecimal.ZERO;
+	private BigDecimal renda = BigDecimal.ZERO;
+	private BigDecimal valorAluguel = BigDecimal.ZERO;
+	private BigDecimal valorInicial = BigDecimal.ZERO;
+	private BigDecimal valorFinal = BigDecimal.ZERO;
 	private Integer numeroDePessoasMoradia;
 	private Integer numeroFilhosMatriculados;
 	
 	private Boolean paisVivemJuntos;
 	private Boolean requisitouOutraVaga;
-	private Boolean recebeBeneficio;
+	private Boolean recebeBeneficio = false;
 	private Boolean requisitouVagaParaOutraCriancao;
 	
 	
@@ -108,8 +127,8 @@ public class Pessoa {
 	}
 	
 	public void addEndereco(Endereco endereco){
-		if(!this.listaEndereco.contains(endereco)){
-			this.listaEndereco.add(endereco);
+		if(!listaEndereco.contains(endereco)){
+			listaEndereco.add(endereco);
 		}
 	}
 	
@@ -372,20 +391,9 @@ public class Pessoa {
 	}
 
 
-	public void setListaEndereco(List<Endereco> listaEndereco) {
-		this.listaEndereco = listaEndereco;
-	}
-
-
 	public List<Telefone> getListaTelefone() {
 		return listaTelefone;
 	}
-
-
-	public void setListaTelefone(List<Telefone> listaTelefone) {
-		this.listaTelefone = listaTelefone;
-	}
-
 
 	public void setNecessidadesEspeciais(String necessidadesEspeciais) {
 		this.necessidadesEspeciais = necessidadesEspeciais;
@@ -407,10 +415,6 @@ public class Pessoa {
 
 	public String getInformacoesSobreIntituicao() {
 		return informacoesSobreIntituicao;
-	}
-
-	public void setInformacoesSobreIntituicao(String informacoesSobreIntituicao) {
-		this.informacoesSobreIntituicao = informacoesSobreIntituicao;
 	}
 
 	public boolean getRecebeBeneficio() {

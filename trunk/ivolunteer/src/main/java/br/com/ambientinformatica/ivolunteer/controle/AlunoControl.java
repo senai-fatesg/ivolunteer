@@ -13,8 +13,10 @@ import org.springframework.stereotype.Controller;
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.Aluno;
 import br.com.ambientinformatica.ivolunteer.entidade.Cidade;
+import br.com.ambientinformatica.ivolunteer.entidade.Endereco;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumSexo;
+import br.com.ambientinformatica.ivolunteer.entidade.Telefone;
 import br.com.ambientinformatica.ivolunteer.persistencia.AlunoDao;
 
 @Controller("AlunoControl")
@@ -26,6 +28,7 @@ public class AlunoControl {
 
 	@Autowired
 	private AlunoDao alunoDao;
+	Endereco endereco = new Endereco();
 
 	private List<Aluno> alunos = new ArrayList<Aluno>();
 
@@ -88,6 +91,29 @@ public class AlunoControl {
 			retorno.add(enunSexo[i].getDescricao());
 		}
 		return retorno;
+	}
+
+	public void adicionarListaEndereco(ActionEvent evt) {
+		List<Endereco> retornoListaEndereco = new ArrayList<Endereco>();
+		retornoListaEndereco.add(endereco);
+		aluno.setListaEndereco(retornoListaEndereco);
+	}
+
+	public void addEndereco(ActionEvent ev) {
+		try {
+			this.aluno.addEndereco(endereco);
+			this.endereco = new Endereco();
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
+
+	public void removerEndereco(Endereco endereco) {
+		try {
+			this.aluno.removerEdereco(endereco);
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
 	}
 
 }

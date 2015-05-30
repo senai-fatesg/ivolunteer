@@ -7,92 +7,124 @@
 	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
+		<h:form>
+			<p:panel header="Formulário" id="panel">
+				<p:tabView cache="true">
+					<p:tab title="Aluno" id="aluno">
+						<p:panel id="painelAluno" style="padding-left:20%">
 
-		<p:panel header="Formulário" id="panel">
-			<p:tabView cache="true">
-				<p:tab title="Aluno" id="aluno">
+							<a:field label="Nome">
+								<p:inputText value="#{AlunoControl.aluno.nomePessoa}"
+									style="width:410px"></p:inputText>
+							</a:field>
 
-					<a:field label="Nome">
-						<p:inputText value="#{AlunoControl.aluno.nomePessoa}"
-							style="width:200px"></p:inputText>
-					</a:field>
+							<a:field label="Sexo" spaceLeft="15px">
+								<p:autoComplete id="sexo" dropdown="true"
+									value="#{AlunoControl.aluno.sexo}"
+									completeMethod="#{AlunoControl.completeEnumSexo}"
+									style="height:15px; margin-top: -10px; width:150px" />
+							</a:field>
 
-					<a:field label="Sexo" spaceLeft="15px">
-						<p:autoComplete id="sexo" dropdown="true"
-							value="#{AlunoControl.aluno.sexo}"
-							completeMethod="#{AlunoControl.completeEnumSexo}"
-							style="height:15px; margin-top: -10px; width:150px" />
-					</a:field>
+							<a:newLine />
 
-					<a:field label="Data Nascimento" width="150px" spaceLeft="15px">
-						<p:calendar value="#{AlunoControl.aluno.dataNascimento}"
-							locale="de" navigator="true" pattern="yyyy-MMM-dd" />
-					</a:field>
+							<a:field label="Data Nascimento" width="150px">
+								<p:calendar value="#{AlunoControl.aluno.dataNascimento}"
+									locale="de" navigator="true" pattern="yyyy-MMM-dd" />
+							</a:field>
 
-					<a:field label="Naturalidade" spaceLeft="75px">
-						<p:inputText value="#{AlunoControl.aluno.naturalidade}"></p:inputText>
-					</a:field>
+							<a:field label="Naturalidade" spaceLeft="85px">
+								<p:inputText value="#{AlunoControl.aluno.naturalidade}"></p:inputText>
+							</a:field>
 
-					<a:newLine />
+							<a:field label="Nacionalidade" spaceLeft="15px">
+								<p:inputText value="#{AlunoControl.aluno.nascionalidade}"></p:inputText>
+							</a:field>
 
-					<a:field label="UF">
-						<p:autoComplete id="uf" dropdown="true"
-							value="#{AlunoControl.cidade.enumEstado}"
-							completeMethod="#{AlunoControl.completeEnumUf}"
-							style="margin-top: -10px" />
-					</a:field>
+							<a:newLine />
 
-					<a:field label="Nacionalidade" spaceLeft="15px">
-						<p:inputText value="#{AlunoControl.aluno.nascionalidade}"></p:inputText>
-					</a:field>
+							<a:field label="UF">
+								<p:autoComplete id="uf" dropdown="true"
+									value="#{AlunoControl.cidade.enumEstado}"
+									completeMethod="#{AlunoControl.completeEnumUf}"
+									style="margin-top: -10px" />
+							</a:field>
 
-					<a:newLine />
+							<a:newLine />
+							<a:newLine />
+							
+							<a:field label="Rua" spaceLeft="15px">
+								<p:inputText value="#{AlunoControl.aluno.listaEndereco.ruaOuAvenida}"></p:inputText>
+							</a:field>
+							
+							<a:field label="Rua" spaceLeft="15px">
+								<p:inputText value="#{AlunoControl.aluno.listaEndereco.ruaOuAvenida}"></p:inputText>
+							</a:field>
+							
+							<a:field label="Bairro" spaceLeft="15px">
+								<p:inputText value="#{AlunoControl.aluno.listaEndereco.bairro}"></p:inputText>
+							</a:field>
+							
+							<a:field label="CEP" spaceLeft="15px">
+								<p:inputText value="#{AlunoControl.aluno.listaEndereco.Cep}"></p:inputText>
+							</a:field>
+							
+							<a:field label="CEP" spaceLeft="15px">
+								<p:inputText value="#{AlunoControl.aluno.listaEndereco.Cep}"></p:inputText>
+							</a:field>
 
-					<a:field label="Certidão de Nascimento Antiga:">
-					</a:field>
+						</p:panel>
+					</p:tab>
 
-					<a:field label="Livro" spaceLeft="15px">
-						<p:inputText
-							value="#{MatriculaControl.matricula.certidaoNascimentoAntigaLivro}"></p:inputText>
-					</a:field>
+					<p:tab title="Matricula" id="tabMatricula">
+						<p:panel id="painelMatricula">
 
-					<a:field label="Folha" spaceLeft="15px">
-						<p:inputText
-							value="#{MatriculaControl.matricula.certidaoNascimentoAntigaFolha}"></p:inputText>
-					</a:field>
+							<a:field label="Certidão de Nascimento Antiga:">
+							</a:field>
 
-					<a:field label="Termo" spaceLeft="15px">
-						<p:inputText
-							value="#{MatriculaControl.matricula.certidaoNascimentoAntigaCartorio}"></p:inputText>
-					</a:field>
+							<a:field label="Livro" spaceLeft="15px">
+								<p:inputText
+									value="#{MatriculaControl.matricula.certidaoNascimentoAntigaLivro}"></p:inputText>
+							</a:field>
 
-					<a:newLine />
+							<a:field label="Folha" spaceLeft="15px">
+								<p:inputText
+									value="#{MatriculaControl.matricula.certidaoNascimentoAntigaFolha}"></p:inputText>
+							</a:field>
 
-					<a:field label="Certidão de Nascimento Nova">
-						<p:inputText
-							value="#{MatriculaControl.matricula.certidaoNascimentoNova}"></p:inputText>
-					</a:field>
+							<a:field label="Termo" spaceLeft="15px">
+								<p:inputText
+									value="#{MatriculaControl.matricula.certidaoNascimentoAntigaCartorio}"></p:inputText>
+							</a:field>
 
-					<a:field label="NIS" spaceLeft="15px">
-						<p:inputText value="#{MatriculaControl.matricula.nIS}"></p:inputText>
-					</a:field>
+							<a:newLine />
 
-					<a:field label="ID INEP" spaceLeft="15px">
-						<p:inputText value="#{MatriculaControl.matricula.idINEP}"></p:inputText>
-					</a:field>
+							<a:field label="Certidão de Nascimento Nova">
+								<p:inputText
+									value="#{MatriculaControl.matricula.certidaoNascimentoNova}"></p:inputText>
+							</a:field>
 
-					<a:field label="Bolsa Família" spaceLeft="15px">
-						<p:inputText value="#{MatriculaControl.matricula.bolsaFamilia}"></p:inputText>
-					</a:field>
+							<a:field label="NIS" spaceLeft="15px">
+								<p:inputText value="#{MatriculaControl.matricula.nIS}"></p:inputText>
+							</a:field>
 
-					<a:newLine />
+							<a:field label="ID INEP" spaceLeft="15px">
+								<p:inputText value="#{MatriculaControl.matricula.idINEP}"></p:inputText>
+							</a:field>
 
-					<p:commandButton actionListener="#{MatriculaControl.confirmar}"
-						value="Confirmar">
-					</p:commandButton>
-				</p:tab>
-			</p:tabView>
-		</p:panel>
+							<a:field label="Bolsa Família" spaceLeft="15px">
+								<p:inputText value="#{MatriculaControl.matricula.bolsaFamilia}"></p:inputText>
+							</a:field>
 
+							<a:newLine />
+						</p:panel>
+					</p:tab>
+				</p:tabView>
+
+				<p:commandButton actionListener="#{MatriculaControl.confirmar}"
+					value="Confirmar">
+				</p:commandButton>
+
+			</p:panel>
+		</h:form>
 	</ui:define>
 </ui:composition>

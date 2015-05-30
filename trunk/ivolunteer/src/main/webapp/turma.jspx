@@ -14,13 +14,11 @@
 				<a:field label="Nome" width="300px;">
 					<p:inputText id="nome" value="#{TurmaControl.turma.nome}"></p:inputText>
 				</a:field>
-
+				<a:newLine />
 				<a:field label="Agrupamento De Turma" style="width:125px">
-					<p:selectOneMenu id="agrupamentodeturma" >
+					<p:selectOneMenu id="agrupamentodeturma">
 					</p:selectOneMenu>
-
 				</a:field>
-
 				<a:newLine />
 
 				<a:field label="Turmo">
@@ -28,27 +26,67 @@
 						value="#{TurmaControl.turnoselecionado}"
 						completeMethod="#{TurmaControl.completeEnumTurno}" />
 				</a:field>
-
+				<a:newLine />
 				<a:field label="Quantidade Maxima De Alunos " width="100%">
 
 					<p:spinner max="999" min="0" id="maximoAlunos"
 						value="#{TurmaControl.turma.maximoAlunos}" style="width:238px" />
 				</a:field>
 
+
+
 				<a:field label="Professor">
 					<p:selectOneMenu id="funcionario">
-						
 					</p:selectOneMenu>
-
 				</a:field>
+				<a:newLine />
+
 
 			</p:panel>
 
 			<a:newLine />
-
-			<p:commandButton value="Confirmar"></p:commandButton>
-
+			<p:commandButton value="Confirmar"
+				actionListener="#{TurmaControl.confirmar}"></p:commandButton>
+			<a:newLine />
 		</p:panel>
+
+		<p:dataTable id="turmas" value="#{TurmaControl.turmas }" var="tur"
+			width="100%" emptyMessage="Sem registros">
+			<f:facet name="header">
+				<h:outputText value="Lista de Turmas"></h:outputText>
+			</f:facet>
+			<p:column sortBy="#{tur.nome }">
+				<f:facet name="header">
+					<h:outputText value="Nome"></h:outputText>
+				</f:facet>
+				<h:outputText value="#{cont.nome }"></h:outputText>
+			</p:column>
+			<p:column sortBy="#{tur.agrupamentodeturma }">
+				<f:facet name="header">
+					<h:outputText value="Agrupamento De Turma"></h:outputText>
+				</f:facet>
+				<h:outputText value="#{tur.agrupamentodeturma }"></h:outputText>
+			</p:column>
+			<p:column sortBy="#{tur.Turmo }">
+				<f:facet name="header">
+					<h:outputText value="Turno"></h:outputText>
+				</f:facet>
+				<h:outputText value="#{tur.Turmo }"></h:outputText>
+			</p:column>
+			<p:column sortBy="#{tur.maximoAlunos }">
+				<f:facet name="header">
+					<h:outputText value="Quantidade Maxima De Alunos"></h:outputText>
+				</f:facet>
+				<h:outputText value="#{tur.maximoAlunos }"></h:outputText>
+			</p:column>
+			<p:column sortBy="#{tur.Turmo }">
+				<f:facet name="header">
+					<h:outputText value="Professor"></h:outputText>
+				</f:facet>
+				<h:outputText value="#{tur.Turmo }"></h:outputText>
+			</p:column>
+		</p:dataTable>
+
 
 	</ui:define>
 </ui:composition>

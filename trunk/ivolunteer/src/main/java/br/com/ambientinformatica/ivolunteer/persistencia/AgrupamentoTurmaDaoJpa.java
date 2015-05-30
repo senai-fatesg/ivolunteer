@@ -16,14 +16,5 @@ public class AgrupamentoTurmaDaoJpa extends PersistenciaJpa<AgrupamentoTurma>
 
 	private static final long serialVersionUID = 1L;
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<AgrupamentoTurma> listaPerNome(String nome) {
-		Query query = em.createQuery("select a from "
-				+ "AgrupamentoTurma a where upper(a.identificador) like :nome");
-		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
-
-		return (List<AgrupamentoTurma>) query.getResultList();
-	}
 
 }

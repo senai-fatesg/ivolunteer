@@ -25,10 +25,10 @@ public class AlunoControl {
 
 	private Aluno aluno = new Aluno();
 	Cidade cidade = new Cidade();
+	Endereco endereco = new Endereco();
 
 	@Autowired
 	private AlunoDao alunoDao;
-	Endereco endereco = new Endereco();
 
 	private List<Aluno> alunos = new ArrayList<Aluno>();
 
@@ -96,7 +96,7 @@ public class AlunoControl {
 	public void adicionarListaEndereco(ActionEvent evt) {
 		List<Endereco> retornoListaEndereco = new ArrayList<Endereco>();
 		retornoListaEndereco.add(endereco);
-		aluno.setListaEndereco(retornoListaEndereco);
+		//this.addEndereco(retornoListaEndereco);
 	}
 
 	public void addEndereco(ActionEvent ev) {

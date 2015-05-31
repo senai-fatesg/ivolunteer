@@ -19,7 +19,7 @@ public class Endereco {
 
 	private String ruaOuAvenida;
 
-	private String Cep;
+	private String cep;
 
 	private long numero;
 
@@ -53,11 +53,11 @@ public class Endereco {
 	}
 
 	public String getCep() {
-		return Cep;
+		return cep;
 	}
 
 	public void setCep(String cep) {
-		Cep = cep;
+		this.cep = cep;
 	}
 
 	public long getNumero() {

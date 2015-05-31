@@ -31,10 +31,12 @@
 									locale="de" navigator="true" pattern="yyyy-MMM-dd" />
 							</a:field>
 
-							<a:field label="CPF" width="200px" spaceLeft="125px">
-								<p:inputText
-									value="#{FuncionarioControl.funcionario.naturalidade}"
-									style="width:200px" />
+
+							<a:field label="CPF" width="300px;" spaceLeft="125px">
+								<p:inputMask id="cpf"
+									value="#{FuncionarioControl.funcionario.cpf }"
+									mask="999.999.999-99">
+								</p:inputMask>
 							</a:field>
 
 							<a:newLine />
@@ -59,11 +61,14 @@
 									style="width:150px" />
 							</a:field>
 
+
+
 							<a:field label="Sexo" spaceLeft="75px">
-								<p:autoComplete id="sexo" dropdown="true"
-									value="#{FuncionarioControl.funcionario.sexo}"
-									completeMethod="#{FuncionarioControl.completeEnumSexo}"
-									style="height:15px; margin-top: -10px; width:150px" />
+								<p:selectOneMenu id="sexo"
+									value="#{FuncionarioControl.funcionario.enumSexo }"
+									style="width:200px;">
+									<f:selectItems value="#{FuncionarioControl.completeEnumSexo }"></f:selectItems>
+								</p:selectOneMenu>
 							</a:field>
 
 							<a:newLine />
@@ -104,7 +109,7 @@
 
 							<a:newLine />
 
-							
+
 							<a:field label="Data do Exame" width="150px" spaceLeft="15px">
 								<p:calendar
 									value="#{FuncionarioControl.funcionario.dataExameAdmissional}"
@@ -213,14 +218,19 @@
 									style="width:200px" />
 							</a:field>
 
-							<a:field label="Numero" width="100px" spaceLeft="15px">
+							<a:field label="Numero" width="50px" spaceLeft="15px">
 								<p:inputText value="#{FuncionarioControl.endereco.numero}"
-									style="width:100px" />
+									style="width:50px" />
 							</a:field>
 
-							<a:field label="Quadra" width="200px" spaceLeft="15px">
+							<a:field label="Quadra" width="50px" spaceLeft="15px">
 								<p:inputText value="#{FuncionarioControl.endereco.quadra}"
-									style="width:200px" />
+									style="width:50px" />
+							</a:field>
+							
+							<a:field label="CEP" width="100px" spaceLeft="15px">
+								<p:inputText value="#{FuncionarioControl.endereco.cep}"
+									style="width:100px" />
 							</a:field>
 
 							<a:newLine />
@@ -240,11 +250,14 @@
 									style="width:200px" />
 							</a:field>
 
-							<a:field label="UF" spaceLeft="15px">
-								<p:autoComplete id="uf" dropdown="true"
-									value="#{FuncionarioControl.endereco.cidade.enumEstado}"
-									completeMethod="#{FuncionarioControl.completeEnumUf}"
-									style="margin-top: -10px" />
+							<a:field label="Estado" spaceLeft="15px">
+								<p:selectOneMenu id="uf"
+									value="#{FuncionarioControl.cidade.enumEstado}"
+									style="width:200px;">
+									<f:selectItems
+										value="#{FuncionarioControl.completeEnumEstado}"></f:selectItems>
+								</p:selectOneMenu>
+
 							</a:field>
 
 
@@ -254,7 +267,7 @@
 								<p:commandButton
 									actionListener="#{FuncionarioControl.addEndereco}"
 									value="Adicionar Endereco" icon="ui-icon-plusthick"
-									update="enderecos,painelEndereco" ajax="false"/>
+									update="enderecos,painelEndereco" ajax="false" />
 							</a:field>
 
 
@@ -285,9 +298,13 @@
 								<p:column headerText="Cidade" width="100px">
 									<h:outputText value="#{endereco.cidade.nomeCidade}"></h:outputText>
 								</p:column>
+								
+								<p:column headerText="Cep" width="80px">
+									<h:outputText value="#{endereco.cep}"></h:outputText>
+								</p:column>
 
 								<p:column headerText="Uf" width="35px">
-									<h:outputText value="#{endereco.cidade.enumEstado.descricao}"></h:outputText>
+									<h:outputText value="#{cidade.enumEstado.descricao}"></h:outputText>
 								</p:column>
 
 								<p:column headerText="Remover">
@@ -325,11 +342,13 @@
 							</a:field>
 
 
-							<a:field label="Tipo" spaceLeft="15px">
-								<p:autoComplete dropdown="true" id="tp_telefone"
-									value="#{FuncionarioControl.telefone.tipoTelefone}"
-									completeMethod="#{FuncionarioControl.completeEnumTipoTelefone}"
-									style="margin-top: -10px" />
+							<a:field label="Tipo telefone" spaceLeft="15px">
+								<p:selectOneMenu id="tp_telefone"
+									value="#{FuncionarioControl.telefone.tipoTelefone }"
+									style="width:200px;">
+									<f:selectItems
+										value="#{FuncionarioControl.completeEnumTipoTelefone }"></f:selectItems>
+								</p:selectOneMenu>
 							</a:field>
 
 							<a:newLine />
@@ -339,14 +358,15 @@
 
 								<p:commandButton
 									actionListener="#{FuncionarioControl.addTelefone }"
-									value="Adicionar" update="telefones, painelTelefone" ajax="false" />
+									value="Adicionar" update="telefones, painelTelefone"
+									ajax="false" />
 							</a:field>
 
 
 							<p:dataTable id="telefones" style="width:60%"
 								emptyMessage="Sem Registros"
 								value="#{FuncionarioControl.funcionario.listaTelefone}"
-								var="item" >
+								var="item">
 
 								<p:column headerText="Numero" width="10">
 									<h:outputText value="#{item.numeroTelefone}" ajax="false"

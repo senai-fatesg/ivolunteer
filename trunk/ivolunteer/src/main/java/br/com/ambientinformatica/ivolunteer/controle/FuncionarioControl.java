@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class FuncionarioControl {
 	private Telefone telefone = new Telefone();
 	private Pessoa pessoa = new Pessoa();
 	private Frequencia frequencia = new Frequencia();
-	
+
 	private List<Frequencia> frequencias = new ArrayList<Frequencia>();
 
 	private GradeHorario gradeHorario = new GradeHorario();
@@ -104,20 +105,6 @@ public class FuncionarioControl {
 		}
 	}
 
-	public void adicionarListaEndereco(ActionEvent evt) {
-		List<Endereco> retornoListaEndereco = new ArrayList<Endereco>();
-		retornoListaEndereco.add(endereco);
-		funcionario.setListaEndereco(retornoListaEndereco);
-
-	}
-
-	public void adicionarListaTelefone(ActionEvent evt) {
-		List<Telefone> retornoListaTelefone = new ArrayList<Telefone>();
-		retornoListaTelefone.add(telefone);
-		funcionario.setListaTelefone(retornoListaTelefone);
-
-	}
-
 	public void adicionarFrequencia(ActionEvent evt) {
 		funcionario.addFrequencia(frequencia);
 		frequencia = new Frequencia();
@@ -128,32 +115,27 @@ public class FuncionarioControl {
 		gradeHorario = new GradeHorario();
 	}
 
-	public List<String> completeEnumSexo(String query) {
-		List<String> retorno = new ArrayList<String>();
-		EnumSexo[] enunSexo = EnumSexo.values();
-		for (int i = 0; i < enunSexo.length; i++) {
-			retorno.add(enunSexo[i].getDescricao());
-		}
-		return retorno;
+	public List<SelectItem> getCompleteEnumEstado() {
+		return UtilFaces.getListEnum(EnumEstado.values());
 	}
 
-	public List<EnumEstado> completeEnumUf(String query) {
-		List<EnumEstado> retornoUf = new ArrayList<EnumEstado>();
-		EnumEstado[] enunUf = EnumEstado.values();
-		for (int i = 0; i < enunUf.length; i++) {
-			retornoUf.add(enunUf[i]);
-		}
-		return retornoUf;
+	public List<SelectItem> getCompleteEnumSexo() {
+		return UtilFaces.getListEnum(EnumSexo.values());
 	}
 
-	public List<EnumTipoTelefone> completeEnumTipoTelefone(String query) {
-		List<EnumTipoTelefone> retornoTipoTelefone = new ArrayList<EnumTipoTelefone>();
-		EnumTipoTelefone[] enunTelefone = EnumTipoTelefone.values();
-		for (int i = 0; i < enunTelefone.length; i++) {
-			retornoTipoTelefone.add(enunTelefone[i]);
-		}
-		return retornoTipoTelefone;
+	public List<SelectItem> getCompleteEnumTipoTelefone() {
+		return UtilFaces.getListEnum(EnumTipoTelefone.values());
 	}
+
+	// public List<EnumTipoTelefone> completeEnumTipoTelefone(String query) {
+	// List<EnumTipoTelefone> retornoTipoTelefone = new
+	// ArrayList<EnumTipoTelefone>();
+	// EnumTipoTelefone[] enunTelefone = EnumTipoTelefone.values();
+	// for (int i = 0; i < enunTelefone.length; i++) {
+	// retornoTipoTelefone.add(enunTelefone[i]);
+	// }
+	// return retornoTipoTelefone;
+	// }
 
 	public List<String> completeEnumEstadoCivil(String query) {
 		List<String> retornoEstadoCivil = new ArrayList<String>();
@@ -250,7 +232,7 @@ public class FuncionarioControl {
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
 	}
-	
+
 	public Funcionario carregarFuncionario(SelectEvent evt) {
 		return funcionarioDao.carregarFuncionario(funcionario);
 	}

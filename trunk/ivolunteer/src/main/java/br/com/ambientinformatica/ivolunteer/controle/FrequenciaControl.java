@@ -12,12 +12,14 @@ import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.Frequencia;
+import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.ivolunteer.persistencia.FrequenciaDao;
 
 @Controller("FrequenciaControl")
 @Scope("conversation")
 public class FrequenciaControl {
 
+	private Funcionario funcionario = new Funcionario();
 	private Frequencia frequencia = new Frequencia();
 
 	@Autowired

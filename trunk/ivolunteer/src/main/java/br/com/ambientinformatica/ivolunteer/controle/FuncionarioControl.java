@@ -2,6 +2,7 @@ package br.com.ambientinformatica.ivolunteer.controle;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -65,7 +66,6 @@ public class FuncionarioControl {
 	public void consultar(ActionEvent evt) {
 		try {
 			funcionarioDao.consultar(funcionario.getId());
-			funcionario = new Funcionario();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -107,7 +107,6 @@ public class FuncionarioControl {
 
 	public void adicionarFrequencia(ActionEvent evt) {
 		funcionario.addFrequencia(frequencia);
-		frequencia = new Frequencia();
 	}
 
 	public void adicionarGradeHorario(ActionEvent evt) {
@@ -242,19 +241,23 @@ public class FuncionarioControl {
 		return func;
 	}
 
-	public void carregarFrequenciaMes() {
+	@SuppressWarnings({ "deprecation", "rawtypes" })
+	public void carregarFrequenciaMes(ActionEvent evt) {
+		frequencias = funcionario.getFrequencias();
+		
+//		int mes = frequencia.getData().getMonth();
+//
+//		for (Frequencia frequenciaMes : auxiliar) {
+//			if (mes == frequenciaMes.getData().getMonth()) {
+//				frequencias.add(frequencia);
+//			}
+//		}
 
 	}
 
 	// metodo para preencher a data
-	public void onDateSelect(SelectEvent event) {
-		// FacesContext facesContext = FacesContext.getCurrentInstance();
-		// SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-		// preenchendo data;
+	public void preencheData(SelectEvent event) {
 		frequencia.setData((Date) event.getObject());
-		// facesContext.addMessage(null,
-		// new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected",
-		// format.format(event.getObject())));
 	}
 
 	public GradeHorario getGradeHorario() {

@@ -7,12 +7,18 @@
 	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
-		<h:form>
-			<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+		<h:form>			
 			<p:panel header="Cadastro de Avaliação" id="cadstroAvaliacao">
+				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+				<p:commandButton id="consultar" value="Consultar" icon="ui-icon-search"></p:commandButton>
+				
+				<a:newLine />
+				<a:newLine />
 				<a:field label="Título" width="100%">
-					<p:inputText value="#{AvaliacaoControl.avaliacao.titulo}"
-						style="width:100%;" />
+					<p:inputText id="titulo" value="#{AvaliacaoControl.avaliacao.titulo}"
+						style="width:100%;">
+						<p:ajax event="blur" listener="AvaliacaoControl.validaTitulo" process="titulo" /> 						
+						</p:inputText>
 				</a:field>
 				<a:newLine />
 				<a:field label="Descricao" width="100%">

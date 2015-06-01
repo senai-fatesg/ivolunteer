@@ -1,9 +1,13 @@
 package br.com.ambientinformatica.ivolunteer.controle;
 
+import java.awt.event.InputEvent;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.naming.event.EventContext;
 
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.event.TabChangeEvent;
@@ -48,6 +52,13 @@ public class AvaliacaoControl {
 			this.objetiva.remAlternativa(alternativa);
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
+		}
+	}
+
+	public void validaTitulo() {		
+		if (this.avaliacao.getTitulo().length() < 2) {
+			UtilFaces.addMensagemFaces("Campo Título está Inválido",
+					FacesMessage.SEVERITY_WARN);
 		}
 	}
 

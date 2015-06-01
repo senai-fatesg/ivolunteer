@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -82,24 +83,32 @@ public class AlunoControl {
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
-
-	public List<String> completeEnumUf(String query) {
-		List<String> retornoUf = new ArrayList<String>();
-		EnumEstado[] enunUf = EnumEstado.values();
-		for (int i = 0; i < enunUf.length; i++) {
-			retornoUf.add(enunUf[i].getDescricao());
-		}
-		return retornoUf;
+	
+	public List<SelectItem> getCompleteEnumSexo() {
+		return UtilFaces.getListEnum(EnumSexo.values());
+	}
+	
+	public List<SelectItem> getCompleteEnumEstado() {
+		return UtilFaces.getListEnum(EnumEstado.values());
 	}
 
-	public List<String> completeEnumSexo(String query) {
-		List<String> retorno = new ArrayList<String>();
-		EnumSexo[] enunSexo = EnumSexo.values();
-		for (int i = 0; i < enunSexo.length; i++) {
-			retorno.add(enunSexo[i].getDescricao());
-		}
-		return retorno;
-	}
+//	public List<String> completeEnumEstado(String query) {
+//		List<String> retornoUf = new ArrayList<String>();
+//		EnumEstado[] enunUf = EnumEstado.values();
+//		for (int i = 0; i < enunUf.length; i++) {
+//			retornoUf.add(enunUf[i].getDescricao());
+//		}
+//		return retornoUf;
+//	}
+
+//	public List<String> completeEnumSexo(String query) {
+//		List<String> retorno = new ArrayList<String>();
+//		EnumSexo[] enunSexo = EnumSexo.values();
+//		for (int i = 0; i < enunSexo.length; i++) {
+//			retorno.add(enunSexo[i].getDescricao());
+//		}
+//		return retorno;
+//	}
 
 	public void addEndereco(ActionEvent ev) {
 		try {
@@ -112,7 +121,7 @@ public class AlunoControl {
 
 	public void removerEndereco(Endereco endereco) {
 		try {
-			this.aluno.removerEdereco(endereco);
+			this.aluno.removerEndereco(endereco);
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}

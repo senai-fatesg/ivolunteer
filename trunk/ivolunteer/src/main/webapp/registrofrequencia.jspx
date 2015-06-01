@@ -14,9 +14,14 @@
 				<p:tab title="Funcionário">
 
 					<p:panel id="buscaFuncionario" rendered="true">
-						<p:calendar id="inline" mode="inline" />
+						<a:field width="40%" spaceLeft="15px">
+							<p:calendar
+								value="#{FuncionarioControl.frequencia.data}"
+								locale="de" navigator="true" pattern="dd/MM/yyyy"
+								style="width:150px" locate="pt_br" />
+						</a:field>
 
-						<a:field label="Nome" width="60%">
+						<a:field label="Nome" width="40%" spaceLeft="15px">
 							<p:autoComplete id="acMinLength" minQueryLength="3"
 								value="#{FuncionarioControl.funcionario}"
 								completeMethod="#{FuncionarioControl.consultarFuncionario}"
@@ -28,7 +33,7 @@
 							</p:autoComplete>
 
 							<p:commandButton
-								actionListener="#{FuncionarioControl.carregarFrequenciaMes}"
+								actionListener="#{FuncionarioControl.adicionarFrequencia}"
 								value="Confirmar" update="listFuncionario"
 								style="margin-left: 5px; margin-top: -9px"></p:commandButton>
 
@@ -36,21 +41,20 @@
 						<a:newLine></a:newLine>
 					</p:panel>
 
-					<p:dataTable id="listFuncionario" var="car"
-						value="#{FuncionarioControl.frequencias}" style="margin-bottom:0">
+					<p:dataTable id="listFuncionario" var="item"
+						value="#{FuncionarioControl.funcionario.frequencias}" style="margin-bottom:0">
+						
 						<f:facet name="header">Lista de frequencia #{FuncionarioControl.funcionario.nomePessoa}</f:facet>
 
 						<p:column headerText="Id" style="width:16%;text-align:center">
-							<h:outputText value="#{car.id}" />
+							<h:outputText value="#{item.id}" />
 						</p:column>
 
 						<p:column headerText="Nome">
-							<h:outputText value="#{car.data}" />
+							<h:outputText value="#{item.data}" />
 						</p:column>
 
-						<p:column headerText="Presente">
-							<p:selectBooleanCheckbox value="#{car.presente}" />
-						</p:column>
+						
 
 
 

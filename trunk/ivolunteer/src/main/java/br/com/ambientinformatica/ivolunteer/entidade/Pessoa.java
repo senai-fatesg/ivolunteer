@@ -138,7 +138,7 @@ public class Pessoa {
 		}
 	}
 	
-	public void removerEdereco(Endereco endereco){
+	public void removerEndereco(Endereco endereco){
 		this.listaEndereco.remove(endereco);
 	}
 	

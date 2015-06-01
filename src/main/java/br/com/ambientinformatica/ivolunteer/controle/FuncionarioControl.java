@@ -126,23 +126,8 @@ public class FuncionarioControl {
 		return UtilFaces.getListEnum(EnumTipoTelefone.values());
 	}
 
-	// public List<EnumTipoTelefone> completeEnumTipoTelefone(String query) {
-	// List<EnumTipoTelefone> retornoTipoTelefone = new
-	// ArrayList<EnumTipoTelefone>();
-	// EnumTipoTelefone[] enunTelefone = EnumTipoTelefone.values();
-	// for (int i = 0; i < enunTelefone.length; i++) {
-	// retornoTipoTelefone.add(enunTelefone[i]);
-	// }
-	// return retornoTipoTelefone;
-	// }
-
-	public List<String> completeEnumEstadoCivil(String query) {
-		List<String> retornoEstadoCivil = new ArrayList<String>();
-		EnumEstadoCivil[] enunEstadoCivil = EnumEstadoCivil.values();
-		for (int i = 0; i < enunEstadoCivil.length; i++) {
-			retornoEstadoCivil.add(enunEstadoCivil[i].getDescricao());
-		}
-		return retornoEstadoCivil;
+	public List<SelectItem> getCompleteEnumEstadoCivil() {
+		return UtilFaces.getListEnum(EnumEstadoCivil.values());
 	}
 
 	public void addEndereco(ActionEvent ev) {
@@ -156,7 +141,7 @@ public class FuncionarioControl {
 
 	public void removerEndereco(Endereco endereco) {
 		try {
-			this.funcionario.removerEdereco(endereco);
+			this.funcionario.removerEndereco(endereco);
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -244,14 +229,14 @@ public class FuncionarioControl {
 	@SuppressWarnings({ "deprecation", "rawtypes" })
 	public void carregarFrequenciaMes(ActionEvent evt) {
 		frequencias = funcionario.getFrequencias();
-		
-//		int mes = frequencia.getData().getMonth();
-//
-//		for (Frequencia frequenciaMes : auxiliar) {
-//			if (mes == frequenciaMes.getData().getMonth()) {
-//				frequencias.add(frequencia);
-//			}
-//		}
+
+		// int mes = frequencia.getData().getMonth();
+		//
+		// for (Frequencia frequenciaMes : auxiliar) {
+		// if (mes == frequenciaMes.getData().getMonth()) {
+		// frequencias.add(frequencia);
+		// }
+		// }
 
 	}
 

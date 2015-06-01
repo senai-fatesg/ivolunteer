@@ -51,7 +51,7 @@ public class Funcionario extends Pessoa {
 
 	private String secao;
 
-	private boolean exameAdmissional;
+	private String exameAdmissional;
 
 	@Temporal(TemporalType.DATE)
 	private Date dataExameAdmissional;
@@ -232,11 +232,11 @@ public class Funcionario extends Pessoa {
 		this.secao = secao;
 	}
 
-	public boolean isExameAdmissional() {
+	public String getExameAdmissional() {
 		return exameAdmissional;
 	}
 
-	public void setExameAdmissional(boolean exameAdmissional) {
+	public void setExameAdmissional(String exameAdmissional) {
 		this.exameAdmissional = exameAdmissional;
 	}
 

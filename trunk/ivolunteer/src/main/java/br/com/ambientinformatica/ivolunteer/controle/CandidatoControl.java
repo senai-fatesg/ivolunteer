@@ -49,7 +49,7 @@ public class CandidatoControl {
 	public void confirmar(ActionEvent evt) {
 		try {
 			//alterando o candidato
-			PessoaDao.alterar(pessoaCandidato);
+			this.PessoaDao.incluir(this.pessoaCandidato);
 			pessoaCandidato = new Pessoa();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);

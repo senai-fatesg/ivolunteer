@@ -12,53 +12,51 @@
 			<p:tabView cache="true">
 				<p:tab title="Informações do candidato" id="candidato">
 					<p:panel rendered="true">
-						<a:field label="Nome" width="300px;">
+						<a:field label="Nome">
 							<p:inputText id="nomePessoa"
 								value="#{CandidatoControl.pessoaCandidato.nomePessoa}">
-								<f:validateLength minimum="" />
+							
 							</p:inputText>
 						</a:field>
 
-						<a:field label="Data de nascimento" width="300px;">
+						<a:field label="Data de nascimento"
+							spaceLeft="15px">
 							<p:calendar id="dataNascimento"
 								value="#{CandidatoControl.pessoaCandidato.dataNascimento}"
 								locale="de" navigator="true" pattern="dd-MM-yyyy" />
 						</a:field>
 
 						<!--a data de vencimento se refere a validade que o documento tera-->
-						<a:field label="Data de vencimento" width="300px;">
+						<a:field label="Data de vencimento"
+							spaceLeft="15px">
 							<p:calendar id="dataVencimento"
 								value="#{CandidatoControl.pessoaCandidato.dataVencimento}"
 								locale="de" navigator="true" pattern="dd-MM-yyyy" />
 						</a:field>
 
-						<a:newLine />
-
-						<a:field label="Naturalidade" width="300px;">
+						<a:field label="Naturalidade" spaceLeft="15px">
 							<p:inputText id="naturalidade"
 								value="#{CandidatoControl.pessoaCandidato.naturalidade}"></p:inputText>
 						</a:field>
-
-						<a:field label="Estado" spaceLeft="45px">
+						
+						<a:newLine />
+						
+						<a:field label="Estado">
 							<p:selectOneMenu id="estado"
-								value="#{CandidatoControl.endereco.cidade.enumEstado }"
-								style="width:200px;">
+								value="#{CandidatoControl.endereco.cidade.enumEstado }">
 								<f:selectItems value="#{CandidatoControl.completeEnumEstado }"></f:selectItems>
 							</p:selectOneMenu>
 						</a:field>
 
-						<a:field label="Certidao de nascimento" width="300px;"
-							spaceLeft="45px">
+						<a:field label="Certidao de nascimento"
+							spaceLeft="15px">
 							<p:inputText id="certidaoNascimento"
 								value="#{CandidatoControl.pessoa.certidaoNascimento}"></p:inputText>
 						</a:field>
 
-						<a:newLine />
-
-						<a:field label="Sexo" spaceLeft="45px">
+						<a:field label="Sexo" spaceLeft="15px">
 							<p:selectOneMenu id="sexo"
-								value="#{CandidatoControl.pessoa.enumSexo }"
-								style="width:200px;">
+								value="#{CandidatoControl.pessoa.enumSexo }">
 								<f:selectItems value="#{CandidatoControl.completeEnumSexo }"></f:selectItems>
 							</p:selectOneMenu>
 						</a:field>
@@ -120,36 +118,36 @@
 						<a:newLine />
 
 						<p:panel header="Contato" id="panel">
-							
-								<a:field label="Nome" width="300px;" spaceLeft="15px">
-									<p:inputText id="nomePessoaRecado"
-										value="#{CandidatoControl.telefone.nomePessoaRecado }"></p:inputText>
-								</a:field>
 
-								<a:field label="Telefone" width="300px;" spaceLeft="15px">
-									<p:inputMask id="numeroTelefone"
-										value="#{CandidatoControl.telefone.numeroTelefone }"
-										mask="(99) 9999-9999">
-									</p:inputMask>
-								</a:field>
+							<a:field label="Nome" width="300px;" spaceLeft="15px">
+								<p:inputText id="nomePessoaRecado"
+									value="#{CandidatoControl.telefone.nomePessoaRecado }"></p:inputText>
+							</a:field>
 
-								<a:newLine />
+							<a:field label="Telefone" width="300px;" spaceLeft="15px">
+								<p:inputMask id="numeroTelefone"
+									value="#{CandidatoControl.telefone.numeroTelefone }"
+									mask="(99) 9999-9999">
+								</p:inputMask>
+							</a:field>
 
-								<a:field label="Tipo telefone" spaceLeft="15px">
-									<p:selectOneMenu id="tipoTelefoneSelecionado"
-										value="#{CandidatoControl.telefone.tipoTelefone }"
-										style="width:200px;">
-										<f:selectItems
-											value="#{CandidatoControl.completeEnumTipoTelefone }"></f:selectItems>
-									</p:selectOneMenu>
-								</a:field>
+							<a:newLine />
 
-								<p:commandButton
-									actionListener="#{CandidatoControl.adicioneTelefone }"
-									value="Incluir contato" update="listaTelefone, panel"></p:commandButton>
-								<a:newLine />
+							<a:field label="Tipo telefone" spaceLeft="15px">
+								<p:selectOneMenu id="tipoTelefoneSelecionado"
+									value="#{CandidatoControl.telefone.tipoTelefone }"
+									style="width:200px;">
+									<f:selectItems
+										value="#{CandidatoControl.completeEnumTipoTelefone }"></f:selectItems>
+								</p:selectOneMenu>
+							</a:field>
 
-							
+							<p:commandButton
+								actionListener="#{CandidatoControl.adicioneTelefone }"
+								value="Incluir contato" update="listaTelefone, panel"></p:commandButton>
+							<a:newLine />
+
+
 						</p:panel>
 
 						<p:dataTable id="listaTelefone"
@@ -290,7 +288,63 @@
 					</p:panel>
 				</p:tab>
 
+				<p:tab title="Perguntas social economica" id="perguntas">
+					<p:panel>
+						<h4>Renda Familiar</h4>
 
+						<a:field label="Renda do Pai R$" width="300px;" spaceLeft="15px">
+							<p:inputText id="rendaPai"
+								value="#{CandidatoControl.pessoa.rendaPai}"></p:inputText>
+						</a:field>
+
+						<a:field label="Renda Mãe R$" width="300px;" spaceLeft="15px">
+							<p:inputText id="rendaMae"
+								value="#{CandidatoControl.pessoa.rendaMae}"></p:inputText>
+						</a:field>
+
+						<a:field label="Total R$" width="300px;" spaceLeft="15px">
+							<p:inputText id="totalRenda"
+								value="#{CandidatoControl.pessoa.totalRenda}"></p:inputText>
+						</a:field>
+
+						<a:newLine />
+
+						<a:field label="Renda do Responsavel R$" width="300px;"
+							spaceLeft="15px">
+							<p:inputText id="rendaResponsavel"
+								value="#{CandidatoControl.pessoa.rendaResponsavel}"></p:inputText>
+						</a:field>
+
+						<a:field label="Outa R$" width="300px;" spaceLeft="15px">
+							<p:inputText id="outraRenda"
+								value="#{CandidatoControl.pessoa.rendaOutra}"></p:inputText>
+						</a:field>
+
+						<a:field label="Número de pessoas" width="100%">
+							<p:spinner max="999" min="0" id="numeroDePessoasMoradia"
+								value="#{CandidatoControl.pessoa.numeroDePessoasMoradia}"
+								style="width:238px" />
+						</a:field>
+
+						<a:field label="Recebe algum beneficio do governo?"
+							spaceLeft="15px">
+							<p:selectOneRadio id="recebeBeneficio"
+								value="#{CandidatoControl.pessoa.recebeBeneficio}">
+								<f:selectItem itemLabel="Sim" itemValue="true" />
+								<f:selectItem itemLabel="Nao" itemValue="false" />
+							</p:selectOneRadio>
+						</a:field>
+
+						<a:newLine />
+					</p:panel>
+
+					<p:panel>
+						<h4>Residencia</h4>
+
+						<a:newLine />
+					</p:panel>
+
+				</p:tab>
 
 
 				<p:tab title="Documentos" id="documentos">
@@ -307,8 +361,9 @@
 
 			<a:newLine />
 
-			<p:commandButton actionListener="#{ContatoControl.confirmar}"
-				immediate="true" ajax="false" value="Confirmar"></p:commandButton>
+			<p:commandButton actionListener="#{CandidatoControl.confirmar}"
+				value="Confirmar" update="@all">
+			</p:commandButton>
 		</p:panel>
 	</ui:define>
 </ui:composition>

@@ -81,6 +81,7 @@ public class AvaliacaoControl {
 		}
 	}
 
+
 	// Inclui questao a avaliacao
 	public void addQuestao(ActionEvent event) {
 		if (this.tipoQuestao == EnumQuestao.D) {

@@ -1,10 +1,14 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class AgrupamentoTurma {
@@ -15,10 +19,11 @@ public class AgrupamentoTurma {
 	private Integer id;
 
 	private String identificador;
+	@Temporal(TemporalType.DATE)
+	private Date idadeInicial;
 
-	private Double idadeInicial;
-
-	private Double idadeFinal;
+	@Temporal(TemporalType.DATE)
+	private Date idadeFinal;
 
 	private Integer numeroCriancas;
 
@@ -38,19 +43,19 @@ public class AgrupamentoTurma {
 		this.identificador = identificador;
 	}
 
-	public Double getIdadeInicial() {
+	public Date getIdadeInicial() {
 		return idadeInicial;
 	}
 
-	public void setIdadeInicial(Double idadeInicial) {
+	public void setIdadeInicial(Date idadeInicial) {
 		this.idadeInicial = idadeInicial;
 	}
 
-	public Double getIdadeFinal() {
+	public Date getIdadeFinal() {
 		return idadeFinal;
 	}
 
-	public void setIdadeFinal(Double idadeFinal) {
+	public void setIdadeFinal(Date idadeFinal) {
 		this.idadeFinal = idadeFinal;
 	}
 

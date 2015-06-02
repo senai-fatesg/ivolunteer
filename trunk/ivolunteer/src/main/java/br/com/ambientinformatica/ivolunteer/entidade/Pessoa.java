@@ -77,7 +77,13 @@ public class Pessoa {
 	private Date dataVencimento;
 	
 	private BigDecimal valorBeneficio = BigDecimal.ZERO;
-	private BigDecimal renda = BigDecimal.ZERO;
+	
+	private BigDecimal rendaOutra = BigDecimal.ZERO;
+	private BigDecimal rendaPai = BigDecimal.ZERO;
+	private BigDecimal rendaMae = BigDecimal.ZERO;
+	private BigDecimal rendaResponsavel = BigDecimal.ZERO;
+	private BigDecimal totalRenda = BigDecimal.ZERO;
+	
 	private BigDecimal valorAluguel = BigDecimal.ZERO;
 	private BigDecimal valorInicial = BigDecimal.ZERO;
 	private BigDecimal valorFinal = BigDecimal.ZERO;
@@ -89,13 +95,10 @@ public class Pessoa {
 	private Boolean recebeBeneficio = false;
 	private Boolean requisitouVagaParaOutraCriancao;
 	
-	
-	
-	
 	@OneToMany
 	private List<Endereco> listaEndereco = new ArrayList<Endereco>();
 	@OneToMany
-	private List<Pessoa> listaPessoaRelacionada;
+	private List<Pessoa> listaPessoaRelacionada = new ArrayList<Pessoa>();
 	@OneToMany
 	private List<Telefone> listaTelefone = new ArrayList<Telefone>();
 	
@@ -105,8 +108,6 @@ public class Pessoa {
 		listaTelefone = new ArrayList<Telefone>();
 	}
 
-
-	private BigDecimal totalRenda;
 	public BigDecimal getTotalRenda() {
 		return null;
 	}
@@ -138,227 +139,162 @@ public class Pessoa {
 		}
 	}
 	
-	public void removerEndereco(Endereco endereco){
+	public void removerEdereco(Endereco endereco){
 		this.listaEndereco.remove(endereco);
 	}
 	
 	public void removerTelefone(Telefone telefone){
 		this.listaTelefone.remove(telefone);
 	}
-	
-	//metodos gets e set
+
+
+
+
 	public Integer getId() {
 		return id;
 	}
+
+
+
 
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
+
+
+
 	public String getNomePessoa() {
 		return nomePessoa;
 	}
+
+
+
 
 	public void setNomePessoa(String nomePessoa) {
 		this.nomePessoa = nomePessoa;
 	}
 
+
+
+
 	public String getRg() {
 		return rg;
 	}
+
+
+
 
 	public void setRg(String rg) {
 		this.rg = rg;
 	}
 
+
+
+
 	public String getOrgaoExpeditor() {
 		return orgaoExpeditor;
 	}
+
+
+
 
 	public void setOrgaoExpeditor(String orgaoExpeditor) {
 		this.orgaoExpeditor = orgaoExpeditor;
 	}
 
+
+
+
 	public String getNaturalidade() {
 		return naturalidade;
 	}
+
+
+
 
 	public void setNaturalidade(String naturalidade) {
 		this.naturalidade = naturalidade;
 	}
 
+
+
+
 	public String getCpf() {
 		return cpf;
 	}
+
+
+
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 
+
+
+
 	public String getNascionalidade() {
 		return nascionalidade;
 	}
+
+
+
 
 	public void setNascionalidade(String nascionalidade) {
 		this.nascionalidade = nascionalidade;
 	}
 
+
+
+
 	public String getDescricao() {
 		return descricao;
 	}
+
+
+
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
 
+
+
+
 	public String getProfissao() {
 		return profissao;
 	}
+
+
+
 
 	public void setProfissao(String profissao) {
 		this.profissao = profissao;
 	}
 
+
+
+
 	public String getIndicacao() {
 		return indicacao;
 	}
+
+
+
 
 	public void setIndicacao(String indicacao) {
 		this.indicacao = indicacao;
 	}
 
-	public EnumSexo getSexo() {
-		return sexo;
-	}
-
-	public void setSexo(EnumSexo sexo) {
-		this.sexo = sexo;
-	}
-
-	public EnumEscolaridade getEscolaridade() {
-		return escolaridade;
-	}
-
-	public void setEscolaridade(EnumEscolaridade escolaridade) {
-		this.escolaridade = escolaridade;
-	}
-
-	public EnumTipoPessoa getTipoPessoa() {
-		return tipoPessoa;
-	}
-
-	public void setTipoPessoa(EnumTipoPessoa tipoPessoa) {
-		this.tipoPessoa = tipoPessoa;
-	}
-
-	public EnumEstadoCivil getEstadoCivil() {
-		return estadoCivil;
-	}
-
-	public void setEstadoCivil(EnumEstadoCivil estadoCivil) {
-		this.estadoCivil = estadoCivil;
-	}
-
-	public EnumTipoCasa getTipoMoradia() {
-		return tipoMoradia;
-	}
-
-	public void setTipoMoradia(EnumTipoCasa tipoMoradia) {
-		this.tipoMoradia = tipoMoradia;
-	}
-
-	public EnumFiliacao getFiliacao() {
-		return filiacao;
-	}
-
-	public void setFiliacao(EnumFiliacao filiacao) {
-		this.filiacao = filiacao;
-	}
-
-	public EnumSexo getEnumSexo() {
-		return enumSexo;
-	}
-
-	public void setEnumSexo(EnumSexo enumSexo) {
-		this.enumSexo = enumSexo;
-	}
-
-	public EnumEscolaridade getEnumEscolaridade() {
-		return enumEscolaridade;
-	}
-
-	public void setEnumEscolaridade(EnumEscolaridade enumEscolaridade) {
-		this.enumEscolaridade = enumEscolaridade;
-	}
-
-	public Date getDataExpedicao() {
-		return dataExpedicao;
-	}
-
-	public void setDataExpedicao(Date dataExpedicao) {
-		this.dataExpedicao = dataExpedicao;
-	}
-
-	public Date getDataNascimento() {
-		return dataNascimento;
-	}
-
-	public void setDataNascimento(Date dataNascimento) {
-		this.dataNascimento = dataNascimento;
-	}
-
-	public BigDecimal getRenda() {
-		return renda;
-	}
-
-	public void setRenda(BigDecimal renda) {
-		this.renda = renda;
-	}
-
-	public BigDecimal getValorAluguel() {
-		return valorAluguel;
-	}
-
-	public void setValorAluguel(BigDecimal valorAluguel) {
-		this.valorAluguel = valorAluguel;
-	}
-
-	public Integer getNumeroDePessoasMoradia() {
-		return numeroDePessoasMoradia;
-	}
-
-	public void setNumeroDePessoasMoradia(Integer numeroDePessoasMoradia) {
-		this.numeroDePessoasMoradia = numeroDePessoasMoradia;
-	}
-
-	public Boolean getPaisVivemJuntos() {
-		return paisVivemJuntos;
-	}
-
-	public void setPaisVivemJuntos(Boolean paisVivemJuntos) {
-		this.paisVivemJuntos = paisVivemJuntos;
-	}
-
-	public Boolean isRequisitouOutraVaga() {
-		return requisitouOutraVaga;
-	}
-
-	public void setRequisitouOutraVaga(Boolean requisitouOutraVaga) {
-		this.requisitouOutraVaga = requisitouOutraVaga;
-	}
-
-	public List<Pessoa> getListaPessoaRelacionada() {
-		return listaPessoaRelacionada;
-	}
 
 
-	public void setListaPessoaRelacionada(List<Pessoa> listaPessoaRelacionada) {
-		this.listaPessoaRelacionada = listaPessoaRelacionada;
-	}
 
 	public String getCertidaoNascimento() {
 		return certidaoNascimento;
 	}
+
+
 
 
 	public void setCertidaoNascimento(String certidaoNascimento) {
@@ -366,9 +302,153 @@ public class Pessoa {
 	}
 
 
+
+
+	public String getInformacoesSobreIntituicao() {
+		return informacoesSobreIntituicao;
+	}
+
+
+
+
+	public void setInformacoesSobreIntituicao(String informacoesSobreIntituicao) {
+		this.informacoesSobreIntituicao = informacoesSobreIntituicao;
+	}
+
+
+
+
+	public EnumSexo getSexo() {
+		return sexo;
+	}
+
+
+
+
+	public void setSexo(EnumSexo sexo) {
+		this.sexo = sexo;
+	}
+
+
+
+
+	public EnumEscolaridade getEscolaridade() {
+		return escolaridade;
+	}
+
+
+
+
+	public void setEscolaridade(EnumEscolaridade escolaridade) {
+		this.escolaridade = escolaridade;
+	}
+
+
+
+
+	public EnumTipoPessoa getTipoPessoa() {
+		return tipoPessoa;
+	}
+
+
+
+
+	public void setTipoPessoa(EnumTipoPessoa tipoPessoa) {
+		this.tipoPessoa = tipoPessoa;
+	}
+
+
+
+
+	public EnumEstadoCivil getEstadoCivil() {
+		return estadoCivil;
+	}
+
+
+
+
+	public void setEstadoCivil(EnumEstadoCivil estadoCivil) {
+		this.estadoCivil = estadoCivil;
+	}
+
+
+
+
+	public EnumTipoCasa getTipoMoradia() {
+		return tipoMoradia;
+	}
+
+
+
+
+	public void setTipoMoradia(EnumTipoCasa tipoMoradia) {
+		this.tipoMoradia = tipoMoradia;
+	}
+
+
+
+
+	public String getNecessidadesEspeciais() {
+		return necessidadesEspeciais;
+	}
+
+
+
+
+	public void setNecessidadesEspeciais(String necessidadesEspeciais) {
+		this.necessidadesEspeciais = necessidadesEspeciais;
+	}
+
+
+
+
+	public EnumFiliacao getFiliacao() {
+		return filiacao;
+	}
+
+
+
+
+	public void setFiliacao(EnumFiliacao filiacao) {
+		this.filiacao = filiacao;
+	}
+
+
+
+
+	public EnumSexo getEnumSexo() {
+		return enumSexo;
+	}
+
+
+
+
+	public void setEnumSexo(EnumSexo enumSexo) {
+		this.enumSexo = enumSexo;
+	}
+
+
+
+
+	public EnumEscolaridade getEnumEscolaridade() {
+		return enumEscolaridade;
+	}
+
+
+
+
+	public void setEnumEscolaridade(EnumEscolaridade enumEscolaridade) {
+		this.enumEscolaridade = enumEscolaridade;
+	}
+
+
+
+
 	public EnumTipoTelefone getEnumTipoPessoa() {
 		return enumTipoPessoa;
 	}
+
+
 
 
 	public void setEnumTipoPessoa(EnumTipoTelefone enumTipoPessoa) {
@@ -376,9 +456,41 @@ public class Pessoa {
 	}
 
 
+
+
+	public Date getDataExpedicao() {
+		return dataExpedicao;
+	}
+
+
+
+
+	public void setDataExpedicao(Date dataExpedicao) {
+		this.dataExpedicao = dataExpedicao;
+	}
+
+
+
+
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+
+
+
+
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
+
+
+
+
 	public Date getDataVencimento() {
 		return dataVencimento;
 	}
+
+
 
 
 	public void setDataVencimento(Date dataVencimento) {
@@ -386,67 +498,231 @@ public class Pessoa {
 	}
 
 
-	public List<Endereco> getListaEndereco() {
-		return listaEndereco;
-	}
 
 
-	public List<Telefone> getListaTelefone() {
-		return listaTelefone;
-	}
-
-	public void setNecessidadesEspeciais(String necessidadesEspeciais) {
-		this.necessidadesEspeciais = necessidadesEspeciais;
-	}
-
-
-	public String getNecessidadesEspeciais() {
-		return necessidadesEspeciais;
-	}
-	
 	public BigDecimal getValorBeneficio() {
 		return valorBeneficio;
 	}
+
+
 
 
 	public void setValorBeneficio(BigDecimal valorBeneficio) {
 		this.valorBeneficio = valorBeneficio;
 	}
 
-	public String getInformacoesSobreIntituicao() {
-		return informacoesSobreIntituicao;
+
+
+
+	public BigDecimal getRendaOutra() {
+		return rendaOutra;
 	}
 
-	public boolean getRecebeBeneficio() {
+
+
+
+	public void setRendaOutra(BigDecimal rendaOutra) {
+		this.rendaOutra = rendaOutra;
+	}
+
+
+
+
+	public BigDecimal getRendaPai() {
+		return rendaPai;
+	}
+
+
+
+
+	public void setRendaPai(BigDecimal rendaPai) {
+		this.rendaPai = rendaPai;
+	}
+
+
+
+
+	public BigDecimal getRendaMae() {
+		return rendaMae;
+	}
+
+
+
+
+	public void setRendaMae(BigDecimal rendaMae) {
+		this.rendaMae = rendaMae;
+	}
+
+
+
+
+	public BigDecimal getRendaResponsavel() {
+		return rendaResponsavel;
+	}
+
+
+
+
+	public void setRendaResponsavel(BigDecimal rendaResponsavel) {
+		this.rendaResponsavel = rendaResponsavel;
+	}
+
+
+
+
+	public BigDecimal getValorAluguel() {
+		return valorAluguel;
+	}
+
+
+
+
+	public void setValorAluguel(BigDecimal valorAluguel) {
+		this.valorAluguel = valorAluguel;
+	}
+
+
+
+
+	public BigDecimal getValorInicial() {
+		return valorInicial;
+	}
+
+
+
+
+	public void setValorInicial(BigDecimal valorInicial) {
+		this.valorInicial = valorInicial;
+	}
+
+
+
+
+	public BigDecimal getValorFinal() {
+		return valorFinal;
+	}
+
+
+
+
+	public void setValorFinal(BigDecimal valorFinal) {
+		this.valorFinal = valorFinal;
+	}
+
+
+
+
+	public Integer getNumeroDePessoasMoradia() {
+		return numeroDePessoasMoradia;
+	}
+
+
+
+
+	public void setNumeroDePessoasMoradia(Integer numeroDePessoasMoradia) {
+		this.numeroDePessoasMoradia = numeroDePessoasMoradia;
+	}
+
+
+
+
+	public Integer getNumeroFilhosMatriculados() {
+		return numeroFilhosMatriculados;
+	}
+
+
+
+
+	public void setNumeroFilhosMatriculados(Integer numeroFilhosMatriculados) {
+		this.numeroFilhosMatriculados = numeroFilhosMatriculados;
+	}
+
+
+
+
+	public Boolean getPaisVivemJuntos() {
+		return paisVivemJuntos;
+	}
+
+
+
+
+	public void setPaisVivemJuntos(Boolean paisVivemJuntos) {
+		this.paisVivemJuntos = paisVivemJuntos;
+	}
+
+
+
+
+	public Boolean getRequisitouOutraVaga() {
+		return requisitouOutraVaga;
+	}
+
+
+
+
+	public void setRequisitouOutraVaga(Boolean requisitouOutraVaga) {
+		this.requisitouOutraVaga = requisitouOutraVaga;
+	}
+
+
+
+
+	public Boolean getRecebeBeneficio() {
 		return recebeBeneficio;
 	}
+
+
+
 
 	public void setRecebeBeneficio(Boolean recebeBeneficio) {
 		this.recebeBeneficio = recebeBeneficio;
 	}
 
-	public Boolean isRequisitouVagaParaOutraCriancao() {
+
+
+
+	public Boolean getRequisitouVagaParaOutraCriancao() {
 		return requisitouVagaParaOutraCriancao;
 	}
+
+
+
 
 	public void setRequisitouVagaParaOutraCriancao(
 	      Boolean requisitouVagaParaOutraCriancao) {
 		this.requisitouVagaParaOutraCriancao = requisitouVagaParaOutraCriancao;
 	}
 
-	public Integer getNumeroFilhosMatriculados() {
-		return numeroFilhosMatriculados;
+
+
+
+	public List<Endereco> getListaEndereco() {
+		return listaEndereco;
 	}
 
-	public void setNumeroFilhosMatriculados(Integer numeroFilhosMatriculados) {
-		this.numeroFilhosMatriculados = numeroFilhosMatriculados;
+
+
+
+	public List<Pessoa> getListaPessoaRelacionada() {
+		return listaPessoaRelacionada;
 	}
 
-	public Boolean getRequisitouOutraVaga() {
-		return requisitouOutraVaga;
+
+
+
+	public List<Telefone> getListaTelefone() {
+		return listaTelefone;
 	}
 
-	public Boolean getRequisitouVagaParaOutraCriancao() {
-		return requisitouVagaParaOutraCriancao;
+
+
+
+
+	public void setTotalRenda(BigDecimal totalRenda) {
+		this.totalRenda = totalRenda;
 	}
+	
+	
+
 }

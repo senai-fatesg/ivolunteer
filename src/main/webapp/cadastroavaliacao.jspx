@@ -7,18 +7,31 @@
 	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
-		<h:form>			
+		<h:form>
 			<p:panel header="Cadastro de Avaliação" id="cadstroAvaliacao">
-				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-				<p:commandButton id="consultar" value="Consultar" icon="ui-icon-search"></p:commandButton>
-				
+				<p:messages id="messages" showDetail="true" autoUpdate="true"
+					closable="true" />
+
+				<p:commandButton id="consultar" value="Consultar"
+					icon="ui-icon-search" action="#{AvaliacaoControl.listaAvaliacoes}"
+					onclick="dlg.show();" />
+				<p:dialog id="modalPesquisa" header="Consultar" widgetVar="dlg"
+					modal="true" maximizable="false" minimizable="false" >
+					<p:dataTable id="avaliacoes" var="avaliacaoItem"
+						value="#{AvaliacaoControl.avaliacoes}" widgetVar="listaAvaliacoes"
+						emptyMessage="Sem registros a exibir">
+						<p:column headerText="Título">#{avalicaoItem.titulo}</p:column>
+						<p:column headerText="Descricao">#{avalicaoItem.descricao}</p:column>
+						<p:column />
+					</p:dataTable>
+				</p:dialog>
+
 				<a:newLine />
 				<a:newLine />
 				<a:field label="Título" width="100%">
-					<p:inputText id="titulo" value="#{AvaliacaoControl.avaliacao.titulo}"
-						style="width:100%;">
-						<p:ajax event="blur" listener="AvaliacaoControl.validaTitulo" process="titulo" /> 						
-						</p:inputText>
+					<p:inputText id="titulo"
+						value="#{AvaliacaoControl.avaliacao.titulo}" style="width:100%;">
+					</p:inputText>
 				</a:field>
 				<a:newLine />
 				<a:field label="Descricao" width="100%">

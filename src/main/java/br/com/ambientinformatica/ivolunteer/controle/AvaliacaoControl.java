@@ -1,14 +1,13 @@
 package br.com.ambientinformatica.ivolunteer.controle;
 
-import java.awt.event.InputEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.naming.event.EventContext;
 
+import org.eclipse.jdt.internal.compiler.parser.diagnose.DiagnoseParser;
+import org.primefaces.component.dialog.Dialog;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.event.TabChangeEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.Discursiva;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumQuestao;
 import br.com.ambientinformatica.ivolunteer.entidade.Objetiva;
 import br.com.ambientinformatica.ivolunteer.persistencia.AvaliacaoDao;
+import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 
 @Controller("AvaliacaoControl")
 @Scope("conversation")
@@ -32,6 +32,7 @@ public class AvaliacaoControl {
 	private Objetiva objetiva = new Objetiva();
 	private EnumQuestao tipoQuestao = EnumQuestao.D;
 	private Alternativa alternativa = new Alternativa();
+	private List<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
 
 	@Autowired
 	private AvaliacaoDao avaliacaoDao;
@@ -55,7 +56,7 @@ public class AvaliacaoControl {
 		}
 	}
 
-	public void validaTitulo() {		
+	public void validaTitulo() {
 		if (this.avaliacao.getTitulo().length() < 2) {
 			UtilFaces.addMensagemFaces("Campo Título está Inválido",
 					FacesMessage.SEVERITY_WARN);
@@ -69,6 +70,14 @@ public class AvaliacaoControl {
 			this.tipoQuestao = EnumQuestao.D;
 		} else {
 			this.tipoQuestao = EnumQuestao.O;
+		}
+	}
+
+	public void listaAvaliacoes() {
+		try {			
+			this.avaliacoes = avaliacaoDao.listar();
+		} catch (PersistenciaException e) {
+			UtilFaces.addMensagemFaces(e);
 		}
 	}
 
@@ -132,4 +141,17 @@ public class AvaliacaoControl {
 		this.discursiva = discursiva;
 
 	}
+
+	public void setAvaliacao(Avaliacao avaliacao) {
+		this.avaliacao = avaliacao;
+	}
+
+	public List<Avaliacao> getAvaliacoes() {
+		return avaliacoes;
+	}
+
+	public void setAvaliacoes(List<Avaliacao> avaliacoes) {
+		this.avaliacoes = avaliacoes;
+	}
+
 }

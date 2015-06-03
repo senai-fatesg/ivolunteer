@@ -5,18 +5,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.IndexColumn;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -107,17 +112,21 @@ public class Pessoa {
 	private Boolean requisitouVagaParaOutraCriancao;
 
 	
-	@OneToMany
-	private List<Endereco> listaEndereco = new ArrayList<Endereco>();
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "pessoa_id")
+	@IndexColumn(name = "id")
+   private List<Endereco> listaEndereco = new ArrayList<Endereco>();
+	
 	@OneToMany
 	private List<Pessoa> listaPessoaRelacionada = new ArrayList<Pessoa>();
-	@OneToMany
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "pessoa_id")
+	@IndexColumn(name = "id")
 	private List<Telefone> listaTelefone = new ArrayList<Telefone>();
 	
 	//construtor da classe
 	public Pessoa(){
-		listaEndereco = new ArrayList<Endereco>();
-		listaTelefone = new ArrayList<Telefone>();
 	}
 
 	public BigDecimal getTotalRenda() {
@@ -733,6 +742,11 @@ public class Pessoa {
 
 	public void setTotalRenda(BigDecimal totalRenda) {
 		this.totalRenda = totalRenda;
+	}
+	
+
+	public void setListaEndereco(List<Endereco> listaEndereco) {
+		this.listaEndereco = listaEndereco;
 	}
 	
 	

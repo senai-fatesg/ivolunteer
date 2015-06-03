@@ -7,6 +7,10 @@
 	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
+	
+	<p:panel header="Relatorio De Aprendizado" id="painel">
+	
+	</p:panel>
 
 	</ui:define>
 </ui:composition>

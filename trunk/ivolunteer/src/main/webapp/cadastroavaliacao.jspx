@@ -29,6 +29,11 @@
 				<a:newLine />
 				<a:newLine />
 				<a:field label="Título" width="100%">
+					<p:growl id="verificaTitulo" />
+					<p:inputText id="titulo" value="#{AvaliacaoControl.avaliacao.titulo}"
+						style="width:100%;">
+						<p:ajax event="blur" update="verificaTitulo" listener="#{AvaliacaoControl.verificaTitulo}"/>					
+						</p:inputText>
 					<p:inputText id="titulo"
 						value="#{AvaliacaoControl.avaliacao.titulo}" style="width:100%;">
 					</p:inputText>

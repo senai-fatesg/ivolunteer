@@ -11,7 +11,7 @@
 			<p:panel header="Cadastro de Funcionário" id="panelFuncionario">
 				<p:tabView id="tabCadastro" cache="true">
 					<p:tab title="Dados Pessoais" id="dadosPessoais">
-						<p:panel id="painelDadosPessoais">
+						<p:panel id="painelDadosPessoais" style="padding-left:10%">
 
 							<a:field label="Nome" width="200px">
 								<p:inputText
@@ -105,9 +105,9 @@
 							</a:field>
 
 
-							<a:field label="Profissão" width="200px" spaceLeft="75px">
+							<a:field label="Profissão" width="150px" spaceLeft="75px">
 								<p:inputText value="#{FuncionarioControl.funcionario.profissao}"
-									style="width:200px" />
+									style="width:150px" />
 							</a:field>
 
 							<a:newLine />
@@ -477,7 +477,7 @@
 
 				</p:tabView>
 				<p:commandButton value="Salvar" icon="ui-icon-disk"
-					actionListener="#{FuncionarioControl.confirmar}" update="@all"></p:commandButton>
+					actionListener="#{FuncionarioControl.incluir}" update="@all"></p:commandButton>
 
 			</p:panel>
 

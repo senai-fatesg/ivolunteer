@@ -49,7 +49,7 @@ public class CandidatoControl {
 	public void confirmar(ActionEvent evt) {
 		try {
 			//alterando o candidato
-			this.PessoaDao.incluir(this.pessoaCandidato);
+			this.PessoaDao.alterar(this.pessoaCandidato);
 			pessoaCandidato = new Pessoa();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
@@ -111,6 +111,10 @@ public class CandidatoControl {
 
 	public List<SelectItem> getCompleteEnumTipoTelefone() {
 		return UtilFaces.getListEnum(EnumTipoTelefone.values());
+	}
+	
+	public List<SelectItem> getCompleteEnumTipoMoradia(){
+		return UtilFaces.getListEnum(EnumTipoCasa.values());
 	}
 
 		

@@ -39,6 +39,7 @@ public class Pessoa {
 	private String certidaoNascimento;
 	private String informacoesSobreIntituicao;
 	private String nomePessoaMoraComCrianca;
+	private String necessidadesEspeciais;
 	
 	@Enumerated(EnumType.STRING)
 	private EnumSexo sexo;
@@ -54,8 +55,6 @@ public class Pessoa {
 	
 	@Enumerated(EnumType.STRING)
 	private EnumTipoCasa tipoMoradia;
-
-	private String necessidadesEspeciais;
 
 	@Enumerated(EnumType.STRING)
 	private EnumFiliacao filiacao;

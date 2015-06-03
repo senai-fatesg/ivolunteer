@@ -1,11 +1,17 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+
+import org.hibernate.annotations.IndexColumn;
 
 @Entity
 public class Endereco {
@@ -29,7 +35,7 @@ public class Endereco {
 
 	private String complemento;
 
-	@OneToOne
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Cidade cidade = new Cidade();
 
 	public Integer getId() {

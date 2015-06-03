@@ -9,75 +9,92 @@
 	<ui:define name="corpo">
 
 		<p:panel header="Seleção De Candidato" id="selecao">
+
+
 			<p:tabView cache="true">
 
 				<p:tab title="Seleçao de candidato" id="selec">
 
 					<h3 style="margin-top:">Selecione</h3>
 
-					<p:selectManyCheckbox style="margin-left:" id="basic" layout="grid"
-						columns="3" value="#{checkboxView.selectedConsoles}">
-						<f:selectItem itemLabel="Nome" itemValue="nomePessoa" />
-						<f:selectItem itemLabel="Renda Familiar" itemValue="renda" />
+					<p:selectManyCheckbox style="margin-left:" id="checknome"
+						layout="grid" columns="1" value="#{PesquisaControl.checkStatus}">
+						<f:selectItem itemLabel="Nome" itemValue="nome" />
+						<p:ajax update="nomePessoa" />
+
+					</p:selectManyCheckbox>
+
+					<p:selectManyCheckbox style="margin-left:" id="checkrenda"
+						layout="grid" columns="1" value="#{checkboxView.selectedConsoles}">
+						<f:selectItem itemLabel="Renda Familiar" itemValue="renda"
+							render="nomePessoa" />
+					</p:selectManyCheckbox>
+					<p:selectManyCheckbox style="margin-left:" id="checkbeneficio"
+						layout="grid" columns="1" value="#{checkboxView.selectedConsoles}">
 						<f:selectItem itemLabel="Beneficios" itemValue="beneficio" />
 					</p:selectManyCheckbox>
-					<p:commandButton actionListener="#{PesquisaSelecao.consultar}"
-						value="Busca"></p:commandButton>
+
 					<a:newLine />
 
 					<a:field label="Nome" width="300px;">
-						<p:inputText id="nomePessoa" disabled="#{!state.checkStatus}"
-							value="#{PesquisaSelecao.pessoa.nomePessoa}"></p:inputText>
+						<p:inputText id="nomePessoa"
+							value="#{PesquisaSelecaoaControl.pessoa.nomePessoa}"
+							disabled="#{payment.type !='nome'}"></p:inputText>
 					</a:field>
 					<a:newLine />
 					<a:field label="Valor Inicial" width="300px;">
 						<p:inputText id="valorInicial"
-							value="#{PesquisaSelecao.pessoa.valorInicial}"></p:inputText>
+							value="#{PesquisaSelecaoaControl.pessoa.valorInicial}"></p:inputText>
 					</a:field>
 					<a:field label="Valor Final" width="200px;">
 						<p:inputText id="valorFinal"
-							value="#{PesquisaSelecao.pessoa.valorFinal}"></p:inputText>
+							value="#{PesquisaSelecaoaControl.pessoa.valorFinal}"></p:inputText>
 					</a:field>
-
+					<a:newLine />
 
 					<a:newLine />
-					
+					<p:commandButton actionListener="#{PesquisaSelecaoControl.listar}"
+						value="Busca" update="listaBusca"></p:commandButton>
+
 					<p:dataTable id="listaBusca"
-							value="#{PesquisaControll.lista }" var="cont"
-							width="100%" emptyMessage="Sem registros">
+						value="#{PesquisaSelecaoControl.pessoas}" var="pes" width="100%"
+						emptyMessage="Sem registros">
+						<f:facet name="header">
+							<h:outputText value="Seleçao Candidato"></h:outputText>
+						</f:facet>
+						<p:column sortBy="#{pes.id}">
 							<f:facet name="header">
-								<h:outputText value="Seleçao Candidato"></h:outputText>
+								<h:outputText value="Codigo"></h:outputText>
 							</f:facet>
-							<p:column sortBy="#{cont.nomePessoaRecado }">
-								<f:facet name="header">
-									<h:outputText value="Codigo"></h:outputText>
-								</f:facet>
-								<h:outputText value="#{PesquisaSelecaoaControl.pessoa.id}"></h:outputText>
-							
-								<f:facet name="header">
-									<h:outputText value="Nome"></h:outputText>
-								</f:facet>
-								<h:outputText value="#{PesquisaSelecaoaControl.pessoa.nome }"></h:outputText>
-							</p:column>
-							<p:column sortBy="#{PesquisaSelecaoaControl.pessoa.enumEstado }">
-								<f:facet name="header">
-									<h:outputText value="Prioridade"></h:outputText>
-									
-								</f:facet>
-								<p:autoComplete id="uf" dropdown="true"
-									value="#{FuncionarioControl.cidade.enumEstado}"
-									completeMethod="#{FuncionarioControl.completeEnumUf}"
-									style="margin-top: -10px" />
-								
-							</p:column>
-							
-						</p:dataTable>
-						
+							<h:outputText value="#{pes.id}"></h:outputText>
+						</p:column>
+						<p:column sortBy="#{pes.nome}">
+							<f:facet name="header">
+								<h:outputText value="Nome"></h:outputText>
+							</f:facet>
+							<h:outputText value="#{pes.nome}"></h:outputText>
+						</p:column>
+
+						<p:column sortBy="#{pes.prioridade}">
+							<f:facet name="header">
+								<h:outputText value="Prioridade"></h:outputText>
+							</f:facet>
+						</p:column>
+
+
+					</p:dataTable>
+
 					<a:newLine />
-					<p:commandButton actionListener="#{PesquisaSelecao.confirmar}"
+
+					<p:commandButton
+						actionListener="#{PesquisaSelecaoControl.confirmar}"
 						value="Salvar"></p:commandButton>
+
 				</p:tab>
+
 			</p:tabView>
+
+
 		</p:panel>
 	</ui:define>
 </ui:composition>

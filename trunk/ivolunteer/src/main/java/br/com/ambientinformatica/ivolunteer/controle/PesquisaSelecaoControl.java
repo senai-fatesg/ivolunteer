@@ -19,25 +19,26 @@ import br.com.ambientinformatica.ivolunteer.persistencia.PessoaDao;
 @Controller("PesquisaSelecaoControl")
 @Scope("conversation")
 public class PesquisaSelecaoControl {
-	
+
 	private Pessoa pessoa = new Pessoa();
 
 	private List<Pessoa> pessoas = new ArrayList<Pessoa>();
-	
-	 public List<Pessoa> getPessoas() {
+
+	public List<Pessoa> getPessoas() {
 		return pessoas;
 	}
 
-		@Autowired
-		private PessoaDao PessoaDao;
-
+	@Autowired
+	private PessoaDao PessoaDao;
 
 	public void setPessoas(List<Pessoa> pessoas) {
 		this.pessoas = pessoas;
 	}
+
 	private static final String disable = "disable";
-    private static final String enable = "enable";
-    private String checkStatus = "disable";
+	private static final String enable = "enable";
+	private String checkStatus = "disable";
+
 	public String getCheckStatus() {
 		return checkStatus;
 	}
@@ -47,10 +48,8 @@ public class PesquisaSelecaoControl {
 	}
 
 	public boolean isCheckStatus() {
- return this.checkStatus.equalsIgnoreCase(enable) ? true : false;
-  }
-
-
+		return this.checkStatus.equalsIgnoreCase(enable) ? true : false;
+	}
 
 	public void confirmar(ActionEvent evt) {
 		try {
@@ -61,7 +60,7 @@ public class PesquisaSelecaoControl {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
-	
+
 	public void consultar(ActionEvent evt) {
 		try {
 			PessoaDao.consultar(pessoa.getId());
@@ -71,7 +70,6 @@ public class PesquisaSelecaoControl {
 		}
 	}
 
-	
 	public void listar(ActionEvent evt) {
 		try {
 			pessoas = PessoaDao.listar();
@@ -79,6 +77,7 @@ public class PesquisaSelecaoControl {
 			UtilFaces.addMensagemFaces(e.getMessage());
 		}
 	}
+
 	public List<String> completeEnumPrioridade(String query) {
 		List<String> retornoPrioridade = new ArrayList<String>();
 		EnumPrioridade[] enumPrioridade = EnumPrioridade.values();
@@ -87,5 +86,12 @@ public class PesquisaSelecaoControl {
 		}
 		return retornoPrioridade;
 	}
-	
+
+	public Pessoa getPessoa() {
+		return pessoa;
+	}
+
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
+	}
 }

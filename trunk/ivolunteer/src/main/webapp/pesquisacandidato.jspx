@@ -18,19 +18,19 @@
 					<h3 style="margin-top:">Selecione</h3>
 
 					<p:selectManyCheckbox style="margin-left:" id="checknome"
-						layout="grid" columns="1" value="#{PesquisaControl.checkStatus}">
+						layout="grid" columns="1" >
 						<f:selectItem itemLabel="Nome" itemValue="nome" />
 						<p:ajax update="nomePessoa" />
 
 					</p:selectManyCheckbox>
 
 					<p:selectManyCheckbox style="margin-left:" id="checkrenda"
-						layout="grid" columns="1" value="#{checkboxView.selectedConsoles}">
+						layout="grid" columns="1">
 						<f:selectItem itemLabel="Renda Familiar" itemValue="renda"
 							render="nomePessoa" />
 					</p:selectManyCheckbox>
 					<p:selectManyCheckbox style="margin-left:" id="checkbeneficio"
-						layout="grid" columns="1" value="#{checkboxView.selectedConsoles}">
+						layout="grid" columns="1">
 						<f:selectItem itemLabel="Beneficios" itemValue="beneficio" />
 					</p:selectManyCheckbox>
 
@@ -38,17 +38,17 @@
 
 					<a:field label="Nome" width="300px;">
 						<p:inputText id="nomePessoa"
-							value="#{PesquisaSelecaoaControl.pessoa.nomePessoa}"
+							value="#{PesquisaSelecaoControl.pessoa.nomePessoa}"
 							disabled="#{payment.type !='nome'}"></p:inputText>
 					</a:field>
 					<a:newLine />
 					<a:field label="Valor Inicial" width="300px;">
 						<p:inputText id="valorInicial"
-							value="#{PesquisaSelecaoaControl.pessoa.valorInicial}"></p:inputText>
+							value="#{PesquisaSelecaoControl.pessoa.valorInicial}"></p:inputText>
 					</a:field>
 					<a:field label="Valor Final" width="200px;">
 						<p:inputText id="valorFinal"
-							value="#{PesquisaSelecaoaControl.pessoa.valorFinal}"></p:inputText>
+							value="#{PesquisaSelecaoControl.pessoa.valorFinal}"></p:inputText>
 					</a:field>
 					<a:newLine />
 
@@ -57,25 +57,25 @@
 						value="Busca" update="listaBusca"></p:commandButton>
 
 					<p:dataTable id="listaBusca"
-						value="#{PesquisaSelecaoControl.pessoas}" var="pes" width="100%"
+						value="#{PesquisaSelecaoControl.pessoas}" var="candidato" width="100%"
 						emptyMessage="Sem registros">
 						<f:facet name="header">
 							<h:outputText value="Seleçao Candidato"></h:outputText>
 						</f:facet>
-						<p:column sortBy="#{pes.id}">
+						<p:column sortBy="#{candidato.id}">
 							<f:facet name="header">
 								<h:outputText value="Codigo"></h:outputText>
 							</f:facet>
-							<h:outputText value="#{pes.id}"></h:outputText>
+							<h:outputText value="#{candidato.id}"></h:outputText>
 						</p:column>
-						<p:column sortBy="#{pes.nome}">
+						<p:column sortBy="#{candidato.nome}">
 							<f:facet name="header">
 								<h:outputText value="Nome"></h:outputText>
 							</f:facet>
-							<h:outputText value="#{pes.nome}"></h:outputText>
+							<h:outputText value="#{candidato.nome}"></h:outputText>
 						</p:column>
 
-						<p:column sortBy="#{pes.prioridade}">
+						<p:column sortBy="#{candidato.prioridade}">
 							<f:facet name="header">
 								<h:outputText value="Prioridade"></h:outputText>
 							</f:facet>

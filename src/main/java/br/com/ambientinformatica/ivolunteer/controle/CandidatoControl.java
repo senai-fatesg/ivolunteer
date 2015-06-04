@@ -89,6 +89,54 @@ public class CandidatoControl {
 		}
 	}
 	
+	public void removerEndereco(Endereco endereco) {
+		try {
+			this.pessoa.removerEndereco(endereco);
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
+	
+	public void removerTelefone(Telefone telefone) {
+		try {
+			this.pessoa.removerTelefone(telefone);
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
+	
+	public void removerPessoa(Pessoa pessoa) {
+		try {
+			this.pessoa.removerPessoa(pessoa);
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
+	
+	public void alterarTelefone(Telefone telefone){
+		try{
+			this.pessoa.alterarTelefone(telefone);
+		}catch(Exception e){
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
+	
+	public void alterarEndereco(Endereco endereco){
+		try{
+			this.pessoa.alterarEndereco(endereco);
+		}catch(Exception e){
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
+	
+	public void alterarPessoa(Pessoa pessoa){
+		try{
+			this.pessoa.alterarPessoa(pessoa);
+		}catch(Exception e){
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
+	
 	public List<SelectItem> getCompleteEnumFiliacao() {
 		return UtilFaces.getListEnum(EnumFiliacao.values());
 	}

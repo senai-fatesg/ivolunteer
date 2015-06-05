@@ -3,13 +3,10 @@ package br.com.ambientinformatica.ivolunteer.controle;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.naming.event.EventContext;
 
-import org.eclipse.jdt.internal.compiler.parser.diagnose.DiagnoseParser;
-import org.primefaces.component.dialog.Dialog;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.event.TabChangeEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +36,8 @@ public class AvaliacaoControl {
 	private String filtro = new String();
 
 	@Autowired
-	private AvaliacaoDao avaliacaoDao;
+	private AvaliacaoDao avaliacaoDao;	
 	
-	public void criarColuna(ActionEvent evt){
-		UI
-	}
 	
 
 	// Insere Alternativas em Questao do tipo Objetiva

@@ -7,7 +7,8 @@
 	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
-		<p:dataTable id="avaliacaoes" var="avaliacaoItem" value="#{AvaliacaoControl.listarAvaliacoes}" widgetVar="avaliacaoTable">
+		<p:commandButton value="Criar Coluna" actionListener="#{AvaliacaoControl.criarColuna}"></p:commandButton>
+		<p:dataTable id="avaliacaoes">
 		</p:dataTable>
 	</ui:define>
 

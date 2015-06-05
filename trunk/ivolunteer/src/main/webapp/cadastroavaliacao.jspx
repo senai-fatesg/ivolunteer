@@ -13,16 +13,31 @@
 					closable="true" />
 
 				<p:commandButton id="consultar" value="Consultar"
-					icon="ui-icon-search" action="#{AvaliacaoControl.listaAvaliacoes}"
-					onclick="dlg.show();" />
-				<p:dialog id="modalPesquisa" header="Consultar" widgetVar="dlg"
-					modal="true" maximizable="false" minimizable="false" >
-					<p:dataTable id="avaliacoes" var="avaliacaoItem"
-						value="#{AvaliacaoControl.avaliacoes}" widgetVar="listaAvaliacoes"
-						emptyMessage="Sem registros a exibir">
-						<p:column headerText="Título">#{avalicaoItem.titulo}</p:column>
-						<p:column headerText="Descricao">#{avalicaoItem.descricao}</p:column>
-						<p:column />
+					icon="ui-icon-search" onclick="consultar.show();" />
+				<p:dialog id="modalPesquisa" header="Consultar"
+					widgetVar="consultar" modal="true" maximizable="false"
+					minimizable="false" width="40%" height="70%" resizable="false">
+					<a:field label="Título">
+						<p:inputText id="filtro" value="#{AvaliacaoControl.filtro }" />
+					</a:field>
+					<a:field spaceLeft="15px">
+						<p:commandButton id="filtrar" icon="ui-icon-search"
+							actionListener="AvaliacaoControl.aplicarFiltro"
+							update="listaAvaliacoes" />
+					</a:field>
+					<a:newLine />
+					<p:dataTable id="listaAvaliacoes" var="itemAvaliacoes"
+						value="#{AvaliacaoControl.avaliacoes }"
+						widgetVar="avaliacoesTable" emptyMessage="Sem Registros a Exibir">
+
+
+
+
+
+						<p:column headerText="Título">#{itemAvaliacoes.titulo }</p:column>
+						<p:column headerText="Descricao">#{itemAvaliacoes.descricao }</p:column>
+						<p:column></p:column>
+
 					</p:dataTable>
 				</p:dialog>
 

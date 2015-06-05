@@ -3,10 +3,13 @@ package br.com.ambientinformatica.ivolunteer.controle;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.naming.event.EventContext;
 
+import org.eclipse.jdt.internal.compiler.parser.diagnose.DiagnoseParser;
+import org.primefaces.component.dialog.Dialog;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.event.TabChangeEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +35,16 @@ public class AvaliacaoControl {
 	private EnumQuestao tipoQuestao = EnumQuestao.D;
 	private Alternativa alternativa = new Alternativa();
 	private List<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
+	private List<Avaliacao> avaliacoesFiltradas =  new ArrayList<Avaliacao>();
+	private String filtro = new String();
 
 	@Autowired
 	private AvaliacaoDao avaliacaoDao;
+	
+	public void criarColuna(ActionEvent evt){
+		UI
+	}
+	
 
 	// Insere Alternativas em Questao do tipo Objetiva
 	public void addAlternativa(ActionEvent ev) {
@@ -44,7 +54,7 @@ public class AvaliacaoControl {
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
-	}
+	}	
 
 	// Remove Questao em Avaliacao
 	public void remAlternativa(Alternativa alternativa) {
@@ -112,6 +122,17 @@ public class AvaliacaoControl {
 		}
 	}
 	
+	//Aplica Filtro
+	public void aplicarFiltro(ActionEvent evt){
+		try {
+			this.avaliacoes = this.avaliacaoDao.listar();
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+			
+		
+	}
+	
 	public void getVerificaTitulo(){
 		if (this.avaliacao.getTitulo().length()<2){
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Titulo deve conter no minimo 2 caracteres"));
@@ -159,4 +180,21 @@ public class AvaliacaoControl {
 		this.avaliacoes = avaliacoes;
 	}
 
+	public List<Avaliacao> getAvaliacoesFiltradas() {
+		return avaliacoesFiltradas;
+	}
+
+	public void setAvaliacoesFiltradas(List<Avaliacao> avaliacoesFiltradas) {
+		this.avaliacoesFiltradas = avaliacoesFiltradas;
+	}
+
+	public String getFiltro() {
+		return filtro;
+	}
+
+	public void setFiltro(String filtro) {
+		this.filtro = filtro;
+	}
+
+	
 }

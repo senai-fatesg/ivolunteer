@@ -32,7 +32,6 @@ public class AvaliacaoControl {
 	private EnumQuestao tipoQuestao = EnumQuestao.D;
 	private Alternativa alternativa = new Alternativa();
 	private List<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
-	private List<Avaliacao> avaliacoesFiltradas = new ArrayList<Avaliacao>();
 	private Avaliacao filtro = new Avaliacao();
 
 	@Autowired
@@ -46,6 +45,12 @@ public class AvaliacaoControl {
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
+	}
+
+	// Obtem Registro para Alteração
+
+	public void carregaAvaliacao(Avaliacao avaliacao){
+		this.avaliacao = avaliacao;		
 	}
 
 	// Remove Questao em Avaliacao
@@ -118,7 +123,7 @@ public class AvaliacaoControl {
 		try {
 			if (this.filtro.getTitulo().isEmpty()) {
 				this.avaliacoes = this.avaliacaoDao.listar();
-			} else {				
+			} else {
 				this.avaliacoes = this.avaliacaoDao.listarTitulo(this.filtro);
 			}
 		} catch (Exception e) {
@@ -177,14 +182,6 @@ public class AvaliacaoControl {
 		this.avaliacoes = avaliacoes;
 	}
 
-	public List<Avaliacao> getAvaliacoesFiltradas() {
-		return avaliacoesFiltradas;
-	}
-
-	public void setAvaliacoesFiltradas(List<Avaliacao> avaliacoesFiltradas) {
-		this.avaliacoesFiltradas = avaliacoesFiltradas;
-	}
-
 	public Avaliacao getFiltro() {
 		return filtro;
 	}
@@ -192,7 +189,5 @@ public class AvaliacaoControl {
 	public void setFiltro(Avaliacao filtro) {
 		this.filtro = filtro;
 	}
-
-	
 
 }

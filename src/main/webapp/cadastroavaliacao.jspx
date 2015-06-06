@@ -32,7 +32,7 @@
 						<p:column headerText="Título" width="30%">#{itemAvaliacoes.titulo}</p:column>
 						<p:column headerText="Descricao">#{itemAvaliacoes.descricao}</p:column>
 						<p:column width="5%">							
-							<p:commandButton icon="ui-icon-pencil"/>
+							<p:commandButton icon="ui-icon-pencil" action="#{AvaliacaoControl.carregaAvaliacao(itemAvaliacoes)}" update="@all"/>
 							<p:commandButton icon="ui-icon-trash" />
 						</p:column>
 

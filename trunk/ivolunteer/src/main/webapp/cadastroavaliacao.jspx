@@ -18,25 +18,23 @@
 					widgetVar="consultar" modal="true" maximizable="false"
 					minimizable="false" width="40%" height="70%" resizable="false">
 					<a:field label="Título">
-						<p:inputText id="filtro" value="#{AvaliacaoControl.filtro }" />
+						<p:inputText id="filtro" value="#{AvaliacaoControl.filtro.titulo}" />
 					</a:field>
 					<a:field spaceLeft="15px">
 						<p:commandButton id="filtrar" icon="ui-icon-search"
-							actionListener="AvaliacaoControl.aplicarFiltro"
+							actionListener="#{AvaliacaoControl.aplicarFiltro}"
 							update="listaAvaliacoes" />
 					</a:field>
 					<a:newLine />
-					<p:dataTable id="listaAvaliacoes" var="itemAvaliacoes"
-						value="#{AvaliacaoControl.avaliacoes }"
-						widgetVar="avaliacoesTable" emptyMessage="Sem Registros a Exibir">
-
-
-
-
-
-						<p:column headerText="Título">#{itemAvaliacoes.titulo }</p:column>
-						<p:column headerText="Descricao">#{itemAvaliacoes.descricao }</p:column>
-						<p:column></p:column>
+					<p:dataTable id="listaAvaliacoes" var="itemAvaliacoes" style="width:100%"
+						value="#{AvaliacaoControl.avaliacoes}" widgetVar="avaliacoesTable"
+						emptyMessage="Sem Registros a Exibir" >
+						<p:column headerText="Título" width="30%">#{itemAvaliacoes.titulo}</p:column>
+						<p:column headerText="Descricao">#{itemAvaliacoes.descricao}</p:column>
+						<p:column width="5%">							
+							<p:commandButton icon="ui-icon-pencil"/>
+							<p:commandButton icon="ui-icon-trash" />
+						</p:column>
 
 					</p:dataTable>
 				</p:dialog>
@@ -45,13 +43,12 @@
 				<a:newLine />
 				<a:field label="Título" width="100%">
 					<p:growl id="verificaTitulo" />
-					<p:inputText id="titulo" value="#{AvaliacaoControl.avaliacao.titulo}"
-						style="width:100%;">
-						<p:ajax event="blur" update="verificaTitulo" listener="#{AvaliacaoControl.verificaTitulo}"/>					
-						</p:inputText>
 					<p:inputText id="titulo"
 						value="#{AvaliacaoControl.avaliacao.titulo}" style="width:100%;">
+						<p:ajax event="blur" update="verificaTitulo"
+							listener="#{AvaliacaoControl.verificaTitulo}" />
 					</p:inputText>
+
 				</a:field>
 				<a:newLine />
 				<a:field label="Descricao" width="100%">

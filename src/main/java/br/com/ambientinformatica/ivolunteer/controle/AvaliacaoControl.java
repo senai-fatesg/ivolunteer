@@ -32,13 +32,11 @@ public class AvaliacaoControl {
 	private EnumQuestao tipoQuestao = EnumQuestao.D;
 	private Alternativa alternativa = new Alternativa();
 	private List<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
-	private List<Avaliacao> avaliacoesFiltradas =  new ArrayList<Avaliacao>();
-	private String filtro = new String();
+	private List<Avaliacao> avaliacoesFiltradas = new ArrayList<Avaliacao>();
+	private Avaliacao filtro = new Avaliacao();
 
 	@Autowired
-	private AvaliacaoDao avaliacaoDao;	
-	
-	
+	private AvaliacaoDao avaliacaoDao;
 
 	// Insere Alternativas em Questao do tipo Objetiva
 	public void addAlternativa(ActionEvent ev) {
@@ -48,7 +46,7 @@ public class AvaliacaoControl {
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
-	}	
+	}
 
 	// Remove Questao em Avaliacao
 	public void remAlternativa(Alternativa alternativa) {
@@ -77,7 +75,7 @@ public class AvaliacaoControl {
 	}
 
 	public void listaAvaliacoes() {
-		try {			
+		try {
 			this.avaliacoes = avaliacaoDao.listar();
 		} catch (PersistenciaException e) {
 			UtilFaces.addMensagemFaces(e);
@@ -92,7 +90,6 @@ public class AvaliacaoControl {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
-
 
 	// Inclui questao a avaliacao
 	public void addQuestao(ActionEvent event) {
@@ -115,21 +112,27 @@ public class AvaliacaoControl {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
-	
-	//Aplica Filtro
-	public void aplicarFiltro(ActionEvent evt){
+
+	// Aplica Filtro
+	public void aplicarFiltro(ActionEvent evt) {
 		try {
-			this.avaliacoes = this.avaliacaoDao.listar();
+			if (this.filtro.getTitulo().isEmpty()) {
+				this.avaliacoes = this.avaliacaoDao.listar();
+			} else {				
+				this.avaliacoes = this.avaliacaoDao.listarTitulo(this.filtro);
+			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
-			
-		
+
 	}
-	
-	public void getVerificaTitulo(){
-		if (this.avaliacao.getTitulo().length()<2){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Titulo deve conter no minimo 2 caracteres"));
+
+	public void getVerificaTitulo() {
+		if (this.avaliacao.getTitulo().length() < 2) {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(
+							"Titulo deve conter no minimo 2 caracteres"));
 		}
 	}
 
@@ -182,13 +185,14 @@ public class AvaliacaoControl {
 		this.avaliacoesFiltradas = avaliacoesFiltradas;
 	}
 
-	public String getFiltro() {
+	public Avaliacao getFiltro() {
 		return filtro;
 	}
 
-	public void setFiltro(String filtro) {
+	public void setFiltro(Avaliacao filtro) {
 		this.filtro = filtro;
 	}
 
 	
+
 }

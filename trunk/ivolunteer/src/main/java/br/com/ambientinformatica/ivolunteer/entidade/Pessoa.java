@@ -106,6 +106,7 @@ public class Pessoa {
 	private BigDecimal valorFinal = BigDecimal.ZERO;
 	private Integer numeroDePessoasMoradia;
 	private Integer numeroFilhosMatriculados;
+	private Integer idade;
 	
 	private Boolean paisVivemJuntos;
 	private Boolean requisitouOutraVaga;
@@ -529,5 +530,4 @@ public class Pessoa {
 	public void setNomePessoaMoraComCrianca(String nomePessoaMoraComCrianca) {
 		this.nomePessoaMoraComCrianca = nomePessoaMoraComCrianca;
 	}
-
 }

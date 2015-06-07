@@ -153,7 +153,7 @@
 
 							<p:commandButton
 								actionListener="#{CandidatoControl.adicioneTelefone }"
-								value="Adicionar contato" icon="ui-icon-plusthick" 
+								value="Adicionar contato" icon="ui-icon-plusthick"
 								update="listaTelefone, panelTelefone">
 							</p:commandButton>
 
@@ -465,20 +465,62 @@
 
 				</p:tab>
 
-
-				<p:tab title="Documentos" id="documentos">
+				<p:tab title="Lista candidatos" id="candidatos">
 					<p:panel rendered="true">
-						<p:commandButton actionListener="#{CandidatoControl.gerarPdf }"
-							value="Gerar pdf"></p:commandButton>
+						<p:dataTable id="listaCandidato"
+							value="#{CandidatoControl.listaCandidato }" var="cand"
+							width="100%" emptyMessage="Sem registros">
+							<f:facet name="header">
+								<h:outputText value="Lista de Candidato"></h:outputText>
+							</f:facet>
+							<p:column sortBy="#{cand.id}">
+								<f:facet name="header">
+									<h:outputText value="Codigo"></h:outputText>
+								</f:facet>
+								<h:outputText value="#{cand.id}"></h:outputText>
+							</p:column>
+							<p:column sortBy="#{cand.certidaoNascimento }">
+								<f:facet name="header">
+									<h:outputText value="CertidaoNascimento"></h:outputText>
+								</f:facet>
+								<h:outputText value="#{cand.certidaoNascimento }"></h:outputText>
+							</p:column>
+							<p:column sortBy="#{cand.nomePessoa }">
+								<f:facet name="header">
+									<h:outputText value="Nome"></h:outputText>
+								</f:facet>
+								<h:outputText value="#{cand.nomePessoa }"></h:outputText>
+							</p:column>
+							<p:column sortBy="#{cand.idade }">
+								<f:facet name="header">
+									<h:outputText value="idade"></h:outputText>
+								</f:facet>
+								<h:outputText value="#{cand.idade }"></h:outputText>
+							</p:column>
+
+							<p:column width="20">
+								<p:commandButton icon="ui-icon-pencil"
+									action="#{CandidatoControl.alterarCandidato(cand)}"
+									update="listaTelefone" ajax="false" />
+							</p:column>
+							<p:column width="20">
+								<p:commandButton icon="ui-icon-closethick"
+									action="#{CandidatoControl.removerCandidato(cand)}"
+									update="listaTelefone" ajax="false" />
+							</p:column>
+						</p:dataTable>
+
 						<a:newLine />
 
 						<a:newLine />
 					</p:panel>
 				</p:tab>
 
-				<p:tab title="Lista candidatos" id="candidatos">
+				<p:tab title="Documentos" id="documentos">
 					<p:panel rendered="true">
-
+						<p:commandButton actionListener="#{CandidatoControl.gerarPdf }"
+							value="Gerar pdf">
+						</p:commandButton>
 						<a:newLine />
 
 						<a:newLine />

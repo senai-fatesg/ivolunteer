@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
+import org.hibernate.ejb.criteria.path.ListAttributeJoin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,7 @@ public class CandidatoControl {
 	
 	private Pessoa pessoa = new Pessoa();
 	private Pessoa pessoaCandidato = new Pessoa();
+	private Pessoa candidato = new Pessoa();
 	
 	private Telefone telefone = new Telefone();
 	private Endereco endereco = new Endereco();
@@ -37,15 +39,24 @@ public class CandidatoControl {
 	private List<Endereco> listaEndereco = new ArrayList<Endereco>();
 	private List<Telefone> listaTelefone = new ArrayList<Telefone>();
 	private List<Pessoa> listaPessoa = new ArrayList<Pessoa>();
+	private List<Pessoa> listaCandidato = new ArrayList<Pessoa>();
 
 	@Autowired
 	private PessoaDao PessoaDao;
 
 	@PostConstruct
 	public void init() {
-
+		listarCandidato(null);
 	}
 
+	public void listarCandidato(ActionEvent evt){
+		try {
+			listaCandidato = PessoaDao.listar();
+		} catch (Exception e) {
+		   UtilFaces.addMensagemFaces(e);
+		}
+	}
+	
 	public void confirmar(ActionEvent evt) {
 		try {
 			//alterando o candidato
@@ -83,7 +94,7 @@ public class CandidatoControl {
 		try{
 			pessoaCandidato.addPessoa(pessoa);
 			pessoa = new Pessoa();
-			listaPessoa = pessoa.getListaPessoaRelacionada();
+			listaPessoa = pessoaCandidato.getListaPessoaRelacionada();
 		}catch(Exception erro){
 			UtilFaces.addMensagemFaces(erro);
 		}
@@ -109,6 +120,25 @@ public class CandidatoControl {
 		try {
 			this.pessoa.removerPessoa(pessoa);
 		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
+	
+	public void removerCandidato(Pessoa candidato){
+		try{
+			if(listaCandidato.contains(candidato)){
+				this.PessoaDao.excluirPorId(candidato.getId());
+				listaCandidato.listIterator();
+			}
+		}catch(Exception e){
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
+	
+	public void alterarCandidato(Pessoa candidato){
+		try{
+			listaCandidato.contains(candidato);
+		}catch(Exception e){
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
@@ -218,5 +248,21 @@ public class CandidatoControl {
 
 	public void setPessoaCandidato(Pessoa pessoaCandidato) {
 		this.pessoaCandidato = pessoaCandidato;
+	}
+
+	public Pessoa getCandidato() {
+		return candidato;
+	}
+
+	public void setCandidato(Pessoa candidato) {
+		this.candidato = candidato;
+	}
+
+	public List<Pessoa> getListaCandidato() {
+		return listaCandidato;
+	}
+
+	public void setListaCandidato(List<Pessoa> listaCandidato) {
+		this.listaCandidato = listaCandidato;
 	}
 }

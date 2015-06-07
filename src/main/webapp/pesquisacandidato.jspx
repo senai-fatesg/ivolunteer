@@ -13,26 +13,27 @@
 
 			<p:tabView cache="true">
 
-				<p:tab title="Seleçao de candidato" id="selec">
+				<p:tab title="Seleçao de candidato" id="selecao">
+					<h5 style="margin-top:">Selecione as opções abaixo para
+						realiza a pesquisa</h5>
+					<a:newLine />
+					<a:field label="Nome">
+						<p:selectBooleanCheckbox value="#{PesquisaSelecaoControl.nome}" />
+					</a:field>
 
-					<h3 style="margin-top:">Selecione</h3>
+					<a:newLine />
 
-					<p:selectManyCheckbox style="margin-left:" id="checknome"
-						layout="grid" columns="1" >
-						<f:selectItem itemLabel="Nome" itemValue="nome" />
-						<p:ajax update="nomePessoa" />
+					<a:field label="Renda Familiar">
+						<p:selectBooleanCheckbox
+							value="#{PesquisaSelecaoControl.rendaFamiliar}" />
+					</a:field>
 
-					</p:selectManyCheckbox>
+					<a:newLine />
 
-					<p:selectManyCheckbox style="margin-left:" id="checkrenda"
-						layout="grid" columns="1">
-						<f:selectItem itemLabel="Renda Familiar" itemValue="renda"
-							render="nomePessoa" />
-					</p:selectManyCheckbox>
-					<p:selectManyCheckbox style="margin-left:" id="checkbeneficio"
-						layout="grid" columns="1">
-						<f:selectItem itemLabel="Beneficios" itemValue="beneficio" />
-					</p:selectManyCheckbox>
+					<a:field label="Beneficios">
+						<p:selectBooleanCheckbox
+							value="#{PesquisaSelecaoControl.beneficios}" />
+					</a:field>
 
 					<a:newLine />
 
@@ -50,15 +51,20 @@
 						<p:inputText id="valorFinal"
 							value="#{PesquisaSelecaoControl.pessoa.valorFinal}"></p:inputText>
 					</a:field>
+
 					<a:newLine />
 
 					<a:newLine />
+
 					<p:commandButton actionListener="#{PesquisaSelecaoControl.listar}"
-						value="Busca" update="listaBusca"></p:commandButton>
+						value="Busca" update="listaBusca">
+					</p:commandButton>
+					<a:newLine />
+					<a:newLine />
 
 					<p:dataTable id="listaBusca"
-						value="#{PesquisaSelecaoControl.pessoas}" var="candidato" width="100%"
-						emptyMessage="Sem registros">
+						value="#{PesquisaSelecaoControl.pessoas}" var="candidato"
+						width="100%" emptyMessage="Sem registros">
 						<f:facet name="header">
 							<h:outputText value="Seleçao Candidato"></h:outputText>
 						</f:facet>
@@ -68,11 +74,11 @@
 							</f:facet>
 							<h:outputText value="#{candidato.id}"></h:outputText>
 						</p:column>
-						<p:column sortBy="#{candidato.nome}">
+						<p:column sortBy="#{candidato.nomePessoa}">
 							<f:facet name="header">
 								<h:outputText value="Nome"></h:outputText>
 							</f:facet>
-							<h:outputText value="#{candidato.nome}"></h:outputText>
+							<h:outputText value="#{candidato.nomePessoa}"></h:outputText>
 						</p:column>
 
 						<p:column sortBy="#{candidato.prioridade}">
@@ -81,10 +87,35 @@
 							</f:facet>
 						</p:column>
 
+						<p:column width="20">
+							<p:commandButton icon="ui-icon-extlink" id="descricao"
+								 onclick="PF('dlg').show()" />
+						</p:column>
+
 
 					</p:dataTable>
 
 					<a:newLine />
+					
+					<p:dialog header="descrição" widgetVar="dlg" resizable="false"
+						responsive="true">
+						<p:panelGrid columns="2" layout="grid"
+							styleClass="ui-panelgrid-blank"
+							columnClasses="ui-grid-col-4,ui-grid-col-8">
+							<h:outputLabel for="username" value="Username:" />
+							<p:inputText id="username" />
+
+							<h:outputLabel for="password" value="Password:" />
+							<p:password id="password" />
+
+							<f:facet name="footer">
+								<p:commandButton value="Login" type="button"
+									onclick="PF('dlg').hide()" />
+							</f:facet>
+						</p:panelGrid>
+					</p:dialog>
+
+
 
 					<p:commandButton
 						actionListener="#{PesquisaSelecaoControl.confirmar}"

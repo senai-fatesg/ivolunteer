@@ -78,7 +78,8 @@ public class PesquisaSelecaoControl {
 
 	public void descricaoDialogo(ActionEvent evt) {
 		try {
-			
+			PessoaDao.alterar(pessoa);
+			pessoas = PessoaDao.listar();
 		} catch (Exception erro) {
 			UtilFaces.addMensagemFaces(erro);
 		}

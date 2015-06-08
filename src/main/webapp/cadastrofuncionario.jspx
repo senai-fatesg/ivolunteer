@@ -9,9 +9,41 @@
 	<ui:define name="corpo">
 		<h:form>
 			<p:panel header="Cadastro de Funcionário" id="panelFuncionario">
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+					closable="true" />
+			
+			<p:commandButton id="consultar" value="Consultar"
+					icon="ui-icon-search" onclick="consultar.show();" />
+				<p:dialog id="modalPesquisa" header="Consultar"
+					widgetVar="consultar" modal="true" maximizable="false"
+					minimizable="false" width="40%" height="70%" resizable="false">
+					<a:field label="Nome">
+						<p:inputText id="filtro" value="#{FuncionarioControl.filtro.nomePessoa}" />
+					</a:field>
+					<a:field spaceLeft="15px">
+						<p:commandButton id="filtrar" icon="ui-icon-search"
+							actionListener="#{FuncionarioControl.aplicarFiltro}"
+							update="listaFuncionarios" />
+					</a:field>
+					<a:newLine />
+					<p:dataTable id="listaFuncionarios" var="itemFuncionario" style="width:100%"
+						value="#{FuncionarioControl.funcionarios}" widgetVar="funcionariosTable"
+						emptyMessage="Sem Registros a Exibir" >
+						<p:column headerText="Nome" width="30%">#{itemFuncionario.nomePessoa}</p:column>
+						<p:column headerText="Rg">#{itemFuncionario.rg}</p:column>
+						<p:column width="5%">							
+							<p:commandButton icon="ui-icon-pencil"/>
+							<p:commandButton icon="ui-icon-trash" />
+						</p:column>
+
+					</p:dataTable>
+				</p:dialog>
+				
+				<a:newLine />
+				<a:newLine />
 				<p:tabView id="tabCadastro" cache="true">
 					<p:tab title="Dados Pessoais" id="dadosPessoais">
-						<p:panel id="painelDadosPessoais" style="padding-left:10%">
+						<p:panel id="painelDadosPessoais">
 
 							<a:field label="Nome" width="200px">
 								<p:inputText
@@ -68,7 +100,7 @@
 
 							<a:field label="Sexo" spaceLeft="75px">
 								<p:selectOneMenu id="sexo"
-									value="#{FuncionarioControl.funcionario.enumSexo}"
+									value="#{FuncionarioControl.funcionario.sexo}"
 									style="width:200px;">
 									<f:selectItems value="#{FuncionarioControl.completeEnumSexo}"></f:selectItems>
 								</p:selectOneMenu>
@@ -167,15 +199,17 @@
 								<p:inputText value="#{FuncionarioControl.funcionario.nomePai}"
 									style="width:250px" />
 							</a:field>
+							
+							<a:newLine />
 
-							<a:field label="Nome da Mãe" width="250px" spaceLeft="15px">
+							<a:field label="Nome da Mãe" width="250px">
 								<p:inputText value="#{FuncionarioControl.funcionario.nomeMae}"
 									style="width:250px" />
 							</a:field>
 
-							<a:newLine />
+						
 
-							<a:field label="Inicio da Experiencia" width="150px">
+							<a:field label="Inicio da Experiencia" width="150px" spaceLeft="15px">
 								<p:calendar
 									value="#{FuncionarioControl.funcionario.inicioExperiencia}"
 									locale="de" navigator="true" pattern="yyyy-MMM-dd"
@@ -196,14 +230,6 @@
 									locale="de" navigator="true" pattern="yyyy-MMM-dd"
 									style="width:150px" />
 							</a:field>
-
-							<a:field label="Data Demissão" width="150px" spaceLeft="75px">
-								<p:calendar
-									value="#{FuncionarioControl.funcionario.dataDemissao}"
-									locale="de" navigator="true" pattern="yyyy-MMM-dd"
-									style="width:150px" />
-							</a:field>
-
 
 							<a:newLine />
 
@@ -477,7 +503,7 @@
 
 				</p:tabView>
 				<p:commandButton value="Salvar" icon="ui-icon-disk"
-					actionListener="#{FuncionarioControl.incluir}" update="@all"></p:commandButton>
+					actionListener="#{FuncionarioControl.incluir}" update="@form"></p:commandButton>
 
 			</p:panel>
 

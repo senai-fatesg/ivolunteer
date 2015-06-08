@@ -18,10 +18,10 @@ public class Frequencia {
 	@SequenceGenerator(name = "frequencia_seq", sequenceName = "frequencia_seq", allocationSize = 1, initialValue = 1)
 	private Integer id;
 
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Date data;
 
-	private Boolean presente = true;
+	private Boolean presente = false;
 
 	public Integer getId() {
 		return id;
@@ -49,8 +49,6 @@ public class Frequencia {
 		int result = 1;
 		result = prime * result + ((data == null) ? 0 : data.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result
-				+ ((presente == null) ? 0 : presente.hashCode());
 		return result;
 	}
 
@@ -73,12 +71,9 @@ public class Frequencia {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (presente == null) {
-			if (other.presente != null)
-				return false;
-		} else if (!presente.equals(other.presente))
-			return false;
 		return true;
 	}
+
+	
 
 }

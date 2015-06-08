@@ -7,10 +7,39 @@
 	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
-	
-	<p:panel header="Relatorio De Aprendizado" id="painel">
-	
-	</p:panel>
+
+		<p:panel header="Relatorio De Aprendizagem" id="painel">
+			<p:panel rendered="true">
+
+				<a:field label="Valor Periodo" width="250px;">
+					<p:inputText id="valorPeriodo"></p:inputText>
+				</a:field>
+
+				<a:field label="Periodo" width="270px;">
+					<p:autoComplete id="turmo" dropdown="true" />
+
+				</a:field>
+
+				<a:field label="Ano">
+					<p:calendar />
+				</a:field>
+
+				<a:newLine />
+
+
+			</p:panel>
+
+			<a:newLine />
+
+			<a:field label="Relatorio" width="100%">
+				<p:editor id="relatorio"></p:editor>
+			</a:field>
+			
+			<a:newLine />
+			<a:newLine />
+			<p:commandButton value="Confirmar"></p:commandButton>
+
+		</p:panel>
 
 	</ui:define>
 </ui:composition>

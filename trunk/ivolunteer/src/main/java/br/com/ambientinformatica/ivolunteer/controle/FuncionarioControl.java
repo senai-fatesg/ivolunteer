@@ -106,7 +106,12 @@ public class FuncionarioControl {
 	}
 
 	public void adicionarFrequencia(ActionEvent evt) {
-		funcionario.addFrequencia(frequencia);
+		try {
+			funcionario.addFrequencia(frequencia);
+			funcionarioDao.alterar(funcionario);
+		} catch (PersistenciaException e) {
+			UtilFaces.addMensagemFaces("Ocorreu um erro ao adicionar a Frequencia");
+		}
 	}
 
 	public void adicionarGradeHorario(ActionEvent evt) {

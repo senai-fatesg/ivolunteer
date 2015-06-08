@@ -37,7 +37,7 @@ public class FuncionarioControl {
 	private Endereco endereco = new Endereco();
 	private Cidade cidade = new Cidade();
 	private Telefone telefone = new Telefone();
-	private Pessoa pessoa = new Pessoa();
+	private Funcionario filtro = new Funcionario();
 	private Frequencia frequencia = new Frequencia();
 
 	private List<Frequencia> frequencias = new ArrayList<Frequencia>();
@@ -74,6 +74,7 @@ public class FuncionarioControl {
 	public void incluir(ActionEvent evt) {
 		try {
 			funcionarioDao.incluir(funcionario);
+			this.funcionario = new Funcionario();
 		} catch (PersistenciaException e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -168,6 +169,20 @@ public class FuncionarioControl {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
+	
+	// Aplica Filtro
+	public void aplicarFiltro(ActionEvent evt) {
+		try {
+			if (this.filtro.getNomePessoa().isEmpty()) {
+				this.funcionarios = this.funcionarioDao.listar();
+			} else {				
+				this.funcionarios = this.funcionarioDao.listarPorNome(this.filtro.getNomePessoa());
+			}
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+
+	}
 
 	public Funcionario getFuncionario() {
 		return funcionario;
@@ -214,12 +229,12 @@ public class FuncionarioControl {
 		return frequencias;
 	}
 
-	public Pessoa getPessoa() {
-		return pessoa;
+	public Funcionario getFiltro() {
+		return filtro;
 	}
 
-	public void setPessoa(Pessoa pessoa) {
-		this.pessoa = pessoa;
+	public void setFiltro(Funcionario filtro) {
+		this.filtro = filtro;
 	}
 
 	public Funcionario carregarFuncionario(SelectEvent evt) {

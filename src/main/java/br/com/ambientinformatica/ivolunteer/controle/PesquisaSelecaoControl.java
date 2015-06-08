@@ -14,6 +14,7 @@ import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.Endereco;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumPrioridade;
 import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
+import br.com.ambientinformatica.ivolunteer.entidade.SelecaoCandidato;
 import br.com.ambientinformatica.ivolunteer.persistencia.PessoaDao;
 
 @Controller("PesquisaSelecaoControl")
@@ -23,14 +24,8 @@ public class PesquisaSelecaoControl {
 	private Pessoa pessoa = new Pessoa();
 
 	private List<Pessoa> pessoas = new ArrayList<Pessoa>();
-
-	private EnumPrioridade prioridade;
-	private Boolean nome;
-	private Boolean rendaFamiliar;
-	private Boolean beneficios;
-
-	private BigDecimal valorinicial = BigDecimal.ZERO;
-	private BigDecimal valorFinal = BigDecimal.ZERO;
+	
+	private SelecaoCandidato selecaoCandidato = new SelecaoCandidato();
 
 	public List<Pessoa> getPessoas() {
 		return pessoas;
@@ -87,18 +82,7 @@ public class PesquisaSelecaoControl {
 
 	public void listar(ActionEvent evt) {
 		try {
-			if (nome == true && rendaFamiliar == false && beneficios == false) {
-				// TODO implementar a pesquisa por nome
-			}
-			if (nome == true && rendaFamiliar == true && beneficios == false) {
-				// TODO implementar a pesquisa por nome
-			}
-			if (nome == true && rendaFamiliar == true && beneficios == true) {
-				// TODO implementar a pesquisa por nome, renda familiar e por
-				// beneficios
-			}
-			// TODO implementar o retorno da lista conforme o metodo de listagem
-			pessoas = PessoaDao.listar();
+			pessoas = PessoaDao.pesquisaSelecaoCandidato(selecaoCandidato);
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e.getMessage());
 		}
@@ -121,51 +105,11 @@ public class PesquisaSelecaoControl {
 		this.pessoa = pessoa;
 	}
 
-	public EnumPrioridade getPrioridade() {
-		return prioridade;
+	public SelecaoCandidato getSelecaoCandidato() {
+		return selecaoCandidato;
 	}
 
-	public void setPrioridade(EnumPrioridade prioridade) {
-		this.prioridade = prioridade;
-	}
-
-	public Boolean getRendaFamiliar() {
-		return rendaFamiliar;
-	}
-
-	public void setRendaFamiliar(Boolean rendaFamiliar) {
-		this.rendaFamiliar = rendaFamiliar;
-	}
-
-	public Boolean getBeneficios() {
-		return beneficios;
-	}
-
-	public void setBeneficios(Boolean beneficios) {
-		this.beneficios = beneficios;
-	}
-
-	public BigDecimal getValorinicial() {
-		return valorinicial;
-	}
-
-	public void setValorinicial(BigDecimal valorinicial) {
-		this.valorinicial = valorinicial;
-	}
-
-	public BigDecimal getValorFinal() {
-		return valorFinal;
-	}
-
-	public void setValorFinal(BigDecimal valorFinal) {
-		this.valorFinal = valorFinal;
-	}
-
-	public Boolean getNome() {
-		return nome;
-	}
-
-	public void setNome(Boolean nome) {
-		this.nome = nome;
+	public void setSelecaoCandidato(SelecaoCandidato selecaoCandidato) {
+		this.selecaoCandidato = selecaoCandidato;
 	}
 }

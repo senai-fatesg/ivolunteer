@@ -128,7 +128,7 @@ public class CandidatoControl {
 		try{
 			if(listaCandidato.contains(candidato)){
 				this.PessoaDao.excluirPorId(candidato.getId());
-				listaCandidato.listIterator();
+				listaCandidato = PessoaDao.listar();
 			}
 		}catch(Exception e){
 			UtilFaces.addMensagemFaces(e);

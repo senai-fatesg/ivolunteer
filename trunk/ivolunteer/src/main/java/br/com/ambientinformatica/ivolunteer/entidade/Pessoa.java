@@ -1,10 +1,15 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.faces.convert.Converter;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -24,14 +29,14 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.IndexColumn;
 
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Pessoa {
 
 	@Id
 	@GeneratedValue(generator = "pessoa_seq", strategy = GenerationType.SEQUENCE)
 	@SequenceGenerator(name = "pessoa_seq", sequenceName = "pessoa_seq", allocationSize = 1, initialValue = 1)
 	private Integer id;
-	
+
 	private String nomePessoa;
 	private String rg;
 	private String orgaoExpeditor;
@@ -45,37 +50,35 @@ public class Pessoa {
 	private String informacoesSobreIntituicao;
 	private String nomePessoaMoraComCrianca;
 	private String necessidadesEspeciais;
-	
+
 	@Enumerated(EnumType.STRING)
 	private EnumSexo sexo;
-	
+
 	@Enumerated(EnumType.STRING)
 	private EnumEscolaridade escolaridade;
-	
+
 	@Enumerated(EnumType.STRING)
 	private EnumTipoPessoa tipoPessoa;
-	
+
 	@Enumerated(EnumType.STRING)
 	private EnumEstadoCivil estadoCivil;
-	
+
 	@Enumerated(EnumType.STRING)
 	private EnumTipoCasa tipoMoradia;
 
 	@Enumerated(EnumType.STRING)
 	private EnumFiliacao filiacao;
-	
+
 	@Enumerated(EnumType.STRING)
 	private EnumSexo enumSexo;
 	@Enumerated(EnumType.STRING)
-
 	private EnumEscolaridade enumEscolaridade;
 	@Enumerated(EnumType.STRING)
-	private EnumTipoTelefone enumTipoPessoa;	
-
+	private EnumTipoTelefone enumTipoPessoa;
 
 	@Enumerated(EnumType.STRING)
 	private EnumPrioridade enumPrioridade;
-	
+
 	public EnumPrioridade getEnumPrioridade() {
 		return enumPrioridade;
 	}
@@ -88,53 +91,55 @@ public class Pessoa {
 	private Date dataExpedicao;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataNascimento;
-	
-	//data de vencimento criada devido o documento de cadastro de candidato ter validade de 6 meses
+
+	// data de vencimento criada devido o documento de cadastro de candidato ter
+	// validade de 6 meses
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataVencimento;
-	
+
 	private BigDecimal valorBeneficio = BigDecimal.ZERO;
-	
+
 	private BigDecimal rendaOutra = BigDecimal.ZERO;
 	private BigDecimal rendaPai = BigDecimal.ZERO;
 	private BigDecimal rendaMae = BigDecimal.ZERO;
 	private BigDecimal rendaResponsavel = BigDecimal.ZERO;
 	private BigDecimal totalRenda = BigDecimal.ZERO;
-	
+
 	private BigDecimal valorAluguel = BigDecimal.ZERO;
 	private BigDecimal valorInicial = BigDecimal.ZERO;
 	private BigDecimal valorFinal = BigDecimal.ZERO;
 	private Integer numeroDePessoasMoradia;
 	private Integer numeroFilhosMatriculados;
 	private Integer idade;
-	
+
 	private Boolean paisVivemJuntos;
 	private Boolean requisitouOutraVaga;
 	private Boolean recebeBeneficio = false;
 	private Boolean requisitouVagaParaOutraCriancao;
 
-	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "pessoa_id")
 	@IndexColumn(name = "id")
-   private List<Endereco> listaEndereco = new ArrayList<Endereco>();
-	
+	private List<Endereco> listaEndereco = new ArrayList<Endereco>();
+
 	@OneToMany
 	private List<Pessoa> listaPessoaRelacionada = new ArrayList<Pessoa>();
-	
+
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "pessoa_id")
 	@IndexColumn(name = "id")
 	private List<Telefone> listaTelefone = new ArrayList<Telefone>();
-	
-	//construtor da classe
-	public Pessoa(){
+
+	// construtor da classe
+	public Pessoa() {
 		listaEndereco = new ArrayList<Endereco>();
 		listaTelefone = new ArrayList<Telefone>();
 	}
 
 	public BigDecimal getTotalRenda() {
-		return null;
+		BigDecimal valorTotal = BigDecimal.ZERO;
+		valorTotal.add(rendaPai).add(rendaMae).add(rendaResponsavel).add(rendaOutra);
+		return valorTotal;
 	}
 
 	public Integer getIrmaosMatriculados() {
@@ -142,56 +147,87 @@ public class Pessoa {
 	}
 
 	public Integer getIdade() {
-		Date data = new Date();
-		//Integer idade = dataNascimento - data;
-		return 0;
+		String data = "29/08/1993"; 
+		Integer idade = CalcularIdade(data);
+		return idade;
 	}
 
-	public void addTelefone(Telefone telefone){
-		if(!this.listaTelefone.contains(telefone)){
+	private Integer CalcularIdade(String dataNascimento) {
+		DateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");
+
+		Date dataNascInput = null;
+		try {
+			
+			dataNascInput = dataFormatada.parse(dataNascimento);
+
+		} catch (Exception e) {
+		}
+
+		Calendar dateOfBirth = new GregorianCalendar();
+
+		dateOfBirth.setTime(dataNascInput);
+
+		// Cria um objeto calendar com a data atual
+
+		Calendar today = Calendar.getInstance();
+
+		// Obtendo a idade baseado no ano
+
+		Integer idade = today.get(Calendar.YEAR) - dateOfBirth.get(Calendar.YEAR);
+
+		dateOfBirth.add(Calendar.YEAR, idade);
+
+		if (today.before(dateOfBirth)) {
+			idade--;
+		}
+		return idade;
+	}
+
+	public void addTelefone(Telefone telefone) {
+		if (!this.listaTelefone.contains(telefone)) {
 			this.listaTelefone.add(telefone);
 		}
 	}
-	
-	public void addEndereco(Endereco endereco){
-		if(!listaEndereco.contains(endereco)){
+
+	public void addEndereco(Endereco endereco) {
+		if (!listaEndereco.contains(endereco)) {
 			listaEndereco.add(endereco);
 		}
 	}
-	
-	public void addPessoa(Pessoa pessoaRelacionada){
-		if(!this.listaPessoaRelacionada.contains(pessoaRelacionada)){
+
+	public void addPessoa(Pessoa pessoaRelacionada) {
+		if (!this.listaPessoaRelacionada.contains(pessoaRelacionada)) {
 			this.listaPessoaRelacionada.add(pessoaRelacionada);
 		}
 	}
-	
-	public void removerEndereco(Endereco endereco){
-		if(listaEndereco.contains(endereco)){
+
+	public void removerEndereco(Endereco endereco) {
+		if (listaEndereco.contains(endereco)) {
 			this.listaEndereco.remove(endereco);
 		}
 	}
-	
-	public void removerTelefone(Telefone telefone){
-		if(listaTelefone.contains(telefone)){
+
+	public void removerTelefone(Telefone telefone) {
+		if (listaTelefone.contains(telefone)) {
 			this.listaTelefone.remove(telefone);
 		}
 	}
-	
-	public void removerPessoa(Pessoa pessoa){
-		if(listaPessoaRelacionada.contains(pessoa)){
+
+	public void removerPessoa(Pessoa pessoa) {
+		if (listaPessoaRelacionada.contains(pessoa)) {
 			this.listaPessoaRelacionada.remove(pessoa);
 		}
 	}
-	
-	public Telefone alterarTelefone(Telefone telefone){
+
+	public Telefone alterarTelefone(Telefone telefone) {
 		return telefone;
 	}
-	
-	public Endereco alterarEndereco(Endereco endereco){
+
+	public Endereco alterarEndereco(Endereco endereco) {
 		return endereco;
 	}
-	
-	public Pessoa alterarPessoa(Pessoa pessoa){
+
+	public Pessoa alterarPessoa(Pessoa pessoa) {
 		return pessoa;
 	}
 
@@ -250,7 +286,7 @@ public class Pessoa {
 	public void setNascionalidade(String nascionalidade) {
 		this.nascionalidade = nascionalidade;
 	}
-	
+
 	public String getDescricao() {
 		return descricao;
 	}
@@ -446,7 +482,7 @@ public class Pessoa {
 	public BigDecimal getValorInicial() {
 		return valorInicial;
 	}
-	
+
 	public void setValorInicial(BigDecimal valorInicial) {
 		this.valorInicial = valorInicial;
 	}
@@ -462,6 +498,7 @@ public class Pessoa {
 	public Integer getNumeroDePessoasMoradia() {
 		return numeroDePessoasMoradia;
 	}
+
 	public void setNumeroDePessoasMoradia(Integer numeroDePessoasMoradia) {
 		this.numeroDePessoasMoradia = numeroDePessoasMoradia;
 	}

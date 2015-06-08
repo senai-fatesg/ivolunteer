@@ -36,7 +36,7 @@ public class Pessoa {
 	@GeneratedValue(generator = "pessoa_seq", strategy = GenerationType.SEQUENCE)
 	@SequenceGenerator(name = "pessoa_seq", sequenceName = "pessoa_seq", allocationSize = 1, initialValue = 1)
 	private Integer id;
-
+	
 	private String nomePessoa;
 	private String rg;
 	private String orgaoExpeditor;
@@ -50,35 +50,35 @@ public class Pessoa {
 	private String informacoesSobreIntituicao;
 	private String nomePessoaMoraComCrianca;
 	private String necessidadesEspeciais;
-
+	
 	@Enumerated(EnumType.STRING)
 	private EnumSexo sexo;
-
+	
 	@Enumerated(EnumType.STRING)
 	private EnumEscolaridade escolaridade;
-
+	
 	@Enumerated(EnumType.STRING)
 	private EnumTipoPessoa tipoPessoa;
-
+	
 	@Enumerated(EnumType.STRING)
 	private EnumEstadoCivil estadoCivil;
-
+	
 	@Enumerated(EnumType.STRING)
 	private EnumTipoCasa tipoMoradia;
 
 	@Enumerated(EnumType.STRING)
 	private EnumFiliacao filiacao;
-
+	
 	@Enumerated(EnumType.STRING)
 	private EnumSexo enumSexo;
 	@Enumerated(EnumType.STRING)
 	private EnumEscolaridade enumEscolaridade;
 	@Enumerated(EnumType.STRING)
-	private EnumTipoTelefone enumTipoPessoa;
+	private EnumTipoTelefone enumTipoPessoa;	
 
 	@Enumerated(EnumType.STRING)
 	private EnumPrioridade enumPrioridade;
-
+	
 	public EnumPrioridade getEnumPrioridade() {
 		return enumPrioridade;
 	}
@@ -96,15 +96,15 @@ public class Pessoa {
 	// validade de 6 meses
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataVencimento;
-
+	
 	private BigDecimal valorBeneficio = BigDecimal.ZERO;
-
+	
 	private BigDecimal rendaOutra = BigDecimal.ZERO;
 	private BigDecimal rendaPai = BigDecimal.ZERO;
 	private BigDecimal rendaMae = BigDecimal.ZERO;
 	private BigDecimal rendaResponsavel = BigDecimal.ZERO;
 	private BigDecimal totalRenda = BigDecimal.ZERO;
-
+	
 	private BigDecimal valorAluguel = BigDecimal.ZERO;
 	private BigDecimal valorInicial = BigDecimal.ZERO;
 	private BigDecimal valorFinal = BigDecimal.ZERO;
@@ -117,21 +117,22 @@ public class Pessoa {
 	private Boolean recebeBeneficio = false;
 	private Boolean requisitouVagaParaOutraCriancao;
 
+	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "pessoa_id")
-	@IndexColumn(name = "id")
-	private List<Endereco> listaEndereco = new ArrayList<Endereco>();
-
+	//@IndexColumn(name = "id")
+   private List<Endereco> listaEndereco = new ArrayList<Endereco>();
+	
 	@OneToMany
 	private List<Pessoa> listaPessoaRelacionada = new ArrayList<Pessoa>();
-
+	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "pessoa_id")
-	@IndexColumn(name = "id")
+	//@IndexColumn(name = "id")
 	private List<Telefone> listaTelefone = new ArrayList<Telefone>();
-
-	// construtor da classe
-	public Pessoa() {
+	
+	//construtor da classe
+	public Pessoa(){
 		listaEndereco = new ArrayList<Endereco>();
 		listaTelefone = new ArrayList<Telefone>();
 	}
@@ -286,7 +287,7 @@ public class Pessoa {
 	public void setNascionalidade(String nascionalidade) {
 		this.nascionalidade = nascionalidade;
 	}
-
+	
 	public String getDescricao() {
 		return descricao;
 	}
@@ -482,7 +483,7 @@ public class Pessoa {
 	public BigDecimal getValorInicial() {
 		return valorInicial;
 	}
-
+	
 	public void setValorInicial(BigDecimal valorInicial) {
 		this.valorInicial = valorInicial;
 	}
@@ -567,4 +568,5 @@ public class Pessoa {
 	public void setNomePessoaMoraComCrianca(String nomePessoaMoraComCrianca) {
 		this.nomePessoaMoraComCrianca = nomePessoaMoraComCrianca;
 	}
+
 }

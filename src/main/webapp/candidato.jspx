@@ -15,8 +15,9 @@
 						<a:field label="Nome">
 							<p:inputText id="nomePessoa"
 								value="#{CandidatoControl.pessoaCandidato.nomePessoa}">
-
 							</p:inputText>
+							<p:tooltip id="toolTipTrack" for="nomePessoa"
+								value="nome do candidato" trackMouse="true" />
 						</a:field>
 
 						<a:field label="Data de nascimento" spaceLeft="15px">

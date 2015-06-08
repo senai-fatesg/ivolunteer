@@ -11,13 +11,14 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoPeriodo;
 import br.com.ambientinformatica.ivolunteer.entidade.RelatorioAprendizagem;
 import br.com.ambientinformatica.ivolunteer.persistencia.RelatorioAprendizagemDao;
 
 @Controller("RelatorioAprendizagemControl")
 @Scope("conversation")
 public class RelatorioAprendizagemControl {
-	
+	private EnumTipoPeriodo periodoselecionado;
 	private RelatorioAprendizagem relatorioaprendizagem = new RelatorioAprendizagem();
 
 	@Autowired
@@ -58,5 +59,22 @@ public class RelatorioAprendizagemControl {
 
 	public List<RelatorioAprendizagem> getRelatoriosAprendizagem() {
 		return relatoriosaprendizagems;
+	}
+
+	public EnumTipoPeriodo getPeriodoselecionado() {
+		return periodoselecionado;
+	}
+
+	public void setPeriodoselecionado(EnumTipoPeriodo periodoselecionado) {
+		this.periodoselecionado = periodoselecionado;
+	}
+	
+	public List<String> completeEnumPeriodo(String query){
+		List<String> retorno = new ArrayList<String>();
+		EnumTipoPeriodo[] enunsPerido = EnumTipoPeriodo.values();
+		for (int i = 0; i < enunsPerido.length; i++) {
+			retorno.add(enunsPerido[i].getDescricao());			
+		}
+		return retorno;
 	}
 }

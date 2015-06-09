@@ -18,13 +18,13 @@
 				<a:field label="Idade Inicial" width="250px;">
 					<p:calendar
 						value="#{AgrupamentoTurmaControl.agrupamentoTurma.idadeInicial}"
-						locale="de" navigator="true" pattern="yyyy-MMM-dd" />
+						locale="de" navigator="true" pattern="dd-MMM-yyyy" />
 				</a:field>
 
 				<a:field label="Idade Final" width="250px;">
 					<p:calendar
 						value="#{AgrupamentoTurmaControl.agrupamentoTurma.idadeFinal}"
-						locale="de" navigator="true" pattern="yyyy-MMM-dd" />
+						locale="de" navigator="true" pattern="dd-MMM-yyyy" />
 				</a:field>
 
 				<a:field label="Numero De Criancas" width="250px;">

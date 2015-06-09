@@ -51,8 +51,6 @@ public class RelatorioAprendizagem {
 		this.tipoPeriodo = tipoPeriodo;
 	}
 
-	
-	
 	public Date getAno() {
 		return ano;
 	}

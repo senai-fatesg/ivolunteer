@@ -12,16 +12,31 @@
 			<p:panel rendered="true">
 
 				<a:field label="Valor Periodo" width="250px;">
-					<p:inputText id="valorPeriodo"></p:inputText>
+
+					<p:spinner max="999" min="0" id="valorPeriodo"
+						value="#{RelatorioAprendizagemControl.relatorioaprendizagem.valorPeriodo}"
+						style="width:238px" />
+
 				</a:field>
 
-				<a:field label="Periodo" width="270px;">
-					<p:autoComplete id="turmo" dropdown="true" />
+				<a:field label="Tipo Periodo" width="270px;">
+
+					<p:autoComplete id="tipoPeriodo" dropdown="true"
+						value="#{RelatorioAprendizagemControl.periodoselecionado}"
+						completeMethod="#{RelatorioAprendizagemControl.completeEnumPeriodo}" />
 
 				</a:field>
 
-				<a:field label="Ano">
-					<p:calendar />
+				<a:field label="Turma" width="300px;">
+					<p:autoComplete id="turma" dropdown="true" />
+
+				</a:field>
+
+
+				<a:field label="Ano" width="250px;">
+					<p:calendar
+						value="#{RelatorioAprendizagemControl.relatorioaprendizagem.ano}"
+						locale="de" navigator="true" pattern="dd-MMM-yyyy" />
 				</a:field>
 
 				<a:newLine />
@@ -32,12 +47,16 @@
 			<a:newLine />
 
 			<a:field label="Relatorio" width="100%">
-				<p:editor id="relatorio"></p:editor>
+				<p:editor id="relatorio"
+					value="#{RelatorioAprendizagemControl.relatorioaprendizagem.relatorio}"></p:editor>
 			</a:field>
-			
+
 			<a:newLine />
 			<a:newLine />
 			<p:commandButton value="Confirmar"></p:commandButton>
+
+			<a:newLine />
+			<a:newLine />
 
 		</p:panel>
 

@@ -1,11 +1,15 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class RelatorioAprendizagem {
@@ -16,7 +20,8 @@ public class RelatorioAprendizagem {
 	private Integer id;
 	private int valorPeriodo;
 	private EnumTipoPeriodo tipoPeriodo;
-	private int ano;
+	@Temporal(TemporalType.DATE)
+	private Date ano;
 	private String relatorio;
 
 	@OneToOne
@@ -46,11 +51,13 @@ public class RelatorioAprendizagem {
 		this.tipoPeriodo = tipoPeriodo;
 	}
 
-	public int getAno() {
+	
+	
+	public Date getAno() {
 		return ano;
 	}
 
-	public void setAno(int ano) {
+	public void setAno(Date ano) {
 		this.ano = ano;
 	}
 

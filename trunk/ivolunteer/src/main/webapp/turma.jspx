@@ -11,26 +11,27 @@
 		<p:panel header="Cadastro De Turma" id="painel">
 
 			<p:panel rendered="true">
-				<a:field label="Nome" width="300px;">
+				<a:field label="Nome" width="240px;">
 					<p:inputText id="nome" value="#{TurmaControl.turma.nome}"></p:inputText>
 				</a:field>
-				<a:newLine />
-				<a:field label="Agrupamento De Turma" style="width:125px">
+
+
+				<a:field label="Agrupamento De Turma" width="240px">
 					<p:selectOneMenu id="agrupamentodeturma">
 					</p:selectOneMenu>
 				</a:field>
-				<a:newLine />
 
-				<a:field label="Turmo">
+
+				<a:field label="Turmo" width="265px;">
 					<p:autoComplete id="turmo" dropdown="true"
 						value="#{TurmaControl.turnoselecionado}"
 						completeMethod="#{TurmaControl.completeEnumTurno}" />
 				</a:field>
-				<a:newLine />
-				<a:field label="Quantidade Maxima De Alunos " width="100%">
+
+				<a:field label="Quantidade Maxima De Alunos " width="230px">
 
 					<p:spinner max="999" min="0" id="maximoAlunos"
-						value="#{TurmaControl.turma.maximoAlunos}" style="width:238px" />
+						value="#{TurmaControl.turma.maximoAlunos}" />
 				</a:field>
 
 
@@ -39,16 +40,18 @@
 					<p:selectOneMenu id="funcionario">
 					</p:selectOneMenu>
 				</a:field>
+
+				
+				<a:newLine />
 				<a:newLine />
 
+				<p:commandButton value="Confirmar"
+					actionListener="#{TurmaControl.confirmar}"></p:commandButton>
 
 			</p:panel>
-
-			<a:newLine />
-			<p:commandButton value="Confirmar"
-				actionListener="#{TurmaControl.confirmar}"></p:commandButton>
-			<a:newLine />
 		</p:panel>
+		
+		<a:newLine />
 
 		<p:dataTable id="turmas" value="#{TurmaControl.turmas }" var="tur"
 			width="100%" emptyMessage="Sem registros">

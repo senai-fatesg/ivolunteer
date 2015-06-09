@@ -69,6 +69,25 @@ public class RelatorioAprendizagemControl {
 		this.periodoselecionado = periodoselecionado;
 	}
 	
+	
+	
+	public RelatorioAprendizagem getRelatorioaprendizagem() {
+		return relatorioaprendizagem;
+	}
+
+	public void setRelatorioaprendizagem(RelatorioAprendizagem relatorioaprendizagem) {
+		this.relatorioaprendizagem = relatorioaprendizagem;
+	}
+
+	public List<RelatorioAprendizagem> getRelatoriosaprendizagems() {
+		return relatoriosaprendizagems;
+	}
+
+	public void setRelatoriosaprendizagems(
+			List<RelatorioAprendizagem> relatoriosaprendizagems) {
+		this.relatoriosaprendizagems = relatoriosaprendizagems;
+	}
+
 	public List<String> completeEnumPeriodo(String query){
 		List<String> retorno = new ArrayList<String>();
 		EnumTipoPeriodo[] enunsPerido = EnumTipoPeriodo.values();

@@ -2,7 +2,7 @@
 <%@page contentType="text/html; charset=UTF-8" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>Título aqui</title>
+	<title>IVOLUNTEER</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="css/bootstrap-responsive.css" rel="stylesheet" />
@@ -25,7 +25,7 @@
     	<div class="container">
         	<div class="row branding">
             	<div class="span6">
-                	<h1 class="pull-left"><a href="index.html"><strong>Título Sistema</strong></a></h1>
+                	<h1 class="pull-left"><a href="index.html"><strong>IVOLUNTEER</strong></a></h1>
                 </div>            	
             </div>
             <div class="row navigation">

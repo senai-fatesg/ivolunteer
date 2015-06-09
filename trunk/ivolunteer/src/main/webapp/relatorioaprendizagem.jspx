@@ -27,7 +27,7 @@
 
 				</a:field>
 
-				<a:field label="Turma" width="300px;">
+				<a:field label="Turma" width="270px;">
 					<p:autoComplete id="turma" dropdown="true" />
 
 				</a:field>
@@ -53,7 +53,8 @@
 
 			<a:newLine />
 			<a:newLine />
-			<p:commandButton value="Confirmar"></p:commandButton>
+			<p:commandButton value="Confirmar"
+			actionListener="#{RelatorioAprendizagemControl.confirmar}"></p:commandButton>
 
 			<a:newLine />
 			<a:newLine />

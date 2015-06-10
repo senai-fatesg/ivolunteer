@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="corpo">
+		<h:form id="form">
+			<p:panel header="Atividade Diaria" id="panel">
+				<p:tabView cache="true">
+					<p:tab title="Informações das Atividades Diarias" id="funcionario">
+						<p:outputLabel for="atividade"
+							value="Data da atividade Funcionario:" />
+						<p:calendar id="mask" value="#{FrequenciaControl.frequencia.data}"
+							pattern="dd-MM-yyyy" mask="true" />
+
+
+						<p:outputLabel for="hora inicio" value="Hora Inicial" />
+						<p:calendar id="time"
+							value="#{AtividadeDiariaControl.atividadeDiaria.horaInicial}"
+							pattern="HH:mm a" timeOnly="true" />
+
+						<p:outputLabel for="hora final" value="Hora Final" />
+						<p:calendar id="time"
+							value="#{AtividadeDiariaControl.atividadeDiaria.horaFinal}"
+							pattern="HH:mm a" timeOnly="true" />
+
+						<p:outputLabel for="descrição da atividade"
+							value="Descrição da Atividade" />
+						<p:editor id="editor" widgetVar="editorWidget"
+							value="#{AtividadeDiariaControl.atividadeDiaria.atividade}"
+							width="600" />
+
+						<h:panelGrid columns="2" style="margin-top: 10px">
+							<p:commandButton value="Salvar" update="display"
+								oncomplete="PF('dlg').show()" icon="ui-icon-disk" />
+
+							<p:commandButton value="Limpar" type="button"
+								onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
+						</h:panelGrid>
+
+						<p:dialog header="Content" widgetVar="dlg" showEffect="fade"
+							hideEffect="fade">
+							<h:outputText id="display" value="#{editorView.text}"
+								escape="false" />
+								
+								<a:field label="Local" spaceLeft="15px">
+								<p:inputText value="#{AtividadeDiariaControl.atividadeDiaria.local}"
+									style="width:310px" />
+							</a:field>
+							
+								<!--  <a:field label="Local">
+							<p:inputText id="local da Atividade"
+								value="#{AtividadeDiariaControl.atividadeDiaria.local}">
+							</p:inputText>
+							<p:tooltip id="toolTipTrack" for="nomePessoa"
+								value="nome do funcionario" trackMouse="true" />
+						</a:field>-->
+									
+						
+						<a:field label="observação" spaceLeft="15px">
+								<p:inputText value="#{AtividadeDiariaControl.atividadeDiaria.observacao}"
+									style="width:310px" />
+							</a:field>
+								
+						</p:dialog>
+
+					</p:tab>
+
+				</p:tabView>
+
+				<a:newLine />
+
+				<p:commandButton
+					actionListener="#{AtividadeDiariaControl.confirmar}"
+					value="Confirmar" icon="ui-icon-disk" update="@all">
+				</p:commandButton>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -18,7 +18,7 @@ public class AgrupamentoTurmaDaoJpa extends PersistenciaJpa<AgrupamentoTurma>
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public List<AgrupamentoTurma> listarTitulo(AgrupamentoTurma agrupamentoTurma) {
+	public List<AgrupamentoTurma> listarIdentificador(AgrupamentoTurma agrupamentoTurma) {
 		try {
 			Query  q =  em.createQuery("select a from agrupamentoturma agrupamento where agrupamento.identificador like :identificador");
 			q.setParameter("identiicador", "%"+agrupamentoTurma.getIdentificador()+"%");

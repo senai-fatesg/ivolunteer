@@ -104,12 +104,12 @@ public class Pessoa {
 	private BigDecimal rendaMae = BigDecimal.ZERO;
 	private BigDecimal rendaResponsavel = BigDecimal.ZERO;
 	private BigDecimal totalRenda = BigDecimal.ZERO;
-	
+	private Integer numeroIrmaosMatriculados;
 	private BigDecimal valorAluguel = BigDecimal.ZERO;
 	private BigDecimal valorInicial = BigDecimal.ZERO;
 	private BigDecimal valorFinal = BigDecimal.ZERO;
 	private Integer numeroDePessoasMoradia;
-	private Integer numeroFilhosMatriculados;
+	
 	private Integer idade;
 
 	private Boolean paisVivemJuntos;
@@ -123,7 +123,8 @@ public class Pessoa {
 	//@IndexColumn(name = "id")
    private List<Endereco> listaEndereco = new ArrayList<Endereco>();
 	
-	@OneToMany
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "pessoa_id")
 	private List<Pessoa> listaPessoaRelacionada = new ArrayList<Pessoa>();
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -137,18 +138,12 @@ public class Pessoa {
 		listaTelefone = new ArrayList<Telefone>();
 	}
 
-	public BigDecimal getTotalRenda() {
-		BigDecimal valorTotal = BigDecimal.ZERO;
-		valorTotal.add(rendaPai).add(rendaMae).add(rendaResponsavel).add(rendaOutra);
-		return valorTotal;
-	}
-
-	public Integer getIrmaosMatriculados() {
-		return 0;
+	public BigDecimal calcularRenda(){
+		return this.totalRenda = rendaPai.add(rendaMae).add(rendaResponsavel).add(rendaOutra);
 	}
 
 	public Integer getIdade() {
-		String data = "29/08/1993"; 
+		String data = "29/08/1993";
 		Integer idade = CalcularIdade(data);
 		return idade;
 	}
@@ -197,8 +192,8 @@ public class Pessoa {
 	}
 
 	public void addPessoa(Pessoa pessoaRelacionada) {
-		if (!this.listaPessoaRelacionada.contains(pessoaRelacionada)) {
-			this.listaPessoaRelacionada.add(pessoaRelacionada);
+		if (!listaPessoaRelacionada.contains(pessoaRelacionada)) {
+			listaPessoaRelacionada.add(pessoaRelacionada);
 		}
 	}
 
@@ -504,14 +499,6 @@ public class Pessoa {
 		this.numeroDePessoasMoradia = numeroDePessoasMoradia;
 	}
 
-	public Integer getNumeroFilhosMatriculados() {
-		return numeroFilhosMatriculados;
-	}
-
-	public void setNumeroFilhosMatriculados(Integer numeroFilhosMatriculados) {
-		this.numeroFilhosMatriculados = numeroFilhosMatriculados;
-	}
-
 	public Boolean getPaisVivemJuntos() {
 		return paisVivemJuntos;
 	}
@@ -557,10 +544,6 @@ public class Pessoa {
 		return listaTelefone;
 	}
 
-	public void setTotalRenda(BigDecimal totalRenda) {
-		this.totalRenda = totalRenda;
-	}
-
 	public String getNomePessoaMoraComCrianca() {
 		return nomePessoaMoraComCrianca;
 	}
@@ -569,4 +552,15 @@ public class Pessoa {
 		this.nomePessoaMoraComCrianca = nomePessoaMoraComCrianca;
 	}
 
+	public BigDecimal getTotalRenda() {
+		return totalRenda;
+	}
+
+	public Integer getNumeroIrmaosMatriculados() {
+		return numeroIrmaosMatriculados;
+	}
+
+	public void setNumeroIrmaosMatriculados(Integer numeroIrmaosMatriculados) {
+		this.numeroIrmaosMatriculados = numeroIrmaosMatriculados;
+	}
 }

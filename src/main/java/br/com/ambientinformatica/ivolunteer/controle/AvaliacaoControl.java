@@ -47,7 +47,7 @@ public class AvaliacaoControl {
 	// Insere Alternativas em Questao do tipo Objetiva
 	public void addAlternativa(ActionEvent ev) {
 		try {
-			this.questao.getObjetiva().addAlternativa(alternativa);
+			this.objetiva.addAlternativa(alternativa);
 			this.alternativa = new Alternativa();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
@@ -57,13 +57,14 @@ public class AvaliacaoControl {
 	// Obtem Registro para Alteração
 
 	public void carregaAvaliacao(Avaliacao avaliacao) {
-		// TODO: Implementar metodo de carregamento de avaliação em tela
+		this.avaliacao = avaliacao;
+		this.avaliacao.setQuestoes(this.questaoDao.llistaQuestoesPorAvaliacao(this.avaliacao));
 	}
 
 	// Remove Questao em Avaliacao
 	public void remAlternativa(Alternativa alternativa) {
 		try {
-			this.questao.getObjetiva().remAlternativa(alternativa);
+			this.objetiva.remAlternativa(alternativa);
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}

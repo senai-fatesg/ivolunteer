@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="corpo">
+
+		<p:panel header="Cadastro De Agrupamento De Turma" id="painel">
+			<p:panel rendered="true">
+			
+				<a:field label="Identificador" width="250px;">
+					<p:inputText id="identificador"
+						value="#{AgrupamentoTurmaControl.agrupamentoTurma.identificador}"></p:inputText>
+				</a:field>
+
+				<a:field label="Idade Inicial" width="250px;">
+					<p:calendar
+						value="#{AgrupamentoTurmaControl.agrupamentoTurma.idadeInicial}"
+						locale="de" navigator="true" pattern="dd-MMM-yyyy" />
+				</a:field>
+
+				<a:field label="Idade Final" width="250px;">
+					<p:calendar
+						value="#{AgrupamentoTurmaControl.agrupamentoTurma.idadeFinal}"
+						locale="de" navigator="true" pattern="dd-MMM-yyyy" />
+				</a:field>
+
+				<a:field label="Numero De Criancas" width="250px;">
+					<p:spinner max="999" min="0" id="numeroCriancas"
+						value="#{AgrupamentoTurmaControl.agrupamentoTurma.numeroCriancas}"
+						style="width:238px" />
+				</a:field>
+
+				<a:newLine />
+				<p:commandButton value="Confirmar"
+					actionListener="#{AgrupamentoTurmaControl.confirmar}"></p:commandButton>
+			</p:panel>
+		</p:panel>
+
+		<p:dataTable id="agrupamentoTurmas"
+			value="#{AgrupamentoTurmaControl.agrupamentoTurmas }"
+			var="agrupamentos" width="100%" emptyMessage="Sem registros">
+			<f:facet name="header">
+				<h:outputText value="Lista de Agrupamento De Turmas"></h:outputText>
+			</f:facet>
+			<p:column sortBy="#{agrupamentos.identificador }">
+				<f:facet name="header">
+					<h:outputText value="identificador"></h:outputText>
+				</f:facet>
+				<h:outputText value="#{agrupamentos.identificador }"></h:outputText>
+			</p:column>
+
+			<p:column sortBy="#{agrupamentos.idadeInicial }">
+				<f:facet name="header">
+					<h:outputText value="idadeInicial"></h:outputText>
+				</f:facet>
+				<h:outputText value="#{agrupamentos.idadeInicial }"></h:outputText>
+			</p:column>
+
+			<p:column sortBy="#{agrupamentos.idadeFinal }">
+				<f:facet name="header">
+					<h:outputText value="idadeFinal"></h:outputText>
+				</f:facet>
+				<h:outputText value="#{agrupamentos.idadeFinal }"></h:outputText>
+			</p:column>
+
+			<p:column sortBy="#{agrupamentos.numeroCriancas }">
+				<f:facet name="header">
+					<h:outputText value="numeroCriancas"></h:outputText>
+				</f:facet>
+				<h:outputText value="#{agrupamentos.numeroCriancas }"></h:outputText>
+			</p:column>
+
+
+		</p:dataTable>
+
+	</ui:define>
+</ui:composition>

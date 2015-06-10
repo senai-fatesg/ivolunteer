@@ -1,15 +1,17 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 public class Questao {
 
 	@Id
@@ -17,26 +19,25 @@ public class Questao {
 	@SequenceGenerator(name = "questao_seq", sequenceName = "questao_seq", allocationSize = 1, initialValue = 1)
 	private Integer id;
 
+	@Enumerated(EnumType.STRING)
+	private EnumQuestao tipoQuestao;
+
 	private Integer ordem;
 
 	private String pergunta;
-
-	private EnumQuestao tipoQuestao;
+	
+	@OneToOne (cascade=CascadeType.ALL, fetch=FetchType.EAGER, optional=true)
+	private Discursiva discursiva;
+	
+	@OneToOne (cascade=CascadeType.ALL, fetch=FetchType.EAGER, optional=true)
+	private Objetiva objetiva;
 
 	public Integer getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public String getPergunta() {
-		return pergunta;
-	}
-
-	public void setPergunta(String pergunta) {
-		this.pergunta = pergunta;
 	}
 
 	public EnumQuestao getTipoQuestao() {
@@ -55,6 +56,14 @@ public class Questao {
 		this.ordem = ordem;
 	}
 
+	public String getPergunta() {
+		return pergunta;
+	}
+
+	public void setPergunta(String pergunta) {
+		this.pergunta = pergunta;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -69,6 +78,22 @@ public class Questao {
 		if (ordem != other.ordem)
 			return false;
 		return true;
+	}
+
+	public Discursiva getDiscursiva() {
+		return discursiva;
+	}
+
+	public void setDiscursiva(Discursiva discursiva) {
+		this.discursiva = discursiva;
+	}
+
+	public Objetiva getObjetiva() {
+		return objetiva;
+	}
+
+	public void setObjetiva(Objetiva objetiva) {
+		this.objetiva = objetiva;
 	}
 
 }

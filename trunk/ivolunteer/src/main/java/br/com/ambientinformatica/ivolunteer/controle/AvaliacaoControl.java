@@ -19,28 +19,35 @@ import br.com.ambientinformatica.ivolunteer.entidade.Avaliacao;
 import br.com.ambientinformatica.ivolunteer.entidade.Discursiva;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumQuestao;
 import br.com.ambientinformatica.ivolunteer.entidade.Objetiva;
+import br.com.ambientinformatica.ivolunteer.entidade.Questao;
 import br.com.ambientinformatica.ivolunteer.persistencia.AvaliacaoDao;
-import br.com.ambientinformatica.jpa.exception.PersistenciaException;
+import br.com.ambientinformatica.ivolunteer.persistencia.QuestaoDao;
 
 @Controller("AvaliacaoControl")
 @Scope("conversation")
 public class AvaliacaoControl {
 
 	private Avaliacao avaliacao = new Avaliacao();
-	private Discursiva discursiva = new Discursiva();
+	private Questao questao = new Questao();
 	private Objetiva objetiva = new Objetiva();
+	private Discursiva discursiva = new Discursiva();
 	private EnumQuestao tipoQuestao = EnumQuestao.D;
 	private Alternativa alternativa = new Alternativa();
-	private List<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
 	private Avaliacao filtro = new Avaliacao();
+
+	private List<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
 
 	@Autowired
 	private AvaliacaoDao avaliacaoDao;
+	
+	@Autowired
+	private QuestaoDao questaoDao;
+	
 
 	// Insere Alternativas em Questao do tipo Objetiva
 	public void addAlternativa(ActionEvent ev) {
 		try {
-			this.objetiva.addAlternativa(alternativa);
+			this.questao.getObjetiva().addAlternativa(alternativa);
 			this.alternativa = new Alternativa();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
@@ -49,14 +56,14 @@ public class AvaliacaoControl {
 
 	// Obtem Registro para Alteração
 
-	public void carregaAvaliacao(Avaliacao avaliacao){
-		this.avaliacao = avaliacao;		
+	public void carregaAvaliacao(Avaliacao avaliacao) {
+		// TODO: Implementar metodo de carregamento de avaliação em tela
 	}
 
 	// Remove Questao em Avaliacao
 	public void remAlternativa(Alternativa alternativa) {
 		try {
-			this.objetiva.remAlternativa(alternativa);
+			this.questao.getObjetiva().remAlternativa(alternativa);
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -79,18 +86,10 @@ public class AvaliacaoControl {
 		}
 	}
 
-	public void listaAvaliacoes() {
-		try {
-			this.avaliacoes = avaliacaoDao.listar();
-		} catch (PersistenciaException e) {
-			UtilFaces.addMensagemFaces(e);
-		}
-	}
-
 	// Remove a Questão
-	public void remQuestao(Object objeto) {
+	public void remQuestao(Questao questao) {
 		try {
-			this.avaliacao.remQuestao(objeto);
+			this.avaliacao.remQuestao(questao);
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -98,18 +97,22 @@ public class AvaliacaoControl {
 
 	// Inclui questao a avaliacao
 	public void addQuestao(ActionEvent event) {
-		if (this.tipoQuestao == EnumQuestao.D) {
-			this.avaliacao.addQuestao(this.discursiva);
+		this.questao.setTipoQuestao(tipoQuestao);
+		if (tipoQuestao == EnumQuestao.D) {
+			this.questao.setDiscursiva(this.discursiva);
+			this.discursiva = new Discursiva();
 		} else {
-			this.avaliacao.addQuestao(this.objetiva);
+			this.questao.setObjetiva(objetiva);
+			this.objetiva = new Objetiva();
 		}
-		this.objetiva = new Objetiva();
-		this.discursiva = new Discursiva();
+		this.avaliacao.addQuestao(this.questao);
+		this.questao = new Questao();
 	}
 
 	// Salvar Avaliacao
 	public void salvar(ActionEvent event) {
 		try {
+			
 			this.avaliacaoDao.alterar(this.avaliacao);
 			this.avaliacao = new Avaliacao();
 			UtilFaces.addMensagemFaces("Avaliação salva com sucesso");
@@ -132,21 +135,13 @@ public class AvaliacaoControl {
 
 	}
 
-	public void getVerificaTitulo() {
+	public void verificaTitulo() {
 		if (this.avaliacao.getTitulo().length() < 2) {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(
 							"Titulo deve conter no minimo 2 caracteres"));
 		}
-	}
-
-	public Objetiva getObjetiva() {
-		return objetiva;
-	}
-
-	public void setObjetiva(Objetiva objetiva) {
-		this.objetiva = objetiva;
 	}
 
 	public Alternativa getAlternativa() {
@@ -159,15 +154,6 @@ public class AvaliacaoControl {
 
 	public Avaliacao getAvaliacao() {
 		return this.avaliacao;
-	}
-
-	public Discursiva getDiscursiva() {
-		return discursiva;
-	}
-
-	public void setDiscursiva(Discursiva discursiva) {
-		this.discursiva = discursiva;
-
 	}
 
 	public void setAvaliacao(Avaliacao avaliacao) {
@@ -188,6 +174,30 @@ public class AvaliacaoControl {
 
 	public void setFiltro(Avaliacao filtro) {
 		this.filtro = filtro;
+	}
+
+	public Questao getQuestao() {
+		return questao;
+	}
+
+	public void setQuestao(Questao questao) {
+		this.questao = questao;
+	}
+
+	public Objetiva getObjetiva() {
+		return objetiva;
+	}
+
+	public void setObjetiva(Objetiva objetiva) {
+		this.objetiva = objetiva;
+	}
+
+	public Discursiva getDiscursiva() {
+		return discursiva;
+	}
+
+	public void setDiscursiva(Discursiva discursiva) {
+		this.discursiva = discursiva;
 	}
 
 }

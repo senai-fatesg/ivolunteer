@@ -8,48 +8,23 @@
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
 
-		<p:panel header="Seleção De Candidato" id="selecao">
+		<p:panel header="Pesquisa Candidato" id="selecao">
 
+					
 
-			<p:tabView cache="true">
-
-				<p:tab title="Seleçao de candidato" id="selecao">
-					<h5 style="margin-top:">Selecione as opções abaixo para
-						realiza a pesquisa</h5>
-					<a:newLine />
-					<a:field label="Nome">
-						<p:selectBooleanCheckbox value="#{PesquisaSelecaoControl.selecaoCandidato.nome}" />
+					<a:field label="Nome" >
+						<p:inputText id="nomePessoa" value="#{PesquisaSelecaoControl.selecaoCandidato.nomePessoa}" style="width:230px;">
+						</p:inputText>
 					</a:field>
-
-					<a:newLine />
-
-					<a:field label="Renda Familiar">
-						<p:selectBooleanCheckbox
-							value="#{PesquisaSelecaoControl.selecaoCandidato.rendaFamiliar}" />
-					</a:field>
-
-					<a:newLine />
-
-					<a:field label="Beneficios">
-						<p:selectBooleanCheckbox
-							value="#{PesquisaSelecaoControl.selecaoCandidato.beneficios}" />
-					</a:field>
-
-					<a:newLine />
-
-					<a:field label="Nome" width="300px;">
-						<p:inputText id="nomePessoa"
-							value="#{PesquisaSelecaoControl.selecaoCandidato.nomePessoa}"
-							disabled="#{payment.type !='nome'}"></p:inputText>
+					<a:field label="Beneficios" spaceLeft="15px">
+						<p:selectBooleanCheckbox value="#{PesquisaSelecaoControl.selecaoCandidato.beneficios}" style="width:50px;" />
 					</a:field>
 					<a:newLine />
-					<a:field label="Valor Inicial" width="300px;">
-						<p:inputText id="valorInicial"
-							value="#{PesquisaSelecaoControl.selecaoCandidato.valorInicial}"></p:inputText>
+					<a:field label="Valor Inicial" >
+						<p:inputText id="valorInicial" value="#{PesquisaSelecaoControl.selecaoCandidato.valorInicial}" style="width:100px;" />
 					</a:field>
-					<a:field label="Valor Final" width="200px;">
-						<p:inputText id="valorFinal"
-							value="#{PesquisaSelecaoControl.selecaoCandidato.valorFinal}"></p:inputText>
+					<a:field label="Valor Final" spaceLeft="15px">
+						<p:inputText id="valorFinal" value="#{PesquisaSelecaoControl.selecaoCandidato.valorFinal}" style="width:100px;" />
 					</a:field>
 
 					<a:newLine />
@@ -114,17 +89,7 @@
 							</f:facet>
 						</p:panelGrid>
 					</p:dialog>
-
-
-
-					<p:commandButton
-						actionListener="#{PesquisaSelecaoControl.confirmar}"
-						value="Salvar"></p:commandButton>
-
-				</p:tab>
-
-			</p:tabView>
-
+					<p:commandButton actionListener="#{PesquisaSelecaoControl.confirmar}" value="Salvar"></p:commandButton>
 
 		</p:panel>
 	</ui:define>

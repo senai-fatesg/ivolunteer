@@ -1,6 +1,5 @@
 package br.com.ambientinformatica.ivolunteer.controle;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
-import br.com.ambientinformatica.ivolunteer.entidade.Endereco;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumPrioridade;
 import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.SelecaoCandidato;
@@ -41,16 +39,6 @@ public class PesquisaSelecaoControl {
 	private static final String disable = "disable";
 	private static final String enable = "enable";
 	private String checkStatus = "disable";
-
-	/**
-	 * public String getCheckStatus() { return checkStatus; }
-	 * 
-	 * public void setCheckStatus(String checkStatus) { this.checkStatus =
-	 * checkStatus; }
-	 * 
-	 * public boolean isCheckStatus() { return
-	 * this.checkStatus.equalsIgnoreCase(enable) ? true : false; }
-	 **/
 
 	public void confirmar(ActionEvent evt) {
 		try {

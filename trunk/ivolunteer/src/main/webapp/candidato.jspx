@@ -49,7 +49,7 @@
 
 						<a:field label="Certidao de nascimento" spaceLeft="15px">
 							<p:inputText id="certidaoNascimento"
-								value="#{CandidatoControl.pessoa.certidaoNascimento}"></p:inputText>
+								value="#{CandidatoControl.pessoaCandidato.certidaoNascimento}"></p:inputText>
 						</a:field>
 
 						<a:field label="Sexo" spaceLeft="15px">
@@ -282,7 +282,11 @@
 						</p:dataTable>
 
 						<a:newLine />
-
+						<p:commandButton
+							actionListener="#{CandidatoControl.adicionePessoa }"
+							value="Adicionar Pessoa" icon="ui-icon-plusthick"
+							update="@all"></p:commandButton>
+						<a:newLine/>
 						<p:dataTable id="listaPessoa"
 							value="#{CandidatoControl.listaPessoa }" var="pess" width="100%"
 							emptyMessage="Sem registros">
@@ -319,12 +323,7 @@
 							</p:column>
 						</p:dataTable>
 
-						<a:newLine />
-
-						<p:commandButton
-							actionListener="#{CandidatoControl.adicionePessoa }"
-							value="Adicionar Pessoa" icon="ui-icon-plusthick"
-							update="listaPessoa, panelResponsavel, panelEndereco, panelTelefone"></p:commandButton>
+						
 						<a:newLine />
 
 						<a:newLine />
@@ -340,34 +339,34 @@
 
 						<a:field label="Renda do Pai R$" spaceLeft="15px">
 							<p:inputText id="rendaPai"
-								value="#{CandidatoControl.pessoa.rendaPai}"></p:inputText>
+								value="#{CandidatoControl.pessoaCandidato.rendaPai}"></p:inputText>
 						</a:field>
 
 						<a:field label="Renda Mãe R$" spaceLeft="15px">
 							<p:inputText id="rendaMae"
-								value="#{CandidatoControl.pessoa.rendaMae}"></p:inputText>
+								value="#{CandidatoControl.pessoaCandidato.rendaMae}"></p:inputText>
 						</a:field>
 
 						<a:field label="Total R$" spaceLeft="15px">
 							<p:inputText id="totalRenda"
-								value="#{CandidatoControl.pessoa.totalRenda}"></p:inputText>
+								value="#{CandidatoControl.totalRenda}"></p:inputText>
 						</a:field>
 
 						<a:newLine />
 
 						<a:field label="Renda do Responsavel R$" spaceLeft="15px">
 							<p:inputText id="rendaResponsavel"
-								value="#{CandidatoControl.pessoa.rendaResponsavel}"></p:inputText>
+								value="#{CandidatoControl.pessoaCandidato.rendaResponsavel}"></p:inputText>
 						</a:field>
 
 						<a:field label="Outa R$" spaceLeft="15px">
 							<p:inputText id="outraRenda"
-								value="#{CandidatoControl.pessoa.rendaOutra}"></p:inputText>
+								value="#{CandidatoControl.pessoaCandidato.rendaOutra}"></p:inputText>
 						</a:field>
 
 						<a:field label="Número de pessoas" spaceLeft="15px">
 							<p:spinner max="999" min="0" id="numeroDePessoasMoradia"
-								value="#{CandidatoControl.pessoa.numeroDePessoasMoradia}"
+								value="#{CandidatoControl.pessoaCandidato.numeroDePessoasMoradia}"
 								style="width:238px" />
 						</a:field>
 
@@ -376,7 +375,7 @@
 						<a:field label="Recebe algum beneficio do governo?"
 							spaceLeft="15px">
 							<p:selectOneRadio id="recebeBeneficio"
-								value="#{CandidatoControl.pessoa.recebeBeneficio}">
+								value="#{CandidatoControl.pessoaCandidato.recebeBeneficio}">
 								<f:selectItem itemLabel="Sim" itemValue="true" />
 								<f:selectItem itemLabel="Nao" itemValue="false" />
 							</p:selectOneRadio>
@@ -394,7 +393,7 @@
 
 						<a:field label="Tipo Moradia">
 							<p:selectOneMenu id="tipoMoradia"
-								value="#{CandidatoControl.pessoa.tipoMoradia }"
+								value="#{CandidatoControl.pessoaCandidato.tipoMoradia }"
 								style="width:200px;">
 								<f:selectItems
 									value="#{CandidatoControl.completeEnumTipoMoradia }"></f:selectItems>
@@ -403,14 +402,14 @@
 
 						<a:field label="Valor aluguel R$" spaceLeft="15px">
 							<p:inputText id="valorAluguel"
-								value="#{CandidatoControl.pessoa.valorAluguel}"></p:inputText>
+								value="#{CandidatoControl.pessoaCandidato.valorAluguel}"></p:inputText>
 						</a:field>
 
 						<a:newLine />
 
 						<a:field label="Pais da criança vivem juntos?">
 							<p:selectOneRadio id="paisVivemJuntos"
-								value="#{CandidatoControl.pessoa.paisVivemJuntos}">
+								value="#{CandidatoControl.pessoaCandidato.paisVivemJuntos}">
 								<f:selectItem itemLabel="Sim" itemValue="true" />
 								<f:selectItem itemLabel="Nao" itemValue="false" />
 							</p:selectOneRadio>
@@ -419,7 +418,7 @@
 						<a:field label="Caso não seja, criança vive com que?"
 							spaceLeft="25px">
 							<p:inputText id="nomePessoaMoraComCrianca"
-								value="#{CandidatoControl.pessoa.nomePessoaMoraComCrianca}"></p:inputText>
+								value="#{CandidatoControl.pessoaCandidato.nomePessoaMoraComCrianca}"></p:inputText>
 						</a:field>
 
 						<a:newLine />
@@ -435,29 +434,29 @@
 
 						<a:field label="Criança possui nescessidades especiais?">
 							<p:inputText id="necessidadesEspeciais"
-								value="#{CandidatoControl.pessoa.necessidadesEspeciais}"></p:inputText>
+								value="#{CandidatoControl.pessoaCandidato.necessidadesEspeciais}"></p:inputText>
 						</a:field>
 
 						<a:field
 							label="recebeu alguma informação da instituição? De quem?">
 							<p:inputText id="informacoesSobreIntituicao"
-								value="#{CandidatoControl.pessoa.informacoesSobreIntituicao}"></p:inputText>
+								value="#{CandidatoControl.pessoaCandidato.informacoesSobreIntituicao}"></p:inputText>
 						</a:field>
 
 						<a:newLine />
 
 						<a:field label="Requisitou vaga para outra criança?">
 							<p:selectOneRadio id="requisitouVagaParaOutraCriancao"
-								value="#{CandidatoControl.pessoa.requisitouVagaParaOutraCriancao}">
+								value="#{CandidatoControl.pessoaCandidato.requisitouVagaParaOutraCriancao}">
 								<f:selectItem itemLabel="Sim" itemValue="true" />
 								<f:selectItem itemLabel="Nao" itemValue="false" />
 							</p:selectOneRadio>
 						</a:field>
 
-						<a:field label="Filhos matriculados na instituição?"
+						<a:field label="Irmãos matriculados na instituição?"
 							spaceLeft="15px">
-							<p:spinner max="999" min="0" id="numeroFilhosMatriculados"
-								value="#{CandidatoControl.pessoa.numeroFilhosMatriculados}"
+							<p:spinner max="999" min="0" id="numeroIrmaosMatriculados"
+								value="#{CandidatoControl.pessoaCandidato.numeroIrmaosMatriculados}"
 								style="width:238px" />
 						</a:field>
 

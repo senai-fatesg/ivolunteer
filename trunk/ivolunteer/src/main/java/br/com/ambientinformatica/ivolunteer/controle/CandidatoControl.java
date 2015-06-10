@@ -1,5 +1,6 @@
 package br.com.ambientinformatica.ivolunteer.controle;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
-import org.hibernate.ejb.criteria.path.ListAttributeJoin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -24,6 +24,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoTelefone;
 import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.Telefone;
 import br.com.ambientinformatica.ivolunteer.persistencia.PessoaDao;
+import br.com.ambientinformatica.util.UtilLog;
 
 @Controller("CandidatoControl")
 @Scope("conversation")
@@ -41,8 +42,10 @@ public class CandidatoControl {
 	private List<Pessoa> listaPessoa = new ArrayList<Pessoa>();
 	private List<Pessoa> listaCandidato = new ArrayList<Pessoa>();
 
+	private BigDecimal totalRenda = BigDecimal.ZERO;
+	
 	@Autowired
-	private PessoaDao PessoaDao;
+	private PessoaDao pessoaDao;
 
 	@PostConstruct
 	public void init() {
@@ -51,7 +54,7 @@ public class CandidatoControl {
 
 	public void listarCandidato(ActionEvent evt){
 		try {
-			listaCandidato = PessoaDao.listar();
+			listaCandidato = pessoaDao.listar();
 		} catch (Exception e) {
 		   UtilFaces.addMensagemFaces(e);
 		}
@@ -59,8 +62,8 @@ public class CandidatoControl {
 	
 	public void confirmar(ActionEvent evt) {
 		try {
-			//alterando o candidato
-			this.PessoaDao.alterar(this.pessoaCandidato);
+			pessoaCandidato.calcularRenda();
+			pessoaDao.alterar(pessoaCandidato);
 			pessoaCandidato = new Pessoa();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
@@ -89,14 +92,19 @@ public class CandidatoControl {
 		}
 	}
 	
+	public BigDecimal getTotalRenda(){
+		return pessoaCandidato.calcularRenda(); 
+	}
+	
 	//Metodo responsavel por adionar as pessoas relacionadas ao candidato
 	public void adicionePessoa(ActionEvent evt) {
 		try{
 			pessoaCandidato.addPessoa(pessoa);
-			pessoa = new Pessoa();
 			listaPessoa = pessoaCandidato.getListaPessoaRelacionada();
+			pessoa = new Pessoa();
 		}catch(Exception erro){
-			UtilFaces.addMensagemFaces(erro);
+			UtilFaces.addMensagemFaces("Houve um erro ao inserir o Responsável.");
+			UtilLog.getLog().error(erro);
 		}
 	}
 	
@@ -127,8 +135,8 @@ public class CandidatoControl {
 	public void removerCandidato(Pessoa candidato){
 		try{
 			if(listaCandidato.contains(candidato)){
-				this.PessoaDao.excluirPorId(candidato.getId());
-				listaCandidato = PessoaDao.listar();
+				this.pessoaDao.excluirPorId(candidato.getId());
+				listaCandidato = pessoaDao.listar();
 			}
 		}catch(Exception e){
 			UtilFaces.addMensagemFaces(e);
@@ -210,9 +218,8 @@ public class CandidatoControl {
 	}
 
 	public List<Pessoa> getListaPessoa() {
-		return pessoa.getListaPessoaRelacionada();
+		return this.listaPessoa;
 	}
-	
 	
 	public void gerarPdf(){
 		return;
@@ -265,4 +272,9 @@ public class CandidatoControl {
 	public void setListaCandidato(List<Pessoa> listaCandidato) {
 		this.listaCandidato = listaCandidato;
 	}
+
+	public void setTotalRenda(BigDecimal totalRenda) {
+		this.totalRenda = totalRenda;
+	}
+	
 }

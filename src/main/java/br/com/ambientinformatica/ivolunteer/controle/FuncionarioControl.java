@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
+import br.com.ambientinformatica.ivolunteer.entidade.Avaliacao;
 import br.com.ambientinformatica.ivolunteer.entidade.Cidade;
 import br.com.ambientinformatica.ivolunteer.entidade.Endereco;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
@@ -70,20 +71,30 @@ public class FuncionarioControl {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
+	
+	public void carregaFuncionarioAlteracao(Funcionario funcionario){
+		try {
+	      this.funcionario = funcionarioDao.consultar(funcionario.getId());
+      } catch (PersistenciaException e) {
+      	UtilFaces.addMensagemFaces(e);
+      }		
+	}
 
 	public void incluir(ActionEvent evt) {
 		try {
 			funcionarioDao.incluir(funcionario);
 			this.funcionario = new Funcionario();
+			UtilFaces.addMensagemFaces("Funcionário salvo com sucesso!");
 		} catch (PersistenciaException e) {
 			UtilFaces.addMensagemFaces(e);
 		}
 
 	}
 
-	public void excluir(ActionEvent evt) {
+	public void excluir(Funcionario funcionario) {
 		try {
-			funcionarioDao.excluirPorId(funcionario);
+			funcionarioDao.excluirPorId(funcionario.getId());
+			UtilFaces.addMensagemFaces("Funcionário excluido com sucesso!");
 		} catch (PersistenciaException e) {
 			UtilFaces.addMensagemFaces(e);
 		}

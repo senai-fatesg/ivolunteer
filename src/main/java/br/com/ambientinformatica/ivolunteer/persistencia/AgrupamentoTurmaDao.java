@@ -7,6 +7,6 @@ import br.com.ambientinformatica.jpa.persistencia.Persistencia;
 
 public interface AgrupamentoTurmaDao extends Persistencia<AgrupamentoTurma> {
 
-	public List<AgrupamentoTurma> listarTitulo(AgrupamentoTurma agrupamentoTurma);
+	public List<AgrupamentoTurma> listarIdentificador(AgrupamentoTurma agrupamentoTurma);
 	
 }

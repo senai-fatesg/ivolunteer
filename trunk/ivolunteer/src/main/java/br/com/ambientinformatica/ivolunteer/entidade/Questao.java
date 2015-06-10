@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
@@ -31,6 +32,9 @@ public class Questao {
 	
 	@OneToOne (cascade=CascadeType.ALL, fetch=FetchType.EAGER, optional=true)
 	private Objetiva objetiva;
+	
+	@ManyToOne (cascade=CascadeType.ALL)
+	private Avaliacao avaliacao;
 
 	public Integer getId() {
 		return this.id;
@@ -95,5 +99,15 @@ public class Questao {
 	public void setObjetiva(Objetiva objetiva) {
 		this.objetiva = objetiva;
 	}
+
+	public Avaliacao getAvaliacao() {
+		return avaliacao;
+	}
+
+	public void setAvaliacao(Avaliacao avaliacao) {
+		this.avaliacao = avaliacao;
+	}
+	
+	
 
 }

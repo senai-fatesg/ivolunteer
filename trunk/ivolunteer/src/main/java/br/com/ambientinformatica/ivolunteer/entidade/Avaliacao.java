@@ -35,7 +35,7 @@ public class Avaliacao {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
 
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="avaliacao", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private List<Questao> questoes = new ArrayList<Questao>();
 
 	public Integer getId() {
@@ -81,6 +81,7 @@ public class Avaliacao {
 	// Métododo que ira adicionar questões
 	public void addQuestao(Questao questao) {
 		if(!this.questoes.contains(questao)){
+			questao.setAvaliacao(this);
 			this.questoes.add(questao);
 		}
 	}

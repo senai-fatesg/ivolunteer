@@ -18,7 +18,9 @@ import org.hibernate.annotations.IndexColumn;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
-public class Funcionario extends Pessoa {
+public class Funcionario extends Pessoa implements java.io.Serializable {
+
+   private static final long serialVersionUID = 1L;
 
 	private String pis;
 

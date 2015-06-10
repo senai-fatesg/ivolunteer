@@ -1,12 +1,49 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="corpo">
 
-</body>
-</html>
+
+		<p:panel header="Agrupamento De Turmas" id="painel">
+
+			<p:panel rendered="true">
+
+				<a:field label="Identificador" width="240px;">
+					<p:inputText id="identificador"
+						value="#{AgrupamentoTurmaControl.agrupamentoTurma.identificador }"></p:inputText>
+				</a:field>
+
+				<a:field label="Idade Inicial" width="250px;">
+					<p:calendar
+						value="#{AgrupamentoTurmaControl.agrupamentoTurma.idadeInicial}"
+						locale="de" navigator="true" pattern="dd-MMM-yyyy" />
+				</a:field>
+
+				<a:field label="Idade Final" width="250px;">
+					<p:calendar
+						value="#{AgrupamentoTurmaControl.agrupamentoTurma.idadeFinal}"
+						locale="de" navigator="true" pattern="dd-MMM-yyyy" />
+				</a:field>
+
+				<a:field label="Numero De Criancas" width="230px">
+
+					<p:spinner max="999" min="0" id="numeroCriancas"
+						value="#{AgrupamentoTurmaControl.agrupamentoTurma.numeroCriancas}" />
+				</a:field>
+
+				
+<a:newLine /><a:newLine />
+			</p:panel>
+<a:newLine /><a:newLine />
+			<p:commandButton value="Confirmar"
+				actionListener="#{AgrupamentoTurmaControl.confirmar}"></p:commandButton>
+<a:newLine /><a:newLine />
+		</p:panel>
+
+	</ui:define>
+</ui:composition>

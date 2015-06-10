@@ -59,4 +59,19 @@ public class AgrupamentoTurmaControl {
 	public List<AgrupamentoTurma> getAgrupamentoTurmas() {
 		return agrupamentoTurmas;
 	}
+	
+	// Aplica Filtro por identificador
+		public void aplicarFiltro(ActionEvent evt) {
+			try {
+				if (this.agrupamentoTurma.getIdentificador().isEmpty()) {
+					this.agrupamentoTurmas = this.agrupamentoTurmaDao.listar();
+				} else {
+					this.agrupamentoTurmas = this.agrupamentoTurmaDao.listarIdentificador(this.agrupamentoTurma);
+				}
+			} catch (Exception e) {
+				UtilFaces.addMensagemFaces(e);
+			}
+
+		}
+	
 }

@@ -21,9 +21,11 @@ import br.com.ambientinformatica.ivolunteer.entidade.EnumFiliacao;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumSexo;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoCasa;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoTelefone;
+import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.Telefone;
 import br.com.ambientinformatica.ivolunteer.persistencia.PessoaDao;
+import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 import br.com.ambientinformatica.util.UtilLog;
 
 @Controller("CandidatoControl")
@@ -33,6 +35,7 @@ public class CandidatoControl {
 	private Pessoa pessoa = new Pessoa();
 	private Pessoa pessoaCandidato = new Pessoa();
 	private Pessoa candidato = new Pessoa();
+	private Pessoa filtro = new Pessoa();
 	
 	private Telefone telefone = new Telefone();
 	private Endereco endereco = new Endereco();
@@ -63,6 +66,7 @@ public class CandidatoControl {
 	public void confirmar(ActionEvent evt) {
 		try {
 			pessoaCandidato.calcularRenda();
+			pessoaCandidato.setFiliacao(EnumFiliacao.FILHO);
 			pessoaDao.alterar(pessoaCandidato);
 			pessoaCandidato = new Pessoa();
 		} catch (Exception e) {
@@ -173,6 +177,38 @@ public class CandidatoControl {
 		}catch(Exception e){
 			UtilFaces.addMensagemFaces(e);
 		}
+	}
+	
+	public void excluir(Pessoa pessoa) {
+		try {
+			pessoaDao.excluirPorId(pessoa.getId());
+			UtilFaces.addMensagemFaces("Pessoa excluido com sucesso!");
+		} catch (PersistenciaException e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+
+	}
+	
+	public void carregaPessoaAlteracao(Pessoa pessoa){
+		try {
+	      this.pessoaCandidato = pessoaDao.consultar(pessoa.getId());
+      } catch (PersistenciaException e) {
+      	UtilFaces.addMensagemFaces(e);
+      }		
+	}
+	
+	// Aplica Filtro
+	public void aplicarFiltro(ActionEvent evt) {
+		try {
+			if (this.filtro.getNomePessoa() == null) {
+				this.listaPessoa = this.pessoaDao.listar();
+			} else {				
+				this.listaPessoa = this.pessoaDao.listarPorNome(this.filtro.getNomePessoa());
+			}
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+
 	}
 	
 	public List<SelectItem> getCompleteEnumFiliacao() {

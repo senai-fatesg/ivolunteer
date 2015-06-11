@@ -4,6 +4,7 @@ import br.com.ambientinformatica.util.IEnum;
 
 public enum EnumFiliacao implements IEnum{
 
+	FILHO("Filho"),
 	PAI("Pai"),
 	MAE("Mae"), 
 	OUTRO("Outro");

@@ -9,7 +9,42 @@
 	<ui:define name="corpo">
 
 		<p:panel header="Solicitação de vaga" id="panel">
-			<p:tabView cache="true">
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+
+			<p:commandButton id="consultar" value="Consultar"
+				icon="ui-icon-search" onclick="consultar.show();" />
+			<p:dialog id="modalPesquisa" header="Consultar" widgetVar="consultar"
+				modal="true" maximizable="false" minimizable="false" width="40%"
+				height="550px" resizable="false" closeOnEscape="true">
+				<a:field label="Nome">
+					<p:inputText id="filtro"
+						value="#{CandidatoControl.pessoaCandidato.nomePessoa}" />
+				</a:field>
+				<a:field spaceLeft="15px">
+					<p:commandButton id="filtrar" icon="ui-icon-search"
+						actionListener="#{CandidatoControl.aplicarFiltro}"
+						update="listaPessoas" />
+				</a:field>
+				<a:newLine />
+				<p:dataTable id="listaPessoas" var="itemPessoa" style="width:100%"
+					value="#{CandidatoControl.listaPessoa}"
+					widgetVar="funcionariosTable" emptyMessage="Sem Registros a Exibir">
+					<p:column headerText="Nome" width="30%">#{itemPessoa.nomePessoa}</p:column>
+					<p:column headerText="Rg">#{itemPessoa.rg}</p:column>
+					<p:column width="5%">
+						<p:commandButton icon="ui-icon-pencil"
+							action="#{CandidatoControl.carregaPessoaAlteracao(itemPessoa)}"
+							oncomplete="consultar.hide();" update=":formCorpo:tabCadastro" />
+						<p:commandButton icon="ui-icon-trash"
+							action="#{FuncionarioControl.excluir(itemPessoa)}"
+							update="listaPessoas" />
+					</p:column>
+
+				</p:dataTable>
+			</p:dialog>
+
+			<p:tabView cache="true" id="tabCadastro">
 				<p:tab title="Informações do candidato" id="candidato">
 					<p:panel rendered="true">
 						<a:field label="Nome">
@@ -284,9 +319,11 @@
 						<a:newLine />
 						<p:commandButton
 							actionListener="#{CandidatoControl.adicionePessoa }"
-							value="Adicionar Pessoa" icon="ui-icon-plusthick"
-							update="@all"></p:commandButton>
-						<a:newLine/>
+							value="Adicionar Pessoa" icon="ui-icon-plusthick" update="@all">
+						</p:commandButton>
+						<a:newLine />
+						<a:newLine />
+
 						<p:dataTable id="listaPessoa"
 							value="#{CandidatoControl.listaPessoa }" var="pess" width="100%"
 							emptyMessage="Sem registros">
@@ -323,7 +360,7 @@
 							</p:column>
 						</p:dataTable>
 
-						
+
 						<a:newLine />
 
 						<a:newLine />

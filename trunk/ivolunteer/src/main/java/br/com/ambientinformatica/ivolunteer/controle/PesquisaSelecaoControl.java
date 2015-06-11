@@ -23,11 +23,7 @@ public class PesquisaSelecaoControl {
 
 	private List<Pessoa> pessoas = new ArrayList<Pessoa>();
 	
-	private SelecaoCandidato selecaoCandidato = new SelecaoCandidato();
-
-	public List<Pessoa> getPessoas() {
-		return pessoas;
-	}
+	private SelecaoCandidato selecaoCandidato = new SelecaoCandidato();	
 
 	@Autowired
 	private PessoaDao PessoaDao;
@@ -36,10 +32,10 @@ public class PesquisaSelecaoControl {
 		this.pessoas = pessoas;
 	}
 
-	private static final String disable = "disable";
-	private static final String enable = "enable";
-	private String checkStatus = "disable";
-
+	public List<Pessoa> getPessoas() {
+		return pessoas;
+	}
+	
 	public void confirmar(ActionEvent evt) {
 		try {
 			PessoaDao.alterar(pessoa);

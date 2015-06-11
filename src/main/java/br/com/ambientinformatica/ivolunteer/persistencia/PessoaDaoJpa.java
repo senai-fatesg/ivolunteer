@@ -6,6 +6,7 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
+import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.SelecaoCandidato;
 import br.com.ambientinformatica.jpa.persistencia.PersistenciaJpa;
@@ -18,7 +19,7 @@ public class PessoaDaoJpa extends PersistenciaJpa<Pessoa> implements PessoaDao {
 	@SuppressWarnings("unchecked")
    @Override
 	public List<Pessoa> pesquisaSelecaoCandidato(SelecaoCandidato selecaoCandidato) {
-			String sql = "select p from Pessoa p where p.recebeBeneficio = :recebeBeneficio ";
+			String sql = "select p from Pessoa p where p.recebeBeneficio = :recebeBeneficio and p.filiacao = FILHO";
 			
 			if(selecaoCandidato.getNomePessoa() != null && !selecaoCandidato.getNomePessoa().isEmpty()){
 				sql += " and upper(p.nomePessoa) like :nomePessoa";
@@ -41,4 +42,16 @@ public class PessoaDaoJpa extends PersistenciaJpa<Pessoa> implements PessoaDao {
 			
 		return query.getResultList();
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Pessoa> listarPorNome(String nome) {
+
+		Query query = em
+				.createQuery("select p from Pessoa p where upper(p.nomePessoa) like :nome and p.filiacao = FILHO");
+		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
+		
+		return  (List<Pessoa>) query.getResultList();
+	}
+	
 }

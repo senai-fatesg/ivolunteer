@@ -25,6 +25,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.IndexColumn;
 
@@ -109,8 +110,6 @@ public class Pessoa {
 	private BigDecimal valorInicial = BigDecimal.ZERO;
 	private BigDecimal valorFinal = BigDecimal.ZERO;
 	private Integer numeroDePessoasMoradia;
-	
-	private Integer idade;
 
 	private Boolean paisVivemJuntos;
 	private Boolean requisitouOutraVaga;
@@ -143,9 +142,11 @@ public class Pessoa {
 	}
 
 	public Integer getIdade() {
-		String data = "29/08/1993";
-		Integer idade = CalcularIdade(data);
-		return idade;
+		if(this.dataNascimento == null){
+			return 0;
+		}else{
+			return CalcularIdade(this.dataNascimento.toString());
+		}
 	}
 
 	private Integer CalcularIdade(String dataNascimento) {
@@ -563,4 +564,32 @@ public class Pessoa {
 	public void setNumeroIrmaosMatriculados(Integer numeroIrmaosMatriculados) {
 		this.numeroIrmaosMatriculados = numeroIrmaosMatriculados;
 	}
+
+	@Override
+   public int hashCode() {
+	   final int prime = 31;
+	   int result = 1;
+	   result = prime
+	         * result
+	         + ((listaPessoaRelacionada == null) ? 0 : listaPessoaRelacionada
+	               .hashCode());
+	   return result;
+   }
+
+	@Override
+   public boolean equals(Object obj) {
+	   if (this == obj)
+		   return true;
+	   if (obj == null)
+		   return false;
+	   if (getClass() != obj.getClass())
+		   return false;
+	   Pessoa other = (Pessoa) obj;
+	   if (listaPessoaRelacionada == null) {
+		   if (other.listaPessoaRelacionada != null)
+			   return false;
+	   } else if (!listaPessoaRelacionada.equals(other.listaPessoaRelacionada))
+		   return false;
+	   return true;
+   }
 }

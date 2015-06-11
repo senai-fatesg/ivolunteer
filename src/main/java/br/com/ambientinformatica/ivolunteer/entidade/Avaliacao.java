@@ -20,6 +20,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.IndexColumn;
 
 @Entity
 public class Avaliacao {
@@ -35,7 +37,10 @@ public class Avaliacao {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
 
-	@OneToMany(mappedBy="avaliacao", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@JoinColumn(name="avaliacao_id")
+	@IndexColumn(name = "id")
 	private List<Questao> questoes = new ArrayList<Questao>();
 
 	public Integer getId() {
@@ -81,7 +86,7 @@ public class Avaliacao {
 	// Métododo que ira adicionar questões
 	public void addQuestao(Questao questao) {
 		if(!this.questoes.contains(questao)){
-			questao.setAvaliacao(this);
+			//questao.setAvaliacao(this);
 			this.questoes.add(questao);
 		}
 	}

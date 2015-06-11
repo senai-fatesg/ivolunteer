@@ -8,4 +8,5 @@ import br.com.ambientinformatica.jpa.persistencia.Persistencia;
 
 public interface QuestaoDao extends Persistencia<Questao> {
 	public List<Questao> llistaQuestoesPorAvaliacao(Avaliacao avaliacao);
+	public void excluirPorAvaliacao(Avaliacao avaliacao);
 }

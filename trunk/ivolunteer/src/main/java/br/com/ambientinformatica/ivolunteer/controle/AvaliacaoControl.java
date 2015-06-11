@@ -22,6 +22,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.Objetiva;
 import br.com.ambientinformatica.ivolunteer.entidade.Questao;
 import br.com.ambientinformatica.ivolunteer.persistencia.AvaliacaoDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.QuestaoDao;
+import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 
 @Controller("AvaliacaoControl")
 @Scope("conversation")
@@ -53,12 +54,26 @@ public class AvaliacaoControl {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
+	
+	public void excluir(Avaliacao avaliacao){				
+		try {
+			Avaliacao avaliacaoRemover = avaliacao;
+			avaliacaoRemover.setQuestoes(this.questaoDao.llistaQuestoesPorAvaliacao(avaliacaoRemover));
+			this.avaliacaoDao.excluirPorId(avaliacaoRemover.getId());
+			this.avaliacoes.remove(avaliacao);
+		} catch (PersistenciaException e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
 
 	// Obtem Registro para Alteração
-
 	public void carregaAvaliacao(Avaliacao avaliacao) {
-		this.avaliacao = avaliacao;
-		this.avaliacao.setQuestoes(this.questaoDao.llistaQuestoesPorAvaliacao(this.avaliacao));
+		try {
+			this.avaliacao.setQuestoes(this.questaoDao.llistaQuestoesPorAvaliacao(avaliacao));
+			this.avaliacao = this.avaliacaoDao.consultar(avaliacao);
+		} catch (PersistenciaException e) {
+			e.printStackTrace();
+		}		
 	}
 
 	// Remove Questao em Avaliacao

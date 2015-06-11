@@ -55,7 +55,7 @@
 						</a:field>
 						<a:newLine />
 					</p:tab>
-					<p:tab title="Objetiva" id="tabOjbetiva">						
+					<p:tab title="Objetiva" id="tabOjbetiva">
 						<a:newLine />
 						<a:newLine />
 						<a:field label="Alterntiva" width="100px">
@@ -140,11 +140,24 @@
 						<p:commandButton icon="ui-icon-pencil"
 							action="#{AvaliacaoControl.carregaAvaliacao(itemAvaliacoes)}"
 							update="@all" />
-						<p:commandButton icon="ui-icon-trash" />
+						<p:commandButton icon="ui-icon-trash" type="button"
+							onclick="confirmaExclusao.show()" />
 					</p:column>
-
 				</p:dataTable>
 			</p:dialog>
+			<p:confirmDialog header="Atenção!" severity="alert"
+				widgetVar="confirmaExclusao">
+				<f:facet name="message">
+					<h:outputText value="Deseja excluir a Avaliação? " />
+					<br />
+					<h:outputText value="Está operação não poderá ser desfeita." />
+				</f:facet>
+				<p:commandButton value="Sim"
+					action="#{AvaliacaoControl.excluir(itemAvaliacoes)}"
+					oncomplete="confirmaExclusao.hide()" update="listaAvaliacoes" />
+				<p:commandButton value="Não" update="listaAvaliacoes"
+					onclick="confirmaExclusao.hide()" />
+			</p:confirmDialog>
 
 		</h:form>
 	</ui:define>

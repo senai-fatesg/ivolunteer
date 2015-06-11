@@ -17,7 +17,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.Cidade;
 import br.com.ambientinformatica.ivolunteer.entidade.Endereco;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumSexo;
-import br.com.ambientinformatica.ivolunteer.entidade.Telefone;
+import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.ivolunteer.persistencia.AlunoDao;
 
 @Controller("AlunoControl")
@@ -41,7 +41,6 @@ public class AlunoControl {
 	public void confirmar(ActionEvent evt) {
 		try {
 			alunoDao.alterar(aluno);
-			listar(evt);
 			aluno = new Aluno();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
@@ -54,6 +53,17 @@ public class AlunoControl {
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
+	}
+
+	public Aluno consultar(ActionEvent evt) {
+		try {
+
+			alunoDao.consultar(aluno.getCertidaoNascimento());
+
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+		return aluno;
 	}
 
 	public Aluno getAluno() {
@@ -83,32 +93,14 @@ public class AlunoControl {
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
-	
+
 	public List<SelectItem> getCompleteEnumSexo() {
 		return UtilFaces.getListEnum(EnumSexo.values());
 	}
-	
+
 	public List<SelectItem> getCompleteEnumEstado() {
 		return UtilFaces.getListEnum(EnumEstado.values());
 	}
-
-//	public List<String> completeEnumEstado(String query) {
-//		List<String> retornoUf = new ArrayList<String>();
-//		EnumEstado[] enunUf = EnumEstado.values();
-//		for (int i = 0; i < enunUf.length; i++) {
-//			retornoUf.add(enunUf[i].getDescricao());
-//		}
-//		return retornoUf;
-//	}
-
-//	public List<String> completeEnumSexo(String query) {
-//		List<String> retorno = new ArrayList<String>();
-//		EnumSexo[] enunSexo = EnumSexo.values();
-//		for (int i = 0; i < enunSexo.length; i++) {
-//			retorno.add(enunSexo[i].getDescricao());
-//		}
-//		return retorno;
-//	}
 
 	public void addEndereco(ActionEvent ev) {
 		try {
@@ -127,4 +119,18 @@ public class AlunoControl {
 		}
 	}
 
+	// Aplica Filtro
+	public void aplicarFiltro(ActionEvent evt) {
+		try {
+			if (this.aluno.getNomePessoa().isEmpty()) {
+				this.alunos = this.alunoDao.listar();
+			} else {
+				this.alunos = this.alunoDao.listarPorNome(this.aluno
+						.getNomePessoa());
+			}
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+
+	}
 }

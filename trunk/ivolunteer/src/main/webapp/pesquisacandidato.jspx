@@ -93,7 +93,7 @@
 				width="200">
 				<p:outputPanel id="multiCarDetail" style="text-align:center;">
 					<ui:repeat value="#{PesquisaSelecaoControl.pessoas}" var="pes">
-						
+
 					</ui:repeat>
 				</p:outputPanel>
 			</p:dialog>
@@ -112,13 +112,44 @@
 					<p:password id="password" />
 
 					<f:facet name="footer">
-						<p:commandButton value="Login" type="button"
-							onclick="PF('dlg').hide()" />
+						<p:messages id="messages" showDetail="true" autoUpdate="true"
+							closable="true" />
+
+						<p:commandButton id="consultar" value="Consultar"
+							icon="ui-icon-search" onclick="consultar.show();" />
+							
+							<p:dialog id="modalPesquisa" header="Consultar" widgetVar="consultar"
+				modal="true" maximizable="false" minimizable="false" width="40%"
+				height="550px" resizable="false" closeOnEscape="true">
+				<a:field label="Nome">
+					<p:inputText id="filtro"
+						value="#{CandidatoControl.pessoaCandidato.nomePessoa}" />
+				</a:field>
+				
+				<p:dataTable id="listaPessoas" var="itemPessoa" style="width:100%"
+					value="#{CandidatoControl.listaPessoa}"
+					widgetVar="funcionariosTable" emptyMessage="Sem Registros a Exibir">
+					<p:column headerText="Nome" width="30%">#{itemPessoa.nomePessoa}</p:column>
+					<p:column headerText="Rg">#{itemPessoa.rg}</p:column>
+					<p:column width="5%">
+						<p:commandButton icon="ui-icon-pencil"
+							action="#{CandidatoControl.carregaPessoaAlteracao(itemPessoa)}"
+							oncomplete="consultar.hide();" update=":formCorpo:tabCadastro" />
+						<p:commandButton icon="ui-icon-trash"
+							action="#{CandidatoControl.excluir(itemPessoa)}"
+							update="listaPessoas" />
+					</p:column>
+
+				</p:dataTable>
+			</p:dialog>
+							
+							
 					</f:facet>
 				</p:panelGrid>
 			</p:dialog>
 			<p:commandButton actionListener="#{PesquisaSelecaoControl.confirmar}"
-				value="Salvar"></p:commandButton>
+				value="Salvar">
+			</p:commandButton>
 
 		</p:panel>
 	</ui:define>

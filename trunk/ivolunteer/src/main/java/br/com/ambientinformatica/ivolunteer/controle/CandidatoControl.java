@@ -97,7 +97,7 @@ public class CandidatoControl {
 	}
 	
 	public BigDecimal getTotalRenda(){
-		return pessoaCandidato.calcularRenda(); 
+		return pessoaCandidato.calcularRenda();
 	}
 	
 	//Metodo responsavel por adionar as pessoas relacionadas ao candidato

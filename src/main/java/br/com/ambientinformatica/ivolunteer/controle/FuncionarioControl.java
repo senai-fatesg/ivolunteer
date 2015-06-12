@@ -2,7 +2,6 @@ package br.com.ambientinformatica.ivolunteer.controle;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -15,7 +14,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
-import br.com.ambientinformatica.ivolunteer.entidade.Avaliacao;
 import br.com.ambientinformatica.ivolunteer.entidade.Cidade;
 import br.com.ambientinformatica.ivolunteer.entidade.Endereco;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
@@ -25,7 +23,6 @@ import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoTelefone;
 import br.com.ambientinformatica.ivolunteer.entidade.Frequencia;
 import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.ivolunteer.entidade.GradeHorario;
-import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.Telefone;
 import br.com.ambientinformatica.ivolunteer.persistencia.FuncionarioDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;

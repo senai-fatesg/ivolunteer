@@ -24,9 +24,6 @@ public class Turma {
 	private String nome;
 
 	@OneToMany
-	private List<AgrupamentoTurma> agrupamentoTurma;
-
-	@OneToMany
 	private List<Funcionario> funcionario;
 
 	public Integer getId() {
@@ -59,14 +56,6 @@ public class Turma {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public List<AgrupamentoTurma> getAgrupamentoTurma() {
-		return agrupamentoTurma;
-	}
-
-	public void setAgrupamentoTurma(List<AgrupamentoTurma> agrupamentoTurma) {
-		this.agrupamentoTurma = agrupamentoTurma;
 	}
 
 	public List<Funcionario> getFuncionario() {

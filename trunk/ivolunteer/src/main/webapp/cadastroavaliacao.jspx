@@ -35,12 +35,12 @@
 				<a:newLine />
 				<a:newLine />
 				<a:field label="Ordem" width="100%">
-					<p:spinner max="999" min="0" id="ordemDiscursiva"
+					<p:spinner max="999" min="0" id="ordem"
 						value="#{AvaliacaoControl.questao.ordem}" style="width:238px" />
 				</a:field>
 				<a:newLine />
 				<a:field label="Pergunta" width="100%">
-					<p:editor id="perguntaDiscrusiva"
+					<p:editor id="pergunta"
 						value="#{AvaliacaoControl.questao.pergunta}" />
 				</a:field>
 				<a:newLine />
@@ -86,7 +86,7 @@
 				</p:tabView>
 				<a:newLine />
 				<p:commandButton value="Adicionar Questão" icon="ui-icon-plusthick"
-					actionListener="#{AvaliacaoControl.addQuestao}" update="@all" />
+					actionListener="#{AvaliacaoControl.addQuestao}" update="questoesTable, titulo, ordem, tabQuestoes, pergunta" />
 				<a:newLine />
 				<a:newLine />
 				<p:dataTable id="questoesTable"
@@ -154,8 +154,8 @@
 				</f:facet>
 				<p:commandButton value="Sim"
 					action="#{AvaliacaoControl.excluir(itemAvaliacoes)}"
-					oncomplete="confirmaExclusao.hide()" update="listaAvaliacoes" />
-				<p:commandButton value="Não" update="listaAvaliacoes"
+					oncomplete="confirmaExclusao.hide()" update="@all" />
+				<p:commandButton value="Não" update="modalPesquisa"
 					onclick="confirmaExclusao.hide()" />
 			</p:confirmDialog>
 

@@ -55,6 +55,7 @@ public class AvaliacaoControl {
 
 	public void excluir(Avaliacao avaliacao) {
 		this.avaliacaoDao.removerAvaliacaoCompleta(avaliacao);
+		this.avaliacao = new Avaliacao();
 	}
 
 	// Obtem Registro para Alteração
@@ -114,7 +115,7 @@ public class AvaliacaoControl {
 	// Salvar Avaliacao
 	public void salvar(ActionEvent event) {
 		try {
-			this.avaliacaoDao.incluir(this.avaliacao);	
+			this.avaliacaoDao.alterar(this.avaliacao);	
 			
 			this.questaoDao.alterar(this.avaliacao.getQuestoes());
 			this.avaliacao = new Avaliacao();

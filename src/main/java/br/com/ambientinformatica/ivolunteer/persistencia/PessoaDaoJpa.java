@@ -19,7 +19,7 @@ public class PessoaDaoJpa extends PersistenciaJpa<Pessoa> implements PessoaDao {
 	@SuppressWarnings("unchecked")
    @Override
 	public List<Pessoa> pesquisaSelecaoCandidato(SelecaoCandidato selecaoCandidato) {
-			String sql = "select p from Pessoa p where p.recebeBeneficio = :recebeBeneficio and p.filiacao = FILHO";
+			String sql = "select p from Pessoa p where p.recebeBeneficio = :recebeBeneficio";
 			
 			if(selecaoCandidato.getNomePessoa() != null && !selecaoCandidato.getNomePessoa().isEmpty()){
 				sql += " and upper(p.nomePessoa) like :nomePessoa";

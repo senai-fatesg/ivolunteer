@@ -16,9 +16,9 @@
 					icon="ui-icon-search" onclick="consultar.show();" />
 				<p:dialog id="modalPesquisa" header="Consultar"
 					widgetVar="consultar" modal="true" maximizable="false"
-					minimizable="false" width="50%" height="70%" resizable="false">
+					minimizable="false" width="60%" height="60%" resizable="false">
 					<a:field label="Identificador">
-						<p:inputText id="identificador" value="#{AgrupamentoTurmaControl.agrupamentoTurma.identificador}" />
+						<p:inputText id="identificador1" value="#{AgrupamentoTurmaControl.agrupamentoTurma.identificador}" />
 					</a:field>
 					<a:field spaceLeft="15px">
 						<p:commandButton id="filtrar" icon="ui-icon-search"
@@ -34,8 +34,10 @@
 						<p:column headerText="Idade Final" width="30%">#{itemagrupamentoturmas.idadeFinal}</p:column>
 						<p:column headerText="Numero De Criaças">#{itemagrupamentoturmas.numeroCriancas}</p:column>
 						<p:column width="5%">							
-							<p:commandButton icon="ui-icon-pencil" action="#{AgrupamentoTurmaControl.carregaAgrupamentoTurma(itemagrupamentoturmas)}" update="@all"/>
-							<p:commandButton icon="ui-icon-trash" />
+							<p:commandButton icon="ui-icon-pencil" 
+							action="#{AgrupamentoTurmaControl.carregaAgrupamentoTurma(itemagrupamentoturmas)}" 
+							update="@all"/>
+							<p:commandButton icon="ui-icon-trash" action="#{AgrupamentoTurmaControl.excluir(itemagrupamentoturmas)}" update="@all" />
 						</p:column>
 
 					</p:dataTable>
@@ -70,7 +72,7 @@
 
 				<a:newLine />
 				<p:commandButton value="Confirmar"
-					actionListener="#{AgrupamentoTurmaControl.confirmar}" update="listaAgrupamentosDeTurmas"></p:commandButton>
+					actionListener="#{AgrupamentoTurmaControl.confirmar}" update="agrupamentoTurmas"></p:commandButton>
 			</p:panel>
 		</p:panel>
 

@@ -1,11 +1,14 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,6 +28,8 @@ public class AgrupamentoTurma {
 	@Temporal(TemporalType.DATE)
 	private Date idadeFinal;
 
+	@OneToMany
+	private List<Turma> turmas;
 	private Integer numeroCriancas;
 
 	public Integer getId() {
@@ -66,4 +71,13 @@ public class AgrupamentoTurma {
 	public void setNumeroCriancas(Integer numeroCriancas) {
 		this.numeroCriancas = numeroCriancas;
 	}
+
+	public List<Turma> getTurmas() {
+		return turmas;
+	}
+
+	public void setTurmas(List<Turma> turmas) {
+		this.turmas = turmas;
+	}
+
 }

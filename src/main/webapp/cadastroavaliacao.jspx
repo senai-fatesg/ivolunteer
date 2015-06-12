@@ -21,16 +21,16 @@
 				<a:field label="Título" width="100%">
 					<p:growl id="verificaTitulo" />
 					<p:inputText id="titulo"
-						value="#{AvaliacaoControl.avaliacao.titulo}" style="width:100%;">
-						<p:ajax event="blur" update="verificaTitulo"
-							listener="#{AvaliacaoControl.verificaTitulo}" />
+						value="#{AvaliacaoControl.avaliacao.titulo}" style="width:60%;" required="true" label="titulo">
+						<f:validateLength minimum="2" />
 					</p:inputText>
-
 				</a:field>
 				<a:newLine />
-				<a:field label="Descricao" width="100%">
-					<p:inputTextarea value="#{AvaliacaoControl.avaliacao.descricao}"
-						style="width:100%;" />
+				<a:field label="Descricao" width="60%">
+					<p:inputTextarea id="descricao" value="#{AvaliacaoControl.avaliacao.descricao}" required="true" 
+					label="descricao" style="width:100%;">
+						<f:validateLength minimum="2" />
+						</p:inputTextarea>
 				</a:field>
 				<a:newLine />
 				<a:newLine />
@@ -119,6 +119,95 @@
 				<a:newLine />
 
 			</p:panel>
+			<p:separator />
+			<a:field spaceLeft="15px">
+				<p:commandButton value="Salvar" icon="ui-icon-disk"
+					update="@all" actionListener="#{AvaliacaoControl.salvar}" />
+			</a:field>
+			<a:field spaceLeft="15px">
+				<p:commandButton value="Excluir" icon="ui-icon-trash" />
+			</a:field>
+			<a:newLine />
+			<p:dialog id="modalPesquisa" header="Consultar" widgetVar="consultar"
+				modal="true" maximizable="false" minimizable="false" width="40%"
+				height="70%" resizable="false">
+				<a:field label="Título">
+					<p:inputText id="filtro" value="#{AvaliacaoControl.filtro.titulo}" />
+				</a:field>
+				<a:field spaceLeft="15px">
+					<p:commandButton id="filtrar" icon="ui-icon-search"
+						actionListener="#{AvaliacaoControl.aplicarFiltro}"
+						update="listaAvaliacoes" />
+				</a:field>
+				<a:newLine />
+				<p:dataTable id="listaAvaliacoes" var="itemAvaliacoes"
+					style="width:100%" value="#{AvaliacaoControl.avaliacoes}"
+					widgetVar="avaliacoesTable" emptyMessage="Sem Registros a Exibir">
+					<p:column headerText="Título" width="30%">#{itemAvaliacoes.titulo}</p:column>
+					<p:column headerText="Descricao">#{itemAvaliacoes.descricao}</p:column>
+					<p:column width="5%">
+						<p:commandButton icon="ui-icon-pencil"
+							action="#{AvaliacaoControl.carregaAvaliacao(itemAvaliacoes)}"
+							update="@all" />
+						<p:commandButton icon="ui-icon-trash" type="button"
+							onclick="confirmaExclusao.show()" />
+					</p:column>
+				</p:dataTable>
+			</p:dialog>
+			<p:confirmDialog header="Atenção!" severity="alert"
+				widgetVar="confirmaExclusao">
+				<f:facet name="message">
+					<h:outputText value="Deseja excluir a Avaliação? " />
+					<br />
+					<h:outputText value="Está operação não poderá ser desfeita." />
+				</f:facet>
+				<p:commandButton value="Sim"
+					action="#{AvaliacaoControl.excluir(itemAvaliacoes)}"
+					oncomplete="confirmaExclusao.hide()" update="@all" />
+				<p:commandButton value="Não" update="modalPesquisa"
+					onclick="confirmaExclusao.hide()" />
+			</p:confirmDialog>
+
+			<p:dialog id="modalPesquisa" header="Consultar" widgetVar="consultar"
+				modal="true" maximizable="false" minimizable="false" width="40%"
+				height="70%" resizable="false">
+				<a:field label="Título">
+					<p:inputText id="filtro" value="#{AvaliacaoControl.filtro.titulo}" />
+				</a:field>
+				<a:field spaceLeft="15px">
+					<p:commandButton id="filtrar" icon="ui-icon-search"
+						actionListener="#{AvaliacaoControl.aplicarFiltro}"
+						update="listaAvaliacoes" />
+				</a:field>
+				<a:newLine />
+				<p:dataTable id="listaAvaliacoes" var="itemAvaliacoes"
+					style="width:100%" value="#{AvaliacaoControl.avaliacoes}"
+					widgetVar="avaliacoesTable" emptyMessage="Sem Registros a Exibir">
+					<p:column headerText="Título" width="30%">#{itemAvaliacoes.titulo}</p:column>
+					<p:column headerText="Descricao">#{itemAvaliacoes.descricao}</p:column>
+					<p:column width="5%">
+						<p:commandButton icon="ui-icon-pencil"
+							action="#{AvaliacaoControl.carregaAvaliacao(itemAvaliacoes)}"
+							update="@all" />
+						<p:commandButton icon="ui-icon-trash" type="button"
+							onclick="confirmaExclusao.show()" />
+					</p:column>
+				</p:dataTable>
+			</p:dialog>
+			<p:confirmDialog header="Atenção!" severity="alert"
+				widgetVar="confirmaExclusao">
+				<f:facet name="message">
+					<h:outputText value="Deseja excluir a Avaliação? " />
+					<br />
+					<h:outputText value="Está operação não poderá ser desfeita." />
+				</f:facet>
+				<p:commandButton value="Sim"
+					action="#{AvaliacaoControl.excluir(itemAvaliacoes)}"
+					oncomplete="confirmaExclusao.hide()" update="@all" />
+				<p:commandButton value="Não" update="modalPesquisa"
+					onclick="confirmaExclusao.hide()" />
+			</p:confirmDialog>
+
 			<p:dialog id="modalPesquisa" header="Consultar" widgetVar="consultar"
 				modal="true" maximizable="false" minimizable="false" width="40%"
 				height="70%" resizable="false">

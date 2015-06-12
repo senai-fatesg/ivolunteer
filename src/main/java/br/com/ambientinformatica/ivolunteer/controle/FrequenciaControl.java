@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class FrequenciaControl {
 
 	private Frequencia frequencia = new Frequencia();
 
-	private Date data = new Date();
+	private String data = new String();
 
 	@Autowired
 	private FuncionarioDao funcionarioDao;
@@ -40,7 +41,7 @@ public class FrequenciaControl {
 
 	@PostConstruct
 	public void init() {
-		// listar(null);
+		listar(null);
 
 	}
 
@@ -107,7 +108,7 @@ public class FrequenciaControl {
 		return frequencias;
 	}
 
-	public void adicionarFrequencia(ActionEvent evt) {
+	public void adicionarFrequencia(Frequencia frequencia) {
 		try {
 			funcionario.addFrequencia(frequencia);
 			funcionarioDao.alterar(funcionario);
@@ -133,68 +134,88 @@ public class FrequenciaControl {
 		this.funcionarios = funcionarios;
 	}
 
-	public Date getData() {
+	public String getData() {
 		return data;
 	}
 
-	public void setData(Date data) {
+	public void setData(String data) {
 		this.data = data;
 	}
 
-	public Funcionario carregarFuncionario(SelectEvent evt) {
-		return funcionarioDao.carregarFuncionario(funcionario);
+	public void carregarFuncionario(SelectEvent evt) {
+//		return funcionarioDao.carregarFuncionario(funcionario);
+		try {
+		      this.funcionario = funcionarioDao.consultar(funcionario.getId());
+	      } catch (PersistenciaException e) {
+	      	UtilFaces.addMensagemFaces(e);
+	      }	
 	}
 
 	public List<Funcionario> consultarFuncionario(String query) {
 		return funcionarioDao.listarPorNome(query);
 	}
 
-//	public Turma carregarTurmar(SelectEvent evt) {
-//		return turmaDao.carregarTurma(turma);
-//	}
-//
-//	public List<Turma> consultarTurma(String query) {
-//		return turmaDao.listarPorNome(query);
-//	}
+	// public Turma carregarTurmar(SelectEvent evt) {
+	// return turmaDao.carregarTurma(turma);
+	// }
+	//
+	// public List<Turma> consultarTurma(String query) {
+	// return turmaDao.listarPorNome(query);
+	// }
 
-	public void manterFrequencia(ActionEvent evt) {
-
+	public void manterFrequencia() {
+		for (Frequencia auxiliar : frequencias) {
+			if (auxiliar.getPresente()) {
+				funcionario.addFrequencia(auxiliar);
+			} else {
+				funcionario.alterarFrequencia(auxiliar);
+			}
+		}
 	}
 
 	@SuppressWarnings("deprecation")
 	public void carregarFrequenciaMes() {
+		funcionarios = new ArrayList<Funcionario>();
+		funcionarios.add(funcionario);
 		frequencias = new ArrayList<Frequencia>();
 
 		GregorianCalendar calendar = new GregorianCalendar();
-		calendar.set(data.getYear(), (data.getMonth() + 1), data.getDate());
+		String[] auxiliar = data.split("/");
+		calendar.set(Integer.parseInt(auxiliar[1]),
+				(Integer.parseInt(auxiliar[0]) - 1), 1);
 
 		int mes = calendar.get(Calendar.MONTH);
 		int dia = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 		int ano = calendar.get(Calendar.YEAR);
+
+		Frequencia[] array = new Frequencia[dia];
 
 		Frequencia frequenciaAuxiliar;
 		Date dataAuxiliar;
 
 		// Carrega somente as datas do mes
 		for (Frequencia frequenciaMes : funcionario.getFrequencias()) {
-			if (mes == frequenciaMes.getData().getMonth()) {
-				frequencias.add(frequenciaMes);
+			if (mes == frequenciaMes.getData().getMonth()
+					&& ano == (frequenciaMes.getData().getYear() + 1900)) {
+				array[frequenciaMes.getData().getDate() - 1] = frequenciaMes;
 			}
 		}
 
-		for (int i = 1; i <= dia; i++) {
-			frequenciaAuxiliar = new Frequencia();
-			dataAuxiliar = new Date();
+		for (int i = 0; i < dia; i++) {
+			if (array[i] == null) {
+				frequenciaAuxiliar = new Frequencia();
+				dataAuxiliar = new Date();
 
-			dataAuxiliar.setDate(i);
-			dataAuxiliar.setMonth(mes);
-			dataAuxiliar.setYear(ano);
-			frequenciaAuxiliar.setData(dataAuxiliar);
-
-			if (!frequencias.contains(frequenciaAuxiliar)) {
+				dataAuxiliar.setDate(i + 1);
+				dataAuxiliar.setMonth(mes);
+				dataAuxiliar.setYear(ano - 1900);
+				frequenciaAuxiliar.setData(dataAuxiliar);
 				frequencias.add(frequenciaAuxiliar);
+			} else {
+				frequencias.add(array[i]);
 			}
 		}
+		int x = 0;
 	}
 
 }

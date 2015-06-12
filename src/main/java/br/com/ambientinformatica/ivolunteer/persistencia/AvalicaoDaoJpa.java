@@ -12,21 +12,13 @@ import org.springframework.stereotype.Repository;
 
 import br.com.ambientinformatica.ivolunteer.entidade.Avaliacao;
 import br.com.ambientinformatica.ivolunteer.entidade.Questao;
+import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 import br.com.ambientinformatica.jpa.persistencia.PersistenciaJpa;
 
 @Repository("avaliacaoDao")
 public class AvalicaoDaoJpa extends PersistenciaJpa<Avaliacao> implements
 		AvaliacaoDao {
 	private static final long serialVersionUID = 1L;
-
-	@Autowired
-	private DiscursivaDao discursivaDao;
-	@Autowired
-	private ObjetivaDao objetivaDao;
-	@Autowired
-	private AlternativaDao alternativaDao;
-	@Autowired
-	private QuestaoDao questaoDao;
 
 	@Override
 	public List<Avaliacao> listarTitulo(Avaliacao avaliacao) {
@@ -40,4 +32,23 @@ public class AvalicaoDaoJpa extends PersistenciaJpa<Avaliacao> implements
 		}
 	}
 	
+	@Override
+	public Avaliacao consultarAvalicaoCompleta(Avaliacao avaliacao){
+		Query q = em.createQuery("select a from Avaliacao a "
+				+ "left join fetch a.questoes ques " + "where a = :avaliacao");
+		q.setParameter("avaliacao", avaliacao);
+		return (Avaliacao) q.getSingleResult();
+	}
+
+	@Override
+	public void removerAvaliacaoCompleta(Avaliacao avaliacao) {
+		try {			
+			excluirPorId(this.consultarAvalicaoCompleta(avaliacao).getId());
+		} catch (PersistenciaException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 }

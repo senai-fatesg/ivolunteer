@@ -17,7 +17,7 @@ public class Questao {
 
 	@Id
 	@GeneratedValue(generator = "questao_seq", strategy = GenerationType.SEQUENCE)
-	@SequenceGenerator(name = "questao_seq", sequenceName = "questao_seq", allocationSize = 1, initialValue = 1)
+	@SequenceGenerator(name = "questao_seq", sequenceName = "questao_id_seq", allocationSize = 1, initialValue = 1)
 	private Integer id;
 
 	@Enumerated(EnumType.STRING)

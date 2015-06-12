@@ -19,19 +19,17 @@ public class QuestaoDaoJpa extends PersistenciaJpa<Questao> implements
 
 	@Override
 	public List<Questao> llistaQuestoesPorAvaliacao(Avaliacao avaliacao) {
-		Query consulta = em.createQuery("select q from Questao q where q.avaliacao.id = :avaliacao");
-		consulta.setParameter("avaliacao", avaliacao.getId());
+		Query consulta = em.createQuery("select q from Questao q where q.avaliacao = :avaliacao");
+		consulta.setParameter("avaliacao", avaliacao);
 		return consulta.getResultList();
 	}
 
 	@Override
 	public void excluirPorAvaliacao(Avaliacao avaliacao) {		
-		
 		for (Iterator iterator = this.llistaQuestoesPorAvaliacao(avaliacao).iterator(); iterator.hasNext();) {
 			try {
 				excluirPorId(((Questao) iterator.next()).getId());
-			} catch (PersistenciaException e) {
-				// TODO Auto-generated catch block
+			} catch (PersistenciaException e) {				
 				e.printStackTrace();
 			} ;			
 		}

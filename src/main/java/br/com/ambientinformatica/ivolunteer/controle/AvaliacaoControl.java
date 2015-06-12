@@ -22,7 +22,6 @@ import br.com.ambientinformatica.ivolunteer.entidade.Objetiva;
 import br.com.ambientinformatica.ivolunteer.entidade.Questao;
 import br.com.ambientinformatica.ivolunteer.persistencia.AvaliacaoDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.QuestaoDao;
-import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 
 @Controller("AvaliacaoControl")
 @Scope("conversation")
@@ -40,10 +39,9 @@ public class AvaliacaoControl {
 
 	@Autowired
 	private AvaliacaoDao avaliacaoDao;
-	
+
 	@Autowired
 	private QuestaoDao questaoDao;
-	
 
 	// Insere Alternativas em Questao do tipo Objetiva
 	public void addAlternativa(ActionEvent ev) {
@@ -54,26 +52,14 @@ public class AvaliacaoControl {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
-	
-	public void excluir(Avaliacao avaliacao){				
-		try {
-			Avaliacao avaliacaoRemover = avaliacao;
-			avaliacaoRemover.setQuestoes(this.questaoDao.llistaQuestoesPorAvaliacao(avaliacaoRemover));
-			this.avaliacaoDao.excluirPorId(avaliacaoRemover.getId());
-			this.avaliacoes.remove(avaliacao);
-		} catch (PersistenciaException e) {
-			UtilFaces.addMensagemFaces(e);
-		}
+
+	public void excluir(Avaliacao avaliacao) {
+		this.avaliacaoDao.removerAvaliacaoCompleta(avaliacao);
 	}
 
 	// Obtem Registro para Alteração
 	public void carregaAvaliacao(Avaliacao avaliacao) {
-		try {
-			this.avaliacao.setQuestoes(this.questaoDao.llistaQuestoesPorAvaliacao(avaliacao));
-			this.avaliacao = this.avaliacaoDao.consultar(avaliacao);
-		} catch (PersistenciaException e) {
-			e.printStackTrace();
-		}		
+		this.avaliacao = this.avaliacaoDao.consultarAvalicaoCompleta(avaliacao);
 	}
 
 	// Remove Questao em Avaliacao
@@ -128,8 +114,9 @@ public class AvaliacaoControl {
 	// Salvar Avaliacao
 	public void salvar(ActionEvent event) {
 		try {
+			this.avaliacaoDao.incluir(this.avaliacao);	
 			
-			this.avaliacaoDao.alterar(this.avaliacao);
+			this.questaoDao.alterar(this.avaliacao.getQuestoes());
 			this.avaliacao = new Avaliacao();
 			UtilFaces.addMensagemFaces("Avaliação salva com sucesso");
 		} catch (Exception e) {

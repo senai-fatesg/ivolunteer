@@ -2,7 +2,6 @@ package br.com.ambientinformatica.ivolunteer.entidade;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,16 +11,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.IndexColumn;
 
 @Entity
 public class Avaliacao {
@@ -33,14 +26,12 @@ public class Avaliacao {
 	private String titulo;
 
 	private String descricao;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
 
-	
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="avaliacao_id")
-	@IndexColumn(name = "id")
 	private List<Questao> questoes = new ArrayList<Questao>();
 
 	public Integer getId() {
@@ -90,7 +81,7 @@ public class Avaliacao {
 			this.questoes.add(questao);
 		}
 	}
-	
+
 	public void remQuestao(Questao questao){
 		if(this.questoes.contains(questao)){
 			this.questoes.remove(questao);

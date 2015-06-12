@@ -87,4 +87,13 @@ public class AgrupamentoTurmaControl {
 			this.agrupamentoTurma = agrupamentoTurma;		
 		}
 	
+		public void excluir(AgrupamentoTurma agrupamentoTurma) {
+			try {
+				agrupamentoTurmaDao.excluirPorId(agrupamentoTurma.getId());
+				UtilFaces.addMensagemFaces("Funcionário excluido com sucesso!");
+			} catch (PersistenciaException e) {
+				UtilFaces.addMensagemFaces(e);
+			}
+
+		}
 }

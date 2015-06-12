@@ -19,6 +19,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumSexo;
 import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.ivolunteer.persistencia.AlunoDao;
+import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 
 @Controller("AlunoControl")
 @Scope("conversation")
@@ -64,6 +65,16 @@ public class AlunoControl {
 			UtilFaces.addMensagemFaces(e);
 		}
 		return aluno;
+	}
+
+	public void excluir(Aluno aluno) {
+		try {
+			alunoDao.excluirPorId(aluno.getId());
+			UtilFaces.addMensagemFaces("Aluno excluido com sucesso!");
+		} catch (PersistenciaException e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+
 	}
 
 	public Aluno getAluno() {
@@ -122,15 +133,22 @@ public class AlunoControl {
 	// Aplica Filtro
 	public void aplicarFiltro(ActionEvent evt) {
 		try {
-			if (this.aluno.getNomePessoa().isEmpty()) {
+			if (this.aluno.getCertidaoNascimento().isEmpty()) {
 				this.alunos = this.alunoDao.listar();
 			} else {
-				this.alunos = this.alunoDao.listarPorNome(this.aluno
-						.getNomePessoa());
+				this.alunos = this.alunoDao.listarPorCertidao(this.aluno
+						.getCertidaoNascimento());
 			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
+	}
 
+	public void carregaAlunoAlteracao(Aluno aluno) {
+		try {
+			this.aluno = alunoDao.consultar(aluno.getId());
+		} catch (PersistenciaException e) {
+			UtilFaces.addMensagemFaces(e);
+		}
 	}
 }

@@ -8,6 +8,7 @@
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
 		<p:panel header="Cadastro de Funcionário" id="panelFuncionario">
+			
 			<p:messages id="messages" showDetail="true" autoUpdate="true"
 				closable="true" />
 

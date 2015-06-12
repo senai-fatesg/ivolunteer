@@ -8,18 +8,21 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:define name="corpo">
-		<p:panel header="Frequencia" id="panel">
+		<p:panel id="panel" header="Frequencia">
 
-			<p:tabView dynamic="true" cache="true">
-				<p:tab title="Funcionário">
+			<p:tabView dynamic="true" id="tabviewFuncionario">
+				<p:tab title="Funcionário" id="tabFuncionario">
 					<p:panel id="buscaFuncionario" rendered="true">
-						<a:field label="Data Presença">
-							<p:calendar value="#{FrequenciaControl.data}" mode="inline"
-								navigator="true" pattern="yyyy-MM-dd" >
-								<p:ajax event="dateSelect"
-									listener="#{FrequenciaControl.carregarFrequenciaMes}" />	
-							</p:calendar>
+
+
+						<a:field label="Mês/Ano" spaceLeft="15px">
+							<p:inputMask id="competencia" value="#{FrequenciaControl.data}"
+								mask="99/9999" />
 						</a:field>
+
+
+						<p:remoteCommand update="tabFuncionario"
+							id="atualizaTbFuncionarios"></p:remoteCommand>
 
 						<a:field label="Nome" spaceLeft="15px">
 							<p:autoComplete id="acMinLength" minQueryLength="3"
@@ -35,77 +38,38 @@
 						</a:field>
 
 						<a:field spaceLeft="15px">
-							<p:commandButton
-								actionListener="#{FrequenciaControl.carregarFrequenciaMes}" icon="ui-icon-plusthick"
-								value="Pesquisar" update="tbFuncionarios"></p:commandButton>
+							<p:commandButton value="Pesquisar"
+								icon="ui-icon-refresh" update="tabFuncionario"
+								action="#{FrequenciaControl.carregarFrequenciaMes}" />
 						</a:field>
 						<a:newLine></a:newLine>
 					</p:panel>
 					<p:dataTable id="tbFuncionarios" var="func"
+						emptyMessage="Sem Registros"
 						value="#{FrequenciaControl.funcionarios}" rendered="true">
-						<p:column style="width:20%">
-							<f:facet name="header">Nome</f:facet>
-							<h:outputText value="#{func.nomePessoa}" />
-						</p:column>
+						<f:facet name="header">#{func.nomePessoa}</f:facet>
 
 						<p:columns value="#{FrequenciaControl.frequencias}" var="coluna"
-							columnIndexVar="colIndex"  >
+							columnIndexVar="colIndex" width="1200px">
 							<f:facet name="header" style="width:5%">#{coluna.data.date}</f:facet>
-							<p:selectBooleanCheckbox value="#{coluna.presente}" ActionListener="#{FrequenciaControl.addFrequencia}"
-								style="width:5%" />
+							<p:selectBooleanCheckbox value="#{coluna.presente}">
+
+							</p:selectBooleanCheckbox>
 						</p:columns>
-					<a:newLine></a:newLine>
+						<a:newLine></a:newLine>
 					</p:dataTable>
+					<a:newLine></a:newLine>
 					<a:field>
 						<p:commandButton
-							actionListener="#{FrequenciaControl.carregarFrequenciaMes}" icon="ui-icon-plusthick"
-							value="Gravar" ></p:commandButton>
+							actionListener="#{FrequenciaControl.manterFrequencia}"
+							icon="ui-icon-plusthick" value="Confirmar"></p:commandButton>
 					</a:field>
 					<a:newLine></a:newLine>
 				</p:tab>
 
 				<p:tab title="Aluno">
-					
-					<a:field label="Data Presença">
-							<p:calendar value="#{FrequenciaControl.data}" mode="inline"
-								navigator="true" pattern="yyyy-MM-dd" >
-								<p:ajax event="dateSelect"
-									listener="#{FrequenciaControl.carregarFrequenciaMes}" />	
-							</p:calendar>
-						</a:field>
 
-						<a:field label="Nome" spaceLeft="15px">
-							<p:autoComplete id="acMinLength" minQueryLength="3"
-								value="#{FrequenciaControl.funcionario}"
-								completeMethod="#{FrequenciaControl.consultarFuncionario}"
-								var="func" itemLabel="#{func.nomePessoa}" itemValue="#{func}"
-								converter="FuncionarioConverter" forceSelection="true"
-								effect="fade"
-								style="height:15px; margin-top: -10px; width:150px">
-								<p:ajax event="itemSelect"
-									listener="#{FrequenciaControl.carregarFuncionario}" />
-							</p:autoComplete>
-						</a:field>
 
-						<a:field spaceLeft="15px">
-							<p:commandButton
-								actionListener="#{FrequenciaControl.carregarFrequenciaMes}" icon="ui-icon-plusthick"
-								value="Pesquisar" update="tbFuncionarios"></p:commandButton>
-						</a:field>
-						<a:newLine></a:newLine>
-					</p:panel>
-					<p:dataTable id="listFuncionario" var="item"
-						value="#{FrequenciaControl.funcionario.frequencias}"
-						style="margin-bottom:0">
-						<f:facet name="header">Lista de frequencia #{FrequenciaControl.funcionario.nomePessoa}</f:facet>
-						<p:column headerText="Id" style="width:20%;text-align:center">
-							<h:outputText value="#{item.id}" />
-						</p:column>
-						<p:column headerText="Data Presença"
-							style="width:50%;text-align:center">
-							<h:outputText value="#{item.data}" />
-						</p:column>
-					</p:dataTable>
 
 				</p:tab>
 			</p:tabView>

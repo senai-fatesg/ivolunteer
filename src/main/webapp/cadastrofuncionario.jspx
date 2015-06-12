@@ -8,7 +8,6 @@
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
 		<p:panel header="Cadastro de Funcionário" id="panelFuncionario">
-			
 			<p:messages id="messages" showDetail="true" autoUpdate="true"
 				closable="true" />
 
@@ -245,6 +244,8 @@
 
 					<p:panel
 						style="position:relative;  padding:15px; float:right; widht:50%; height:80%;">
+
+						
 
 						<a:newLine />
 
@@ -514,8 +515,7 @@
 
 
 				</p:tab>
-
-
+				
 
 
 

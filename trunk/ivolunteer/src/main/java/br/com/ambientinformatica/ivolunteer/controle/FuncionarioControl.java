@@ -79,7 +79,7 @@ public class FuncionarioControl {
 
 	public void incluir(ActionEvent evt) {
 		try {
-			funcionarioDao.incluir(funcionario);
+			funcionarioDao.alterar(funcionario);
 			this.funcionario = new Funcionario();
 			UtilFaces.addMensagemFaces("Funcionário salvo com sucesso!");
 		} catch (PersistenciaException e) {

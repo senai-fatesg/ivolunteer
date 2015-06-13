@@ -9,44 +9,49 @@
 	<ui:define name="corpo">
 
 		<p:panel header="Cadastro De Agrupamento De Turma" id="painel">
-			
-			<a:newLine />
-			
-			<p:commandButton id="consultar" value="Consultar"
-					icon="ui-icon-search" onclick="consultar.show();" />
-				<p:dialog id="modalPesquisa" header="Consultar"
-					widgetVar="consultar" modal="true" maximizable="false"
-					minimizable="false" width="60%" height="60%" resizable="false">
-					<a:field label="Identificador">
-						<p:inputText id="identificador1" value="#{AgrupamentoTurmaControl.agrupamentoTurma.identificador}" />
-					</a:field>
-					<a:field spaceLeft="15px">
-						<p:commandButton id="filtrar" icon="ui-icon-search"
-							actionListener="#{AgrupamentoTurmaControl.aplicarFiltro}"
-							update="listaAgrupamentosDeTurmas" />
-					</a:field>
-					<a:newLine />
-					<p:dataTable id="listaAgrupamentosDeTurmas" var="itemagrupamentoturmas" style="width:100%"
-						value="#{AgrupamentoTurmaControl.agrupamentoTurmas}" widgetVar="agrupamentoturmasTable"
-						emptyMessage="Sem Registros a Exibir" >
-						<p:column headerText="Identificador" width="30%">#{itemagrupamentoturmas.identificador}</p:column>
-						<p:column headerText="Idade Inicial">#{itemagrupamentoturmas.idadeInicial}</p:column>
-						<p:column headerText="Idade Final" width="30%">#{itemagrupamentoturmas.idadeFinal}</p:column>
-						<p:column headerText="Numero De Criaças">#{itemagrupamentoturmas.numeroCriancas}</p:column>
-						<p:column width="5%">							
-							<p:commandButton icon="ui-icon-pencil" 
-							action="#{AgrupamentoTurmaControl.carregaAgrupamentoTurma(itemagrupamentoturmas)}" 
-							update="@all"/>
-							<p:commandButton icon="ui-icon-trash" action="#{AgrupamentoTurmaControl.excluir(itemagrupamentoturmas)}" update="@all" />
-						</p:column>
 
-					</p:dataTable>
-				</p:dialog>
-			
+			<a:newLine />
+
+			<p:commandButton id="consultar" value="Consultar"
+				icon="ui-icon-search" onclick="consultar.show();" />
+			<p:dialog id="modalPesquisa" header="Consultar" widgetVar="consultar"
+				modal="true" maximizable="false" minimizable="false" width="60%"
+				height="60%" resizable="false">
+				<a:field label="Identificador">
+					<p:inputText id="identificador1"
+						value="#{AgrupamentoTurmaControl.agrupamentoTurma.identificador}" />
+				</a:field>
+				<a:field spaceLeft="15px">
+					<p:commandButton id="filtrar" icon="ui-icon-search"
+						actionListener="#{AgrupamentoTurmaControl.aplicarFiltro}"
+						update="listaAgrupamentosDeTurmas" />
+				</a:field>
+				<a:newLine />
+				<p:dataTable id="listaAgrupamentosDeTurmas"
+					var="itemagrupamentoturmas" style="width:100%"
+					value="#{AgrupamentoTurmaControl.agrupamentoTurmas}"
+					widgetVar="agrupamentoturmasTable"
+					emptyMessage="Sem Registros a Exibir">
+					<p:column headerText="Identificador" width="30%">#{itemagrupamentoturmas.identificador}</p:column>
+					<p:column headerText="Idade Inicial">#{itemagrupamentoturmas.idadeInicial}</p:column>
+					<p:column headerText="Idade Final" width="30%">#{itemagrupamentoturmas.idadeFinal}</p:column>
+					<p:column headerText="Numero De Criaças">#{itemagrupamentoturmas.numeroCriancas}</p:column>
+					<p:column width="5%">
+						<p:commandButton icon="ui-icon-pencil"
+							action="#{AgrupamentoTurmaControl.carregaAgrupamentoTurma(itemagrupamentoturmas)}"
+							update="@all" />
+						<p:commandButton icon="ui-icon-trash"
+							action="#{AgrupamentoTurmaControl.excluir(itemagrupamentoturmas)}"
+							update="@all" />
+					</p:column>
+
+				</p:dataTable>
+			</p:dialog>
+
 			<a:newLine />
 			<a:newLine />
 			<p:panel rendered="true">
-		
+
 				<a:field label="Identificador" width="250px;">
 					<p:inputText id="identificador"
 						value="#{AgrupamentoTurmaControl.agrupamentoTurma.identificador}"></p:inputText>
@@ -70,11 +75,19 @@
 						style="width:238px" />
 				</a:field>
 
+				<a:field label="Turma">
+					<p:selectOneMenu id="turmas">
+					</p:selectOneMenu>
+				</a:field>
+
 				<a:newLine />
 				<p:commandButton value="Confirmar"
-					actionListener="#{AgrupamentoTurmaControl.confirmar}" update="agrupamentoTurmas"></p:commandButton>
+					actionListener="#{AgrupamentoTurmaControl.confirmar}"
+					update="agrupamentoTurmas"></p:commandButton>
 			</p:panel>
 		</p:panel>
+
+		<a:newLine />
 
 		<p:dataTable id="agrupamentoTurmas"
 			value="#{AgrupamentoTurmaControl.agrupamentoTurmas }"
@@ -110,6 +123,12 @@
 				<h:outputText value="#{agrupamentos.numeroCriancas }"></h:outputText>
 			</p:column>
 
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="Turmas"></h:outputText>
+				</f:facet>
+				<h:outputText></h:outputText>
+			</p:column>
 
 		</p:dataTable>
 

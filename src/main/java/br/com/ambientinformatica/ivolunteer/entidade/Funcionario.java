@@ -1,7 +1,6 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +18,7 @@ import javax.persistence.TemporalType;
 @PrimaryKeyJoinColumn(name = "id")
 public class Funcionario extends Pessoa implements java.io.Serializable {
 
-   private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
 	private String pis;
 
@@ -86,17 +85,14 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "funcionario_id")
-//	@IndexColumn(name = "id")
 	private List<Frequencia> frequencias = new ArrayList<Frequencia>();
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "funcionario_id")
-//	@IndexColumn(name = "id")
 	private List<GradeHorario> gradesHorario = new ArrayList<GradeHorario>();
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "funcionario_id")
-//	@IndexColumn(name = "id")
 	private List<AtividadeDiaria> atividadesDiaria = new ArrayList<AtividadeDiaria>();
 
 	public void addAtividadeDiaria(AtividadeDiaria atividadeDiaria) {
@@ -116,13 +112,12 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 			frequencias.add(frequencia);
 		}
 	}
-	
-	public void alterarFrequencia(Frequencia frequencia){
+
+	public void alterarFrequencia(Frequencia frequencia) {
 		if (frequencias.contains(frequencia)) {
-			frequencias.set(frequencias.indexOf(frequencia) , frequencia);
+			frequencias.set(frequencias.indexOf(frequencia), frequencia);
 		}
 	}
-	
 
 	public Funcionario() {
 		super();

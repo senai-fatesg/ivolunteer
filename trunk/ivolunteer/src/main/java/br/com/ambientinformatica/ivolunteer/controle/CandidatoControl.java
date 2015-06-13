@@ -20,6 +20,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumFiliacao;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumSexo;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoCasa;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoPessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoTelefone;
 import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
@@ -67,15 +68,17 @@ public class CandidatoControl {
 		try {
 			pessoaCandidato.calcularRenda();
 			pessoaCandidato.setFiliacao(EnumFiliacao.FILHO);
+			pessoaCandidato.setTipoPessoa(EnumTipoPessoa.CANDIDATO);
 			pessoaDao.alterar(pessoaCandidato);
 			pessoaCandidato = new Pessoa();
+			UtilFaces.addMensagemFaces("Informações salvas com sucesso!");
 		} catch (Exception e) {
-			UtilFaces.addMensagemFaces(e);
+			UtilFaces.addMensagemFaces("Ocorreu uma falha ao tentar gravar as informações de candidato");
 		}
 	}
 
-	//Metodo responsavel por adicionar o telefone do responsavel
-	public void adicioneTelefone(ActionEvent evt) {
+	//Adicionar o telefone do responsavel
+	public void adicionarTelefone(ActionEvent evt) {
 		try {
 			pessoa.addTelefone(telefone);
 			telefone = new Telefone();
@@ -86,7 +89,7 @@ public class CandidatoControl {
 	}
 	
 	//Metodo responsavel por adicionar o endereco do responsavel
-	public void adicioneEndereco(ActionEvent evt) {
+	public void adicionarEndereco(ActionEvent evt) {
 		try{
 			pessoa.addEndereco(endereco);
 			endereco = new Endereco();
@@ -100,9 +103,10 @@ public class CandidatoControl {
 		return pessoaCandidato.calcularRenda();
 	}
 	
-	//Metodo responsavel por adionar as pessoas relacionadas ao candidato
-	public void adicionePessoa(ActionEvent evt) {
+	//Adionar as pessoas relacionadas ao candidato
+	public void adicionarPessoa(ActionEvent evt) {
 		try{
+			pessoa.setTipoPessoa(EnumTipoPessoa.RESPONSAVEL);
 			pessoaCandidato.addPessoa(pessoa);
 			listaPessoa = pessoaCandidato.getListaPessoaRelacionada();
 			pessoa = new Pessoa();
@@ -182,7 +186,7 @@ public class CandidatoControl {
 	public void excluir(Pessoa pessoa) {
 		try {
 			pessoaDao.excluirPorId(pessoa.getId());
-			UtilFaces.addMensagemFaces("Pessoa excluido com sucesso!");
+			UtilFaces.addMensagemFaces("Candidato excluido com sucesso!");
 		} catch (PersistenciaException e) {
 			UtilFaces.addMensagemFaces(e);
 		}

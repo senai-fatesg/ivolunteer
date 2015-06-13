@@ -2,19 +2,11 @@ package br.com.ambientinformatica.ivolunteer.entidade;
 
 import br.com.ambientinformatica.util.IEnum;
 
-/**
- * 
- * @author luiz/Aureliano
- * 
- */
-
-/*
- * Atualizado em: 15/05/205 19:22
- */
 public enum EnumTipoPessoa implements IEnum {
 
-	CANDIDATO("Candidato"), ALUNO("Aluno"), 
-	RESPONSALVE("Responsalve"), 
+	CANDIDATO("Candidato"), 
+	ALUNO("Aluno"), 
+	RESPONSAVEL("Responsavel"),
 	EDUCADOR("Educador");
 
 	public String getDescricao() {

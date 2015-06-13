@@ -61,7 +61,7 @@
 					<a:newLine></a:newLine>
 					<a:field>
 						<p:commandButton
-							actionListener="#{FrequenciaControl.manterFrequencia}"
+							actionListener="#{FrequenciaControl.manterFrequencia}" update="tabFuncionario"
 							icon="ui-icon-plusthick" value="Confirmar"></p:commandButton>
 					</a:field>
 					<a:newLine></a:newLine>

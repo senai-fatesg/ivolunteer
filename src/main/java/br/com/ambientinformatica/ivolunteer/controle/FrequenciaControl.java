@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +27,6 @@ public class FrequenciaControl {
 
 	private Funcionario funcionario = new Funcionario();
 	private Turma turma = new Turma();
-
-	private Frequencia frequencia = new Frequencia();
 
 	private String data = new String();
 
@@ -96,14 +93,6 @@ public class FrequenciaControl {
 		}
 	}
 
-	public void setFrequencia(Frequencia frequencia) {
-		this.frequencia = frequencia;
-	}
-
-	public Frequencia getFrequencia() {
-		return frequencia;
-	}
-
 	public List<Frequencia> getFrequencias() {
 		return frequencias;
 	}
@@ -143,12 +132,11 @@ public class FrequenciaControl {
 	}
 
 	public void carregarFuncionario(SelectEvent evt) {
-//		return funcionarioDao.carregarFuncionario(funcionario);
 		try {
-		      this.funcionario = funcionarioDao.consultar(funcionario.getId());
-	      } catch (PersistenciaException e) {
-	      	UtilFaces.addMensagemFaces(e);
-	      }	
+			this.funcionario = funcionarioDao.consultar(funcionario.getId());
+		} catch (PersistenciaException e) {
+			UtilFaces.addMensagemFaces(e);
+		}
 	}
 
 	public List<Funcionario> consultarFuncionario(String query) {
@@ -171,6 +159,10 @@ public class FrequenciaControl {
 				funcionario.alterarFrequencia(auxiliar);
 			}
 		}
+		this.frequencias = new ArrayList<Frequencia>();
+		this.funcionarios = new ArrayList<Funcionario>();
+		this.funcionario = new Funcionario();
+		this.data = new String();
 	}
 
 	@SuppressWarnings("deprecation")
@@ -215,7 +207,6 @@ public class FrequenciaControl {
 				frequencias.add(array[i]);
 			}
 		}
-		int x = 0;
 	}
 
 }

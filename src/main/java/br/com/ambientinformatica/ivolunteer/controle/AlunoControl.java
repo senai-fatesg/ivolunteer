@@ -17,7 +17,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.Cidade;
 import br.com.ambientinformatica.ivolunteer.entidade.Endereco;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumSexo;
-import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoPessoa;
 import br.com.ambientinformatica.ivolunteer.persistencia.AlunoDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 
@@ -37,6 +37,17 @@ public class AlunoControl {
 	@PostConstruct
 	public void init() {
 		listar(null);
+	}
+
+	public void incluir(ActionEvent evt) {
+		try {
+			alunoDao.alterar(aluno);
+			this.aluno = new Aluno();
+			UtilFaces.addMensagemFaces("Aluno salvo com sucesso!");
+		} catch (PersistenciaException e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+
 	}
 
 	public void confirmar(ActionEvent evt) {
@@ -107,6 +118,10 @@ public class AlunoControl {
 
 	public List<SelectItem> getCompleteEnumSexo() {
 		return UtilFaces.getListEnum(EnumSexo.values());
+	}
+	
+	public List<SelectItem> getCompleteEnumTipoPessoa() {
+		return UtilFaces.getListEnum(EnumTipoPessoa.values());
 	}
 
 	public List<SelectItem> getCompleteEnumEstado() {

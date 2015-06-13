@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import br.com.ambientinformatica.ivolunteer.entidade.RespostaAlternativa;
 import br.com.ambientinformatica.jpa.persistencia.PersistenciaJpa;
 
-@Repository("respostaAlternativaDao")
+@Repository("RespostaAlternativaDao")
 public class RespostaAlternativaDaoJpa extends
 		PersistenciaJpa<RespostaAlternativa> implements RespostaAlternativaDao {
 

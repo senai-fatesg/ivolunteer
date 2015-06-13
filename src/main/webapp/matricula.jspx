@@ -26,7 +26,9 @@
 							actionListener="#{AlunoControl.aplicarFiltro}"
 							update="listaAlunos" />
 					</a:field>
+
 					<a:newLine />
+
 					<p:dataTable id="listaAlunos" var="itemAluno" style="width:100%"
 						value="#{AlunoControl.alunos}" widgetVar="funcionariosTable"
 						emptyMessage="Sem Registros a Exibir">
@@ -48,7 +50,7 @@
 
 				<a:newLine />
 				<a:newLine />
-				
+
 				<p:tabView id="tabCadastro" cache="true">
 					<p:tab title="Aluno" id="aluno">
 

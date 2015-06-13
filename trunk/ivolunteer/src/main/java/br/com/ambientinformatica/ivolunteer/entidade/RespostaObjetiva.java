@@ -26,7 +26,7 @@ public class RespostaObjetiva {
 	
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="respostaobjetiva_id")
-	private List<RespoastaAlternativa> alternativas;
+	private List<RespostaAlternativa> alternativas;
 
 	public Integer getId() {
 		return id;
@@ -44,11 +44,11 @@ public class RespostaObjetiva {
 		this.objetiva = objetiva;
 	}
 
-	public List<RespoastaAlternativa> getAlternativas() {
+	public List<RespostaAlternativa> getAlternativas() {
 		return alternativas;
 	}
 
-	public void setAlternativas(List<RespoastaAlternativa> alternativas) {
+	public void setAlternativas(List<RespostaAlternativa> alternativas) {
 		this.alternativas = alternativas;
 	}
 	

@@ -9,7 +9,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 @Entity
-public class RespoastaAlternativa {
+public class RespostaAlternativa {
 	@Id
 	@GeneratedValue(generator = "seq_respostaalternativa", strategy = GenerationType.SEQUENCE)
 	@SequenceGenerator(name = "seq_respostaalternativa", sequenceName = "seq_respostaalternativa", allocationSize = 1, initialValue = 1)

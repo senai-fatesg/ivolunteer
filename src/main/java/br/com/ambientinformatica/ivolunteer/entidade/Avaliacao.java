@@ -25,10 +25,7 @@ public class Avaliacao {
 
 	private String titulo;
 
-	private String descricao;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date data;
+	private String descricao;	
 
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="avaliacao_id")
@@ -56,15 +53,7 @@ public class Avaliacao {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-
-	public Date getData() {
-		return data;
-	}
-
-	public void setData(Date data) {
-		this.data = data;
-	}
+	}	
 
 	public List<Questao> getQuestoes() {
 		return questoes;

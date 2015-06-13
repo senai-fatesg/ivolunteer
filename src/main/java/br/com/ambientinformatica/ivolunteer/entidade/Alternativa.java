@@ -14,9 +14,7 @@ public class Alternativa {
 	@SequenceGenerator(name = "alternativa_seq", sequenceName = "alternativa_seq", allocationSize = 1, initialValue = 1)
 	private Integer id;
 
-	private String descricao;
-
-	private Boolean status;
+	private String descricao;	
 
 	public Integer getId() {
 		return id;
@@ -60,13 +58,5 @@ public class Alternativa {
 			return false;
 		return true;
 	}
-
-	public Boolean getStatus() {
-		return status;
-	}
-
-	public void setStatus(Boolean status) {
-		this.status = status;
-	}
-
+	
 }

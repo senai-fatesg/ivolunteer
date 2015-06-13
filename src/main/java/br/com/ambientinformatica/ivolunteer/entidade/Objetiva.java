@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
@@ -21,6 +22,7 @@ public class Objetiva {
 	private Integer id;
 
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name="objetiva_id")
 	private List<Alternativa> alternativas = new ArrayList<Alternativa>();
 
 	public List<Alternativa> getAlternativas() {

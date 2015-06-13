@@ -17,7 +17,7 @@ public class AlunoDaoJpa extends PersistenciaJpa<Aluno> implements AlunoDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Aluno> listarPorNome(String nome) {
+	public List<Aluno> listarPorCertidao(String nome) {
 
 		Query query = em
 				.createQuery("select f from Aluno f where upper(f.nomePessoa) like :nome");

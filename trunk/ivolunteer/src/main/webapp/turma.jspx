@@ -53,13 +53,6 @@
 					<p:inputText id="nome" value="#{TurmaControl.turma.nome}"></p:inputText>
 				</a:field>
 
-
-				<a:field label="Agrupamento De Turma" width="240px">
-					<p:selectOneMenu id="agrupamentodeturma">
-					</p:selectOneMenu>
-				</a:field>
-
-
 				<a:field label="Turmo" width="265px;">
 					<p:autoComplete id="turmo" dropdown="true"
 						value="#{TurmaControl.turnoselecionado}"
@@ -71,8 +64,6 @@
 					<p:spinner max="999" min="0" id="maximoAlunos"
 						value="#{TurmaControl.turma.maximoAlunos}" />
 				</a:field>
-
-
 
 				<a:field label="Professor">
 					<p:selectOneMenu id="funcionario">

@@ -8,8 +8,7 @@
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
 		<p:panel header="Cadastro de Funcionário" id="panelFuncionario">
-			<p:messages id="messages" showDetail="true" autoUpdate="true"
-				closable="true" />
+
 
 			<p:commandButton id="consultar" value="Consultar"
 				icon="ui-icon-search" onclick="consultar.show();" />
@@ -30,18 +29,19 @@
 					style="width:100%" value="#{FuncionarioControl.funcionarios}"
 					widgetVar="funcionariosTable" emptyMessage="Sem Registros a Exibir">
 					<p:column headerText="Nome" width="30%">#{itemFuncionario.nomePessoa}</p:column>
-					<p:column headerText="Rg">#{itemFuncionario.rg}</p:column>
+					<p:column headerText="CPF">#{itemFuncionario.cpf}</p:column>
 					<p:column width="5%">
 						<p:commandButton icon="ui-icon-pencil"
 							action="#{FuncionarioControl.carregaFuncionarioAlteracao(itemFuncionario)}"
 							oncomplete="consultar.hide();" update=":formCorpo:tabCadastro" />
 						<p:commandButton icon="ui-icon-trash"
-							action="#{FuncionarioControl.excluir(itemFuncionario)}"
+							actionListener="#{FuncionarioControl.excluir(itemFuncionario)}"
 							update="listaFuncionarios" />
 					</p:column>
 
 				</p:dataTable>
 			</p:dialog>
+
 
 			<a:newLine />
 			<a:newLine />
@@ -49,12 +49,15 @@
 				<p:tab title="Dados Pessoais" id="dadosPessoais">
 
 					<p:panel id="painelDadosPessoais"
-						style="position:relative;  padding:15px; float:left; widht:80%; height:80%; margin-left:0px;">
+						style="position:relative;  padding:15px; float:left; widht:50%; height:80%; margin-left:0px;">
+						<p:growl id="msg" sticky="false" life="5000" />
 
-						<a:field label="Nome" width="200px">
+						<a:field label="Nome" width="230px">
 							<p:inputText value="#{FuncionarioControl.funcionario.nomePessoa}"
-								style="width:200px" />
+								style="width:230px"/>
+								
 						</a:field>
+						
 
 						<a:field label="RG" width="200px" spaceLeft="15px">
 							<p:inputText value="#{FuncionarioControl.funcionario.rg}"
@@ -65,7 +68,7 @@
 						<a:field label="Data Expedição" width="100px" spaceLeft="15px">
 							<p:calendar
 								value="#{FuncionarioControl.funcionario.dataExpedicao}"
-								locale="de" navigator="true" pattern="yyyy-MMM-dd" />
+								locale="de" navigator="true" pattern="dd/MM/yyy" />
 						</a:field>
 
 
@@ -78,35 +81,35 @@
 
 						<a:newLine />
 
-						<a:field label="Naturalidade" width="200px">
+						<a:field label="Naturalidade" width="230px">
 							<p:inputText
 								value="#{FuncionarioControl.funcionario.naturalidade}"
-								style="width:200px" />
+								style="width:230px" />
 						</a:field>
 
 
-						<a:field label="Estado Civil" spaceLeft="15px">
+						<a:field label="Estado Civil" spaceLeft="15px" width="210px">
 							<p:selectOneMenu id="estadoCivil"
 								value="#{FuncionarioControl.funcionario.estadoCivil}"
-								style="width:200px;">
+								style="width:210px;">
 								<f:selectItems
 									value="#{FuncionarioControl.completeEnumEstadoCivil}"></f:selectItems>
 							</p:selectOneMenu>
 						</a:field>
 
-						<a:field label="Data Nascimento" width="150px" spaceLeft="15px">
+						<a:field label="Data Nascimento" width="150px" spaceLeft="8px">
 							<p:calendar
 								value="#{FuncionarioControl.funcionario.dataNascimento}"
-								locale="de" navigator="true" pattern="yyyy-MMM-dd"
+								locale="de" navigator="true" pattern="dd/MM/yyy"
 								style="width:150px" />
 						</a:field>
 
 
 
-						<a:field label="Sexo" spaceLeft="75px">
+						<a:field label="Sexo" spaceLeft="75px" width="215px">
 							<p:selectOneMenu id="sexo"
 								value="#{FuncionarioControl.funcionario.sexo}"
-								style="width:200px;">
+								style="width:215px;">
 								<f:selectItems value="#{FuncionarioControl.completeEnumSexo}"></f:selectItems>
 							</p:selectOneMenu>
 						</a:field>
@@ -128,22 +131,22 @@
 								style="width:50px" />
 						</a:field>
 
-						<a:field label="Nº Reservista" width="150px" spaceLeft="30px">
+						<a:field label="Nº Reservista" width="155px" spaceLeft="15px">
 							<p:inputText value="#{FuncionarioControl.funcionario.reservista}"
-								style="width:150px" />
+								style="width:155px" />
 						</a:field>
 
-						<a:field label="Data Emissão" width="150px" spaceLeft="15px">
+						<a:field label="Data Emissão" width="200px" spaceLeft="15px">
 							<p:calendar
 								value="#{FuncionarioControl.funcionario.emissaoReservista}"
-								locale="de" navigator="true" pattern="yyyy-MMM-dd"
-								style="width:150px" />
+								locale="de" navigator="true" pattern="dd/MM/yyy"
+								style="width:200px" />
 						</a:field>
 
 
-						<a:field label="Profissão" width="150px" spaceLeft="75px">
+						<a:field label="Profissão" width="205px" spaceLeft="25px">
 							<p:inputText value="#{FuncionarioControl.funcionario.profissao}"
-								style="width:150px" />
+								style="width:205px" />
 						</a:field>
 
 						<a:newLine />
@@ -156,40 +159,40 @@
 						</a:field>
 
 
-						<a:field label="Data do Exame" width="150px" spaceLeft="15px">
+						<a:field label="Data do Exame" width="150px" spaceLeft="25px">
 							<p:calendar
 								value="#{FuncionarioControl.funcionario.dataExameAdmissional}"
-								locale="de" navigator="true" pattern="yyyy-MMM-dd"
+								locale="de" navigator="true" pattern="dd/MM/yyy"
 								style="width:150px" />
 						</a:field>
 
-						<a:field label="Pis" width="200px" spaceLeft="85px">
+						<a:field label="Pis" width="230px" spaceLeft="75px">
 							<p:inputText value="#{FuncionarioControl.funcionario.pis}"
-								style="width:200px" />
+								style="width:230px" />
 						</a:field>
 
-						<a:field label="CTPS" width="200px" spaceLeft="30px">
+						<a:field label="CTPS" width="200px" spaceLeft="15px">
 							<p:inputText
 								value="#{FuncionarioControl.funcionario.carteiraDeTrabalho}"
 								style="width:200px" />
 						</a:field>
 
-						<a:field label="Série" width="50px" spaceLeft="15px">
+						<a:field label="Série" width="57px" spaceLeft="15px">
 							<p:inputText
 								value="#{FuncionarioControl.funcionario.serieCarteiraDeTrabalho}"
-								style="width:50px" />
+								style="width:57px" />
 						</a:field>
 
 						<a:newLine />
 
-						<a:field label="CNH" width="150px">
+						<a:field label="CNH" width="197px">
 							<p:inputText value="#{FuncionarioControl.funcionario.cNH}"
-								style="width:150px" />
+								style="width:197px" />
 						</a:field>
 
 						<a:field label="Data de Emissão" width="150px" spaceLeft="15px">
 							<p:calendar value="#{FuncionarioControl.funcionario.emissaoCNH}"
-								locale="de" navigator="true" pattern="yyyy-MMM-dd"
+								locale="de" navigator="true" pattern="dd/MM/yyy"
 								style="width:150px" />
 						</a:field>
 
@@ -199,16 +202,16 @@
 								style="width:150px" />
 						</a:field>
 
-						<a:field label="Nome do Pai" width="250px" spaceLeft="75px">
+						<a:field label="Nome do Pai" width="230px" spaceLeft="75px">
 							<p:inputText value="#{FuncionarioControl.funcionario.nomePai}"
-								style="width:250px" />
+								style="width:230px" />
 						</a:field>
 
 						<a:newLine />
 
-						<a:field label="Nome da Mãe" width="250px">
+						<a:field label="Nome da Mãe" width="220px">
 							<p:inputText value="#{FuncionarioControl.funcionario.nomeMae}"
-								style="width:250px" />
+								style="width:220px" />
 						</a:field>
 
 
@@ -225,14 +228,14 @@
 							spaceLeft="75px">
 							<p:calendar
 								value="#{FuncionarioControl.funcionario.terminoExperiencia}"
-								locale="de" navigator="true" pattern="yyyy-MMM-dd"
+								locale="de" navigator="true" pattern="dd/MM/yyy"
 								style="width:150px" />
 						</a:field>
 
 						<a:field label="Data Admissão" width="150px" spaceLeft="75px">
 							<p:calendar
 								value="#{FuncionarioControl.funcionario.dataAdmissao}"
-								locale="de" navigator="true" pattern="yyyy-MMM-dd"
+								locale="de" navigator="true" pattern="dd/MM/yyy"
 								style="width:150px" />
 						</a:field>
 
@@ -242,10 +245,13 @@
 
 					</p:panel>
 
-					<p:panel
+					<p:panel id="painelFoto" spaceLeft="15px"
 						style="position:relative;  padding:15px; float:right; widht:50%; height:80%;">
+						<h1>
+							<strong> Foto </strong>
+						</h1>
 
-						
+
 
 						<a:newLine />
 
@@ -283,9 +289,9 @@
 								style="width:50px" />
 						</a:field>
 
-						<a:field label="CEP" width="50px" spaceLeft="15px">
+						<a:field label="CEP" width="135px" spaceLeft="15px">
 							<p:inputMask value="#{FuncionarioControl.endereco.cep}"
-								mask="99999-999" tyle="width:50px">
+								mask="99999-999" style="width:135px">
 							</p:inputMask>
 						</a:field>
 
@@ -385,14 +391,15 @@
 				<p:tab title="Telefone" id="tabTelefone">
 					<p:panel id="painelTelefone">
 
-						<a:field label="Numero Telefone" width="300px">
-							<p:inputText id="numerofone"
+						<a:field label="Telefone">
+							<p:inputMask id="numerofone"
 								value="#{FuncionarioControl.telefone.numeroTelefone}"
-								style="width:300px" />
+								mask="(99) 9999-9999">
+							</p:inputMask>
 						</a:field>
 
 
-						<a:field label="Pessoa Para Recado" width="200px" spaceLeft="15px">
+						<a:field label="Pessoa Para Recado" width="200px" spaceLeft="8px">
 							<p:inputText id="pessoarecado"
 								value="#{FuncionarioControl.telefone.nomePessoaRecado}"
 								style="width:200px" />
@@ -460,9 +467,9 @@
 				<p:tab title="Dados Bancários" id="tabDadosBancarios">
 					<p:panel id="painelDadosBancarios">
 
-						<a:field label="Banco" width="250px">
+						<a:field label="Banco" width="210px">
 							<p:inputText value="#{FuncionarioControl.funcionario.banco}"
-								style="width:250px" />
+								style="width:210px" />
 						</a:field>
 
 
@@ -482,7 +489,7 @@
 						<a:field label="Data Demissão" width="150px">
 							<p:calendar
 								value="#{FuncionarioControl.funcionario.dataDemissao}"
-								locale="de" navigator="true" pattern="yyyy-MMM-dd"
+								locale="de" navigator="true" pattern="dd/MM/yyy"
 								style="width:150px" />
 						</a:field>
 
@@ -515,13 +522,13 @@
 
 
 				</p:tab>
-				
+
 
 
 
 			</p:tabView>
 			<p:commandButton value="Salvar" icon="ui-icon-disk"
-				actionListener="#{FuncionarioControl.incluir}"
+				actionListener="#{FuncionarioControl.confirmar}"
 				update="panelFuncionario" />
 
 		</p:panel>

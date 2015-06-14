@@ -3,13 +3,19 @@ package br.com.ambientinformatica.ivolunteer.controle;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 
+import org.primefaces.event.RowEditEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumFiliacao;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumPrioridade;
 import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.SelecaoCandidato;
@@ -45,7 +51,16 @@ public class PesquisaSelecaoControl {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
-
+	 public void onRowEdit(RowEditEvent event) {
+       FacesMessage msg = new FacesMessage("Candidato Edite");
+       FacesContext.getCurrentInstance().addMessage(null, msg);
+   }
+    
+   public void onRowCancel(RowEditEvent event) {
+       FacesMessage msg = new FacesMessage("Edite Cancelado  ");
+       FacesContext.getCurrentInstance().addMessage(null, msg);
+   }
+	
 	public void consultar(ActionEvent evt) {
 		try {
 			PessoaDao.consultar(pessoa.getId());
@@ -72,7 +87,8 @@ public class PesquisaSelecaoControl {
 		}
 	}
 
-	public List<String> completeEnumPrioridade(String query) {
+ 
+public List<String> completeEnumPrioridade(String query) {
 		List<String> retornoPrioridade = new ArrayList<String>();
 		EnumPrioridade[] enumPrioridade = EnumPrioridade.values();
 		for (int i = 0; i < enumPrioridade.length; i++) {
@@ -81,6 +97,10 @@ public class PesquisaSelecaoControl {
 		return retornoPrioridade;
 	}
 
+	public List<SelectItem> getCompleteEnumPrioridade() {
+		return UtilFaces.getListEnum(EnumPrioridade.values());
+	}
+	
 	public Pessoa getPessoa() {
 		return pessoa;
 	}

@@ -91,6 +91,7 @@ public class FuncionarioControl {
 	public void excluir(Funcionario funcionario) {
 		try {
 			funcionarioDao.excluirPorId(funcionario.getId());
+			this.funcionarios.remove(funcionario);
 			UtilFaces.addMensagemFaces("Funcionário excluido com sucesso!");
 		} catch (PersistenciaException e) {
 			UtilFaces.addMensagemFaces(e);

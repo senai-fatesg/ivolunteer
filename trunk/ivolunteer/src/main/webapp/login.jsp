@@ -75,7 +75,7 @@
                 <hr/>   
                 <div class="row">
                 	<div class="span8">
-                    	<h3 class="quickTour">Instituição Centro de Educação Infatil Francisca de Lima</h3>
+                    	<h3 class="quickTour">Instituição Centro de Educação Infantil Francisca de Lima</h3>
                     </div>                                        
                 </div>
             </div>

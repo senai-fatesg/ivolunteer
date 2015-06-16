@@ -48,7 +48,7 @@ public class PessoaDaoJpa extends PersistenciaJpa<Pessoa> implements PessoaDao {
 	public List<Pessoa> listarPorNome(String nome) {
 
 		Query query = em
-				.createQuery("select p from Pessoa p where upper(p.nomePessoa) like :nome and p.filiacao = FILHO");
+				.createQuery("select p from Pessoa p where upper(p.nomePessoa) like :nome ");
 		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
 		
 		return  (List<Pessoa>) query.getResultList();

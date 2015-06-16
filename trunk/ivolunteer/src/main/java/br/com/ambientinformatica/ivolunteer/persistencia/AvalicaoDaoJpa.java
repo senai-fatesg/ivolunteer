@@ -23,17 +23,26 @@ public class AvalicaoDaoJpa extends PersistenciaJpa<Avaliacao> implements
 	@Override
 	public List<Avaliacao> listarTitulo(Avaliacao avaliacao) {
 		try {
+			return this.listarTitulo(avaliacao.getTitulo());
+		} catch (EntityNotFoundException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public List<Avaliacao> listarTitulo(String titulo) {
+		try {
 			Query q = em
 					.createQuery("select a from Avaliacao a where a.titulo like :titulo");
-			q.setParameter("titulo", "%" + avaliacao.getTitulo() + "%");
+			q.setParameter("titulo", "%" + titulo + "%");
 			return q.getResultList();
 		} catch (EntityNotFoundException e) {
 			return null;
 		}
 	}
-	
+
 	@Override
-	public Avaliacao consultarAvalicaoCompleta(Avaliacao avaliacao){
+	public Avaliacao consultarAvalicaoCompleta(Avaliacao avaliacao) {
 		Query q = em.createQuery("select a from Avaliacao a "
 				+ "left join fetch a.questoes ques " + "where a = :avaliacao");
 		q.setParameter("avaliacao", avaliacao);
@@ -42,7 +51,7 @@ public class AvalicaoDaoJpa extends PersistenciaJpa<Avaliacao> implements
 
 	@Override
 	public void removerAvaliacaoCompleta(Avaliacao avaliacao) {
-		try {			
+		try {
 			excluirPorId(this.consultarAvalicaoCompleta(avaliacao).getId());
 		} catch (PersistenciaException e) {
 			// TODO Auto-generated catch block

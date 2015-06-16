@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="corpo">
+		<h:form>
+			<p:panel header="Responde Avaliação">
+				<a:field label="Avaliação">
+					<p:autoComplete id="avaliacaoComplete"
+						value="#{RespondeAvaliacaoControl.avaliacaoSelecionada}"
+						completeMethod="#{RespondeAvaliacaoControl.completaAvaliacoes}" var="avaliacao"
+						itemLabel="#{avaliacao.titulo}" itemValue="#{avaliacao}"
+						converter="avaliacaoConverter" />
+				</a:field>
+				<a:field label="Pessoa" spaceLeft="15px">
+					<p:autoComplete id="pessoaComplete"
+						value="#{RespondeAvaliacaoControl.pessoaSelecionada}"
+						completeMethod="#{RespondeAvaliacaoControl.completaPessoas}" var="pessoa"
+						itemLabel="#{pessoa.nomePessoa}" itemValue="#{pessoa}"
+						converter="pessoaConverter" />
+				</a:field>
+				<a:field label="Data" spaceLeft="15px">
+					<h:outputText value="##/##/#### ##:##:##"></h:outputText>
+				</a:field>
+				<a:newLine />
+			</p:panel>
+			<p:separator />
+			<a:field spaceLeft="15px">
+				<p:button value="Salvar"></p:button>
+			</a:field>
+
+
+		</h:form>
+	</ui:define>
+</ui:composition>

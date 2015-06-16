@@ -51,6 +51,7 @@ public class Pessoa {
 	private String informacoesSobreIntituicao;
 	private String nomePessoaMoraComCrianca;
 	private String necessidadesEspeciais;
+	private String cadastroCompleto;
 	
 	@Enumerated(EnumType.STRING)
 	private EnumSexo sexo;
@@ -564,6 +565,8 @@ public class Pessoa {
 	public void setNumeroIrmaosMatriculados(Integer numeroIrmaosMatriculados) {
 		this.numeroIrmaosMatriculados = numeroIrmaosMatriculados;
 	}
+	
+	
 
 	@Override
    public int hashCode() {
@@ -592,4 +595,12 @@ public class Pessoa {
 		   return false;
 	   return true;
    }
+
+	public String getCadastroCompleto() {
+		return cadastroCompleto;
+	}
+
+	public void setCadastroCompleto(String cadastroCompleto) {
+		this.cadastroCompleto = cadastroCompleto;
+	}
 }

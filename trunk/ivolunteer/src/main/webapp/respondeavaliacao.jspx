@@ -26,6 +26,9 @@
 				<a:field label="Data" spaceLeft="15px">
 					<h:outputText value="##/##/#### ##:##:##"></h:outputText>
 				</a:field>
+				<a:field spaceLeft="15px">
+				<h:commandButton value="Gerar Avaliacao"></h:commandButton>
+				</a:field>
 				<a:newLine />
 			</p:panel>
 			<p:separator />

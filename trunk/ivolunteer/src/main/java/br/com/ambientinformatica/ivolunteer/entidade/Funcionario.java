@@ -118,6 +118,12 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 			frequencias.set(frequencias.indexOf(frequencia), frequencia);
 		}
 	}
+	
+	public void removerAtividade(AtividadeDiaria atividadeDiaria) {
+		if (atividadesDiaria.contains(atividadeDiaria)) {
+			this.atividadesDiaria.remove(atividadeDiaria);
+		}
+	}
 
 	public Funcionario() {
 		super();

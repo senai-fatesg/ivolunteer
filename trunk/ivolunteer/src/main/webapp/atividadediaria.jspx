@@ -9,79 +9,85 @@
 	<ui:define name="corpo">
 		<h:form id="form">
 			<p:panel header="Atividade Diaria" id="panel">
-				<p:tabView cache="true">
-					<p:tab title="Informações das Atividades Diarias" id="funcionario">
-
-						<a:field label="Nome" spaceLeft="15px">
-							<p:autoComplete id="acMinLength" minQueryLength="3"
-								value="#{AtividadeDiariaControl.funcionario}"
-								completeMethod="#{AtividadeDiariaControl.consultarFuncionario}"
-								var="func" itemLabel="#{func.nomePessoa}" itemValue="#{func}"
-								converter="FuncionarioConverter" forceSelection="true"
-								effect="fade"
-								style="height:15px; margin-top: -10px; width:150px">
-								<p:ajax event="itemSelect"
-									listener="#{AtividadeDiariaControl.carregarFuncionario}" />
-							</p:autoComplete>
-						</a:field>
-
-						<a:field label="Data da atividade Funcionario:" spaceLeft="15px">
-							<p:calendar value="#{AtividadeDiariaControl.data}"
-								pattern="dd-MM-yyyy" mask="true" />
-						</a:field>
-
-
-
-						<a:field label="Hora Inicial:" spaceLeft="15px">
-							<p:calendar
-								value="#{AtividadeDiariaControl.atividadeDiaria.horaInicial}"
-								pattern="HH:mm a" timeOnly="true" />
-						</a:field>
-
-
-
-						<a:field label="Hora Final:" spaceLeft="15px">
-							<p:calendar
-								value="#{AtividadeDiariaControl.atividadeDiaria.horaFinal}"
-								pattern="HH:mm a" timeOnly="true" />
-						</a:field>
-
-						<a:field label="Local:" spaceLeft="15px">
-							<p:inputText 
-								value="#{AtividadeDiariaControl.atividadeDiaria.local}"
-								pattern="dd-MM-yyyy" mask="true" />
-						</a:field>
-
-						<a:field label="Atividade:" spaceLeft="15px">
-							<p:inputText 
-								value="#{AtividadeDiariaControl.atividadeDiaria.atividade}" />
-						</a:field>
-
-
-						<a:newLine></a:newLine>
-
-						<a:field label="Descrição da Atividade" spaceLeft="15px">
-							<p:editor id="editor" widgetVar="editorWidget"
-								value="#{AtividadeDiariaControl.atividadeDiaria.atividade}"
-								width="600" />
-
-						</a:field>
-
-						<a:newLine></a:newLine>
-
-
-
-
-					</p:tab>
-
-				</p:tabView>
-
+				<p:messages id="messages" showDetail="true" autoUpdate="true"
+					closable="true" />
+				<p:panel id="tabAtividade">
+					<a:field label="Funcionario">
+						<p:autoComplete minQueryLength="3"
+							value="#{AtividadeDiariaControl.funcionario}"
+							completeMethod="#{AtividadeDiariaControl.consultarFuncionario}"
+							var="func" itemLabel="#{func.nomePessoa}" itemValue="#{func}"
+							converter="FuncionarioConverter" forceSelection="true"
+							effect="fade" style="height:15px; margin-top: -10px; width:150px"
+							requiredMessage="Campo Funcionario obrigatório.">
+							<p:ajax event="itemSelect" update="atividades"
+								listener="#{AtividadeDiariaControl.carregarFuncionario}" />
+						</p:autoComplete>
+					</a:field>
+					<a:field label="Hora Inicial" spaceLeft="15px">
+						<p:calendar
+							value="#{AtividadeDiariaControl.atividadeDiaria.horaInicial}"
+							pattern="HH:mm a" timeOnly="true" />
+					</a:field>
+					<a:field label="Hora Final" spaceLeft="15px">
+						<p:calendar
+							value="#{AtividadeDiariaControl.atividadeDiaria.horaFinal}"
+							pattern="HH:mm a" timeOnly="true" />
+					</a:field>
+					<a:field label="Atividade" spaceLeft="15px">
+						<p:inputText
+							value="#{AtividadeDiariaControl.atividadeDiaria.atividade}" />
+					</a:field>
+					<a:field label="Local" spaceLeft="15px">
+						<p:inputText
+							value="#{AtividadeDiariaControl.atividadeDiaria.local}"
+							pattern="dd-MM-yyyy" mask="true" />
+					</a:field>
+					<a:newLine></a:newLine>
+					<a:field label="Observações">
+						<p:editor widgetVar="editorWidget"
+							value="#{AtividadeDiariaControl.atividadeDiaria.atividade}"
+							width="600" />
+					</a:field>
+					<a:newLine></a:newLine>
+				</p:panel>
+				<a:field>
+					<p:commandButton ajax="false" icon="ui-icon-plusthick"
+						actionListener="#{AtividadeDiariaControl.adicionarGrade}"
+						value="Adicionar" update="atividades, tabAtividade">
+					</p:commandButton>
+				</a:field>
 				<a:newLine />
+				<a:newLine />
+				<p:panel>
+					<p:dataTable id="atividades" style="width:60%"
+						emptyMessage="Sem Registros"
+						value="#{AtividadeDiariaControl.funcionario.atividadesDiaria}"
+						var="item">
 
-				<p:commandButton
-					actionListener="#{AtividadeDiariaControl.adicionarGrade}"
-					value="Confirmar" icon="ui-icon-disk" update="@all">
-				</p:commandButton>
+						<p:column headerText="Hora Inicial">
+							<h:outputText value="#{item.horaInicial}" ajax="false"
+								immediate="true"></h:outputText>
+						</p:column>
+
+						<p:column headerText="Hora Final">
+							<h:outputText value="#{item.horaFinal}" ajax="false"
+								immediate="true"></h:outputText>
+						</p:column>
+
+						<p:column headerText="Atividade">
+							<h:outputText value="#{item.atividade}" ajax="false"
+								immediate="true"></h:outputText>
+						</p:column>
+
+						<p:column width="20">
+							<p:commandButton icon="ui-icon-closethick"
+								action="#{AtividadeDiariaControl.removerAtividade(item)}"
+								update="atividades" ajax="false" />
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+				<a:newLine />
 			</p:panel>
 		</h:form>
 	</ui:define>

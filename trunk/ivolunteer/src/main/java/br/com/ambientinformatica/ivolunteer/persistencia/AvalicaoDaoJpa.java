@@ -44,7 +44,7 @@ public class AvalicaoDaoJpa extends PersistenciaJpa<Avaliacao> implements
 	@Override
 	public Avaliacao consultarAvalicaoCompleta(Avaliacao avaliacao) {
 		Query q = em.createQuery("select a from Avaliacao a "
-				+ "left join fetch a.questoes ques " + "where a = :avaliacao");
+				+ "left join fetch a.questoes ques " + "where a = :avaliacao order by ques.ordem");
 		q.setParameter("avaliacao", avaliacao);
 		return (Avaliacao) q.getSingleResult();
 	}

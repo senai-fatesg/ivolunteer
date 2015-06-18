@@ -12,23 +12,29 @@
 				<a:field label="Avaliação">
 					<p:autoComplete id="avaliacaoComplete"
 						value="#{RespondeAvaliacaoControl.avaliacaoSelecionada}"
-						completeMethod="#{RespondeAvaliacaoControl.completaAvaliacoes}" var="avaliacao"
-						itemLabel="#{avaliacao.titulo}" itemValue="#{avaliacao}"
-						converter="avaliacaoConverter" />
+						completeMethod="#{RespondeAvaliacaoControl.completaAvaliacoes}"
+						var="avaliacao" itemLabel="#{avaliacao.titulo}"
+						itemValue="#{avaliacao}" converter="avaliacaoConverter" />
 				</a:field>
 				<a:field label="Pessoa" spaceLeft="15px">
 					<p:autoComplete id="pessoaComplete"
 						value="#{RespondeAvaliacaoControl.pessoaSelecionada}"
-						completeMethod="#{RespondeAvaliacaoControl.completaPessoas}" var="pessoa"
-						itemLabel="#{pessoa.nomePessoa}" itemValue="#{pessoa}"
-						converter="pessoaConverter" />
+						completeMethod="#{RespondeAvaliacaoControl.completaPessoas}"
+						var="pessoa" itemLabel="#{pessoa.nomePessoa}"
+						itemValue="#{pessoa}" converter="pessoaConverter" />
 				</a:field>
 				<a:field label="Data" spaceLeft="15px">
 					<h:outputText value="##/##/#### ##:##:##"></h:outputText>
 				</a:field>
 				<a:field spaceLeft="15px">
-				<h:commandButton value="Gerar Avaliacao"></h:commandButton>
+					<p:commandButton
+						update="painelDinamico"
+						actionListener="#{RespondeAvaliacaoControl.montaAvaliacaoView}"						
+						value="Gerar Avaliacao" />
 				</a:field>
+				<a:newLine />
+				<p:panel id="painelDinamico"
+					binding="#{RespondeAvaliacaoControl.panelVisivel}"></p:panel>
 				<a:newLine />
 			</p:panel>
 			<p:separator />

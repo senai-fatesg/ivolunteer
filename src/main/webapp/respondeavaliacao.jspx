@@ -33,13 +33,14 @@
 						value="Gerar Avaliacao" />
 				</a:field>
 				<a:newLine />
-				<p:panel id="painelDinamico"
+				<p:panel id="painelDinamico" 
 					binding="#{RespondeAvaliacaoControl.panelVisivel}"></p:panel>
 				<a:newLine />
+				
 			</p:panel>
 			<p:separator />
 			<a:field spaceLeft="15px">
-				<p:button value="Salvar"></p:button>
+				<p:commandButton value="Salvar" actionListener="#{RespondeAvaliacaoControl.salvar }" />				
 			</a:field>
 
 

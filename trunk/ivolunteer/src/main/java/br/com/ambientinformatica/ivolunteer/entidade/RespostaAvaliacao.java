@@ -1,5 +1,6 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,9 +31,12 @@ public class RespostaAvaliacao {
 	@OneToOne(fetch=FetchType.LAZY)
 	private Avaliacao avaliacao;
 	
+	private String titulo;
+	private String descricao;
+	
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="respostaavaliacao_id")
-	private List<RespostaQuestao> questoes;
+	private List<RespostaQuestao> questoes = new ArrayList<RespostaQuestao>();
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date resposta;
@@ -68,6 +72,23 @@ public class RespostaAvaliacao {
 	public void setQuestoes(List<RespostaQuestao> questoes) {
 		this.questoes = questoes;
 	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+	
 	
 	
 }

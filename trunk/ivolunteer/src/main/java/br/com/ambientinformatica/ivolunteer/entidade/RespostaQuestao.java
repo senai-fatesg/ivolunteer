@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,22 +17,26 @@ import javax.persistence.SequenceGenerator;
 
 @Entity
 public class RespostaQuestao {
-	
+
 	@Id
-	@GeneratedValue(generator="seq_respostaquestao", strategy=GenerationType.SEQUENCE)
-	@SequenceGenerator(name="seq_respostaquestao", sequenceName="seq_respostaquestao", initialValue=1, allocationSize=1)
+	@GeneratedValue(generator = "seq_respostaquestao", strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "seq_respostaquestao", sequenceName = "seq_respostaquestao", initialValue = 1, allocationSize = 1)
 	private Integer id;
-	
-	@OneToOne(fetch=FetchType.LAZY)
+
+	@OneToOne(fetch = FetchType.LAZY)
 	private Questao questao;
-	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	@JoinColumn(name="respostaquestao_id")
-	private List<RespostaDiscursiva> discursivaRespostas;
-	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	@JoinColumn(name="respostaquestao_id")
-	private List<RespostaObjetiva> objetivaRespostas;
+
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = true)
+	private RespostaDiscursiva respostaDiscursiva;
+
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = true)
+	private RespostaObjetiva respostaObjetiva;
+
+	private Integer ordem;
+	private String pergunta;
+
+	@Enumerated(EnumType.STRING)
+	private EnumQuestao tipoQuestao;
 
 	public Integer getId() {
 		return id;
@@ -48,23 +54,46 @@ public class RespostaQuestao {
 		this.questao = questao;
 	}
 
-	public List<RespostaDiscursiva> getDiscursivaRespostas() {
-		return discursivaRespostas;
+	public Integer getOrdem() {
+		return ordem;
 	}
 
-	public void setDiscursivaRespostas(List<RespostaDiscursiva> discursivaRespostas) {
-		this.discursivaRespostas = discursivaRespostas;
+	public void setOrdem(Integer ordem) {
+		this.ordem = ordem;
 	}
 
-	public List<RespostaObjetiva> getObjetivaRespostas() {
-		return objetivaRespostas;
+	public String getPergunta() {
+		return pergunta;
 	}
 
-	public void setObjetivaRespostas(List<RespostaObjetiva> objetivaRespostas) {
-		this.objetivaRespostas = objetivaRespostas;
+	public void setPergunta(String pergunta) {
+		this.pergunta = pergunta;
 	}
+
+	public EnumQuestao getTipoQuestao() {
+		return tipoQuestao;
+	}
+
+	public void setTipoQuestao(EnumQuestao tipoQuestao) {
+		this.tipoQuestao = tipoQuestao;
+	}
+
+	public RespostaDiscursiva getRespostaDiscursiva() {
+		return respostaDiscursiva;
+	}
+
+	public void setRespostaDiscursiva(RespostaDiscursiva respostaDiscursiva) {
+		this.respostaDiscursiva = respostaDiscursiva;
+	}
+
+	public RespostaObjetiva getRespostaObjetiva() {
+		return respostaObjetiva;
+	}
+
+	public void setRespostaObjetiva(RespostaObjetiva respostaObjetiva) {
+		this.respostaObjetiva = respostaObjetiva;
+	}
+
 	
-	
-	
-	
+
 }

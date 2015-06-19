@@ -106,6 +106,12 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 			gradesHorario.add(gradeHorario);
 		}
 	}
+	
+	public void removerGradeHorario(GradeHorario gradeHorario) {
+		if (gradesHorario.contains(gradeHorario)) {
+			this.gradesHorario.remove(gradeHorario);
+		}
+	}
 
 	public void addFrequencia(Frequencia frequencia) {
 		if (!frequencias.contains(frequencia)) {

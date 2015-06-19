@@ -10,11 +10,13 @@
 		<p:panel header="Cadastro de Funcionário" id="panelFuncionario">
 
 
-			<p:commandButton id="consultar" value="Consultar"
+			<p:commandButton type="button" id="consultar" value="Consultar"
 				icon="ui-icon-search" onclick="consultar.show();" />
+				
 			<p:dialog id="modalPesquisa" header="Consultar" widgetVar="consultar"
 				modal="true" maximizable="false" minimizable="false" width="40%"
 				height="550px" resizable="false" closeOnEscape="true">
+				
 				<a:field label="Nome">
 					<p:inputText id="filtro"
 						value="#{FuncionarioControl.filtro.nomePessoa}" />
@@ -22,7 +24,7 @@
 				<a:field spaceLeft="15px">
 					<p:commandButton id="filtrar" icon="ui-icon-search"
 						actionListener="#{FuncionarioControl.aplicarFiltro}"
-						update="listaFuncionarios" />
+						 process="@this" update="listaFuncionarios" />
 				</a:field>
 				<a:newLine />
 				<p:dataTable id="listaFuncionarios" var="itemFuncionario"
@@ -51,6 +53,7 @@
 					<p:panel id="painelDadosPessoais"
 						style="position:relative;  padding:15px; float:left; widht:50%; height:80%; margin-left:0px;">
 						<p:growl id="msg" sticky="false" life="5000" />
+						
 
 						<a:field label="Nome" width="230px">
 							<p:inputText value="#{FuncionarioControl.funcionario.nomePessoa}"

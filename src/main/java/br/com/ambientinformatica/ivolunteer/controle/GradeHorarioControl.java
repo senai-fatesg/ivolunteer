@@ -5,23 +5,35 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 
+import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
+import br.com.ambientinformatica.ivolunteer.entidade.Endereco;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumDiaSemana;
+import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.ivolunteer.entidade.GradeHorario;
+import br.com.ambientinformatica.ivolunteer.persistencia.FuncionarioDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.GradeHorarioDao;
+import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 
 @Controller("GradeHorarioControl")
 @Scope("conversation")
 public class GradeHorarioControl {
 
 	private GradeHorario gradeHorario = new GradeHorario();
+	private Funcionario funcionario = new Funcionario();
+	
 
 	@Autowired
 	private GradeHorarioDao gradeHorarioDao;
+	
+	@Autowired
+	private FuncionarioDao funcionarioDao;
 
 	private List<GradeHorario> gradeHorarios = new ArrayList<GradeHorario>();
 
@@ -39,6 +51,18 @@ public class GradeHorarioControl {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
+	
+	public void carregarFuncionario(SelectEvent evt) {
+		try {
+			this.funcionario = funcionarioDao.consultar(funcionario.getId());
+		} catch (PersistenciaException e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
+	
+	public List<Funcionario> consultarFuncionario(String query) {
+		return funcionarioDao.listarPorNome(query);
+	}
 
 	public void listar(ActionEvent evt) {
 		try {
@@ -48,11 +72,40 @@ public class GradeHorarioControl {
 		}
 	}
 
+	public List<SelectItem> getCompleteEnumDiaSemana() {
+		return UtilFaces.getListEnum(EnumDiaSemana.values());
+	}
+
+	public void addHorario(ActionEvent ev) {
+		try {
+			this.funcionario.addGradeHorario(gradeHorario);
+			this.gradeHorario = new GradeHorario();
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
+	
+	public void removerHorario(GradeHorario gradeHorario) {
+		try {
+			this.funcionario.removerGradeHorario(gradeHorario);
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
+
 	public GradeHorario getGradeHorario() {
 		return gradeHorario;
 	}
 
-	public void seGradeHorario(GradeHorario gradehorario) {
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
+	}
+
+	public void setGradeHorario(GradeHorario gradehorario) {
 		this.gradeHorario = gradehorario;
 	}
 

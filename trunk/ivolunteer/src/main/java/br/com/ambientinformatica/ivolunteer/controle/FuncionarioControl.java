@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.Cidade;
 import br.com.ambientinformatica.ivolunteer.entidade.Endereco;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumDiaSemana;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstadoCivil;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumSexo;
@@ -144,6 +145,10 @@ public class FuncionarioControl {
 	public List<SelectItem> getCompleteEnumEstadoCivil() {
 		return UtilFaces.getListEnum(EnumEstadoCivil.values());
 	}
+	
+	public List<SelectItem> getCompleteEnumDiaSemana() {
+		return UtilFaces.getListEnum(EnumDiaSemana.values());
+	}
 
 	public void addEndereco(ActionEvent ev) {
 		try {
@@ -182,7 +187,7 @@ public class FuncionarioControl {
 	// Aplica Filtro
 	public void aplicarFiltro(ActionEvent evt) {
 		try {
-			if (this.filtro.getNomePessoa().isEmpty()) {
+			if (this.filtro.getNomePessoa() == null || this.filtro.getNomePessoa().isEmpty()) {
 				this.funcionarios = this.funcionarioDao.listar();
 			} else {				
 				this.funcionarios = this.funcionarioDao.listarPorNome(this.filtro.getNomePessoa());

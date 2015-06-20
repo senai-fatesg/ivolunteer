@@ -34,6 +34,11 @@
 	</context-param>
 
 	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>sam</param-value>
+	</context-param>
+	
+	<context-param>
 		<param-name>javax.faces.FACELETS_VIEW_MAPPINGS</param-name>
 		<param-value>*.jspx</param-value>
 	</context-param>

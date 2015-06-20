@@ -35,23 +35,31 @@
 							</h1>
 						</div>
 					</div>
-					<div class="row navigation">
-						<div class="span12">
-							<ul class="nav nav-tabs">
-								<li><a href="/ivolunteer/inicio.jsf">Início</a></li>
-								<li><a href="/ivolunteer/candidato.jsf">Solicitação de vaga</a></li>
-								<li><a href="/ivolunteer/pesquisacandidato.jsf">Pesquisar candidato</a></li>
-								<li><a href="/ivolunteer/cadastrofuncionario.jsf">Cadastro
-										de Funcionário</a></li>
-								<li><a href="/ivolunteer/matricula.jsf">Matrículas</a></li>
-								<li><a href="/ivolunteer/AgrupamentoTurma.jsf">Agrupamento Turma</a></li>
-								<li><a href="/ivolunteer/turma.jsf">Cadastro De Turmas</a></li>
-							</ul>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
+		<p:menubar>
+			<p:submenu label="Administrativo">
+					<p:menuitem value="Frequencia" url="/registrofrequencia.jsf" />
+			</p:submenu>
+			<p:submenu label="Secretaria">
+				<p:submenu label="Cadastros">
+					<p:menuitem value="Candidato" url="/candidato.jsf" />
+					<p:menuitem value="Avaliação" url="/cadastroavaliacao.jsf" />
+					<p:menuitem value="Funcionario" url="/cadastrofuncionario.jsf" />
+					<p:menuitem value="Matricula" url="/matricula.jsf" />
+					<p:menuitem value="Turma" url="/turma.jsf" />
+					<p:menuitem value="Atividade" url="/atividadediaria.jsf" />
+					<p:menuitem value="Agrupamento" url="/AgrupamentoTurma.jsf" />
+				</p:submenu>
+				<p:submenu label="Modulos">
+					<p:menuitem value="Lista de avaliação" url="/listaavaliacao.jsf" />
+					<p:menuitem value="Seleção de candidato" url="/pesquisacandidato.jsf" />
+					<p:menuitem value="Registro de frequência" url="/registrofrequencia.jsf" />
+					<p:menuitem value="Registro de ponto" url="/registroponto.jsf" />
+				</p:submenu>
+			</p:submenu>
+		 </p:menubar>
 	</ui:insert>
 	<h:form id="formCorpo">
 		<ui:insert name="corpo">

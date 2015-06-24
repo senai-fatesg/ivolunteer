@@ -68,14 +68,15 @@
 						</a:field>
 
 
-						<a:field label="Data Expedição" width="100px" spaceLeft="15px">
+						<a:field label="Data Expedição" width="150px" spaceLeft="15px">
 							<p:calendar
 								value="#{FuncionarioControl.funcionario.dataExpedicao}"
-								locale="de" navigator="true" pattern="dd/MM/yyy" />
+								locale="de" navigator="true" pattern="dd/MM/yyy"
+								style="width:150px" />
 						</a:field>
 
 
-						<a:field label="CPF" width="300px;" spaceLeft="125px">
+						<a:field label="CPF" width="300px;" spaceLeft="75px">
 							<p:inputMask id="cpf"
 								value="#{FuncionarioControl.funcionario.cpf}"
 								mask="999.999.999-99">
@@ -169,9 +170,9 @@
 								style="width:150px" />
 						</a:field>
 
-						<a:field label="Pis" width="230px" spaceLeft="75px">
+						<a:field label="Pis" width="210px" spaceLeft="75px">
 							<p:inputText value="#{FuncionarioControl.funcionario.pis}"
-								style="width:230px" />
+								style="width:210px" />
 						</a:field>
 
 						<a:field label="CTPS" width="200px" spaceLeft="15px">

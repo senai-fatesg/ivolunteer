@@ -124,7 +124,7 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 			frequencias.set(frequencias.indexOf(frequencia), frequencia);
 		}
 	}
-	
+
 	public void removerAtividade(AtividadeDiaria atividadeDiaria) {
 		if (atividadesDiaria.contains(atividadeDiaria)) {
 			this.atividadesDiaria.remove(atividadeDiaria);
@@ -353,6 +353,10 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 
 	public List<Frequencia> getFrequencias() {
 		return frequencias;
+	}
+
+	public void setFrequencias(List<Frequencia> frequencias) {
+		this.frequencias = frequencias;
 	}
 
 	public List<GradeHorario> getGradesHorario() {

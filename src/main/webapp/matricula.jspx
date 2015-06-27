@@ -63,8 +63,8 @@
 						</a:field>
 
 						<a:field label="Tipo" spaceLeft="15px">
-							<p:selectOneMenu id="tipoPessoa" dropdown="true"
-								value="#{AlunoControl.aluno.tipoPessoa}" style="width:200px;">
+							<p:selectOneMenu id="enumTipoPessoa" dropdown="true"
+								value="#{AlunoControl.aluno.enumTipoPessoa}" style="width:200px;">
 								<f:selectItems value="#{AlunoControl.completeEnumTipoPessoa}"></f:selectItems>
 							</p:selectOneMenu>
 						</a:field>
@@ -77,8 +77,8 @@
 						</a:field>
 
 						<a:field label="Sexo" spaceLeft="15px">
-							<p:selectOneMenu id="sexo" dropdown="true"
-								value="#{AlunoControl.aluno.sexo}" style="width:215px;">
+							<p:selectOneMenu id="enumSexo" dropdown="true"
+								value="#{AlunoControl.aluno.enumSexo}" style="width:215px;">
 								<f:selectItems value="#{AlunoControl.completeEnumSexo}"></f:selectItems>
 							</p:selectOneMenu>
 						</a:field>

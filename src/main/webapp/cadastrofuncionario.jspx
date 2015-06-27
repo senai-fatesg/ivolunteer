@@ -93,8 +93,8 @@
 
 
 						<a:field label="Estado Civil" spaceLeft="15px" width="210px">
-							<p:selectOneMenu id="estadoCivil"
-								value="#{FuncionarioControl.funcionario.estadoCivil}"
+							<p:selectOneMenu id="enumEstadoCivil"
+								value="#{FuncionarioControl.funcionario.enumEstadoCivil}"
 								style="width:210px;">
 								<f:selectItems
 									value="#{FuncionarioControl.completeEnumEstadoCivil}"></f:selectItems>
@@ -111,8 +111,8 @@
 
 
 						<a:field label="Sexo" spaceLeft="75px" width="215px">
-							<p:selectOneMenu id="sexo"
-								value="#{FuncionarioControl.funcionario.sexo}"
+							<p:selectOneMenu id="enumSexo"
+								value="#{FuncionarioControl.funcionario.enumSexo}"
 								style="width:215px;">
 								<f:selectItems value="#{FuncionarioControl.completeEnumSexo}"></f:selectItems>
 							</p:selectOneMenu>
@@ -412,7 +412,7 @@
 
 						<a:field label="Tipo telefone" spaceLeft="15px">
 							<p:selectOneMenu id="tp_telefone"
-								value="#{FuncionarioControl.telefone.tipoTelefone }"
+								value="#{FuncionarioControl.telefone.enumTipoTelefone }"
 								style="width:200px;">
 								<f:selectItems
 									value="#{FuncionarioControl.completeEnumTipoTelefone }"></f:selectItems>

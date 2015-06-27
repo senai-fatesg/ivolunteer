@@ -22,5 +22,4 @@ public enum EnumTipoPessoa implements IEnum {
 	private EnumTipoPessoa(String descricao) {
 		this.descricao = descricao;
 	}
-
 }

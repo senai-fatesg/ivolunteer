@@ -6,7 +6,7 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
-import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoPessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.SelecaoCandidato;
 import br.com.ambientinformatica.jpa.persistencia.PersistenciaJpa;
@@ -52,6 +52,36 @@ public class PessoaDaoJpa extends PersistenciaJpa<Pessoa> implements PessoaDao {
 		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
 		
 		return  (List<Pessoa>) query.getResultList();
+	}
+
+	//busca somente a pessoa 'CANDIDATO'
+	@Override
+   public List<Pessoa> listaCandidatoPorNome(String nome) {
+	   
+		Query query = em.createQuery("SELECT p FROM Pessoa p WHERE UPPER(p.nomePessoa) LIKE :nome "
+				+ " AND p.enumTipoPessoa = :enumTipoPessoa");
+		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
+		query.setParameter("enumTipoPessoa", EnumTipoPessoa.CANDIDATO);
+		
+		return (List<Pessoa>) query.getResultList();
+   }
+	
+		//busca todos os 'CANDIDATO'
+		@Override
+	   public List<Pessoa> listaCandidato() {
+		   
+			Query query = em.createQuery("SELECT p FROM Pessoa p WHERE p.enumTipoPessoa = :enumTipoPessoa");
+			query.setParameter("enumTipoPessoa", EnumTipoPessoa.CANDIDATO);
+			
+			return (List<Pessoa>) query.getResultList();
+	   }
+	
+	
+	@Override
+	public Pessoa consultarPessoaCompleta(Pessoa pessoa) {
+		Query q = em.createQuery("select p from Pessoa p left join fetch p.listaResponsavel res where p = :pessoa");
+		q.setParameter("pessoa", pessoa);
+		return (Pessoa) q.getSingleResult();
 	}
 	
 }

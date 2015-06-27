@@ -1,11 +1,6 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
 import br.com.ambientinformatica.util.IEnum;
-/*
- * Autor: Edjalma
- * Atualizado em: 15/05/205 01:50
- * Alterado por: Aureliano
- * */
 
 public enum EnumSexo implements IEnum {
 

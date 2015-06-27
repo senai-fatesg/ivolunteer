@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import javax.faces.convert.Converter;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -25,9 +24,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.IndexColumn;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -37,60 +33,27 @@ public class Pessoa {
 	@GeneratedValue(generator = "pessoa_seq", strategy = GenerationType.SEQUENCE)
 	@SequenceGenerator(name = "pessoa_seq", sequenceName = "pessoa_seq", allocationSize = 1, initialValue = 1)
 	private Integer id;
-	
+
 	private String nomePessoa;
 	private String rg;
 	private String orgaoExpeditor;
-	private String naturalidade;
 	private String cpf;
 	private String nascionalidade;
 	private String descricao;
+	private String naturalidade;
 	private String profissao;
-	private String indicacao;
 	private String certidaoNascimento;
-	private String informacoesSobreIntituicao;
-	private String nomePessoaMoraComCrianca;
-	private String necessidadesEspeciais;
 	private String cadastroCompleto;
-	
-	@Enumerated(EnumType.STRING)
-	private EnumSexo sexo;
-	
-	@Enumerated(EnumType.STRING)
-	private EnumEscolaridade escolaridade;
-	
-	@Enumerated(EnumType.STRING)
-	private EnumTipoPessoa tipoPessoa;
-	
-	@Enumerated(EnumType.STRING)
-	private EnumEstadoCivil estadoCivil;
-	
-	@Enumerated(EnumType.STRING)
-	private EnumTipoCasa tipoMoradia;
 
 	@Enumerated(EnumType.STRING)
-	private EnumFiliacao filiacao;
-	
+	private EnumEstadoCivil enumEstadoCivil;
+
 	@Enumerated(EnumType.STRING)
 	private EnumSexo enumSexo;
-	@Enumerated(EnumType.STRING)
-	private EnumEscolaridade enumEscolaridade;
-	@Enumerated(EnumType.STRING)
-	private EnumTipoTelefone enumTipoPessoa;	
 
 	@Enumerated(EnumType.STRING)
-	private EnumPrioridade enumPrioridade;
-	
-	public EnumPrioridade getEnumPrioridade() {
-		return enumPrioridade;
-	}
+	private EnumTipoPessoa enumTipoPessoa;
 
-	public void setEnumPrioridade(EnumPrioridade enumPrioridade) {
-		this.enumPrioridade = enumPrioridade;
-	}
-
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataExpedicao;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataNascimento;
 
@@ -98,64 +61,53 @@ public class Pessoa {
 	// validade de 6 meses
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataVencimento;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dataExpedicao;
 	
-	private BigDecimal valorBeneficio = BigDecimal.ZERO;
-	
-	private BigDecimal rendaOutra = BigDecimal.ZERO;
-	private BigDecimal rendaPai = BigDecimal.ZERO;
-	private BigDecimal rendaMae = BigDecimal.ZERO;
-	private BigDecimal rendaResponsavel = BigDecimal.ZERO;
-	private BigDecimal totalRenda = BigDecimal.ZERO;
-	private Integer numeroIrmaosMatriculados;
-	private BigDecimal valorAluguel = BigDecimal.ZERO;
+	@Enumerated(EnumType.STRING)
+	private EnumPrioridade enumPrioridade;
+
 	private BigDecimal valorInicial = BigDecimal.ZERO;
 	private BigDecimal valorFinal = BigDecimal.ZERO;
-	private Integer numeroDePessoasMoradia;
 
-	private Boolean paisVivemJuntos;
-	private Boolean requisitouOutraVaga;
-	private Boolean recebeBeneficio = false;
-	private Boolean requisitouVagaParaOutraCriancao;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "pessoa_id")
+	private List<Endereco> listaEndereco = new ArrayList<Endereco>();
 
-	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "pessoa_id")
-	//@IndexColumn(name = "id")
-   private List<Endereco> listaEndereco = new ArrayList<Endereco>();
-	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "pessoa_id")
-	private List<Pessoa> listaPessoaRelacionada = new ArrayList<Pessoa>();
-	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "pessoa_id")
-	//@IndexColumn(name = "id")
 	private List<Telefone> listaTelefone = new ArrayList<Telefone>();
-	
-	//construtor da classe
-	public Pessoa(){
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "pessoa_id")
+	private List<Responsavel> listaResponsavel = new ArrayList<Responsavel>();
+
+	// construtor da classe
+	public Pessoa() {
 		listaEndereco = new ArrayList<Endereco>();
 		listaTelefone = new ArrayList<Telefone>();
-	}
-
-	public BigDecimal calcularRenda(){
-		return this.totalRenda = rendaPai.add(rendaMae).add(rendaResponsavel).add(rendaOutra);
+		listaResponsavel = new ArrayList<Responsavel>();
 	}
 
 	public Integer getIdade() {
-		if(this.dataNascimento == null){
+		if (this.dataNascimento == null) {
 			return 0;
-		}else{
+		} else {
 			return CalcularIdade(this.dataNascimento.toString());
 		}
 	}
 
+	/**
+	 * calcula a idade do candidato recebe a data de nascimento como tipo string
+	 * e retorna a idade como tipo Integer
+	 * **/
 	private Integer CalcularIdade(String dataNascimento) {
 		DateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");
 
 		Date dataNascInput = null;
 		try {
-			
+
 			dataNascInput = dataFormatada.parse(dataNascimento);
 
 		} catch (Exception e) {
@@ -193,9 +145,9 @@ public class Pessoa {
 		}
 	}
 
-	public void addPessoa(Pessoa pessoaRelacionada) {
-		if (!listaPessoaRelacionada.contains(pessoaRelacionada)) {
-			listaPessoaRelacionada.add(pessoaRelacionada);
+	public void addResponsavel(Responsavel responsavel) {
+		if (!listaResponsavel.contains(responsavel)) {
+			listaResponsavel.add(responsavel);
 		}
 	}
 
@@ -211,22 +163,10 @@ public class Pessoa {
 		}
 	}
 
-	public void removerPessoa(Pessoa pessoa) {
-		if (listaPessoaRelacionada.contains(pessoa)) {
-			this.listaPessoaRelacionada.remove(pessoa);
+	public void removerResponsavel(Responsavel responsavel) {
+		if (listaResponsavel.contains(responsavel)) {
+			this.listaResponsavel.remove(responsavel);
 		}
-	}
-
-	public Telefone alterarTelefone(Telefone telefone) {
-		return telefone;
-	}
-
-	public Endereco alterarEndereco(Endereco endereco) {
-		return endereco;
-	}
-
-	public Pessoa alterarPessoa(Pessoa pessoa) {
-		return pessoa;
 	}
 
 	public Integer getId() {
@@ -261,20 +201,28 @@ public class Pessoa {
 		this.orgaoExpeditor = orgaoExpeditor;
 	}
 
-	public String getNaturalidade() {
-		return naturalidade;
-	}
-
-	public void setNaturalidade(String naturalidade) {
-		this.naturalidade = naturalidade;
-	}
-
 	public String getCpf() {
 		return cpf;
 	}
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
+	}
+
+	public Date getDataVencimento() {
+		return dataVencimento;
+	}
+
+	public void setDataVencimento(Date dataVencimento) {
+		this.dataVencimento = dataVencimento;
+	}
+
+	public EnumPrioridade getEnumPrioridade() {
+		return enumPrioridade;
+	}
+
+	public void setEnumPrioridade(EnumPrioridade enumPrioridade) {
+		this.enumPrioridade = enumPrioridade;
 	}
 
 	public String getNascionalidade() {
@@ -284,7 +232,7 @@ public class Pessoa {
 	public void setNascionalidade(String nascionalidade) {
 		this.nascionalidade = nascionalidade;
 	}
-	
+
 	public String getDescricao() {
 		return descricao;
 	}
@@ -301,86 +249,6 @@ public class Pessoa {
 		this.profissao = profissao;
 	}
 
-	public String getIndicacao() {
-		return indicacao;
-	}
-
-	public void setIndicacao(String indicacao) {
-		this.indicacao = indicacao;
-	}
-
-	public String getCertidaoNascimento() {
-		return certidaoNascimento;
-	}
-
-	public void setCertidaoNascimento(String certidaoNascimento) {
-		this.certidaoNascimento = certidaoNascimento;
-	}
-
-	public String getInformacoesSobreIntituicao() {
-		return informacoesSobreIntituicao;
-	}
-
-	public void setInformacoesSobreIntituicao(String informacoesSobreIntituicao) {
-		this.informacoesSobreIntituicao = informacoesSobreIntituicao;
-	}
-
-	public EnumSexo getSexo() {
-		return sexo;
-	}
-
-	public void setSexo(EnumSexo sexo) {
-		this.sexo = sexo;
-	}
-
-	public EnumEscolaridade getEscolaridade() {
-		return escolaridade;
-	}
-
-	public void setEscolaridade(EnumEscolaridade escolaridade) {
-		this.escolaridade = escolaridade;
-	}
-
-	public EnumTipoPessoa getTipoPessoa() {
-		return tipoPessoa;
-	}
-
-	public void setTipoPessoa(EnumTipoPessoa tipoPessoa) {
-		this.tipoPessoa = tipoPessoa;
-	}
-
-	public EnumEstadoCivil getEstadoCivil() {
-		return estadoCivil;
-	}
-
-	public void setEstadoCivil(EnumEstadoCivil estadoCivil) {
-		this.estadoCivil = estadoCivil;
-	}
-
-	public EnumTipoCasa getTipoMoradia() {
-		return tipoMoradia;
-	}
-
-	public void setTipoMoradia(EnumTipoCasa tipoMoradia) {
-		this.tipoMoradia = tipoMoradia;
-	}
-
-	public String getNecessidadesEspeciais() {
-		return necessidadesEspeciais;
-	}
-
-	public void setNecessidadesEspeciais(String necessidadesEspeciais) {
-		this.necessidadesEspeciais = necessidadesEspeciais;
-	}
-
-	public EnumFiliacao getFiliacao() {
-		return filiacao;
-	}
-
-	public void setFiliacao(EnumFiliacao filiacao) {
-		this.filiacao = filiacao;
-	}
-
 	public EnumSexo getEnumSexo() {
 		return enumSexo;
 	}
@@ -389,98 +257,10 @@ public class Pessoa {
 		this.enumSexo = enumSexo;
 	}
 
-	public EnumEscolaridade getEnumEscolaridade() {
-		return enumEscolaridade;
-	}
-
-	public void setEnumEscolaridade(EnumEscolaridade enumEscolaridade) {
-		this.enumEscolaridade = enumEscolaridade;
-	}
-
-	public EnumTipoTelefone getEnumTipoPessoa() {
-		return enumTipoPessoa;
-	}
-
-	public void setEnumTipoPessoa(EnumTipoTelefone enumTipoPessoa) {
-		this.enumTipoPessoa = enumTipoPessoa;
-	}
-
-	public Date getDataExpedicao() {
-		return dataExpedicao;
-	}
-
-	public void setDataExpedicao(Date dataExpedicao) {
-		this.dataExpedicao = dataExpedicao;
-	}
-
-	public Date getDataNascimento() {
-		return dataNascimento;
-	}
-
-	public void setDataNascimento(Date dataNascimento) {
-		this.dataNascimento = dataNascimento;
-	}
-
-	public Date getDataVencimento() {
-		return dataVencimento;
-	}
-
-	public void setDataVencimento(Date dataVencimento) {
-		this.dataVencimento = dataVencimento;
-	}
-
-	public BigDecimal getValorBeneficio() {
-		return valorBeneficio;
-	}
-
-	public void setValorBeneficio(BigDecimal valorBeneficio) {
-		this.valorBeneficio = valorBeneficio;
-	}
-
-	public BigDecimal getRendaOutra() {
-		return rendaOutra;
-	}
-
-	public void setRendaOutra(BigDecimal rendaOutra) {
-		this.rendaOutra = rendaOutra;
-	}
-
-	public BigDecimal getRendaPai() {
-		return rendaPai;
-	}
-
-	public void setRendaPai(BigDecimal rendaPai) {
-		this.rendaPai = rendaPai;
-	}
-
-	public BigDecimal getRendaMae() {
-		return rendaMae;
-	}
-
-	public void setRendaMae(BigDecimal rendaMae) {
-		this.rendaMae = rendaMae;
-	}
-
-	public BigDecimal getRendaResponsavel() {
-		return rendaResponsavel;
-	}
-
-	public void setRendaResponsavel(BigDecimal rendaResponsavel) {
-		this.rendaResponsavel = rendaResponsavel;
-	}
-
-	public BigDecimal getValorAluguel() {
-		return valorAluguel;
-	}
-
-	public void setValorAluguel(BigDecimal valorAluguel) {
-		this.valorAluguel = valorAluguel;
-	}
-
 	public BigDecimal getValorInicial() {
 		return valorInicial;
 	}
-	
+
 	public void setValorInicial(BigDecimal valorInicial) {
 		this.valorInicial = valorInicial;
 	}
@@ -493,108 +273,13 @@ public class Pessoa {
 		this.valorFinal = valorFinal;
 	}
 
-	public Integer getNumeroDePessoasMoradia() {
-		return numeroDePessoasMoradia;
-	}
-
-	public void setNumeroDePessoasMoradia(Integer numeroDePessoasMoradia) {
-		this.numeroDePessoasMoradia = numeroDePessoasMoradia;
-	}
-
-	public Boolean getPaisVivemJuntos() {
-		return paisVivemJuntos;
-	}
-
-	public void setPaisVivemJuntos(Boolean paisVivemJuntos) {
-		this.paisVivemJuntos = paisVivemJuntos;
-	}
-
-	public Boolean getRequisitouOutraVaga() {
-		return requisitouOutraVaga;
-	}
-
-	public void setRequisitouOutraVaga(Boolean requisitouOutraVaga) {
-		this.requisitouOutraVaga = requisitouOutraVaga;
-	}
-
-	public Boolean getRecebeBeneficio() {
-		return recebeBeneficio;
-	}
-
-	public void setRecebeBeneficio(Boolean recebeBeneficio) {
-		this.recebeBeneficio = recebeBeneficio;
-	}
-
-	public Boolean getRequisitouVagaParaOutraCriancao() {
-		return requisitouVagaParaOutraCriancao;
-	}
-
-	public void setRequisitouVagaParaOutraCriancao(
-	      Boolean requisitouVagaParaOutraCriancao) {
-		this.requisitouVagaParaOutraCriancao = requisitouVagaParaOutraCriancao;
-	}
-
 	public List<Endereco> getListaEndereco() {
 		return listaEndereco;
-	}
-
-	public List<Pessoa> getListaPessoaRelacionada() {
-		return listaPessoaRelacionada;
 	}
 
 	public List<Telefone> getListaTelefone() {
 		return listaTelefone;
 	}
-
-	public String getNomePessoaMoraComCrianca() {
-		return nomePessoaMoraComCrianca;
-	}
-
-	public void setNomePessoaMoraComCrianca(String nomePessoaMoraComCrianca) {
-		this.nomePessoaMoraComCrianca = nomePessoaMoraComCrianca;
-	}
-
-	public BigDecimal getTotalRenda() {
-		return totalRenda;
-	}
-
-	public Integer getNumeroIrmaosMatriculados() {
-		return numeroIrmaosMatriculados;
-	}
-
-	public void setNumeroIrmaosMatriculados(Integer numeroIrmaosMatriculados) {
-		this.numeroIrmaosMatriculados = numeroIrmaosMatriculados;
-	}
-	
-	
-
-	@Override
-   public int hashCode() {
-	   final int prime = 31;
-	   int result = 1;
-	   result = prime
-	         * result
-	         + ((listaPessoaRelacionada == null) ? 0 : listaPessoaRelacionada
-	               .hashCode());
-	   return result;
-   }
-
-	@Override
-   public boolean equals(Object obj) {
-	   if (this == obj)
-		   return true;
-	   if (obj == null)
-		   return false;
-	   if (getClass() != obj.getClass())
-		   return false;
-	   Pessoa other = (Pessoa) obj;
-	   if (listaPessoaRelacionada == null) {
-		   if (other.listaPessoaRelacionada != null)
-			   return false;
-	   } else if (!listaPessoaRelacionada.equals(other.listaPessoaRelacionada))
-		   return false;
-	   return true;
-   }
 
 	public String getCadastroCompleto() {
 		return cadastroCompleto;
@@ -603,4 +288,106 @@ public class Pessoa {
 	public void setCadastroCompleto(String cadastroCompleto) {
 		this.cadastroCompleto = cadastroCompleto;
 	}
+
+	public String getNaturalidade() {
+		return naturalidade;
+	}
+
+	public void setNaturalidade(String naturalidade) {
+		this.naturalidade = naturalidade;
+	}
+
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
+
+	public String getCertidaoNascimento() {
+		return certidaoNascimento;
+	}
+
+	public void setCertidaoNascimento(String certidaoNascimento) {
+		this.certidaoNascimento = certidaoNascimento;
+	}
+
+	public EnumEstadoCivil getEnumEstadoCivil() {
+		return enumEstadoCivil;
+	}
+
+	public void setEnumEstadoCivil(EnumEstadoCivil enumEstadoCivil) {
+		this.enumEstadoCivil = enumEstadoCivil;
+	}
+	
+	public Date getDataExpedicao() {
+		return dataExpedicao;
+	}
+
+	public void setDataExpedicao(Date dataExpedicao) {
+		this.dataExpedicao = dataExpedicao;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((cpf == null) ? 0 : cpf.hashCode());
+		result = prime * result
+		      + ((enumTipoPessoa == null) ? 0 : enumTipoPessoa.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result
+		      + ((listaResponsavel == null) ? 0 : listaResponsavel.hashCode());
+		result = prime * result
+		      + ((nomePessoa == null) ? 0 : nomePessoa.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Pessoa other = (Pessoa) obj;
+		if (cpf == null) {
+			if (other.cpf != null)
+				return false;
+		} else if (!cpf.equals(other.cpf))
+			return false;
+		if (enumTipoPessoa != other.enumTipoPessoa)
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (listaResponsavel == null) {
+			if (other.listaResponsavel != null)
+				return false;
+		} else if (!listaResponsavel.equals(other.listaResponsavel))
+			return false;
+		if (nomePessoa == null) {
+			if (other.nomePessoa != null)
+				return false;
+		} else if (!nomePessoa.equals(other.nomePessoa))
+			return false;
+		return true;
+	}
+
+	public EnumTipoPessoa getEnumTipoPessoa() {
+		return enumTipoPessoa;
+	}
+
+	public void setEnumTipoPessoa(EnumTipoPessoa enumTipoPessoa) {
+		this.enumTipoPessoa = enumTipoPessoa;
+	}
+
+	public List<Responsavel> getListaResponsavel() {
+		return listaResponsavel;
+	}
+
 }

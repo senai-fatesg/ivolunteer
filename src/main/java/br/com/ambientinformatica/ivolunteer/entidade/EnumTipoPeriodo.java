@@ -1,17 +1,10 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
 import br.com.ambientinformatica.util.IEnum;
-/**
- * 
- * @author luiz/Aureliano
- * 
- */
 
-/*
- * Atualizado em: 15/05/205 19:22
- */
 public enum EnumTipoPeriodo implements IEnum {
-   DESCRICRAO("Descicrao"); 
+   
+	DESCRICRAO("Descicrao"); 
 	
    private String descricao;
 

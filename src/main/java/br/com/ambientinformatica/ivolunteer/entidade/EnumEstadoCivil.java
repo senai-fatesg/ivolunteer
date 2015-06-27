@@ -2,15 +2,14 @@ package br.com.ambientinformatica.ivolunteer.entidade;
 
 import br.com.ambientinformatica.util.IEnum;
 
-public enum EnumEstadoCivil implements IEnum{
-  SOLTEIRO("Solteiro"),
-	 
-  CASADO("casado"),
-	 
+public enum EnumEstadoCivil implements IEnum {
+	
+	SOLTEIRO("Solteiro"),
+	CASADO("casado"),
 	DIVORCIADO("Divorciado"),
-	 
-	 VIUVO("Viuvo");
-  private String descricao;
+	VIUVO("Viuvo");
+	
+	private String descricao;
 
 	private EnumEstadoCivil(String descricao) {
 		this.descricao = descricao;
@@ -24,4 +23,3 @@ public enum EnumEstadoCivil implements IEnum{
 		this.descricao = descricao;
 	}
 }
- 

@@ -9,7 +9,10 @@ import br.com.ambientinformatica.jpa.persistencia.Persistencia;
 
 public interface PessoaDao extends Persistencia<Pessoa> {
 
-	List<Pessoa> listarPorNome(String query);
-	List<Pessoa> pesquisaSelecaoCandidato(SelecaoCandidato selecaoCandidato);
+	public List<Pessoa> listarPorNome(String query);
+	public List<Pessoa> listaCandidatoPorNome(String nome);
+	public List<Pessoa> pesquisaSelecaoCandidato(SelecaoCandidato selecaoCandidato);
+	public Pessoa consultarPessoaCompleta(Pessoa pessoa);
+	public List<Pessoa> listaCandidato();
 }
 

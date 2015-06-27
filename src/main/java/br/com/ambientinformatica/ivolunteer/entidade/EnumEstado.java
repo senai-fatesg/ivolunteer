@@ -1,14 +1,5 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
-/**
- * 
- * @author luiz/Aureliano
- * 
- */
-
-/*
- * Atualizado em: 15/05/205 19:22
- */
 import br.com.ambientinformatica.util.IEnum;
 
 public enum EnumEstado implements IEnum {
@@ -54,6 +45,5 @@ public enum EnumEstado implements IEnum {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	 
 }
  

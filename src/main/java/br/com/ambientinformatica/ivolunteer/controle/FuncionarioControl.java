@@ -50,7 +50,7 @@ public class FuncionarioControl {
 
 	@PostConstruct
 	public void init() {
-		// listar(null);
+		
 	}
 
 	public void confirmar(ActionEvent evt) {

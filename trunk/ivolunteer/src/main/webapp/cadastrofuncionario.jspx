@@ -14,8 +14,8 @@
 				icon="ui-icon-search" onclick="consultar.show();" />
 				
 			<p:dialog id="modalPesquisa" header="Consultar" widgetVar="consultar"
-				modal="true" maximizable="false" minimizable="false" width="40%"
-				height="550px" resizable="false" closeOnEscape="true">
+				modal="true" maximizable ="false" minimizable="false" width="40%"
+				height="550px" resizable ="false" closeOnEscape="true">
 				
 				<a:field label="Nome">
 					<p:inputText id="filtro"

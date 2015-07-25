@@ -8,152 +8,111 @@
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
 
-		<p:panel header="Pesquisa Candidato" id="selecao">
+		<p:panel header="Pesquisar Candidato" id="selecao">
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+
+			<p:commandButton id="consultar" value="Consultar"
+				icon="ui-icon-search" onclick="consultar.show();" />
+			<p:dialog id="modalPesquisa" header="Consultar" widgetVar="consultar"
+				modal="true" maximizable="false" minimizable="false" width="40%"
+				height="550px" resizable="false" closeOnEscape="true">
+				<a:field label="Nome">
+					<p:inputText id="filtro"
+						value="#{PesquisaSelecaoControl.candidatoConsulta.nomePessoa}" />
+				</a:field>
+				<a:field label="Beneficio" spaceLeft="15px">
+					<p:selectBooleanCheckbox
+						value="#{PesquisaSelecaoControl.selecaoCandidato.beneficios}"
+						style="width:50px;" />
+				</a:field>
+				<a:newLine />
+				<a:field label="Valor Inicial">
+					<p:inputText id="valorInicial"
+						value="#{PesquisaSelecaoControl.selecaoCandidato.valorInicial}"
+						style="width:100px;" />
+				</a:field>
+				<a:field label="Valor Final" spaceLeft="15px">
+					<p:inputText id="valorFinal"
+						value="#{PesquisaSelecaoControl.selecaoCandidato.valorFinal}"
+						style="width:100px;" />
+				</a:field>
+
+				<a:field spaceLeft="15px">
+					<p:commandButton id="filtrar" value="Busca" icon="ui-icon-search"
+						actionListener="#{PesquisaSelecaoControl.aplicarFiltro}"
+						update="listaCandidato" />
+				</a:field>
+				<a:newLine />
+				<p:dataTable id="listaCandidato" var="itemCandidato"
+					style="width:100%" value="#{PesquisaSelecaoControl.listaCandidato}"
+					widgetVar="funcionariosTable" emptyMessage="Sem Registros a Exibir">
+					<p:column headerText="Codigo">#{itemCandidato.id}</p:column>
+					<p:column headerText="Nome" width="30%">#{itemCandidato.nomePessoa}</p:column>
+					<p:column headerText="Certidão de nascimento">#{itemCandidato.certidaoNascimento}</p:column>
+					<p:column width="5%">
+
+						<p:commandButton value="Alterar"
+							action="#{PesquisaSelecaoControl.carregaPessoaAlteracao(itemCandidato)}"
+							update="@all" />
+						
+						<p:commandButton value="Matricular" id="matricular"
+						action="/localhost:8080/ivolunteer/matricula.jsf" ajax="false" />
+					</p:column>
+
+				</p:dataTable>
+			</p:dialog>
 
 
+			<p:confirmDialog header="Atenção!" severity="alert"
+				widgetVar="confirmaAlteracao">
+				<f:facet name="message">
+					<h:outputText value="Deseja alterar o candidato? " />
+				</f:facet>
+				<p:commandButton value="Sim"
+					actionListener="#{PesquisaSelecaoControl.confirmar}"
+					oncomplete="confirmaAlteracao.hide(), consultarCandidato.hide()"
+					update="@all" />
+				<p:commandButton value="Não" update="modalPesquisa"
+					onclick="confirmaAlteracao.hide()" />
+			</p:confirmDialog>
+
+
+
+
+			<a:newLine />
+			<a:newLine />
 
 			<a:field label="Nome">
-				<p:inputText id="nomePessoa"
-					value="#{PesquisaSelecaoControl.selecaoCandidato.nomePessoa}"
-					style="width:230px;">
-				</p:inputText>
-			</a:field>
-			<a:field label="Beneficios" spaceLeft="15px">
-				<p:selectBooleanCheckbox
-					value="#{PesquisaSelecaoControl.selecaoCandidato.beneficios}"
-					style="width:50px;" />
-			</a:field>
-			<a:newLine />
-			<a:field label="Valor Inicial">
-				<p:inputText id="valorInicial"
-					value="#{PesquisaSelecaoControl.selecaoCandidato.valorInicial}"
-					style="width:100px;" />
-			</a:field>
-			<a:field label="Valor Final" spaceLeft="15px">
-				<p:inputText id="valorFinal"
-					value="#{PesquisaSelecaoControl.selecaoCandidato.valorFinal}"
-					style="width:100px;" />
+				<p:inputText id="nome"
+					value="#{PesquisaSelecaoControl.candidatoConsulta.nomePessoa}"
+					style="width:200%;" />
 			</a:field>
 
 			<a:newLine />
 
-			<a:newLine />
-
-			<p:commandButton actionListener="#{PesquisaSelecaoControl.listar}"
-				value="Busca" update="listaBusca">
-			</p:commandButton>
-			<a:newLine />
-			<a:newLine />
-
-			<p:dataTable id="listaBusca"
-				value="#{PesquisaSelecaoControl.pessoas}" var="candidato"
-				width="100%" emptyMessage="Sem registros">
-				<f:facet name="header">
-					<h:outputText value="Seleçao Candidato"></h:outputText>
-				</f:facet>
-				<p:column sortBy="#{candidato.id}">
-					<f:facet name="header">
-						<h:outputText value="Codigo"></h:outputText>
-					</f:facet>
-					<h:outputText value="#{candidato.id}"></h:outputText>
-				</p:column>
-				<p:column sortBy="#{candidato.nomePessoa}">
-					<f:facet name="header">
-						<h:outputText value="Nome"></h:outputText>
-					</f:facet>
-					<h:outputText value="#{candidato.nomePessoa}"></h:outputText>
-				</p:column>
-
-				<p:column sortBy="#{candidato.prioridade}">
-					<f:facet name="header">
-						<p:selectOneMenu id="enumPrioridade"
-								value="#{PesquisaSelecaoControl.pessoa.enumPrioridade }">
-								<f:selectItems value="#{PesquisaSelecaoControl.completeEnumPrioridade }"></f:selectItems>
-							</p:selectOneMenu>
-					</f:facet>
-				</p:column>
-
-
-				<p:column style="width:32px;text-align: center">
-					<p:commandButton update="listaBusca"
-						oncomplete="PF('carDialog').show()" icon="ui-icon-search"
-						title="View">
-						<f:setPropertyActionListener value="#{pes}"
-							target="#{PesquisaSelecaoControl.pessoa}" />
-					</p:commandButton>
-				</p:column>
-
-				<p:column width="20">
-					<p:commandButton icon="ui-icon-extlink" id="descricao"
-						onclick="PF('dlg').show()" />
-				</p:column>
-
-
-			</p:dataTable>
-
-			<p:dialog header="Selected Cars" widgetVar="multiCarDialog"
-				modal="true" showEffect="fade" hideEffect="fade" resizable="false"
-				width="200">
-				<p:outputPanel id="multiCarDetail" style="text-align:center;">
-					<ui:repeat value="#{PesquisaSelecaoControl.pessoas}" var="pes">
-
-					</ui:repeat>
-				</p:outputPanel>
-			</p:dialog>
+			<a:field label="Descrição">
+				<p:inputTextarea id="descricao"
+					value="#{PesquisaSelecaoControl.candidatoConsulta.descricao}"
+					style="width:200%;" />
+			</a:field>
 
 			<a:newLine />
 
-			<p:dialog header="descrição" widgetVar="dlg" resizable="false"
-				responsive="true">
-				<p:panelGrid columns="2" layout="grid"
-					styleClass="ui-panelgrid-blank"
-					columnClasses="ui-grid-col-4,ui-grid-col-8">
-					<h:outputLabel for="username" value="Username:" />
-					<p:inputText id="username" />
+			<a:field label="Prioridade">
+				<p:selectOneMenu id="enumPrioridade"
+					value="#{PesquisaSelecaoControl.candidatoConsulta.enumPrioridade }">
+					<f:selectItems
+						value="#{PesquisaSelecaoControl.completeEnumPrioridade }"></f:selectItems>
+				</p:selectOneMenu>
+			</a:field>
 
-					<h:outputLabel for="password" value="Password:" />
-					<p:password id="password" />
+			<a:newLine />
 
-					<f:facet name="footer">
-						<p:messages id="messages" showDetail="true" autoUpdate="true"
-							closable="true" />
+			<a:newLine />
 
-						<p:commandButton id="consultar" value="Consultar"
-							icon="ui-icon-search" onclick="consultar.show();" />
-
-						<p:dialog id="modalPesquisa" header="Consultar"
-							widgetVar="consultar" modal="true" maximizable="false"
-							minimizable="false" width="40%" height="550px" resizable="false"
-							closeOnEscape="true">
-							<a:field label="Nome">
-								<p:inputText id="filtro"
-									value="#{CandidatoControl.pessoaCandidato.nomePessoa}" />
-							</a:field>
-
-							<p:dataTable id="listaPessoas" var="itemPessoa"
-								style="width:100%" value="#{CandidatoControl.listaPessoa}"
-								widgetVar="funcionariosTable"
-								emptyMessage="Sem Registros a Exibir">
-								<p:column headerText="Nome" width="30%">#{itemPessoa.nomePessoa}</p:column>
-								<p:column headerText="Rg">#{itemPessoa.rg}</p:column>
-								<p:column width="5%">
-									<p:commandButton icon="ui-icon-pencil"
-										action="#{CandidatoControl.carregaPessoaAlteracao(itemPessoa)}"
-										oncomplete="consultar.hide();" update=":formCorpo:tabCadastro" />
-									<p:commandButton icon="ui-icon-trash"
-										action="#{CandidatoControl.excluir(itemPessoa)}"
-										update="listaPessoas" />
-								</p:column>
-
-							</p:dataTable>
-						</p:dialog>
-
-
-					</f:facet>
-				</p:panelGrid>
-			</p:dialog>
 			<p:commandButton actionListener="#{PesquisaSelecaoControl.confirmar}"
-				value="Salvar">
+				value="Confirmar" update="@all">
 			</p:commandButton>
 
 		</p:panel>

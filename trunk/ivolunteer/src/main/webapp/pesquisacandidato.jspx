@@ -57,7 +57,8 @@
 							update="@all" />
 						
 						<p:commandButton value="Matricular" id="matricular"
-						action="/localhost:8080/ivolunteer/matricula.jsf" ajax="false" />
+						action="/localhost:8080/ivolunteer/matricula.jsf" ajax="false">
+						</p:commandButton>
 					</p:column>
 
 				</p:dataTable>

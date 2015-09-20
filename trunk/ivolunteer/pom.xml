@@ -260,7 +260,7 @@
 
 		</plugins>
 
-		<finalName>${artifactId}</finalName>
+		<finalName>${project.artifactId}</finalName>
 	</build>
 	<!-- Geração de diagrama de classes -->
 	<reporting>

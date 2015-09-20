@@ -6,8 +6,6 @@
 
 		<properties>
 			<property name="javax.persistence.validation.mode" value="callback" />
-			<property name="format_sql">true</property>
-			<property name="use_sql_comments">true</property>
 			<property name="javax.persistence.validation.group.pre-update"
 				value="br.com.ambientinformatica.util.AmbientValidator" />
 			<property name="javax.persistence.validation.group.pre-persist"

@@ -11,14 +11,14 @@
 		<p:panel header="Formulário" id="panel">
 			<h:panelGrid columns="2">
 				<h:outputText value="Nome"></h:outputText>
-				<p:inputText value="#{ContatoControl.contato.nome }"></p:inputText>
+				<p:inputText value="#{UsuarioControl.usuario.nome }"></p:inputText>
 				<h:outputText value="Telefone"></h:outputText>
-				<p:inputMask value="#{ContatoControl.contato.telefone }" mask="(99) 9999-9999"></p:inputMask>
-				<p:commandButton actionListener="#{ContatoControl.confirmar }" value="Confirmar" update="contatos, panel"></p:commandButton>
+				<p:inputMask value="#{UsuarioControl.usuario.telefone }" mask="(99) 9999-9999"></p:inputMask>
+				<p:commandButton actionListener="#{UsuarioControl.confirmar }" value="Confirmar" update="contatos, panel"></p:commandButton>
 			</h:panelGrid>
 		</p:panel>
 		
-		<p:dataTable id="contatos" value="#{ContatoControl.contatos }" var="cont"  width="100%" emptyMessage="Sem registros" >
+		<p:dataTable id="contatos" value="#{UsuarioControl.usuarios }" var="cont"  width="100%" emptyMessage="Sem registros" >
 			<f:facet name="header">
 				<h:outputText value="Lista de Contatos"></h:outputText>
 			</f:facet>

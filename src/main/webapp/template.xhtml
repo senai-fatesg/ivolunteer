@@ -1,70 +1,23 @@
-<?xml version='1.0' encoding='utf-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="main.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
 	xmlns:p="http://primefaces.org/ui">
-<h:head>
-	<link href="css/bootstrap.css" rel="stylesheet" />
-	<link href="css/bootstrap-responsive.css" rel="stylesheet" />
-	<link href="css/styles.css" rel="stylesheet" />
+	<ui:define name="conteudo">
+		<h:form id="formCorpo">
+			<p:messages autoUpdate="true"></p:messages>
+			
+			<p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/> 
+			
+			<ui:insert name="corpo" />
 
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta http-equiv="Cache-Control"
-		content="no-cache, no-store, must-revalidate" />
-	<meta http-equiv="Pragma" content="no-cache" />
-	<meta http-equiv="Expires" content="0" />
-	<script>
-		function focar() {
-			document.getElementById("usuario").focus();
-		}
-	</script>
+			<p:dialog modal="true" widgetVar="statusDialog" header="Aguarde só um pouco..." draggable="false" closable="false">  
+			    <p:graphicImage value="imagens/ajaxloadingbar.gif" />  
+			</p:dialog>
 
-</h:head>
-<h:body>
-	<ui:insert name="menu">
-		<div class="wrapper">
-			<div class="header">
-				<div class="container">
-					<div class="row branding">
-						<div class="span6">
-							<h1 class="pull-left">
-								<strong>IVOLUNTEER</strong>
-							</h1>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<p:menubar>
-			<p:submenu label="Administrativo">
-					<p:menuitem value="Frequencia" url="/registrofrequencia.jsf" />
-			</p:submenu>
-			<p:submenu label="Secretaria">
-				<p:submenu label="Cadastros">
-					<p:menuitem value="Candidato" url="/candidato.jsf" />
-					<p:menuitem value="Avaliação" url="/cadastroavaliacao.jsf" />
-					<p:menuitem value="Funcionario" url="/cadastrofuncionario.jsf" />
-					<p:menuitem value="Matricula" url="/matricula.jsf" />
-					<p:menuitem value="Turma" url="/turma.jsf" />
-					<p:menuitem value="Atividade" url="/atividadediaria.jsf" />
-					<p:menuitem value="Agrupamento" url="/AgrupamentoTurma.jsf" />
-				</p:submenu>
-				<p:submenu label="Modulos">
-					<p:menuitem value="Lista de avaliação" url="/listaavaliacao.jsf" />
-					<p:menuitem value="Seleção de candidato" url="/pesquisacandidato.jsf" />
-					<p:menuitem value="Registro de frequência" url="/registrofrequencia.jsf" />
-					<p:menuitem value="Registro de ponto" url="/registroponto.jsf" />
-				</p:submenu>
-			</p:submenu>
-		 </p:menubar>
-	</ui:insert>
-	<h:form id="formCorpo">
-		<ui:insert name="corpo">
-			<p:growl id="growl" showDetail="true" />
-		</ui:insert>
-	</h:form>
-</h:body>
-</html>
+		</h:form>
+	</ui:define>
+</ui:composition>

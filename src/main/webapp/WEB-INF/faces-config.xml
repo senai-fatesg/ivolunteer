@@ -15,8 +15,13 @@
 		</locale-config>
 	</application>
 
- <lifecycle>
- 	<phase-listener>br.com.ambientinformatica.ambientjsf.controle.OpenEntityManagerInViewPhaseListenerDelegator</phase-listener>
- </lifecycle>
+	<converter>
+		<converter-id>objectConverterJpa</converter-id>
+		<converter-class>br.com.ambientinformatica.ivolunteer.util.ObjectConverterJpa</converter-class>
+	</converter>
+
+	<lifecycle>
+		<phase-listener>br.com.ambientinformatica.ambientjsf.controle.OpenEntityManagerInViewPhaseListenerDelegator</phase-listener>
+	</lifecycle>
 
 </faces-config>

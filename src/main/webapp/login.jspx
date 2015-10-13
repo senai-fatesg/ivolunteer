@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="main.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a="http://www.ambientinformatica.com.br/jsf2" xmlns:p="http://primefaces.org/ui">
+    <ui:define name="conteudo">
+        <div class="row">
+            <div class="span8 leftContent">
+                <h2>Ivolunteer - Instituição Centro de Educação Infantil Francisca de Lima</h2>
+                <div class="row">
+                    <div class="span4">
+                        <p class="cntPara simpleDesign" align="justify">
+                            <strong class="lead"></strong>
+                        </p>
+                    </div>
+                    <div class="span4">
+                        <p class="cntPara itsFree" align="justify">
+                            <strong class="lead"></strong>
+                        </p>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="span4">
+                        <p class="cntPara secureApp" align="justify">
+                            <strong class="lead"></strong>
+                        </p>
+                    </div>
+                    <div class="span4">
+                        <p class="cntPara easyUse">
+                            <strong class="lead"></strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="span4 sidebar">
+                <form action="j_spring_security_check" method="post">
+                    <div class="well quickSignupForm">
+                        <h3>Acesso ao Sistema</h3>
+                        <h:panelGroup rendered="#{!empty param['msg']}">
+                            <span style='color: red; font-weight: bold;'>Usuário ou senha incorretos</span>
+                        </h:panelGroup>
+                        <label>Login</label>
+                        <input type="text" id="usuario" name="j_username" class="span3" />
+                        <label>Senha</label>
+                        <input name="j_password" type="password" class="span3" />
+                        <input class="btn btn-large btn-primary" type="submit" value="Entrar" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

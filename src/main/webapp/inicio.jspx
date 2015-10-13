@@ -7,7 +7,14 @@
 	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
-
+		
+		<h:panelGrid columns="5">
+			<h:outputLink value="registrofrequencia.jsf">
+				<h:graphicImage value="imagens/registroFreguencia.png"/><br/>
+				<h:outputText value="Registro de Frequência"/>
+			</h:outputLink>
+	
+		</h:panelGrid>
 
 
 	</ui:define>

@@ -1,0 +1,26 @@
+.valido{
+	color: green;
+}
+
+.invalido{
+	color: red;
+}
+
+.ui-widget {
+   font-size: 12px !important;
+}
+
+.ui-growl {
+   z-index: 9999;
+}
+.negrito {
+	font-weight: bold;
+}
+
+.alinharTopo{
+	vertical-align: top;
+}
+
+.E{
+	text-align: left;
+}

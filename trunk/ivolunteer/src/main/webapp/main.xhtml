@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+   xmlns:h="http://java.sun.com/jsf/html" 
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:ui="http://java.sun.com/jsf/facelets" 
+   xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>IVolunteer</title>
+    <link href="css/ivolunteer.css" rel="stylesheet" />
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <link href="css/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="css/styles.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
+    <ui:insert name="cabecalho" />
+</h:head>
+<h:body>
+    <p:growl autoUpdate="true"></p:growl>
+    <div class="navbar navbar-fixed-top" style="z-index: 1;">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <a class="brand" href="index.html">Inicio</a>
+                
+                <h:panelGroup rendered="#{securityScope.userInRole['USUARIO']}">
+
+                  
+
+                    <div style="height: 0px;" class="nav-collapse collapse">
+                        <ul class="nav">
+                            <li>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                  Secretária
+                                  <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                       <li id="nav-parceiroList" ><a href="candidato.jsf">Canditado</a></li>
+                                       <li id="nav-produtoList" ><a href="cadastroavaliacao.jsf">Avaliação</a></li>
+                                       <li id="nav-centroCusto" ><a href="cadastrofuncionario.jsf">Funcionário</a></li>
+                                       <li id="nav-documentoFiscal" ><a href="matricula.jsf">Matricula</a></li>
+                                       <li id="nav-documentoFiscalList" ><a href="turma.jsf">Turma</a></li>
+                                       <li id="nav-ajustarProdutoContabilList" ><a href="atividadediaria.jsf">Atividade</a></li>
+                                       <li id="nav-conversorProdutoList" ><a href="AgrupamentoTurma.jsf">Agrupamento</a></li>
+                                </ul>
+                            </li>
+                            
+                            <li>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                  Módulos
+                                  <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                       <li id="nav-parceiroList" ><a href="listaavaliacao.jsf">Lista de Avaliação</a></li>
+                                       <li id="nav-produtoList" ><a href="pesquisacandidato.jsf">Seleção de Candidato</a></li>
+                                       <li id="nav-centroCusto" ><a href="registrofrequencia.jsf">Registro de Frequência</a></li>
+                                       <li id="nav-documentoFiscal" ><a href="registroponto.jsf">Registro de Ponto</a></li>
+                                </ul>
+                            </li> 
+                             
+                            <h:panelGroup rendered="#{securityScope.userInRole['PROFESSOR']}">
+	                            <li>
+	                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+	                                  Sala de Aula
+	                                  <span class="caret"></span>
+	                                </a>
+	                                <ul class="dropdown-menu">
+	                                       <li id="nav-frequencia" ><a href="registrofrequencia.jsf">Registrar Frequência</a></li>
+	                                </ul>
+	                            </li> 
+                            </h:panelGroup>
+                            
+                            
+                            <h:panelGroup rendered="#{securityScope.userInRole['ADMIN']}">
+	                            <li>
+	                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+	                                  Administrar
+	                                  <span class="caret"></span>
+	                                </a>
+	                                <ul class="dropdown-menu">
+		                                <li id="nav-usuarioLista"><a href="usuario.jsf">Usuário</a></li>
+	                                </ul>
+	                            </li>
+                            </h:panelGroup>
+                        </ul>
+                        
+                        
+                        <div class="pull-right" >
+                              <table>
+                                 <tr>
+                                    <td>
+                                       Usuário:
+                                    </td>
+                                    <td>
+                                       <span class="label label-inverse">#{UsuarioLogadoControl.usuario.nome}</span>
+                                    </td>
+                                    <td rowspan="2"><a href="mudarSenha.jsf" class="btn btn-info">Alterar Senha</a></td>
+                                    <td rowspan="2"><a href="sair.jsp" class="btn btn-info">Sair</a></td>
+                                 </tr>
+                              </table>
+                        </div>
+                    </div>
+                </h:panelGroup>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+    <br /><br /><br /><br />
+    <div class="container">
+        <ui:insert name="conteudo" />
+    </div>
+
+    <footer class="footer navbar-fixed-bottom" style="z-index: -1;">
+        <div class="container">
+            <p>Copyright (c) - Ambient Informática Ltda. IVolunteer versão: #{VersaoControl.versao}</p>
+        </div>
+    </footer>
+
+</h:body>
+</html>

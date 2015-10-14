@@ -13,11 +13,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import br.com.ambientinformatica.jpa.util.AlfaNumerico;
@@ -39,7 +39,8 @@ public class Usuario extends Entidade {
 
 	private String senha;
 
-	private String nome;
+	@OneToOne
+	private Pessoa pessoa;
 
 	@Temporal(TemporalType.DATE)
 	private Date dataAlteracaoSenha = new Date();
@@ -50,12 +51,10 @@ public class Usuario extends Entidade {
 	@Temporal(TemporalType.DATE)
 	private Date dataUltimoAcesso = new Date();
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
 	@JoinColumn(name = "usuario_id")
-	@Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	private Set<PapelUsuario> papeis = new HashSet<PapelUsuario>();
 
-	
 	public void addPapel(EnumPapelUsuario papel) {
 	    if (!isContemPapel(papel)) {
 	        PapelUsuario pu = new PapelUsuario();
@@ -64,11 +63,19 @@ public class Usuario extends Entidade {
 	    }
 	}
 	
-	public void removerPapel(PapelUsuario papel) {
-	    if(isContemPapel(papel.getPapel())){
-	        papeis.remove(papel);
-	    }
+	public void removePapel(PapelUsuario papel) {
+		papeis.remove(papel);
 	}
+	
+	public boolean isContemPapel(EnumPapelUsuario papel) {
+		for (PapelUsuario p : papeis) {
+			if (p.getPapel() == papel) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	
 	public String getLogin() {
 		return login;
@@ -84,14 +91,6 @@ public class Usuario extends Entidade {
 
 	public void setSenhaNaoCriptografada(String senha) {
 		this.senha = UtilHash.gerarStringHash(senha, Algoritimo.MD5);
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
 	}
 
 	public Date getDataAlteracaoSenha() {
@@ -118,15 +117,6 @@ public class Usuario extends Entidade {
 		this.dataUltimoAcesso = dataUltimoAcesso;
 	}
 
-	public boolean isContemPapel(EnumPapelUsuario papel) {
-		for (PapelUsuario p : papeis) {
-			if (p.getPapel() == papel) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public Set<PapelUsuario> getPapeis() {
 		return papeis;
 	}
@@ -139,6 +129,14 @@ public class Usuario extends Entidade {
 		List<PapelUsuario> result = new ArrayList<PapelUsuario>(papeis);
 		Collections.sort(result);
 		return result;
+	}
+
+	public Pessoa getPessoa() {
+		return pessoa;
+	}
+
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
 	}
 
 

@@ -1,14 +1,11 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "id")

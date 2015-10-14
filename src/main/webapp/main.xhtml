@@ -95,11 +95,13 @@
                               <table>
                                  <tr>
                                     <td>
-                                       Usuário:
+                                       Usuário:<br/> Matricula:
                                     </td>
                                     <td>
-                                       <span class="label label-inverse">#{UsuarioLogadoControl.usuario.nome}</span>
-                                    </td>
+                                       <span class="label label-inverse">#{UsuarioLogadoControl.usuario.pessoa.nomePessoa}</span>
+										<br/>
+                                       <span class="label label-inverse">#{UsuarioLogadoControl.usuario.pessoa.id}</span>
+                                    </td>                                    
                                     <td rowspan="2"><a href="mudarSenha.jsf" class="btn btn-info">Alterar Senha</a></td>
                                     <td rowspan="2"><a href="sair.jsp" class="btn btn-info">Sair</a></td>
                                  </tr>

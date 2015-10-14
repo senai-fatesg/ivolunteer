@@ -10,11 +10,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
-import br.com.ambientinformatica.ivolunteer.entidade.AgrupamentoTurma;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTurno;
 import br.com.ambientinformatica.ivolunteer.entidade.Turma;
 import br.com.ambientinformatica.ivolunteer.persistencia.TurmaDao;
-import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 
 @Controller("TurmaControl")
 @Scope("conversation")

@@ -7,7 +7,8 @@ public enum EnumTipoPessoa implements IEnum {
 	CANDIDATO("Candidato"), 
 	ALUNO("Aluno"), 
 	RESPONSAVEL("Responsavel"),
-	EDUCADOR("Educador");
+	EDUCADOR("Educador"),
+	COLABORADOR("Colaborador");
 
 	public String getDescricao() {
 		return descricao;

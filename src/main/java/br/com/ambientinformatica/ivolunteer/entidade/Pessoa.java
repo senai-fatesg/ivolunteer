@@ -83,13 +83,6 @@ public class Pessoa {
 	@JoinColumn(name = "pessoa_id")
 	private List<Responsavel> listaResponsavel = new ArrayList<Responsavel>();
 
-	// construtor da classe
-	public Pessoa() {
-		listaEndereco = new ArrayList<Endereco>();
-		listaTelefone = new ArrayList<Telefone>();
-		listaResponsavel = new ArrayList<Responsavel>();
-	}
-
 	public Integer getIdade() {
 		if (this.dataNascimento == null) {
 			return 0;

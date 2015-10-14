@@ -1,9 +1,7 @@
 package br.com.ambientinformatica.ivolunteer.controle;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
@@ -11,15 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-
-
-
-
-
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumPapelUsuario;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoPessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.PapelUsuario;
 import br.com.ambientinformatica.ivolunteer.entidade.Usuario;
+import br.com.ambientinformatica.ivolunteer.persistencia.PessoaDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.UsuarioDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 
@@ -28,22 +23,21 @@ import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 public class UsuarioControl {
     
     private Usuario usuario = new Usuario();
+    
     private EnumPapelUsuario papel;
+    
     private PapelUsuario papelUsuario;
     
-    private List<PapelUsuario> papeis =  new ArrayList<PapelUsuario>();
-
     @Autowired
     private UsuarioDao usuarioDao;
-
-    @PostConstruct
-    public void init(){
-
-    }
     
+    @Autowired
+    private PessoaDao pessoaDao;
+
     public void adicionarPapel(){
         try{
             usuario.addPapel(papel);
+            usuarioDao.alterar(usuario);
         }catch(Exception e){
             UtilFaces.addMensagemFaces(e);
         }
@@ -51,7 +45,8 @@ public class UsuarioControl {
 
     public void removerPapel(ActionEvent evt){
         try{
-            usuario.removerPapel((PapelUsuario) UtilFaces.getValorParametro(evt, "papel"));
+            usuario.removePapel((PapelUsuario) UtilFaces.getValorParametro(evt, "papel"));
+            usuarioDao.alterar(usuario);
         }catch(Exception e){
             UtilFaces.addMensagemFaces(e);
         }
@@ -59,11 +54,18 @@ public class UsuarioControl {
     
     public void confirmar(ActionEvent evt){
         try {
-            usuarioDao.alterar(usuario);
-            UtilFaces.addMensagemFaces("");
+      	  if(usuario == null && usuario.getId() == null){
+      		  usuario.getPessoa().setEnumTipoPessoa(EnumTipoPessoa.COLABORADOR);
+      		  pessoaDao.incluir(usuario.getPessoa());
+      		  usuarioDao.incluir(usuario);
+      		  UtilFaces.addMensagemFaces("Usuário incluido com sucesso.");
+      	  }else{
+      		  usuarioDao.alterar(usuario);
+      		  UtilFaces.addMensagemFaces("Usuário alterado com sucesso.");
+      	  }
+      	  
         } catch (PersistenciaException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            UtilFaces.addMensagemFaces("Houve um erro ao adicionar o usuário.");
         }
     }
     
@@ -75,10 +77,6 @@ public class UsuarioControl {
 
     public void setPapel(EnumPapelUsuario papel) {
         this.papel = papel;
-    }
-
-    public void setPapeis(List<PapelUsuario> papeis) {
-        this.papeis = papeis;
     }
 
     public void addPapel() {

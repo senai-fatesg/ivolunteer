@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ambientinformatica.ivolunteer.entidade.EnumPapelUsuario;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoPessoa;
+import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.Usuario;
+import br.com.ambientinformatica.ivolunteer.persistencia.PessoaDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.UsuarioDao;
 import br.com.ambientinformatica.util.UtilLog;
 
@@ -17,6 +20,9 @@ public class InicializadorSistema {
 
 	@Autowired
 	private UsuarioDao usuarioDao;
+	
+	@Autowired
+	private PessoaDao pessoaDao;
 	
 	@PostConstruct
 	public void iniciar(){
@@ -27,12 +33,18 @@ public class InicializadorSistema {
 		try {
 			List<Usuario> usuarios = usuarioDao.listar();
 			if(usuarios.isEmpty()){
+				Pessoa pessoa = new Pessoa();
+				pessoa.setNomePessoa("ADMINISTRADOR PADRAO DO SISTEMA");
+				pessoa.setEnumTipoPessoa(EnumTipoPessoa.COLABORADOR);
+				pessoa.setCpf("11111111111");
+				pessoaDao.incluir(pessoa);
+				
 				Usuario usu = new Usuario();
-				usu.setNome("admin");
 				usu.setLogin("admin");
 				usu.setSenhaNaoCriptografada("123456");
 				usu.addPapel(EnumPapelUsuario.ADMIN);
 				usu.addPapel(EnumPapelUsuario.USUARIO);
+				usu.setPessoa(pessoa);
 				usuarioDao.incluir(usu);
 				UtilLog.getLog().info("*** USUÁRIO admin CRIADO com a senha 123456 ***");
 			}

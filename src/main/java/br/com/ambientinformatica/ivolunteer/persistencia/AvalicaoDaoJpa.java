@@ -1,17 +1,13 @@
 package br.com.ambientinformatica.ivolunteer.persistencia;
 
-import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import br.com.ambientinformatica.ivolunteer.entidade.Avaliacao;
-import br.com.ambientinformatica.ivolunteer.entidade.Questao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 import br.com.ambientinformatica.jpa.persistencia.PersistenciaJpa;
 

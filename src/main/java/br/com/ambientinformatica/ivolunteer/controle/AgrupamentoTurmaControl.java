@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.AgrupamentoTurma;
-import br.com.ambientinformatica.ivolunteer.entidade.Avaliacao;
 import br.com.ambientinformatica.ivolunteer.persistencia.AgrupamentoTurmaDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 

@@ -29,5 +29,5 @@ public class UsuarioDaoJpa extends PersistenciaJpa<Usuario> implements UsuarioDa
 			throw new PersistenceException("Erro ao consultar usuário pelo Login");
 		}
 	}
-   
+
 }

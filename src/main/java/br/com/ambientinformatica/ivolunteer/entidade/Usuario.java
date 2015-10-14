@@ -36,13 +36,6 @@ public class Usuario extends Entidade {
 	@AlfaNumerico(message = "O login do usuário não pode conter caracteres especiais, acentos ou espaços", semAcentos = true, semEspacos = true, groups = AmbientValidator.class)
 	private String login;
 
-	public void addPapel(EnumPapelUsuario papel) {
-		if (!isContemPapel(papel)) {
-			PapelUsuario pu = new PapelUsuario();
-			pu.setPapel(papel);
-			papeis.add(pu);
-		}
-	}
 
 	private String senha;
 
@@ -62,6 +55,21 @@ public class Usuario extends Entidade {
 	@Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	private Set<PapelUsuario> papeis = new HashSet<PapelUsuario>();
 
+	
+	public void addPapel(EnumPapelUsuario papel) {
+	    if (!isContemPapel(papel)) {
+	        PapelUsuario pu = new PapelUsuario();
+	        pu.setPapel(papel);
+	        papeis.add(pu);
+	    }
+	}
+	
+	public void removerPapel(PapelUsuario papel) {
+	    if(isContemPapel(papel.getPapel())){
+	        papeis.remove(papel);
+	    }
+	}
+	
 	public String getLogin() {
 		return login;
 	}
@@ -132,5 +140,6 @@ public class Usuario extends Entidade {
 		Collections.sort(result);
 		return result;
 	}
+
 
 }

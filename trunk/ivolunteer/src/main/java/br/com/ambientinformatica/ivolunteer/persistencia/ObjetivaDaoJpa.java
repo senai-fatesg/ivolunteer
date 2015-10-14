@@ -7,7 +7,6 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 
 import br.com.ambientinformatica.ivolunteer.entidade.Avaliacao;
-import br.com.ambientinformatica.ivolunteer.entidade.Discursiva;
 import br.com.ambientinformatica.ivolunteer.entidade.Objetiva;
 import br.com.ambientinformatica.jpa.persistencia.PersistenciaJpa;
 

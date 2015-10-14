@@ -4,17 +4,24 @@
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="conteudo">
 		<h:form id="formCorpo">
-			<p:panel header="Adicionar papeis ao usuário" id="panel">
-				<a:field label="login">
-					<p:inputText value="#{UsuarioControl.usuario.login }"></p:inputText>
+			<p:panel header="Adicionar papeis ao usuário" id="panel" style="width:100%">
+				<a:field label="Nome" id="nomePessoa">
+					<p:inputText value="#{UsuarioControl.usuario.pessoa.nomePessoa }"/>
 				</a:field>
-				<a:field label="senha" spaceLeft="10px">
-					<p:password styleClass="obrigatorio" id="senha" value="#{UsuarioControl.usuario.senha}" feedback="true" inline="true"
+				<a:field label="CPF" spaceLeft="10px">
+					<p:inputText id="cpfPessoa" value="#{UsuarioControl.usuario.pessoa.cpf }"></p:inputText>
+				</a:field>
+				<a:newLine/>
+				<a:field label="Login">
+					<p:inputText id="loginUsuario" value="#{UsuarioControl.usuario.login }"></p:inputText>
+				</a:field>
+				<a:field label="Senha" spaceLeft="10px">
+					<p:password styleClass="obrigatorio" id="senhaUsuario" value="#{UsuarioControl.usuario.senhaNaoCriptografada}" feedback="true" inline="true"
 						promptLabel="Digite uma senha segura" goodLabel="Boa" weakLabel="Razoável" strongLabel="Excelente" />
 				</a:field>
 				<a:newLine />
-				<p:fieldset legend="Papéis">
-					<a:field label="Papel">
+				<p:fieldset legend="Permissões" style="width:95%">
+					<a:field label="Permissão">
 						<p:selectOneMenu styleClass="obrigatorio" value="#{UsuarioControl.papelUsuario.papel}" converter="objectConverter" style="width:300px;">
 							<f:selectItems var="papelUsuario" value="#{UsuarioControl.papeis}" itemLabel="#{papelUsuario}" itemValue="#{papelUsuario}" />
 						</p:selectOneMenu>
@@ -24,7 +31,7 @@
 					</a:field>
 					<a:newLine/>
 					<a:newLine/>
-				<p:panel header="Papeis adicionados" id="panelPapeis">
+				<p:panel header="Papeis adicionados" id="panelPapeis" style="width:90%">
 					<p:dataTable id="papeisUsuario" value="#{UsuarioControl.usuario.papeis }" var="cont" width="100%" emptyMessage="Sem registros">
 						<p:column headerText="Descricao">
 							<h:outputText value="#{cont.papel.descricao }"></h:outputText>

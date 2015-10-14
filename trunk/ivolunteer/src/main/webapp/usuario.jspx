@@ -16,33 +16,34 @@
 					<p:inputText id="loginUsuario" value="#{UsuarioControl.usuario.login }"></p:inputText>
 				</a:field>
 				<a:field label="Senha" spaceLeft="10px">
-					<p:password styleClass="obrigatorio" id="senhaUsuario" value="#{UsuarioControl.usuario.senhaNaoCriptografada}" feedback="true" inline="true"
-						promptLabel="Digite uma senha segura" goodLabel="Boa" weakLabel="Razoável" strongLabel="Excelente" />
+					<p:inputText id="senhaUsuario" value="#{UsuarioControl.senha}" readonly="true"  />
 				</a:field>
 				<a:newLine />
 				<p:fieldset legend="Permissões" style="width:95%">
 					<a:field label="Permissão">
-						<p:selectOneMenu styleClass="obrigatorio" value="#{UsuarioControl.papelUsuario.papel}" converter="objectConverter" style="width:300px;">
+						<p:selectOneMenu styleClass="obrigatorio" value="#{UsuarioControl.papel}" converter="objectConverter" style="width:300px;">
 							<f:selectItems var="papelUsuario" value="#{UsuarioControl.papeis}" itemLabel="#{papelUsuario}" itemValue="#{papelUsuario}" />
 						</p:selectOneMenu>
 					</a:field>
 					<a:field spaceLeft="10px">
-						<p:commandButton value="Adicionar" actionListener="#{UsuarioControl.adicionarPapel }" update="@all" ></p:commandButton>
+						<p:commandButton value="Adicionar" actionListener="#{UsuarioControl.adicionarPapel }" update=":formCorpo:panelPapeis" ></p:commandButton>
 					</a:field>
 					<a:newLine/>
 					<a:newLine/>
 				<p:panel header="Papeis adicionados" id="panelPapeis" style="width:90%">
-					<p:dataTable id="papeisUsuario" value="#{UsuarioControl.usuario.papeis }" var="cont" width="100%" emptyMessage="Sem registros">
-						<p:column headerText="Descricao">
-							<h:outputText value="#{cont.papel.descricao }"></h:outputText>
+					<p:dataTable id="papeisUsuario" value="#{UsuarioControl.papeisAdicionados }" var="permissao" width="100%" emptyMessage="Sem registros">
+						<p:column headerText="Descrição">
+							<h:outputText value="#{permissao.descricao }"/>
 						</p:column>					
 					</p:dataTable>
 				</p:panel>
-				<a:field>
-					<p:commandButton value="Confirmar" actionListener="#{UsuarioControl.confirmar }"></p:commandButton>
-				</a:field>
 				</p:fieldset>
+				
 			</p:panel>
+			<a:field>
+				<p:commandButton value="Confirmar"
+					actionListener="#{UsuarioControl.confirmar }" update="@all"></p:commandButton>
+			</a:field>
 		</h:form>
 	</ui:define>
 </ui:composition>

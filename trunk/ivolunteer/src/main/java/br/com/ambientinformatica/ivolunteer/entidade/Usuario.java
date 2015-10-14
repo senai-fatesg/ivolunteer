@@ -40,7 +40,7 @@ public class Usuario extends Entidade {
 	private String senha;
 
 	@OneToOne
-	private Pessoa pessoa;
+	private Pessoa pessoa = new Pessoa();
 
 	@Temporal(TemporalType.DATE)
 	private Date dataAlteracaoSenha = new Date();
@@ -61,6 +61,12 @@ public class Usuario extends Entidade {
 	        pu.setPapel(papel);
 	        papeis.add(pu);
 	    }
+	}
+	
+	public void addAllPapel(List<EnumPapelUsuario> papeis) {
+	    for (EnumPapelUsuario papel : papeis) {
+	      addPapel(papel);
+      }
 	}
 	
 	public void removePapel(PapelUsuario papel) {

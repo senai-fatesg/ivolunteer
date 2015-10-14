@@ -8,32 +8,49 @@
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
 
-		<p:panel header="Formulário" id="panel">
-			<h:panelGrid columns="2">
-				<h:outputText value="Nome"></h:outputText>
-				<p:inputText value="#{UsuarioControl.usuario.nome }"></p:inputText>
-				<h:outputText value="Telefone"></h:outputText>
-				<p:inputMask value="#{UsuarioControl.usuario.telefone }" mask="(99) 9999-9999"></p:inputMask>
-				<p:commandButton actionListener="#{UsuarioControl.confirmar }" value="Confirmar" update="contatos, panel"></p:commandButton>
-			</h:panelGrid>
+		<p:panel header="Usuários" id="panel">
+			<a:field label="Login">
+				<p:inputText value="#{UsuarioListaControl.login }"></p:inputText>
+			</a:field>
+			<a:field spaceLeft="10px" label="Data cadastro">
+				<p:inputMask value="#{UsuarioListaControl.dataCadastro }" mask="99/99/9999">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</p:inputMask>
+			</a:field>
+			<a:field spaceLeft="10px">
+				<p:commandButton value="Buscar" action="#{UsuarioListaControl.buscarUsuario}" update="@all" icon="ui-icon-search"/>
+			</a:field>
+			<a:newLine/>
 		</p:panel>
 		
-		<p:dataTable id="contatos" value="#{UsuarioControl.usuarios }" var="cont"  width="100%" emptyMessage="Sem registros" >
+		<p:dataTable id="usuarios" value="#{UsuarioListaControl.usuarios }" var="usuario"  width="100%" emptyMessage="Sem registros" >
 			<f:facet name="header">
-				<h:outputText value="Lista de Contatos"></h:outputText>
+				<h:outputText value="Lista de Usuários"></h:outputText>
 			</f:facet>
-			<p:column sortBy="#{cont.nome }">
+			<p:column sortBy="#{usuario.login }">
 				<f:facet name="header">
-					<h:outputText value="Nome"></h:outputText>
+					<h:outputText value="Login"></h:outputText>
 				</f:facet>
-				<h:outputText value="#{cont.nome }"></h:outputText>
+				<h:outputText value="#{usuario.login }"></h:outputText>
 			</p:column>	
-			<p:column sortBy="#{cont.telefone }">
+			<p:column width="8%">
 				<f:facet name="header">
-					<h:outputText value="Telefone"></h:outputText>
+					<h:outputText value="Reiniciar"></h:outputText>
 				</f:facet>
-				<h:outputText value="#{cont.telefone }"></h:outputText>
+				<p:commandButton actionListener="#{UsuarioListaControl.reiniciarSenha(usuario) }" update="@all" icon="ui-icon-refresh"></p:commandButton>
+			</p:column>
+			<p:column width="8%">
+				<f:facet name="header">
+					<h:outputText value="Desativar"></h:outputText>
+				</f:facet>
+				<p:commandButton icon="ui-icon-close"></p:commandButton>
 			</p:column>	
+			<p:column width="8%">
+				<f:facet name="header">
+					<h:outputText value="Alterar"></h:outputText>
+				</f:facet>
+				<p:commandButton icon="ui-icon-pencil"></p:commandButton>
+			</p:column>		
 		</p:dataTable>
 
 	</ui:define>

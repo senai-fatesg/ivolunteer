@@ -9,4 +9,5 @@ public interface UsuarioDao extends Persistencia<Usuario>{
 
 	Usuario consultarPorLogin(String login) throws PersistenceException;
 
+
 }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="main.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a="http://www.ambientinformatica.com.br/jsf2"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="conteudo">
+		<h:form id="formCorpo">
+			<p:panel header="Adicionar papeis ao usuário" id="panel">
+				<a:field label="login">
+					<p:inputText value="#{UsuarioControl.usuario.login }"></p:inputText>
+				</a:field>
+				<a:field label="senha" spaceLeft="10px">
+					<p:password styleClass="obrigatorio" id="senha" value="#{UsuarioControl.usuario.senha}" feedback="true" inline="true"
+						promptLabel="Digite uma senha segura" goodLabel="Boa" weakLabel="Razoável" strongLabel="Excelente" />
+				</a:field>
+				<a:newLine />
+				<p:fieldset legend="Papéis">
+					<a:field label="Papel">
+						<p:selectOneMenu styleClass="obrigatorio" value="#{UsuarioControl.papelUsuario.papel}" converter="objectConverter" style="width:300px;">
+							<f:selectItems var="papelUsuario" value="#{UsuarioControl.papeis}" itemLabel="#{papelUsuario}" itemValue="#{papelUsuario}" />
+						</p:selectOneMenu>
+					</a:field>
+					<a:field spaceLeft="10px">
+						<p:commandButton value="Adicionar" actionListener="#{UsuarioControl.adicionarPapel }" update="@all" ></p:commandButton>
+					</a:field>
+					<a:newLine/>
+					<a:newLine/>
+				<p:panel header="Papeis adicionados" id="panelPapeis">
+					<p:dataTable id="papeisUsuario" value="#{UsuarioControl.usuario.papeis }" var="cont" width="100%" emptyMessage="Sem registros">
+						<p:column headerText="Descricao">
+							<h:outputText value="#{cont.papel.descricao }"></h:outputText>
+						</p:column>					
+					</p:dataTable>
+				</p:panel>
+				<a:field>
+					<p:commandButton value="Confirmar" actionListener="#{UsuarioControl.confirmar }"></p:commandButton>
+				</a:field>
+				</p:fieldset>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

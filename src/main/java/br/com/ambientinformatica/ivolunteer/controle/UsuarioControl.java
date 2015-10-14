@@ -1,5 +1,6 @@
 package br.com.ambientinformatica.ivolunteer.controle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.event.ActionEvent;
@@ -26,7 +27,9 @@ public class UsuarioControl {
     
     private EnumPapelUsuario papel;
     
-    private PapelUsuario papelUsuario;
+    private List<EnumPapelUsuario> papeisAdicionados = new ArrayList<EnumPapelUsuario>();
+    
+    private String senha = "123456";
     
     @Autowired
     private UsuarioDao usuarioDao;
@@ -35,30 +38,24 @@ public class UsuarioControl {
     private PessoaDao pessoaDao;
 
     public void adicionarPapel(){
-        try{
-            usuario.addPapel(papel);
-            usuarioDao.alterar(usuario);
-        }catch(Exception e){
-            UtilFaces.addMensagemFaces(e);
-        }
+   	 papeisAdicionados.add(papel);
     }
 
     public void removerPapel(ActionEvent evt){
-        try{
-            usuario.removePapel((PapelUsuario) UtilFaces.getValorParametro(evt, "papel"));
-            usuarioDao.alterar(usuario);
-        }catch(Exception e){
-            UtilFaces.addMensagemFaces(e);
-        }
+   	 papeisAdicionados.remove((PapelUsuario) UtilFaces.getValorParametro(evt, "papel"));
     }
     
     public void confirmar(ActionEvent evt){
         try {
-      	  if(usuario == null && usuario.getId() == null){
+      	  if(usuario == null || usuario.getPessoa() == null || usuario.getPessoa().getId() == null){
       		  usuario.getPessoa().setEnumTipoPessoa(EnumTipoPessoa.COLABORADOR);
       		  pessoaDao.incluir(usuario.getPessoa());
+      		  usuario.setSenhaNaoCriptografada(senha);
+      		  usuario.addAllPapel(papeisAdicionados);
       		  usuarioDao.incluir(usuario);
       		  UtilFaces.addMensagemFaces("Usuário incluido com sucesso.");
+      		  usuario = new Usuario();
+      		  papeisAdicionados = new ArrayList<EnumPapelUsuario>();
       	  }else{
       		  usuarioDao.alterar(usuario);
       		  UtilFaces.addMensagemFaces("Usuário alterado com sucesso.");
@@ -95,12 +92,16 @@ public class UsuarioControl {
         this.usuario = usuario;
     }
 
-    public PapelUsuario getPapelUsuario() {
-        return papelUsuario;
-    }
+	public String getSenha() {
+		return senha;
+	}
 
-    public void setPapelUsuario(PapelUsuario papelUsuario) {
-        this.papelUsuario = papelUsuario;
-    }
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	public List<EnumPapelUsuario> getPapeisAdicionados() {
+		return papeisAdicionados;
+	}
 
 }

@@ -9,7 +9,7 @@
 					<p:inputText value="#{UsuarioControl.usuario.pessoa.nomePessoa }"/>
 				</a:field>
 				<a:field label="CPF" spaceLeft="10px">
-					<p:inputText id="cpfPessoa" value="#{UsuarioControl.usuario.pessoa.cpf }"></p:inputText>
+					<p:inputMask id="cpfPessoa" value="#{UsuarioControl.usuario.pessoa.cpf }" mask="999.999.999-99"></p:inputMask>
 				</a:field>
 				<a:newLine/>
 				<a:field label="Login">
@@ -22,11 +22,12 @@
 				<p:fieldset legend="Permissões" style="width:95%">
 					<a:field label="Permissão">
 						<p:selectOneMenu styleClass="obrigatorio" value="#{UsuarioControl.papel}" converter="objectConverter" style="width:300px;">
+							<f:selectItem itemLabel="Selecione" itemDisabled="true"/>
 							<f:selectItems var="papelUsuario" value="#{UsuarioControl.papeis}" itemLabel="#{papelUsuario}" itemValue="#{papelUsuario}" />
 						</p:selectOneMenu>
 					</a:field>
 					<a:field spaceLeft="10px">
-						<p:commandButton value="Adicionar" actionListener="#{UsuarioControl.adicionarPapel }" update=":formCorpo:panelPapeis" ></p:commandButton>
+						<p:commandButton value="Adicionar" actionListener="#{UsuarioControl.adicionarPapel }" update="@all" icon="ui-icon-plus"></p:commandButton>
 					</a:field>
 					<a:newLine/>
 					<a:newLine/>
@@ -41,8 +42,7 @@
 				
 			</p:panel>
 			<a:field>
-				<p:commandButton value="Confirmar"
-					actionListener="#{UsuarioControl.confirmar }" update="@all"></p:commandButton>
+				<p:commandButton value="Confirmar" actionListener="#{UsuarioControl.confirmar }" update="@all" icon="ui-icon-disk"></p:commandButton>
 			</a:field>
 		</h:form>
 	</ui:define>

@@ -62,8 +62,8 @@
 				<p:commandButton icon="ui-icon-close"></p:commandButton>
 			</p:column>	
 			<p:column headerText="Alterar" width="8%">
-				<p:commandButton  ajax="false" update="@form" action="usuario.jspx" icon="ui-icon-pencil">
-					<f:setPropertyActionListener value="#{usuario }" target="#{UsuarioListaControl.usuario }" />
+				<p:commandButton  ajax="false" update="@form" action="usuario?faces-redirect=true" icon="ui-icon-pencil">
+					<f:setPropertyActionListener value="#{usuario }" target="#{UsuarioControl.usuario }" />
 				</p:commandButton>
 			</p:column>
 		</p:dataTable>

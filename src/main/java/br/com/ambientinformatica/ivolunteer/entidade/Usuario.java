@@ -54,6 +54,8 @@ public class Usuario extends Entidade {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
 	@JoinColumn(name = "usuario_id")
 	private Set<PapelUsuario> papeis = new HashSet<PapelUsuario>();
+	
+    private boolean ativo;
 
 	public void addPapel(EnumPapelUsuario papel) {
 	    if (!isContemPapel(papel)) {
@@ -126,8 +128,8 @@ public class Usuario extends Entidade {
 	public Set<PapelUsuario> getPapeis() {
 		return papeis;
 	}
-
-	public Object getId() {
+	
+    public Object getId() {
 		return login;
 	}
 
@@ -145,5 +147,13 @@ public class Usuario extends Entidade {
 		this.pessoa = pessoa;
 	}
 
+    public boolean isAtivo() {
+        return ativo;
+    }
 
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
+
+	
 }

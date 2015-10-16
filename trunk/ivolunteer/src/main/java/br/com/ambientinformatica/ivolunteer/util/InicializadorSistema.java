@@ -43,6 +43,7 @@ public class InicializadorSistema {
 				usu.setLogin("admin");
 				usu.setSenhaNaoCriptografada("123456");
 				usu.addPapel(EnumPapelUsuario.ADMIN);
+				usu.addPapel(EnumPapelUsuario.USUARIO);
 				usu.setPessoa(pessoa);
 				usuarioDao.incluir(usu);
 				UtilLog.getLog().info("*** USUÁRIO admin CRIADO com a senha 123456 ***");

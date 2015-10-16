@@ -4,7 +4,8 @@ import br.com.ambientinformatica.util.IEnum;
 
 public enum EnumPapelUsuario implements IEnum {
 
-	ADMIN("Admin"), 
+	ADMIN("Admin"),
+	USUARIO("Usuario"), 
 	SECRETARIA("Secretaria"),
 	EDUCADOR("Educador");
 	

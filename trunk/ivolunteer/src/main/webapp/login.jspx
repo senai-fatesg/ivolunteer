@@ -37,7 +37,8 @@
                     <div class="well quickSignupForm">
                         <h3>Acesso ao Sistema</h3>
                         <h:panelGroup rendered="#{!empty param['msg']}">
-                            <span style='color: red; font-weight: bold;'>Usuário ou senha incorretos</span>
+                            <span style='color: red; font-weight: bold;'>Usuário ou senha incorretos.</span><BR />
+                            <span style='color: red; font-weight: bold;'>Verifique se o usuário está inativo.</span>
                         </h:panelGroup>
                         <label>Login</label>
                         <input type="text" id="usuario" name="j_username" class="span3" />

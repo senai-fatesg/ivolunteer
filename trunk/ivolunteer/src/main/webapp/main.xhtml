@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
 <h:head>
-	<title>IVolunteer</title>
+	<title>iVolunteer</title>
 	<link href="css/ivolunteer.css" rel="stylesheet" />
 	<link href="css/bootstrap.css" rel="stylesheet" />
 	<link href="css/bootstrap-responsive.css" rel="stylesheet" />
@@ -22,12 +22,11 @@
 					<span class="icon-bar"></span>
 				</a> <a class="brand" href="index.html">Inicio</a>
 
-				<h:panelGroup rendered="#{securityScope.userInRole['USUARIO']}">
-
-
+				<h:panelGroup >
 
 					<div style="height: 0px;" class="nav-collapse collapse">
 						<ul class="nav">
+						<h:panelGroup rendered="#{securityScope.userInRole['ADMIN'] or securityScope.userInRole['SECRETARIA']}">
 							<li><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Secretária <span class="caret"></span>
 							</a>
 								<ul class="dropdown-menu">
@@ -48,8 +47,8 @@
 									<li id="nav-centroCusto"><a href="registrofrequencia.jsf">Registro de Frequência</a></li>
 									<li id="nav-documentoFiscal"><a href="registroponto.jsf">Registro de Ponto</a></li>
 								</ul></li>
-
-							<h:panelGroup rendered="#{securityScope.userInRole['PROFESSOR']}">
+							</h:panelGroup>
+							<h:panelGroup rendered="#{securityScope.userInRole['ADMIN'] or securityScope.userInRole['EDUCADOR']}">
 								<li><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Sala de Aula <span class="caret"></span>
 								</a>
 									<ul class="dropdown-menu">

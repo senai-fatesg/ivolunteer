@@ -25,7 +25,7 @@ public class UsuarioListaControl {
 	private List<Usuario> usuarios = new ArrayList<Usuario>();
 
 	private String login;
-	private String nome;
+	private String nomePessoa;
 
 	@Autowired
 	private UsuarioDao usuarioDao;
@@ -45,9 +45,7 @@ public class UsuarioListaControl {
 	}
 
 	public void buscarUsuario(){
-		usuario = usuarioDao.consultarPorLogin(login);
-		usuarios.clear();
-		usuarios.add(usuario);
+		usuarios = usuarioDao.consultarPorNome(nomePessoa);
 		limparCampos();
 	}
 
@@ -63,8 +61,7 @@ public class UsuarioListaControl {
 	}
 
 	public void limparCampos(){
-		setLogin("");
-		setNome("");
+		setNomePessoa("");
 	}
 
 	public String getLogin() {
@@ -75,12 +72,12 @@ public class UsuarioListaControl {
 		this.login = login;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getNomePessoa() {
+		return nomePessoa;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setNomePessoa(String nomePessoa) {
+		this.nomePessoa = nomePessoa;
 	}
 
 	public Usuario getUsuario() {

@@ -1,8 +1,11 @@
 package br.com.ambientinformatica.ivolunteer.persistencia;
 
+import java.util.List;
+
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 
@@ -29,5 +32,17 @@ public class UsuarioDaoJpa extends PersistenciaJpa<Usuario> implements UsuarioDa
 			throw new PersistenceException("Erro ao consultar usuário pelo Login");
 		}
 	}
+
+    @Override
+    public List<Usuario> consultarPorNome(String nomePessoa) throws PersistenceException {
+        try {
+            TypedQuery<Usuario> query = em.createQuery("select distinct u from Usuario u left join fetch u.pessoa p where upper(p.nomePessoa) like upper(:nomePessoa)", Usuario.class);
+            query.setParameter("nomePessoa", "%" + nomePessoa + "%");
+            return query.getResultList();
+        } catch (Exception e) {
+            UtilLog.getLog().error(e.getMessage(), e);
+            throw new PersistenceException("Erro ao consultar o usuário");
+        }
+    }
 
 }

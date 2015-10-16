@@ -20,9 +20,10 @@
 			<div class="container">
 				<a class="btn btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span>
 					<span class="icon-bar"></span>
-				</a> <a class="brand" href="index.html">Inicio</a>
-
-				<h:panelGroup >
+				</a> 
+					<h:panelGroup rendered="#{securityScope.userInRole['USUARIO']}">
+						<a class="brand" href="index.html">Inicio</a>
+					</h:panelGroup>
 
 					<div style="height: 0px;" class="nav-collapse collapse">
 						<ul class="nav">
@@ -68,21 +69,21 @@
 						</ul>
 
 
-						<div class="pull-right">
-							<table>
-								<tr>
-									<td>Usuário:<br /> Matricula:
-									</td>
-									<td><span class="label label-inverse">#{UsuarioLogadoControl.usuario.pessoa.nomePessoa}</span> <br /> <span class="label label-inverse">#{UsuarioLogadoControl.usuario.pessoa.id}</span>
-									</td>
-									<td rowspan="2"><a href="mudarSenha.jsf" class="btn btn-info">Alterar Senha</a></td>
-									<td rowspan="2"><a href="sair.jsp" class="btn btn-info">Sair</a></td>
-								</tr>
-							</table>
-						</div>
+						<h:panelGroup rendered="#{securityScope.userInRole['USUARIO']}">
+							<div class="pull-right">
+								<table>
+									<tr>
+										<td>Usuário:<br /> Matricula:
+										</td>
+										<td><span class="label label-inverse">#{UsuarioLogadoControl.usuario.pessoa.nomePessoa}</span> <br /> <span class="label label-inverse">#{UsuarioLogadoControl.usuario.pessoa.id}</span>
+										</td>
+										<td rowspan="2"><a href="mudarSenha.jsf" class="btn btn-info">Alterar Senha</a></td>
+										<td rowspan="2"><a href="sair.jsp" class="btn btn-info">Sair</a></td>
+									</tr>
+								</table>
+							</div>
+						</h:panelGroup>
 					</div>
-				</h:panelGroup>
-
 			</div>
 		</div>
 	</div>

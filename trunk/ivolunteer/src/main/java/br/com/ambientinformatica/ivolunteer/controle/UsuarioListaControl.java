@@ -1,7 +1,6 @@
 package br.com.ambientinformatica.ivolunteer.controle;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -56,7 +55,7 @@ public class UsuarioListaControl {
 			UtilFaces.addMensagemFaces("Senha reiniciada com sucesso");
 		} catch (PersistenciaException e) {
 			UtilLog.getLog().error(e.getMessage(), e);
-			UtilFaces.addMensagemFaces("Erro ao resetar a senha");
+			UtilFaces.addMensagemFaces("Erro ao reiniciar a senha");
 		}
 	}
 

@@ -43,7 +43,7 @@ public class UsuarioService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String username) throws DataAccessException {
 		try {
 			Connection con = dataSource.getConnection();
-			String sqlUsuario = "SELECT login AS username, senha as password, 'true' AS enabled FROM usuario WHERE login = ?";
+			String sqlUsuario = "SELECT login AS username, senha as password, ativo AS enabled FROM usuario WHERE login = ?";
 
 			String sqlPapeis = "select papel as authority from papelusuario where usuario_id = ?";
 			try{

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.event.ActionEvent;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -25,6 +26,7 @@ public class UsuarioListaControl {
 
 	private String login;
 	private String nomePessoa;
+	private Usuario usuarioAtivo;
 
 	@Autowired
 	private UsuarioDao usuarioDao;
@@ -59,6 +61,47 @@ public class UsuarioListaControl {
 		}
 	}
 
+	public void desativarUsuario(ActionEvent evt){
+		if(!usuarioAtivo.isAtivo()){
+			UtilFaces.addMensagemFaces("Usuário já esta desativado");
+		}else{
+			usuarioAtivo.setAtivo(false);
+			try {
+	         usuarioDao.alterar(usuarioAtivo);
+	         UtilFaces.addMensagemFaces("Usuário desativado com sucesso");
+         } catch (PersistenciaException e) {
+         	UtilLog.getLog().error(e.getMessage(), e);
+         	UtilFaces.addMensagemFaces("Erro ao desativar o usuário");
+         }
+		}
+			
+	}
+	
+	public void ativarUsuario(ActionEvent evt){
+		if(usuarioAtivo.isAtivo()){
+			UtilFaces.addMensagemFaces("Usuário já esta ativado");
+		}else{
+			usuarioAtivo.setAtivo(true);
+			try {
+	         usuarioDao.alterar(usuarioAtivo);
+	         UtilFaces.addMensagemFaces("Usuário ativado com sucesso");
+         } catch (PersistenciaException e) {
+         	UtilLog.getLog().error(e.getMessage(), e);
+         	UtilFaces.addMensagemFaces("Erro ao ativar o usuário");
+         }
+		}
+			
+	}
+
+
+	public Usuario getUsuarioAtivo() {
+		return usuarioAtivo;
+	}
+
+	public void setUsuarioAtivo(Usuario usuarioAtivo) {
+		this.usuarioAtivo = usuarioAtivo;
+	}
+
 	public void limparCampos(){
 		setNomePessoa("");
 	}
@@ -90,5 +133,5 @@ public class UsuarioListaControl {
 	public List<Usuario> getUsuarios() {
 		return usuarios;
 	}
-
+	
 }

@@ -30,17 +30,23 @@ public class UsuarioControl {
     private List<EnumPapelUsuario> papeisAdicionados = new ArrayList<EnumPapelUsuario>();
 
     private String senha = "123456";
-    
+
     @Autowired
     private UsuarioDao usuarioDao;
 
     @Autowired
     private PessoaDao pessoaDao;
-    
-    private boolean usuarioAtivo;
+
+    private boolean usuarioAtivo = true;
 
     public void adicionarPapel(){
-        papeisAdicionados.add(papel);
+        usuario = usuarioDao.consultarPorLogin(usuario.getLogin());
+        for (PapelUsuario p : usuario.getPapeis()) {
+            if(!usuario.isContemPapel(p.getPapel())){
+                papeisAdicionados.add(papel);
+            }
+            UtilFaces.addMensagemFaces("O usuário já tem esta permissão");
+        }
     }
 
     public void removerPapel(ActionEvent evt){
@@ -102,6 +108,16 @@ public class UsuarioControl {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+        atualizaLista();
+    }
+
+    public void atualizaLista() {
+        if(usuario != null){
+            usuario = usuarioDao.consultarPorLogin(usuario.getLogin());
+            for (PapelUsuario p : usuario.getPapeis()) {
+                    papeisAdicionados.add(p.getPapel());
+            }
+        }
     }
 
     public String getSenha() {
@@ -123,6 +139,5 @@ public class UsuarioControl {
     public void setUsuarioAtivo(boolean usuarioAtivo) {
         this.usuarioAtivo = usuarioAtivo;
     }
-    
 
 }

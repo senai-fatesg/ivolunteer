@@ -26,6 +26,7 @@ public class UsuarioListaControl {
 
 	private String login;
 	private String nomePessoa;
+	private String status;
 	private Usuario usuarioAtivo;
 
 	@Autowired
@@ -36,7 +37,7 @@ public class UsuarioListaControl {
 
 	}
 
-	public List<Usuario> listar(){
+    public List<Usuario> listar(){
 		try {
 			usuarios = usuarioDao.listar();
 		} catch (PersistenciaException e) {
@@ -84,7 +85,7 @@ public class UsuarioListaControl {
 			usuarioAtivo.setAtivo(true);
 			try {
 	         usuarioDao.alterar(usuarioAtivo);
-	         UtilFaces.addMensagemFaces("Usuário ativado com sucesso");
+	         UtilFaces.addMensagemFaces("Usuário liberado para acesso ao sistema");
          } catch (PersistenciaException e) {
          	UtilLog.getLog().error(e.getMessage(), e);
          	UtilFaces.addMensagemFaces("Erro ao ativar o usuário");
@@ -92,7 +93,14 @@ public class UsuarioListaControl {
 		}
 			
 	}
-
+	
+	public String getStatus() {
+	    return status;
+	}
+	
+	public void setStatus(String status) {
+	    this.status = status;
+	}
 
 	public Usuario getUsuarioAtivo() {
 		return usuarioAtivo;

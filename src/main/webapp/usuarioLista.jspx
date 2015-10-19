@@ -52,7 +52,7 @@
 			</p:column>
 			<p:column sortBy="#{usuario.ativo }">
 				<f:facet name="header">
-					<h:outputText value="Usuário Ativo"></h:outputText>
+					<h:outputText value="Ativo?"></h:outputText>
 				</f:facet>
 				<h:outputText value="#{usuario.ativo }"></h:outputText>
 			</p:column>
@@ -84,14 +84,14 @@
 			</p:column>
 			
 		</p:dataTable>
-		<p:confirmDialog id="confirmacaoDesativacao" widgetVar="confirmacaoDesativacao" header="Tem certeza que voçê deseja desativar o usuário">
+		<p:confirmDialog id="confirmacaoDesativacao" widgetVar="confirmacaoDesativacao" header="Tem certeza que voçê deseja desativar o usuário?">
 			<p:commandButton value="Sim" actionListener="#{UsuarioListaControl.desativarUsuario }" update="@all" oncomplete="PF('confirmacaoDesativacao').hide()">
 			</p:commandButton>
 			<p:commandButton value="Não" onclick="PF('confirmacaoDesativacao').hide()">
 			</p:commandButton>
 		</p:confirmDialog>
 		
-		<p:confirmDialog id="confirmacaoAtivacao" widgetVar="confirmacaoAtivacao" header="Tem certeza que voçê deseja desativar o usuário">
+		<p:confirmDialog id="confirmacaoAtivacao" widgetVar="confirmacaoAtivacao" header="Tem certeza que voçê deseja ativar o usuário?">
 			<p:commandButton value="Sim" actionListener="#{UsuarioListaControl.ativarUsuario }" update="@all" oncomplete="PF('confirmacaoAtivacao').hide()">
 			</p:commandButton>
 			<p:commandButton value="Não" onclick="PF('confirmacaoAtivacao').hide()">

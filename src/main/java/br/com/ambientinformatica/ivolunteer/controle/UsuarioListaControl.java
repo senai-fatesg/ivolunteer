@@ -26,7 +26,6 @@ public class UsuarioListaControl {
 
 	private String login;
 	private String nomePessoa;
-	private String status;
 	private Usuario usuarioAtivo;
 
 	@Autowired
@@ -92,14 +91,6 @@ public class UsuarioListaControl {
          }
 		}
 			
-	}
-	
-	public String getStatus() {
-	    return status;
-	}
-	
-	public void setStatus(String status) {
-	    this.status = status;
 	}
 
 	public Usuario getUsuarioAtivo() {

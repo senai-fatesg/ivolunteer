@@ -45,8 +45,8 @@ public class UsuarioControl {
             if(!usuario.isContemPapel(p.getPapel())){
                 papeisAdicionados.add(papel);
             }
-            UtilFaces.addMensagemFaces("O usuário já tem esta permissão");
         }
+        UtilFaces.addMensagemFaces("O usuário já tem esta permissão");
     }
 
     public void removerPapel(ActionEvent evt){
@@ -83,6 +83,10 @@ public class UsuarioControl {
         usuario = new Usuario();
         papeisAdicionados = new ArrayList<EnumPapelUsuario>();
         setUsuarioAtivo(false);
+    }
+    
+    public void voltar(){
+        atualizaLista();
     }
 
 

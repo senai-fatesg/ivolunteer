@@ -11,3 +11,12 @@ html, body, hr {
 	color:#666;
 	font-size: 10px;
 }
+.centralizar{
+	text-align: center;
+}
+
+.navbar ul.nav .open 
+{
+	 position: relative;
+	
+}

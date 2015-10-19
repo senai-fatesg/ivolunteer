@@ -21,9 +21,9 @@ public class UsuarioDaoJpa extends PersistenciaJpa<Usuario> implements UsuarioDa
    
 	public Usuario consultarPorLogin(String login) throws PersistenceException {
 		try {
-			String sql = "select distinct u from Usuario u where u.login = :email";
+			String sql = "select distinct u from Usuario u left join fetch u.papeis p where u.login = :login";
 			Query query = em.createQuery(sql);
-			query.setParameter("email", login);
+			query.setParameter("login", login);
 			return (Usuario) query.getSingleResult();
 		} catch (NoResultException e) {
 			return null;

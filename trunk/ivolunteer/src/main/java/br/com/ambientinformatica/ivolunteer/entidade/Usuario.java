@@ -55,7 +55,7 @@ public class Usuario extends Entidade {
 	@JoinColumn(name = "usuario_id")
 	private Set<PapelUsuario> papeis = new HashSet<PapelUsuario>();
 	
-    private boolean ativo;
+    private boolean ativo = true;
 
 	public void addPapel(EnumPapelUsuario papel) {
 	    if (!isContemPapel(papel)) {

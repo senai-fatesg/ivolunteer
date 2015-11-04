@@ -21,23 +21,29 @@
 		</p:panel>
 
 		<div class="centralizar">
-		<p:dataTable id="usuarios" value="#{UsuarioListaControl.usuarios }" var="usuario" width="100%" emptyMessage="Sem registros">
+		<p:dataTable id="usuarios" value="#{UsuarioListaControl.usuarios }" var="usuario" width="100%" emptyMessage="Sem registros" style="text-align: left">
 			<f:facet name="header">
 				<h:outputText value="Lista de Usuários"></h:outputText>
 			</f:facet>
-			<p:column sortBy="#{usuario.login }">
+			<p:column sortBy="#{usuario.login }" style="width: 100px">
 				<f:facet name="header">
 					<h:outputText value="Login"></h:outputText>
 				</f:facet>
 				<h:outputText value="#{usuario.login }"></h:outputText>
 			</p:column>
-			<p:column sortBy="#{usuario.pessoa.nomePessoa }">
+			<p:column sortBy="#{usuario.pessoa.nomePessoa }" style="width: 200px">
 				<f:facet name="header">
 					<h:outputText value="Nome"></h:outputText>
 				</f:facet>
 				<h:outputText value="#{usuario.pessoa.nomePessoa }"></h:outputText>
 			</p:column>
-			<p:column sortBy="#{usuario.dataCriacao }">
+			<p:column sortBy="#{usuario.listaPapeis}" style="width: 200px">
+				<f:facet name="header">
+					<h:outputText value="Permissões"></h:outputText>
+				</f:facet>
+				<h:outputText value="#{usuario.listaPapeis }"></h:outputText>
+			</p:column>
+			<p:column sortBy="#{usuario.dataCriacao }" style="width: 100px">
 				<f:facet name="header">
 					<h:outputText value="Data do Cadastro"></h:outputText>
 				</f:facet>
@@ -45,36 +51,36 @@
 					<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-3" />
 				</h:outputText>
 			</p:column>
-			<p:column sortBy="#{usuario.pessoa.cpf }">
+			<p:column sortBy="#{usuario.pessoa.cpf }" style="width: 100px">
 				<f:facet name="header">
 					<h:outputText value="CPF"></h:outputText>
 				</f:facet>
 				<h:outputText value="#{usuario.pessoa.cpf }"></h:outputText>
 			</p:column>
-			<p:column sortBy="#{usuario.ativo }">
+			<p:column style="width: 50px">
 				<f:facet name="header">
-					<h:outputText value="Ativo?"></h:outputText>
+					<h:outputText value="Status"></h:outputText>
 				</f:facet>
-				<h:outputText value="#{usuario.ativo }"></h:outputText>
+				<h:outputText value="#{usuario.statusUsuario }"></h:outputText>
 			</p:column>
-			<p:column width="10%">
+			<p:column width="5%">
 				<f:facet name="header">
-					<h:outputText value="Reiniciar senha"></h:outputText>
+					<h:outputText value="Senha"></h:outputText>
 				</f:facet>
-				<p:commandButton actionListener="#{UsuarioListaControl.reiniciarSenha(usuario) }" update="@all" icon="ui-icon-refresh" >
+				<p:commandButton actionListener="#{UsuarioListaControl.reiniciarSenha(usuario) }" update="@all" icon="ui-icon-refresh" value="Restaurar">
 				</p:commandButton>
 			</p:column>
-			<p:column headerText="Desativar" width="10%">
+			<p:column headerText="Desativar" width="5%">
 				<p:commandButton icon="ui-icon-close" update="usuarios" onclick="PF('confirmacaoDesativacao').show()">
 					<f:setPropertyActionListener value="#{usuario }" target="#{UsuarioListaControl.usuarioAtivo }" />
 				</p:commandButton>
 			</p:column>
-			<p:column headerText="Ativar" width="10%">
+			<p:column headerText="Ativar" width="5%">
 				<p:commandButton icon="ui-icon-check" update="usuarios" onclick="PF('confirmacaoAtivacao').show()">
 					<f:setPropertyActionListener value="#{usuario }" target="#{UsuarioListaControl.usuarioAtivo }" />
 				</p:commandButton>
 			</p:column>
-			<p:column headerText="Alterar" width="8%">
+			<p:column headerText="Alterar" width="5%">
 				<p:commandButton ajax="false" update="@form" action="usuario?faces-redirect=true" icon="ui-icon-pencil">
 					<f:setPropertyActionListener value="#{usuario }" target="#{UsuarioControl.usuario }" />
 				</p:commandButton>

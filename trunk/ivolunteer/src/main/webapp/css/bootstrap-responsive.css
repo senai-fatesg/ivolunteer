@@ -454,7 +454,7 @@
   .container,
   .navbar-fixed-top .container,
   .navbar-fixed-bottom .container {
-    width: 1170px;
+    width: 1370px;
   }
   .span12 {
     width: 1170px;
@@ -701,6 +701,7 @@
     width: auto;
     padding: 0;
   }
+  
   .navbar .brand {
     padding-right: 10px;
     padding-left: 10px;

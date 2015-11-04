@@ -66,23 +66,38 @@
 										<li id="nav-usuarioLista"><a href="usuarioLista.jsf">Lista de usuários</a></li>
 									</ul></li>
 							</h:panelGroup>
-						</ul>
-
-
 						<h:panelGroup rendered="#{securityScope.userInRole['USUARIO']}">
-							<div class="pull-right">
-								<table>
-									<tr>
-										<td>Usuário:<br /> Matricula:
-										</td>
-										<td><span class="label label-inverse">#{UsuarioLogadoControl.usuario.pessoa.nomePessoa}</span> <br /> <span class="label label-inverse">#{UsuarioLogadoControl.usuario.pessoa.id}</span>
-										</td>
-										<td rowspan="2"><a href="mudarSenha.jsf" class="btn btn-info">Alterar Senha</a></td>
-										<td rowspan="2"><a href="sair.jsp" class="btn btn-info">Sair</a></td>
-									</tr>
-								</table>
-							</div>
+							<li>
+								<ul>
+									<li  style="padding-top: 10px; padding-left: 503px">Usuário: <span class="label label-inverse">#{UsuarioLogadoControl.usuario.pessoa.nomePessoa}</span></li>
+									<!--  <li>Matrícula: <span class="label label-inverse">#{UsuarioLogadoControl.usuario.pessoa.id}</span></li> -->
+								</ul></li>
 						</h:panelGroup>
+						
+							<h:panelGroup rendered="#{securityScope.userInRole['USUARIO']}">
+								<li><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="padding-left: 15px">
+									<p:commandButton value="Opções" style="background: #49afcd; color: #ffffff"/><span class="caret"></span></a>
+										<ul class="dropdown-menu">
+											<li id="nav-alterarSenha"><a href="#" onclick="PF('alterarSenha').show();">Alterar senha<span></span></a></li>
+											<li id="nav-sair"><a href="sair.jsp">Sair<span></span></a></li>
+										</ul></li>
+							</h:panelGroup>
+						</ul>
+						<p:dialog header="Alterar senha do usuário" widgetVar="alterarSenha" showEffect="explode" hideEffect="bounce" style="align: center">
+							<h:form id="formAteraSenha">
+	    						<h:outputText value="Nova senha" />
+	    						<br/>
+	    						<p:password value="#{UsuarioLogadoControl.senhaAlteracao }" feedback="true" inline="true" promptLabel="Digite uma senha segura" 
+	    							goodLabel="Boa" weakLabel="Razoável" strongLabel="Excelente" placeholder="Digite a nova senha" style="width: 200px"/>
+	    						<br/>
+	    						<br/>
+	    						<p:password value="#{UsuarioLogadoControl.senhaAlteracaoNovamente }" placeholder="Digite novamente" style="width: 200px"/>
+	    						<br/>
+	    						<br/>
+	    						<p:commandButton value="Confirmar" id="btnAlterarSenha" icon="ui-icon-check" action="#{UsuarioLogadoControl.alterarSenhaDoUsuario }"
+	    							onclick="PF('alterarSenha').hide()" />
+	    					</h:form>
+						</p:dialog>
 					</div>
 			</div>
 		</div>
@@ -96,9 +111,9 @@
 		<ui:insert name="conteudo" />
 	</div>
 
-	<footer class="footer navbar-fixed-bottom" style="z-index: -1;">
+	<footer class="footer navbar-fixed-bottom" style="z-index: -1; padding-left: 520px">
 	<div class="container">
-		<p>Copyright (c) - Ambient Informática Ltda. IVolunteer versão: #{VersaoControl.versao}</p>
+		<p>Copyright ® Ambient Informática Ltda. IVolunteer versão: #{VersaoControl.versao}</p>
 	</div>
 	</footer>
 

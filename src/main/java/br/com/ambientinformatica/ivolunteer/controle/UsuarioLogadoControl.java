@@ -14,61 +14,99 @@ import br.com.ambientinformatica.ivolunteer.entidade.EnumPapelUsuario;
 import br.com.ambientinformatica.ivolunteer.entidade.PapelUsuario;
 import br.com.ambientinformatica.ivolunteer.entidade.Usuario;
 import br.com.ambientinformatica.ivolunteer.persistencia.UsuarioDao;
+import br.com.ambientinformatica.jpa.exception.PersistenciaException;
+import br.com.ambientinformatica.util.UtilLog;
 
 @Controller("UsuarioLogadoControl")
 @Scope("session")
 public class UsuarioLogadoControl implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private Usuario usuario;
+    private Usuario usuario;
+    private String senhaAlteracao;
+    private String senhaAlteracaoNovamente;
 
-	@Autowired
-	private UsuarioDao usuarioDao;
+    @Autowired
+    private UsuarioDao usuarioDao;
 
-	@PostConstruct
-	public void init() {
-		buscarUsuario();
-	}
+    @PostConstruct
+    public void init() {
+        buscarUsuario();
+    }
 
-	private void buscarUsuario() {
-			try {
-				HttpServletRequest req = UtilFaces.getRequest();
-				if (req.getUserPrincipal() != null) {
-					String login = req.getUserPrincipal().getName();
-					usuario = usuarioDao.consultarPorLogin(login);
-				}
-			} catch (Exception e) {
-				UtilFaces.addMensagemFaces(e);
-			}
-   }
+    private void buscarUsuario() {
+        try {
+            HttpServletRequest req = UtilFaces.getRequest();
+            if (req.getUserPrincipal() != null) {
+                String login = req.getUserPrincipal().getName();
+                usuario = usuarioDao.consultarPorLogin(login);
+            }
+        } catch (Exception e) {
+            UtilFaces.addMensagemFaces(e);
+        }
+    }
+    
+    public void alterarSenhaDoUsuario(){
+        try {
+            if(senhaAlteracao.isEmpty() || senhaAlteracaoNovamente.isEmpty()){
+                UtilFaces.addMensagemFaces("Os campos deverão ser preenchidos");    
+            }else if(senhaAlteracao.equals(senhaAlteracaoNovamente)){
+                usuario.setSenhaNaoCriptografada(senhaAlteracao);
+                usuarioDao.alterar(usuario);
+                UtilFaces.addMensagemFaces("Senha alterada com sucesso ");
+            }else{
+                UtilFaces.addMensagemFaces("As senhas digitadas não conferem, digite novamente");
+            }
+        } catch (PersistenciaException e) {
+            UtilLog.getLog().error(e.getMessage(), e);
+            UtilFaces.addMensagemFaces("A senha não foi alterada");
+        }
 
-	public boolean isLogado() {
-		return getUsuarioLogado() != null;
-	}
+    }
 
-	public boolean isAdministrador() {
-		for (PapelUsuario p : usuario.getPapeisList()) {
-			if (p.getPapel() == EnumPapelUsuario.ADMIN) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public String getIp(){
-		return UtilFaces.getRequest().getHeader("X-FORWARDED-FOR");
-	}
-	
-	public Usuario getUsuario() {
-		if (usuario == null) {
-			buscarUsuario();
-		}
-		return usuario;
-	}
+    public boolean isLogado() {
+        return getUsuarioLogado() != null;
+    }
 
-	public static Usuario getUsuarioLogado() {
-		return (Usuario) UtilFaces.getObjetoManagedBean("#{UsuarioLogadoControl.usuario}");
-	}
+    public boolean isAdministrador() {
+        for (PapelUsuario p : usuario.getPapeisList()) {
+            if (p.getPapel() == EnumPapelUsuario.ADMIN) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String getIp(){
+        return UtilFaces.getRequest().getHeader("X-FORWARDED-FOR");
+    }
+
+    public Usuario getUsuario() {
+        if (usuario == null) {
+            buscarUsuario();
+        }
+        return usuario;
+    }
+
+    public static Usuario getUsuarioLogado() {
+        return (Usuario) UtilFaces.getObjetoManagedBean("#{UsuarioLogadoControl.usuario}");
+    }
+
+    public String getSenhaAlteracao() {
+        return senhaAlteracao;
+    }
+
+    public void setSenhaAlteracao(String senhaAlteracao) {
+        this.senhaAlteracao = senhaAlteracao;
+    }
+
+    public String getSenhaAlteracaoNovamente() {
+        return senhaAlteracaoNovamente;
+    }
+
+    public void setSenhaAlteracaoNovamente(String senhaAlteracaoNovamente) {
+        this.senhaAlteracaoNovamente = senhaAlteracaoNovamente;
+    }
 
 }

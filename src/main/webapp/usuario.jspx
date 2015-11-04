@@ -33,11 +33,11 @@
 							<p:column headerText="Descrição">
 								<h:outputText value="#{permissao.descricao }" />
 							</p:column>
-							<p:column width="10%">
+							<p:column width="5%">
 								<f:facet name="header">
 									<h:outputText value="Remover"></h:outputText>
 								</f:facet>
-								<p:commandButton ajax="false" actionListener="#{UsuarioControl.removerPapel }" update="@panelPapeis" icon="ui-icon-trash">
+								<p:commandButton ajax="false" actionListener="#{UsuarioControl.removerPapel }" update="@all" icon="ui-icon-trash" >
 								</p:commandButton>
 							</p:column>
 						</p:dataTable>

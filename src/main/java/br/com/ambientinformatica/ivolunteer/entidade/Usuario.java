@@ -55,7 +55,7 @@ public class Usuario extends Entidade {
 	@JoinColumn(name = "usuario_id")
 	private Set<PapelUsuario> papeis = new HashSet<PapelUsuario>();
 	
-    private boolean ativo = true;
+    private boolean ativo;
 
 	public void addPapel(EnumPapelUsuario papel) {
 	    if (!isContemPapel(papel)) {
@@ -84,7 +84,21 @@ public class Usuario extends Entidade {
 		return false;
 	}
 	
+	public String getStatusUsuario(){
+        return this.ativo == true ? "ATIVO" : "INATIVO";
+    }
 	
+	public String getListaPapeis(){
+	    String papeis = new String();
+	    for (PapelUsuario papelUsuario : this.papeis) {
+	        papeis = papeis.concat(papelUsuario.getPapel().getDescricao()).concat(", ");
+	    }
+	    if(!papeis.isEmpty()){
+	        papeis = papeis.substring(0, papeis.length()-2);
+	    }
+	    return papeis;
+	}
+
 	public String getLogin() {
 		return login;
 	}

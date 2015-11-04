@@ -50,7 +50,7 @@ public class UsuarioControl {
     }
 
     public void removerPapel(ActionEvent evt){
-        papeisAdicionados.remove((PapelUsuario) UtilFaces.getValorParametro(evt, "papel"));
+        papeisAdicionados.remove(papel);
     }
 
     public void confirmar(ActionEvent evt){
@@ -144,4 +144,9 @@ public class UsuarioControl {
         this.usuarioAtivo = usuarioAtivo;
     }
 
+    public void setPapeisAdicionados(List<EnumPapelUsuario> papeisAdicionados) {
+        this.papeisAdicionados = papeisAdicionados;
+    }
+
+    
 }

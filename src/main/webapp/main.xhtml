@@ -85,6 +85,10 @@
 						</ul>
 						<p:dialog header="Alterar senha do usuário" widgetVar="alterarSenha" showEffect="explode" hideEffect="bounce" style="align: center">
 							<h:form id="formAteraSenha">
+								<h:outputText value="Senha atual" />
+								<br/>
+								<p:password value="#{UsuarioLogadoControl.senhaAtual }" placeholder="Digite novamente" style="width: 200px"/>
+								<br/>
 	    						<h:outputText value="Nova senha" />
 	    						<br/>
 	    						<p:password value="#{UsuarioLogadoControl.senhaAlteracao }" feedback="true" inline="true" promptLabel="Digite uma senha segura" 

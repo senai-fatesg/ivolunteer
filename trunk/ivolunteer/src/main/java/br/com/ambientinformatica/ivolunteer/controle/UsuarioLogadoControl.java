@@ -15,7 +15,9 @@ import br.com.ambientinformatica.ivolunteer.entidade.PapelUsuario;
 import br.com.ambientinformatica.ivolunteer.entidade.Usuario;
 import br.com.ambientinformatica.ivolunteer.persistencia.UsuarioDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
+import br.com.ambientinformatica.util.UtilHash;
 import br.com.ambientinformatica.util.UtilLog;
+import br.com.ambientinformatica.util.UtilHash.Algoritimo;
 
 @Controller("UsuarioLogadoControl")
 @Scope("session")
@@ -26,6 +28,7 @@ public class UsuarioLogadoControl implements Serializable {
     private Usuario usuario;
     private String senhaAlteracao;
     private String senhaAlteracaoNovamente;
+    private String senhaAtual;
 
     @Autowired
     private UsuarioDao usuarioDao;
@@ -49,8 +52,9 @@ public class UsuarioLogadoControl implements Serializable {
     
     public void alterarSenhaDoUsuario(){
         try {
-            if(senhaAlteracao.isEmpty() || senhaAlteracaoNovamente.isEmpty()){
-                UtilFaces.addMensagemFaces("Os campos deverão ser preenchidos");    
+            if(!usuario.getSenha().equals(UtilHash.gerarStringHash(senhaAtual, Algoritimo.MD5)) 
+                    || senhaAlteracao.isEmpty() || senhaAlteracaoNovamente.isEmpty()){
+                UtilFaces.addMensagemFaces("Campos não preenchidos, ou senha atual inválida ");    
             }else if(senhaAlteracao.equals(senhaAlteracaoNovamente)){
                 usuario.setSenhaNaoCriptografada(senhaAlteracao);
                 usuarioDao.alterar(usuario);
@@ -62,7 +66,6 @@ public class UsuarioLogadoControl implements Serializable {
             UtilLog.getLog().error(e.getMessage(), e);
             UtilFaces.addMensagemFaces("A senha não foi alterada");
         }
-
     }
 
     public boolean isLogado() {
@@ -107,6 +110,14 @@ public class UsuarioLogadoControl implements Serializable {
 
     public void setSenhaAlteracaoNovamente(String senhaAlteracaoNovamente) {
         this.senhaAlteracaoNovamente = senhaAlteracaoNovamente;
+    }
+
+    public String getSenhaAtual() {
+        return senhaAtual;
+    }
+
+    public void setSenhaAtual(String senhaAtual) {
+        this.senhaAtual = senhaAtual;
     }
 
 }

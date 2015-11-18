@@ -8,13 +8,13 @@
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="conteudo">
 		<h:form id="formCorpo">
-			<p:messages autoUpdate="true"></p:messages>
+			<p:messages id="msg"  autoUpdate="true"></p:messages>
 			
 			<p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/> 
 			
 			<ui:insert name="corpo" />
 
-			<p:dialog modal="true" widgetVar="statusDialog" header="Aguarde só um pouco..." draggable="false" closable="false">  
+			<p:dialog modal="true" widgetVar="statusDialog" header="Aguarde..." draggable="false" closable="false">  
 			    <p:graphicImage value="imagens/ajaxloadingbar.gif" />  
 			</p:dialog>
 

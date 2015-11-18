@@ -5,7 +5,7 @@
     <ui:define name="conteudo">
         <div class="row">
             <div class="span8 leftContent">
-                <h2>iVolunteer - Instituição Centro de Educação Infantil Francisca de Lima</h2>
+                <h2>iVolunteer</h2>
                 <div class="row">
                     <div class="span4">
                         <p class="cntPara simpleDesign" align="justify">

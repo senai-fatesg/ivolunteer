@@ -10,8 +10,8 @@
 		
 		<h:panelGrid columns="5">
 			<h:outputLink value="registrofrequencia.jsf">
-				<h:graphicImage value="imagens/registroFreguencia.png"/><br/>
-				<h:outputText value="Registro de Frequência"/>
+				<h:graphicImage value="imagens/cooperart.jpg"/><br/>
+				<h:outputText value="Registro de Frequência" style="margin-left: 130px"/>
 			</h:outputLink>
 	
 		</h:panelGrid>

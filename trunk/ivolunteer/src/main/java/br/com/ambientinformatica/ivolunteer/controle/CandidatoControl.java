@@ -35,8 +35,8 @@ import br.com.ambientinformatica.util.UtilLog;
 @Scope("conversation")
 public class CandidatoControl {
 	
-	private Pessoa candidato = new Pessoa();
-	private Responsavel responsavel = new Responsavel();
+	private Pessoa candidato;
+	private Responsavel responsavel;
 	private Pessoa filtro = new Pessoa();
 	
 	//instancia de candidato carregada para realização de consulta
@@ -63,6 +63,8 @@ public class CandidatoControl {
 	@PostConstruct
 	public void init() {
 		listarCandidatoPorNome(null);
+		candidato = new Pessoa();
+		responsavel = new Responsavel();
 	}
 
 	public void listarCandidatoPorNome(ActionEvent evt){
@@ -140,7 +142,7 @@ public class CandidatoControl {
 				responsavel.setEnumTipoPessoa(EnumTipoPessoa.RESPONSAVEL);
 				candidato.addResponsavel(responsavel);
 				listaResponsavel = candidato.getListaResponsavel();
-				responsavel = new Responsavel();
+				//responsavel = new Responsavel();
 			}else{
 				UtilFaces.addMensagemFaces("Preencha os campos corretamente");
 			}
@@ -306,24 +308,30 @@ public class CandidatoControl {
 	}
 	
 	private boolean EhTelefoneConsistente(){
-		if(telefone.getNomePessoaRecado() != null && telefone.getNomePessoaRecado() != "" &&
-				telefone.getNumeroTelefone() != null && telefone.getNumeroTelefone() != "")
-			return true;
-		return false;
+		if(telefone.getNomePessoaRecado() != null && !telefone.getNomePessoaRecado().isEmpty() &&
+				telefone.getNumeroTelefone() != null && !telefone.getNumeroTelefone().isEmpty()){
+		    return true;
+		}else{
+		    return false;
+		}
 	}
 	
 	private boolean EhEnderecoConsistente(){
-		if(!endereco.getRuaOuAvenida().equals("")&&!endereco.getBairro().equals("")&&
-				!endereco.getQuadra().equals("")&&!endereco.getLote().equals(""))
-			return true;
-		return false;
+		if(!endereco.getRuaOuAvenida().isEmpty() && !endereco.getBairro().isEmpty() &&
+				!endereco.getQuadra().isEmpty() && !endereco.getLote().isEmpty()){
+		    return true;
+		}else{
+		    return false;
+		}
 	}
 	
 	private boolean EhResponsavelConsistente(){
-		if(responsavel.getNomePessoa()!= null&&!responsavel.getNomePessoa().equals("")&&
-				responsavel.getCpf()!=null&&!responsavel.getCpf().equals(""))
-			return true;
-		return false;
+		if(responsavel.getNomePessoa()!= null && !responsavel.getNomePessoa().isEmpty() &&
+				responsavel.getCpf()!=null && !responsavel.getCpf().isEmpty()){
+		    return true;
+		}else{
+		    return false;
+		}
 	}
 
 	public Responsavel getResponsavel() {
@@ -362,6 +370,12 @@ public class CandidatoControl {
 		this.responsavel = responsavel;
 	}
 
+    public Cidade getCidade() {
+        return cidade;
+    }
 
+    public void setCidade(Cidade cidade) {
+        this.cidade = cidade;
+    }
 	
 }

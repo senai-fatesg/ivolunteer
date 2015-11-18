@@ -28,7 +28,7 @@
 					<div style="height: 0px;" class="nav-collapse collapse">
 						<ul class="nav">
 						<h:panelGroup rendered="#{securityScope.userInRole['ADMIN'] or securityScope.userInRole['SECRETARIA']}">
-							<li><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Secretária <span class="caret"></span>
+							<li><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Secretaria <span class="caret"></span>
 							</a>
 								<ul class="dropdown-menu">
 									<li id="nav-parceiroList"><a href="candidato.jsf">Canditado</a></li>
@@ -57,7 +57,6 @@
 									</ul></li>
 							</h:panelGroup>
 
-
 							<h:panelGroup rendered="#{securityScope.userInRole['ADMIN']}">
 								<li><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Administrar <span class="caret"></span>
 								</a>
@@ -83,7 +82,7 @@
 										</ul></li>
 							</h:panelGroup>
 						</ul>
-						<p:dialog header="Alterar senha do usuário" widgetVar="alterarSenha" showEffect="explode" hideEffect="bounce" style="align: center">
+						<p:dialog header="Alterar senha do usuário" widgetVar="alterarSenha" style="align: center">
 							<h:form id="formAteraSenha">
 								<h:outputText value="Senha atual" />
 								<br/>

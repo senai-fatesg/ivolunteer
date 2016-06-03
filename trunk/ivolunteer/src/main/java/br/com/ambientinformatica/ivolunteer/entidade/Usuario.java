@@ -1,5 +1,6 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -27,7 +28,9 @@ import br.com.ambientinformatica.util.UtilHash;
 import br.com.ambientinformatica.util.UtilHash.Algoritimo;
 
 @Entity
-public class Usuario extends Entidade {
+public class Usuario extends Entidade implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@Column(nullable = false, unique = true)

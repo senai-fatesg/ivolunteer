@@ -6,13 +6,13 @@
 		<h:form id="formCorpo">
 			<p:panel header="Adicionar papeis ao usuário" id="panel" style="width:100%">
 				<a:field label="Nome" id="nomePessoa">
-					<p:inputText value="#{UsuarioControl.usuario.pessoa.nomePessoa }" />
+					<p:inputText value="#{UsuarioControl.nome }" />
 				</a:field>
 				<a:field label="CPF" spaceLeft="10px">
-					<p:inputMask id="cpfPessoa" value="#{UsuarioControl.usuario.pessoa.cpf }" mask="999.999.999-99" readonly="#{UsuarioControl.usuario.pessoa.cpf != null}"></p:inputMask>
+					<p:inputMask id="cpfPessoa" value="#{UsuarioControl.cpf }" mask="999.999.999-99" readonly="#{UsuarioControl.cpf != null}"></p:inputMask>
 				</a:field>
 				<a:field label="Login" spaceLeft="10px">
-					<p:inputText readonly="#{UsuarioControl.usuario.login != null}" id="loginUsuario" value="#{UsuarioControl.usuario.login }"></p:inputText>
+					<p:inputText readonly="#{UsuarioControl.usuario.login != null}" id="loginUsuario" value="#{UsuarioControl.login }"></p:inputText>
 				</a:field>
 				<a:newLine />
 				<a:newLine />
@@ -24,7 +24,7 @@
 						</p:selectOneMenu>
 					</a:field>
 					<a:field spaceLeft="10px">
-						<p:commandButton value="Adicionar" ajax="false" actionListener="#{UsuarioControl.adicionarPapel }" update="panelPapeis" icon="ui-icon-plus"></p:commandButton>
+						<p:commandButton value="Adicionar" ajax="false" actionListener="#{UsuarioControl.adicionarPapel }" update="papeisUsuario" icon="ui-icon-plus"></p:commandButton>
 					</a:field>
 					<a:newLine />
 					<a:newLine />
@@ -45,7 +45,7 @@
 				</p:fieldset>
 			</p:panel>
 			<a:field>
-				<p:commandButton value="Confirmar" actionListener="#{UsuarioControl.confirmar }" update="@all" icon="ui-icon-disk"></p:commandButton>
+				<p:commandButton value="Confirmar" actionListener="#{UsuarioControl.confirmar }" update="@form papeisUsuario" icon="ui-icon-disk"></p:commandButton>
 			</a:field>
 		</h:form>
 	</ui:define>

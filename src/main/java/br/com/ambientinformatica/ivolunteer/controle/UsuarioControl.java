@@ -30,6 +30,12 @@ public class UsuarioControl {
     private List<EnumPapelUsuario> papeisAdicionados = new ArrayList<EnumPapelUsuario>();
 
     private String senha = "123456";
+    
+    private String nome;
+    
+    private String cpf;
+    
+    private String login;
 
     @Autowired
     private UsuarioDao usuarioDao;
@@ -41,12 +47,18 @@ public class UsuarioControl {
 
     public void adicionarPapel(){
         usuario = usuarioDao.consultarPorLogin(usuario.getLogin());
-        for (PapelUsuario p : usuario.getPapeis()) {
-            if(!usuario.isContemPapel(p.getPapel())){
-                papeisAdicionados.add(papel);
-            }
-        }
-        UtilFaces.addMensagemFaces("O usuário já tem esta permissão");
+        if (usuario != null) {
+        	for (PapelUsuario p : usuario.getPapeis()) {
+        		if(!usuario.isContemPapel(p.getPapel())){
+        			papeisAdicionados.add(papel);
+        		}
+        	}
+        	UtilFaces.addMensagemFaces("O usuário já tem esta permissão");
+		}else{
+			if (!papeisAdicionados.contains(papel)) {
+				papeisAdicionados.add(papel);
+			}
+		}
     }
 
     public void removerPapel(ActionEvent evt){
@@ -56,22 +68,27 @@ public class UsuarioControl {
     public void confirmar(ActionEvent evt){
         try {
             if(usuario == null || usuario.getPessoa() == null || usuario.getPessoa().getId() == null){
+            	usuario = new Usuario();
+            	
                 usuario.getPessoa().setEnumTipoPessoa(EnumTipoPessoa.COLABORADOR);
+                usuario.getPessoa().setCpf(cpf);
+                usuario.getPessoa().setNomePessoa(nome);
                 pessoaDao.incluir(usuario.getPessoa());
                 usuario.setSenhaNaoCriptografada(senha);
                 usuario.addPapel(EnumPapelUsuario.USUARIO);
                 usuario.addAllPapel(papeisAdicionados);
+                usuario.setLogin(login);
                 usuario.setAtivo(usuarioAtivo);
                 usuarioDao.incluir(usuario);
-                UtilFaces.addMensagemFaces("Usuário incluido com sucesso.");
                 limparCampos();
+                UtilFaces.addMensagemFaces("Usuário incluido com sucesso.");
             }else{
                 usuario.addPapel(EnumPapelUsuario.USUARIO);
                 usuario.addAllPapel(papeisAdicionados);
                 usuario.setAtivo(usuarioAtivo);
                 usuarioDao.alterar(usuario);
-                UtilFaces.addMensagemFaces("Usuário alterado com sucesso.");
                 limparCampos();
+                UtilFaces.addMensagemFaces("Usuário alterado com sucesso.");
             }
 
         } catch (PersistenciaException e) {
@@ -80,15 +97,17 @@ public class UsuarioControl {
     }
 
     public void limparCampos(){
-        usuario = new Usuario();
-        papeisAdicionados = new ArrayList<EnumPapelUsuario>();
+    	usuario = new Usuario();
+    	papeisAdicionados = new ArrayList<EnumPapelUsuario>();
+        setNome("");
+        setSenha("");
+        setLogin("");
         setUsuarioAtivo(false);
     }
     
     public void voltar(){
         atualizaLista();
     }
-
 
     public EnumPapelUsuario getPapel() {
         return papel;
@@ -148,5 +167,28 @@ public class UsuarioControl {
         this.papeisAdicionados = papeisAdicionados;
     }
 
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
     
 }

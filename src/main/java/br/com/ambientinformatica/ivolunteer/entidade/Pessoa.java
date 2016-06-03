@@ -1,5 +1,6 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -25,9 +26,13 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import br.com.ambientinformatica.util.Entidade;
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Pessoa {
+public class Pessoa extends Entidade implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(generator = "pessoa_seq", strategy = GenerationType.SEQUENCE)
@@ -322,55 +327,6 @@ public class Pessoa {
 		this.dataExpedicao = dataExpedicao;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((cpf == null) ? 0 : cpf.hashCode());
-		result = prime * result
-		      + ((enumTipoPessoa == null) ? 0 : enumTipoPessoa.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result
-		      + ((listaResponsavel == null) ? 0 : listaResponsavel.hashCode());
-		result = prime * result
-		      + ((nomePessoa == null) ? 0 : nomePessoa.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Pessoa other = (Pessoa) obj;
-		if (cpf == null) {
-			if (other.cpf != null)
-				return false;
-		} else if (!cpf.equals(other.cpf))
-			return false;
-		if (enumTipoPessoa != other.enumTipoPessoa)
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (listaResponsavel == null) {
-			if (other.listaResponsavel != null)
-				return false;
-		} else if (!listaResponsavel.equals(other.listaResponsavel))
-			return false;
-		if (nomePessoa == null) {
-			if (other.nomePessoa != null)
-				return false;
-		} else if (!nomePessoa.equals(other.nomePessoa))
-			return false;
-		return true;
-	}
-
 	public EnumTipoPessoa getEnumTipoPessoa() {
 		return enumTipoPessoa;
 	}
@@ -383,4 +339,5 @@ public class Pessoa {
 		return listaResponsavel;
 	}
 
+	
 }

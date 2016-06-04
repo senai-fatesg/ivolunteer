@@ -55,7 +55,7 @@
 				<p:tab title="Aluno" id="aluno">
 
 					<p:panel id="painelAlunoDet"
-						style="position:relative; float:left; padding:15px; width:73%; heigth:80%;">
+						style="position:relative; float:left; padding:15px; width:80%; heigth:80%;">
 
 						<a:field label="Certidão de Nascimento">
 							<p:inputText value="#{AlunoControl.aluno.certidaoNascimento}"
@@ -85,12 +85,17 @@
 
 						<a:newLine />
 
-						<a:field label="Data Nascimento" width="150px">
-							<p:calendar value="#{AlunoControl.aluno.dataNascimento}"
-								locale="de" navigator="true" pattern="dd/MM/yyyy" />
+						<a:field label="Data Nascimento" width="180px">
+							<p:calendar value="#{AlunoControl.aluno.dataNascimento}" locale="de" navigator="true" pattern="dd/MM/yyyy">
+								<p:ajax event="dateSelect" listener="#{AlunoControl.calculaIdadeReal()}" global="false" update="@form"/>
+							</p:calendar>
+						</a:field>
+						
+						<a:field label="Idade Real" width="100px" spaceLeft="55px">
+							<p:inputText value="#{AlunoControl.dataReal}" disabled="true"/>
 						</a:field>
 
-						<a:field label="Naturalidade" spaceLeft="85px">
+						<a:field label="Naturalidade" spaceLeft="134px">
 							<p:inputText value="#{AlunoControl.aluno.naturalidade}"></p:inputText>
 						</a:field>
 

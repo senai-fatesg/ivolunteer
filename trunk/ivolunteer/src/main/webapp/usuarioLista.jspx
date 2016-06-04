@@ -63,7 +63,7 @@
 				</f:facet>
 				<h:outputText value="#{usuario.statusUsuario }"></h:outputText>
 			</p:column>
-			<p:column width="5%">
+			<p:column width="8%">
 				<f:facet name="header">
 					<h:outputText value="Senha"></h:outputText>
 				</f:facet>
@@ -71,12 +71,12 @@
 				</p:commandButton>
 			</p:column>
 			<p:column headerText="Desativar" width="5%">
-				<p:commandButton icon="ui-icon-close" update="usuarios" onclick="PF('confirmacaoDesativacao').show()">
+				<p:commandButton icon="ui-icon-close" update="usuarios" onclick="PF('confirmacaoDesativacao').show()" global="false">
 					<f:setPropertyActionListener value="#{usuario }" target="#{UsuarioListaControl.usuarioAtivo }" />
 				</p:commandButton>
 			</p:column>
 			<p:column headerText="Ativar" width="5%">
-				<p:commandButton icon="ui-icon-check" update="usuarios" onclick="PF('confirmacaoAtivacao').show()">
+				<p:commandButton icon="ui-icon-check" update="usuarios" onclick="PF('confirmacaoAtivacao').show()" global="false">
 					<f:setPropertyActionListener value="#{usuario }" target="#{UsuarioListaControl.usuarioAtivo }" />
 				</p:commandButton>
 			</p:column>

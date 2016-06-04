@@ -47,18 +47,19 @@ public class UsuarioControl {
 
     public void adicionarPapel(){
         usuario = usuarioDao.consultarPorLogin(usuario.getLogin());
-        if (usuario != null) {
-        	for (PapelUsuario p : usuario.getPapeis()) {
-        		if(!usuario.isContemPapel(p.getPapel())){
-        			papeisAdicionados.add(papel);
-        		}
+        boolean possuiPermissao = false;
+        if(usuario != null){        
+        	for(EnumPapelUsuario item : this.getPapeisAdicionados()){
+	        	if(item.getDescricao().equalsIgnoreCase(papel.getDescricao())){
+	        		UtilFaces.addMensagemFaces("O usuário já tem esta permissão.");
+	        		possuiPermissao = true;
+	        		break;
+	        	}
         	}
-        	UtilFaces.addMensagemFaces("O usuário já tem esta permissão");
-		}else{
-			if (!papeisAdicionados.contains(papel)) {
-				papeisAdicionados.add(papel);
-			}
-		}
+        	if(!possuiPermissao){
+        		papeisAdicionados.add(papel);
+        	}
+        }
     }
 
     public void removerPapel(ActionEvent evt){
@@ -168,7 +169,7 @@ public class UsuarioControl {
     }
 
 	public String getNome() {
-		return nome;
+		return this.getUsuario().getPessoa().getNomePessoa();
 	}
 
 	public void setNome(String nome) {
@@ -176,7 +177,7 @@ public class UsuarioControl {
 	}
 
 	public String getCpf() {
-		return cpf;
+		return this.getUsuario().getPessoa().getCpf();
 	}
 
 	public void setCpf(String cpf) {
@@ -184,7 +185,7 @@ public class UsuarioControl {
 	}
 
 	public String getLogin() {
-		return login;
+		return this.getUsuario().getLogin();
 	}
 
 	public void setLogin(String login) {

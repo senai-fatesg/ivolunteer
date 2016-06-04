@@ -1,6 +1,10 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -68,6 +72,42 @@ public class Aluno extends Pessoa{
 
 	public void setMatricula(Matricula matricula) {
 		this.matricula = matricula;
+	}
+	
+	public String CalcularIdadeReal(String dataNascimento) {
+		DateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");
+
+		Date dataNascInput = null;
+		try {
+
+			dataNascInput = dataFormatada.parse(dataNascimento);
+
+		} catch (Exception e) {
+		}
+
+		Calendar dateOfBirth = new GregorianCalendar();
+
+		dateOfBirth.setTime(dataNascInput);
+
+		// Cria um objeto calendar com a data atual
+
+		Calendar today = Calendar.getInstance();
+
+		// Obtendo a idade baseado no ano
+
+		Integer idade = today.get(Calendar.YEAR) - dateOfBirth.get(Calendar.YEAR);
+		Integer meses = today.get(Calendar.MONTH) - dateOfBirth.get(Calendar.MONTH);
+		
+		if(meses < 0)
+			meses = meses * -1;
+
+		dateOfBirth.add(Calendar.YEAR, idade);
+		dateOfBirth.add(Calendar.MONTH, meses);
+
+		if (today.before(dateOfBirth)) {
+			idade--;
+		}
+		return String.format("%d anos e %d meses", idade, meses);
 	}
 
 }

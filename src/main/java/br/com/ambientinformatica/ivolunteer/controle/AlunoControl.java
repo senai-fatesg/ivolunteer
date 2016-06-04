@@ -28,6 +28,7 @@ public class AlunoControl {
 	private Aluno aluno = new Aluno();
 	Cidade cidade = new Cidade();
 	Endereco endereco = new Endereco();
+	private String dataReal;
 
 	@Autowired
 	private AlunoDao alunoDao;
@@ -128,6 +129,15 @@ public class AlunoControl {
 		return UtilFaces.getListEnum(EnumEstado.values());
 	}
 
+	public String getDataReal() {
+		return dataReal;
+	}
+
+	public void setDataReal(String dataReal) {
+		this.dataReal = dataReal;
+		getDataReal();
+	}
+
 	public void addEndereco(ActionEvent ev) {
 		try {
 			this.aluno.addEndereco(endereco);
@@ -163,6 +173,17 @@ public class AlunoControl {
 		try {
 			this.aluno = alunoDao.consultar(aluno.getId());
 		} catch (PersistenciaException e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
+	
+	public void calculaIdadeReal(){
+		try {
+			if(this.aluno.getDataNascimento() != null){
+				String dataReal = this.aluno.CalcularIdadeReal(this.aluno.getDataNascimento().toLocaleString());
+				this.setDataReal(dataReal);
+			}
+		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}

@@ -37,7 +37,7 @@
 								<f:facet name="header">
 									<h:outputText value="Remover"></h:outputText>
 								</f:facet>
-								<p:commandButton ajax="false" actionListener="#{UsuarioControl.removerPapel }" update="@all" icon="ui-icon-trash" >
+								<p:commandButton ajax="false" action="#{UsuarioControl.removerPapel(permissao)}" update="@all" icon="ui-icon-trash" >
 								</p:commandButton>
 							</p:column>
 						</p:dataTable>

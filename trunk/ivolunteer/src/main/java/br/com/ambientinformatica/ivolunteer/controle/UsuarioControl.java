@@ -62,8 +62,10 @@ public class UsuarioControl {
         }
     }
 
-    public void removerPapel(ActionEvent evt){
-        papeisAdicionados.remove(papel);
+    public void removerPapel(EnumPapelUsuario papel){
+    	this.papel = papel;
+    	papeisAdicionados.remove(this.papel);
+    	
     }
 
     public void confirmar(ActionEvent evt){

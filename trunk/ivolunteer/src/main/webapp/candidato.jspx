@@ -30,7 +30,7 @@
 					style="width:100%" value="#{CandidatoControl.listaCandidato}"
 					widgetVar="funcionariosTable" emptyMessage="Sem Registros a Exibir">
 					<p:column headerText="Nome" width="30%">#{itemCandidato.nomePessoa}</p:column>
-					<p:column headerText="Certidão de nascimento">#{itemCandidato.certidaoNascimento}</p:column>
+					<!-- <p:column headerText="Certidão de nascimento">#{itemCandidato.certidaoNascimento}</p:column> -->
 					<p:column width="5%">
 						<p:commandButton icon="ui-icon-pencil"
 							action="#{CandidatoControl.carregaPessoaAlteracao(itemCandidato)}"
@@ -97,10 +97,10 @@
 							</p:selectOneMenu>
 						</a:field>
 
-						<a:field label="Certidao de nascimento" spaceLeft="15px">
+						<!-- <a:field label="Certidao de nascimento" spaceLeft="15px">
 							<p:inputText id="certidaoNascimento"
 								value="#{CandidatoControl.candidato.certidaoNascimento}"></p:inputText>
-						</a:field>
+						</a:field>-->
 
 						<a:field label="Sexo" spaceLeft="15px">
 							<p:selectOneMenu id="sexo"

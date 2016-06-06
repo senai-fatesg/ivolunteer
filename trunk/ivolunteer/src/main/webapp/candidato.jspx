@@ -146,6 +146,12 @@
 											value="#{CandidatoControl.responsavel.rg}">
 										</p:inputText>
 									</a:field>
+									
+									<a:field label="Orgão expeditor" spaceLeft="15px">
+										<p:inputText id="orgaoExpeditor"
+											value="#{CandidatoControl.responsavel.orgaoExpeditor}">
+										</p:inputText>
+									</a:field>
 
 									<a:field label="Data de expedição" spaceLeft="15px">
 										<p:calendar id="dataExpedicao"
@@ -154,14 +160,9 @@
 									</a:field>
 
 									<a:newLine />
-
-									<a:field label="Orgão expeditor">
-										<p:inputText id="orgaoExpeditor"
-											value="#{CandidatoControl.responsavel.orgaoExpeditor}">
-										</p:inputText>
-									</a:field>
+									
 .
-									<a:field label="Profissão" spaceLeft="15px">
+									<a:field label="Profissão">
 										<p:inputText id="profissao"
 											value="#{CandidatoControl.responsavel.profissao}">
 										</p:inputText>
@@ -186,6 +187,18 @@
 											</f:selectItems>
 										</p:selectOneMenu>
 									</a:field>
+									
+									<a:field label="Nascionalidade" spaceLeft="15px">
+										<p:inputText id="nascionalidade"
+											value="#{CandidatoControl.responsavel.nascionalidade}">
+										</p:inputText>
+									</a:field>
+
+									<a:field label="Naturalidade" spaceLeft="15px">
+										<p:inputText id="naturalidadeResponsavel"
+											value="#{CandidatoControl.responsavel.naturalidade}">
+										</p:inputText>
+									</a:field>
 
 									<a:newLine />
 
@@ -204,19 +217,7 @@
 												value="#{CandidatoControl.completenumEstadoCivil }">
 											</f:selectItems>
 										</p:selectOneMenu>
-									</a:field>
-
-									<a:field label="Nascionalidade" spaceLeft="15px">
-										<p:inputText id="nascionalidade"
-											value="#{CandidatoControl.responsavel.nascionalidade}">
-										</p:inputText>
-									</a:field>
-
-									<a:field label="Naturalidade" spaceLeft="15px">
-										<p:inputText id="naturalidadeResponsavel"
-											value="#{CandidatoControl.responsavel.naturalidade}">
-										</p:inputText>
-									</a:field>
+									</a:field>									
 
 									<a:newLine />
 								</p:panel>

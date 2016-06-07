@@ -74,8 +74,8 @@ public class Usuario extends Entidade implements Serializable{
       }
 	}
 	
-	public void removePapel(PapelUsuario papel) {
-		papeis.remove(papel);
+	public void removeAllPapel() {
+		papeis.clear();
 	}
 	
 	public boolean isContemPapel(EnumPapelUsuario papel) {

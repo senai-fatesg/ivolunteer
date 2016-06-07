@@ -51,7 +51,7 @@ public class UsuarioControl {
         if(usuario != null){        
         	for(EnumPapelUsuario item : this.getPapeisAdicionados()){
 	        	if(item.getDescricao().equalsIgnoreCase(papel.getDescricao())){
-	        		UtilFaces.addMensagemFaces("O usuário já tem esta permissão.");
+	        		UtilFaces.addMensagemFaces("O usuário já possui a permissão selecionada.");
 	        		possuiPermissao = true;
 	        		break;
 	        	}
@@ -63,9 +63,8 @@ public class UsuarioControl {
     }
 
     public void removerPapel(EnumPapelUsuario papel){
-    	this.papel = papel;
-    	papeisAdicionados.remove(this.papel);
-    	
+    	papeisAdicionados.remove(papel);
+    	usuario.removeAllPapel();
     }
 
     public void confirmar(ActionEvent evt){
@@ -86,7 +85,7 @@ public class UsuarioControl {
                 limparCampos();
                 UtilFaces.addMensagemFaces("Usuário incluido com sucesso.");
             }else{
-                usuario.addPapel(EnumPapelUsuario.USUARIO);
+            	usuario.addPapel(EnumPapelUsuario.USUARIO);
                 usuario.addAllPapel(papeisAdicionados);
                 usuario.setAtivo(usuarioAtivo);
                 usuarioDao.alterar(usuario);

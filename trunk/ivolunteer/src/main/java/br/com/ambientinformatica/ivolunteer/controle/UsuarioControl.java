@@ -14,6 +14,7 @@ import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumPapelUsuario;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoPessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.PapelUsuario;
+import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.Usuario;
 import br.com.ambientinformatica.ivolunteer.persistencia.PessoaDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.UsuarioDao;
@@ -46,7 +47,17 @@ public class UsuarioControl {
     private boolean usuarioAtivo = true;
 
     public void adicionarPapel(){
-        usuario = usuarioDao.consultarPorLogin(usuario.getLogin());
+        if(usuario.getLogin() != null)
+        	//busca usuario existente para edição 
+        	usuario = usuarioDao.consultarPorLogin(usuario.getLogin());
+        else{
+        	//novo usuario adicionado
+        	Pessoa p = new Pessoa();
+        	p.setCpf(this.cpf);
+        	p.setNomePessoa(this.nome);
+        	usuario.setPessoa(p);
+        	usuario.setLogin(this.login);
+        }
         boolean possuiPermissao = false;
         if(usuario != null){        
         	for(EnumPapelUsuario item : this.getPapeisAdicionados()){
@@ -56,7 +67,7 @@ public class UsuarioControl {
 	        		break;
 	        	}
         	}
-        	if(!possuiPermissao){
+        	if(!possuiPermissao || this.getPapeisAdicionados().isEmpty()){
         		papeisAdicionados.add(papel);
         	}
         }
@@ -69,32 +80,32 @@ public class UsuarioControl {
 
     public void confirmar(ActionEvent evt){
         try {
-            if(usuario == null || usuario.getPessoa() == null || usuario.getPessoa().getId() == null){
-            	usuario = new Usuario();
-            	
-                usuario.getPessoa().setEnumTipoPessoa(EnumTipoPessoa.COLABORADOR);
-                usuario.getPessoa().setCpf(cpf);
-                usuario.getPessoa().setNomePessoa(nome);
-                pessoaDao.incluir(usuario.getPessoa());
-                usuario.setSenhaNaoCriptografada(senha);
-                usuario.addPapel(EnumPapelUsuario.USUARIO);
-                usuario.addAllPapel(papeisAdicionados);
-                usuario.setLogin(login);
-                usuario.setAtivo(usuarioAtivo);
-                usuarioDao.incluir(usuario);
-                limparCampos();
-                UtilFaces.addMensagemFaces("Usuário incluido com sucesso.");
-            }else{
-            	usuario.addPapel(EnumPapelUsuario.USUARIO);
-                usuario.addAllPapel(papeisAdicionados);
-                usuario.setAtivo(usuarioAtivo);
-                usuarioDao.alterar(usuario);
-                limparCampos();
-                UtilFaces.addMensagemFaces("Usuário alterado com sucesso.");
-            }
-
+	        if(usuario == null || usuario.getPessoa() == null || usuario.getPessoa().getId() == null){
+	        	usuario = new Usuario();
+	        	
+	            usuario.getPessoa().setEnumTipoPessoa(EnumTipoPessoa.COLABORADOR);
+	            usuario.getPessoa().setCpf(cpf);
+	            usuario.getPessoa().setNomePessoa(nome);
+	            pessoaDao.incluir(usuario.getPessoa());
+	            usuario.setSenhaNaoCriptografada(senha);
+	            usuario.addPapel(EnumPapelUsuario.USUARIO);
+	            usuario.addAllPapel(papeisAdicionados);
+	            usuario.setLogin(login);
+	            usuario.setAtivo(usuarioAtivo);
+	            usuarioDao.incluir(usuario);
+	            limparCampos();
+	            UtilFaces.addMensagemFaces("Usuário incluido com sucesso.");
+	        }else{
+	        	usuario.addPapel(EnumPapelUsuario.USUARIO);
+	            usuario.addAllPapel(papeisAdicionados);
+	            usuario.setAtivo(usuarioAtivo);
+	            usuarioDao.alterar(usuario);
+	            limparCampos();
+	            UtilFaces.addMensagemFaces("Usuário alterado com sucesso.");
+	        }
         } catch (PersistenciaException e) {
-            UtilFaces.addMensagemFaces("Houve um erro ao adicionar o usuário.");
+            limparCampos();
+        	UtilFaces.addMensagemFaces("Houve um erro ao adicionar o usuário.");
         }
     }
 
@@ -105,6 +116,7 @@ public class UsuarioControl {
         setSenha("");
         setLogin("");
         setUsuarioAtivo(false);
+        this.papel = null;
     }
     
     public void voltar(){

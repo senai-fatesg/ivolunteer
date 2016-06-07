@@ -12,7 +12,7 @@
 			<p:messages id="messages"/>
 
 			<p:commandButton id="consultar" value="Consultar"
-				icon="ui-icon-search" onclick="consultar.show();" />
+				icon="ui-icon-search" onclick="PF('consultar').show(); return false;" />
 			<p:dialog id="modalPesquisa" header="Consultar" widgetVar="consultar"
 				modal="true" maximizable="false" minimizable="false" width="40%"
 				height="550px" resizable="false" closeOnEscape="true">
@@ -34,14 +34,13 @@
 					<p:column width="5%">
 						<p:commandButton icon="ui-icon-pencil"
 							action="#{CandidatoControl.carregaPessoaAlteracao(itemCandidato)}"
-							oncomplete="consultar.hide();" update=":formCorpo:tabCadastro" />
+							oncomplete="consulta" update=":formCorpo:tabCadastro" />
 						<p:commandButton icon="ui-icon-trash" type="button"
-							onclick="confirmaExclusao.show()" />
+							onclick="PF('confirmaExclusao').show()" />
 					</p:column>
-
 				</p:dataTable>
 			</p:dialog>
-
+			
 			<p:confirmDialog header="Atenção!" severity="alert"
 				widgetVar="confirmaExclusao">
 				<f:facet name="message">

@@ -151,6 +151,7 @@ public class UsuarioControl {
     public void atualizaLista() {
         if(usuario != null){
             usuario = usuarioDao.consultarPorLogin(usuario.getLogin());
+            papeisAdicionados = new ArrayList<EnumPapelUsuario>();  
             for (PapelUsuario p : usuario.getPapeis()) {
                     papeisAdicionados.add(p.getPapel());
             }

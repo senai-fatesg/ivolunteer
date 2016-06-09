@@ -13,9 +13,11 @@
 				<p:inputText value="#{UsuarioListaControl.nomePessoa }"></p:inputText>
 			</a:field>
 			<a:field spaceLeft="10px">
-				<p:commandButton value="Buscar"
+				<p:commandButton value="Buscar" 
 					action="#{UsuarioListaControl.buscarUsuario }" update="@all"
-					icon="ui-icon-search" />
+					icon="ui-icon-search">
+					<f:event listener="#{UsuarioListaControl.buscarUsuario }" type="preRenderView"/>
+				</p:commandButton>
 			</a:field>
 			<a:newLine />
 		</p:panel>

@@ -20,3 +20,20 @@ html, body, hr {
 	 position: relative;
 	
 }
+
+.ui-spinner-input{
+	padding-right: 20px !important;
+	margin-bottom: 0 !important;
+}
+
+.align-panel-center {
+	width: 90%; 
+	padding: 10px; 
+	margin: auto; 
+	left: 0; 
+	right: 0;
+}
+
+.marginbottom{
+	margin-bottom: 10px;
+}

@@ -18,27 +18,28 @@ import br.com.ambientinformatica.ivolunteer.persistencia.TurmaDao;
 @Scope("conversation")
 public class TurmaControl {
 
-private Turma turma = new Turma();
-	
+	private Turma turma = new Turma();
+
 	@Autowired
 	private TurmaDao turmaDao;
 
 	private EnumTurno turnoselecionado;
 	private List<Turma> turmas = new ArrayList<Turma>();
-	
+	private List<String> turnos = new ArrayList<String>();
 
-   @PostConstruct
-   public void init(){
-      listar(null);
-   }
-   
+	@PostConstruct
+	public void init(){
+		listar(null);
+		carregaTurnos();
+	}
+
 	public void confirmar(ActionEvent evt){
 		try {
 			turmaDao.alterar(turma);
-         listar(evt);
-         turma = new Turma();
+			listar(evt);
+			turma = new Turma();
 		} catch (Exception e) {
-		   UtilFaces.addMensagemFaces(e);
+			UtilFaces.addMensagemFaces(e);
 		}
 	}
 
@@ -46,11 +47,9 @@ private Turma turma = new Turma();
 		try {
 			turmas = turmaDao.listar();
 		} catch (Exception e) {
-		   UtilFaces.addMensagemFaces(e);
+			UtilFaces.addMensagemFaces(e);
 		}
 	}
-	
-	
 
 	public Turma getTurma() {
 		return turma;
@@ -75,16 +74,32 @@ private Turma turma = new Turma();
 	public void setTurnoselecionado(EnumTurno turnoselecionado) {
 		this.turnoselecionado = turnoselecionado;
 	}
-	
+
+	public List<String> getTurnos() {
+		return turnos;
+	}
+
+	public void setTurnos(List<String> turnos) {
+		this.turnos = turnos;
+	}
+
+	public void carregaTurnos() {
+		EnumTurno[] enunsTurno = EnumTurno.values();
+		for (int i = 0; i < enunsTurno.length; i++) {
+			turnos.add(enunsTurno[i].getDescricao());
+		}
+	}
+
 	public List<String> completeEnumTurno(String query){
 		List<String> retorno = new ArrayList<String>();
 		EnumTurno[] enunsTurno = EnumTurno.values();
 		for (int i = 0; i < enunsTurno.length; i++) {
-			retorno.add(enunsTurno[i].getDescricao());			
+			retorno.add(enunsTurno[i].getDescricao());	
 		}
+
 		return retorno;
 	}
-	
+
 	/*
 	// Aplica Filtro por identificador
 			public void aplicarFiltro(ActionEvent evt) {
@@ -106,11 +121,11 @@ private Turma turma = new Turma();
 					UtilFaces.addMensagemFaces(e);
 				}
 			}
-			
+
 			public void carregaAgrupamentoTurma(AgrupamentoTurma agrupamentoTurma){
 				this.agrupamentoTurma = agrupamentoTurma;		
 			}
-		
+
 			public void excluir(AgrupamentoTurma agrupamentoTurma) {
 				try {
 					agrupamentoTurmaDao.excluirPorId(agrupamentoTurma.getId());
@@ -120,5 +135,5 @@ private Turma turma = new Turma();
 				}
 
 			}
-	*/
+	 */
 }

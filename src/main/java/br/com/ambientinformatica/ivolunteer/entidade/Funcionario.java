@@ -82,6 +82,9 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 
 	@Enumerated
 	private EnumFuncao funcao;
+	
+	@Enumerated
+	private EnumCargo cargo;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "funcionario_id")
@@ -133,6 +136,14 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 
 	public Funcionario() {
 		super();
+	}
+	
+	public EnumCargo getCargo() {
+		return cargo;
+	}
+
+	public void setCargo(EnumCargo cargo) {
+		this.cargo = cargo;
 	}
 
 	public String getPis() {

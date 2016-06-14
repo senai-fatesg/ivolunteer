@@ -5,7 +5,7 @@ import br.com.ambientinformatica.util.IEnum;
 public enum EnumEstadoCivil implements IEnum {
 	
 	SOLTEIRO("Solteiro"),
-	CASADO("casado"),
+	CASADO("Casado"),
 	DIVORCIADO("Divorciado"),
 	VIUVO("Viuvo");
 	

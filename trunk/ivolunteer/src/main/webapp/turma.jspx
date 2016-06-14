@@ -4,8 +4,9 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://www.ambientinformatica.com.br/jsf2">
+
 	<ui:define name="corpo">
 
 		<p:panel header="Cadastro De Turma" id="painel">
@@ -53,20 +54,26 @@
 					<p:inputText id="nome" value="#{TurmaControl.turma.nome}"></p:inputText>
 				</a:field>
 
-				<a:field label="Turmo" width="265px;">
-					<p:autoComplete id="turmo" dropdown="true"
-						value="#{TurmaControl.turnoselecionado}"
-						completeMethod="#{TurmaControl.completeEnumTurno}" />
+				<a:field label="Turno" width="265px;">
+					<p:selectOneMenu id="turno"
+						value="#{TurmaControl.turnoselecionado}" style="width:215px;">
+						<f:selectItem itemLabel="Selecione o Turno" itemValue=""
+							noSelectionOption="true" />
+						<f:selectItems value="#{TurmaControl.turnos}" />
+					</p:selectOneMenu>
 				</a:field>
 
-				<a:field label="Quantidade Maxima De Alunos " width="230px">
-
-					<p:spinner max="999" min="0" id="maximoAlunos"
-						value="#{TurmaControl.turma.maximoAlunos}" />
+				<a:field label="Quantidade Maxima De Alunos" style="width:230px;">
+					<p:spinner id="maximoAlunos"
+						value="#{TurmaControl.turma.maximoAlunos}" max="60" min="0"
+						styleClass="alinha-spinner" />
 				</a:field>
 
-				<a:field label="Professor">
+				<a:field label="Professor" spaceLeft="20px">
 					<p:selectOneMenu id="funcionario">
+						<f:selectItem itemLabel="Selecione o Professor" itemValue=""
+							noSelectionOption="true" />
+						<f:selectItems value="#{TurmaControl.turma.funcionario.nomePessoa}" />
 					</p:selectOneMenu>
 				</a:field>
 
@@ -82,40 +89,40 @@
 
 		<a:newLine />
 
-		<p:dataTable id="turmas" value="#{TurmaControl.turmas }" var="tur"
+		<p:dataTable id="turmas" value="#{TurmaControl.turmas}" var="tur"
 			width="100%" emptyMessage="Sem registros">
 			<f:facet name="header">
 				<h:outputText value="Lista de Turmas"></h:outputText>
 			</f:facet>
-			<p:column sortBy="#{tur.nome }">
+			<p:column sortBy="#{tur.nome}">
 				<f:facet name="header">
 					<h:outputText value="Nome"></h:outputText>
 				</f:facet>
-				<h:outputText value="#{cont.nome }"></h:outputText>
+				<h:outputText value="#{cont.nome}"></h:outputText>
 			</p:column>
-			<p:column sortBy="#{tur.agrupamentodeturma }">
+			<!-- <p:column sortBy="#{tur.agrupamentodeturma }">
 				<f:facet name="header">
 					<h:outputText value="Agrupamento De Turma"></h:outputText>
 				</f:facet>
 				<h:outputText value="#{tur.agrupamentodeturma }"></h:outputText>
-			</p:column>
-			<p:column sortBy="#{tur.Turmo }">
+			</p:column>-->
+			<p:column sortBy="#{tur.turno}">
 				<f:facet name="header">
 					<h:outputText value="Turno"></h:outputText>
 				</f:facet>
-				<h:outputText value="#{tur.Turmo }"></h:outputText>
+				<h:outputText value="#{tur.turno}"></h:outputText>
 			</p:column>
-			<p:column sortBy="#{tur.maximoAlunos }">
+			<p:column sortBy="#{tur.maximoAlunos}">
 				<f:facet name="header">
 					<h:outputText value="Quantidade Maxima De Alunos"></h:outputText>
 				</f:facet>
-				<h:outputText value="#{tur.maximoAlunos }"></h:outputText>
+				<h:outputText value="#{tur.maximoAlunos}"></h:outputText>
 			</p:column>
-			<p:column sortBy="#{tur.Turmo }">
+			<p:column sortBy="#{tur.turno}">
 				<f:facet name="header">
 					<h:outputText value="Professor"></h:outputText>
 				</f:facet>
-				<h:outputText value="#{tur.Turmo }"></h:outputText>
+				<h:outputText value="#{tur.turno}"></h:outputText>
 			</p:column>
 		</p:dataTable>
 

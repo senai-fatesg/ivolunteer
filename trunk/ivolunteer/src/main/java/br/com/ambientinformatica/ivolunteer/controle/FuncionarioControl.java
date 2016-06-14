@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.Cidade;
 import br.com.ambientinformatica.ivolunteer.entidade.Endereco;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumCargo;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumDiaSemana;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstadoCivil;
@@ -55,6 +56,8 @@ public class FuncionarioControl {
 
 	public void confirmar(ActionEvent evt) {
 		try {
+			this.funcionario.addEndereco(endereco);
+			this.endereco = new Endereco();
 			funcionarioDao.alterar(funcionario);
 			funcionario = new Funcionario();
 		} catch (Exception e) {
@@ -132,6 +135,10 @@ public class FuncionarioControl {
 
 	public List<SelectItem> getCompleteEnumEstado() {
 		return UtilFaces.getListEnum(EnumEstado.values());
+	}
+	
+	public List<SelectItem> getCompleteEnumCargo() {
+		return UtilFaces.getListEnum(EnumCargo.values());
 	}
 
 	public List<SelectItem> getCompleteEnumSexo() {

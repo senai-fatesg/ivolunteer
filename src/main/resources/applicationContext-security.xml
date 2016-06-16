@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
     					http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
                         http://www.springframework.org/schema/security 
-                        http://www.springframework.org/schema/security/spring-security-2.0.6.xsd">
+                        http://www.springframework.org/schema/security/spring-security-2.0.4.xsd">
 
 	<global-method-security secured-annotations="enabled">
 
@@ -15,7 +15,7 @@
 	    <intercept-url pattern="/javax.faces.resource/*" filters="none" />
 		<intercept-url pattern="/login.*" filters="none" />
 		<intercept-url pattern="/**.jsf" access="USUARIO" />
-		<form-login authentication-failure-url="/login.jsf?msg=erro" login-page="/login.jsf" />
+		<form-login authentication-failure-url="/login.jsp?msg=erro" login-page="/login.jsp" />
 		<logout logout-success-url="/inicio.jsf" />
 	</http>
 

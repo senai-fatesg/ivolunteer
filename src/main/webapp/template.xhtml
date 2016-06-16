@@ -1,23 +1,235 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<ui:composition template="main.xhtml"
-	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
-	xmlns:p="http://primefaces.org/ui">
-	<ui:define name="conteudo">
-		<h:form id="formCorpo">
-			<p:messages id="msg"  autoUpdate="true"></p:messages>
-			
-			<p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/> 
-			
-			<ui:insert name="corpo" />
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
 
-			<p:dialog modal="true" widgetVar="statusDialog" header="Aguarde..." draggable="false" closable="false">  
-			    <p:graphicImage value="imagens/ajaxloadingbar.gif" />  
+<h:head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Sistemas de Águas do Estado de Goiás" />
+    <meta name="author" content="GPTI" />
+    
+    <link rel="shortcut icon" href="imagens/favicon.ico" type="image/x-icon" />
+
+    <title>Ivolunteer</title>
+
+	<!-- CSS PrimeFaces Customizados--> 
+    <link href="css/stilo.css" type="text/css" rel="stylesheet" />
+
+    <!-- Bootstrap Core CSS  -->
+    <link href="template/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+	
+ 	<link href="css/bootstrap-responsive.css" rel="stylesheet" />
+	 
+	
+    <!-- MetisMenu CSS -->
+    <link href="template/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link href="template/dist/css/sb-admin-2.css" rel="stylesheet" />
+
+    <!-- Custom Fonts -->
+    <link href="template/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    
+</h:head>
+
+    <h:body>
+    <h:form id="formCorpo">
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span  style="padding-top: 5px; padding-left: 18px;" class="nav navbar-top-links navbar-left">
+	                <a href="index.html">
+                		<img src="imagens/ivolunteer.png" alt="logo" style="width: 200px"/>
+               		 </a>
+                </span>
+            </div>
+     
+            <ul class="nav navbar-top-links navbar-right">
+                
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-gear fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-messages">
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <strong>Usuário logado:</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>#{UsuarioLogadoControl.usuario.pessoa.nomePessoa}</em>
+                                    </span>
+                                </div>
+                                <div></div>
+                            </a>
+                        </li>                   
+                        <li class="divider"></li>
+                        <li>
+                            <a class="text-center" href="#">
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-messages -->
+                </li>
+                <!-- /.dropdown -->
+                
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <h:panelGroup rendered="#{securityScope.userInRole['USUARIO']}">
+	                    <ul class="dropdown-menu dropdown-user">
+	                    
+	                       <li>
+	                        	<a href="#"><i class="fa fa-user fa-fw"></i> Perfil</a>
+	                        </li>
+	                    	<li id="nav-alterarSenha">
+	                    		<a href="#" onclick="PF('alterarSenha').show();"><i class="fa fa-gear fa-fw"></i>Alterar senha<span></span></a>
+	                    	</li>
+	                        <li class="divider"></li>
+	                        <li><a href="#" onclick="document.location.href='/ivolunteer/sair.jsp'"><i class="fa fa-sign-out fa-fw"></i> Sair</a>
+	                        </li>
+	                    </ul>
+                    </h:panelGroup>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+                
+            </ul>
+            <p:dialog header="Alterar senha do usuário" widgetVar="alterarSenha" style="align: center">
+				<h:form id="formAteraSenha">
+					<h:outputText value="Senha atual" />
+					<br/>
+					<p:password value="#{UsuarioLogadoControl.senhaAtual }" placeholder="Digite novamente" style="width: 200px"/>
+					<br/>
+  						<h:outputText value="Nova senha" />
+  						<br/>
+  						<p:password value="#{UsuarioLogadoControl.senhaAlteracao }" feedback="true" inline="true" promptLabel="Digite uma senha segura" 
+  							goodLabel="Boa" weakLabel="Razoável" strongLabel="Excelente" placeholder="Digite a nova senha" style="width: 200px"/>
+  						<br/>
+  						<br/>
+  						<p:password value="#{UsuarioLogadoControl.senhaAlteracaoNovamente }" placeholder="Digite novamente" style="width: 200px"/>
+  						<br/>
+  						<br/>
+  						<p:commandButton value="Confirmar" id="btnAlterarSenha" icon="ui-icon-check" action="#{UsuarioLogadoControl.alterarSenhaDoUsuario }"
+  							onclick="PF('alterarSenha').hide()" />
+  					</h:form>
 			</p:dialog>
+            <!-- /.navbar-top-links -->
 
-		</h:form>
-	</ui:define>
-</ui:composition>
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <h:panelGroup rendered="#{securityScope.userInRole['USUARIO']}">
+								<a class="brand" href="index.html"><i class="fa fa-dashboard fa-fw"></i>Inicio</a>
+							</h:panelGroup>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-edit fa-fw"></i>Secretaria<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                            	<h:panelGroup rendered="#{securityScope.userInRole['ADMIN'] or securityScope.userInRole['SECRETARIA']}">
+	                                <li>
+	                                    <p:commandLink value="Candidato" actionListener="#{MenuControl.gerenciarSessao}" action="candidato?faces-redirect=true" ajax="false" />
+	                                </li>
+	                                <li>
+	                                    <p:commandLink value="Avaliação" actionListener="#{MenuControl.gerenciarSessao}" action="cadastroavaliacao?faces-redirect=true" ajax="false" />
+	                                </li>
+	                                 <li>
+	                                    <p:commandLink value="Funcionário" actionListener="#{MenuControl.gerenciarSessao}" action="cadastrofuncionario?faces-redirect=true" ajax="false" />
+	                                </li>
+	                                <li>
+	                                	<p:commandLink value="Matrícula" actionListener="#{MenuControl.gerenciarSessao}" action="matricula?faces-redirect=true" ajax="false" />
+	                                </li>
+	                                <li>
+	                                	<p:commandLink value="Turma" actionListener="#{MenuControl.gerenciarSessao}" action="turma?faces-redirect=true" ajax="false" />
+	                                </li>
+	                                 <li>
+	                                	<p:commandLink value="Atividade" actionListener="#{MenuControl.gerenciarSessao}" action="atividadediaria?faces-redirect=true" ajax="false" />
+	                                </li>
+	                                 <li>
+	                                	<p:commandLink value="Agrupamento" actionListener="#{MenuControl.gerenciarSessao}" action="agrupamentoTurma?faces-redirect=true" ajax="false" />
+	                                </li>
+                                </h:panelGroup>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                           <a href="#"><i class="fa fa-bars fa-fw"></i>Módulos<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                            	<h:panelGroup rendered="#{securityScope.userInRole['ADMIN'] or securityScope.userInRole['SECRETARIA']}">
+	                                <li>
+	                                    <p:commandLink value="Lista de avaliação" actionListener="#{MenuControl.gerenciarSessao}" action="listaavaliacao?faces-redirect=true" ajax="false" />
+	                                </li>
+	                                <li>
+	                                    <p:commandLink value="Seleção de candidato" actionListener="#{MenuControl.gerenciarSessao}" action="pesquisacandidato?faces-redirect=true" ajax="false" />
+	                                </li>
+	                                 <li>
+	                                    <p:commandLink value="Registro de frequência" actionListener="#{MenuControl.gerenciarSessao}" action="registrofrequencia?faces-redirect=true" ajax="false" />
+	                                </li>
+	                                <li>
+	                                	<p:commandLink value="Registro de ponto" actionListener="#{MenuControl.gerenciarSessao}" action="registroponto?faces-redirect=true" ajax="false" />
+	                                </li>
+                                </h:panelGroup>
+                            </ul>
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-home fa-fw"></i>Sala de aula<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+								<h:panelGroup rendered="#{securityScope.userInRole['ADMIN'] or securityScope.userInRole['EDUCADOR']}">
+	                                <li>
+	                                    <p:commandLink value="Registro de frequência" actionListener="#{MenuControl.gerenciarSessao}" action="registrofrequencia?faces-redirect=true" ajax="false" />
+	                                </li>
+								</h:panelGroup>
+							</ul>
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-cogs fa-fw"></i>Administrar<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+								<h:panelGroup rendered="#{securityScope.userInRole['ADMIN']}">
+									<li>
+	                                    <p:commandLink value="Usuário" actionListener="#{MenuControl.gerenciarSessao}" action="usuario?faces-redirect=true" ajax="false" />
+	                                </li>
+	                                <li>
+	                                    <p:commandLink value="Lista de usuários" actionListener="#{MenuControl.gerenciarSessao}" action="usuarioLista?faces-redirect=true" ajax="false" />
+	                                </li>
+								</h:panelGroup>
+							</ul>
+						</li>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
+            
+                <p:growl autoUpdate="true" />
+                <p:messages autoUpdate="true" />
+                <ui:insert name="corpo" />
+           
+        </div>
+        <!-- /#page-wrapper -->
+ 		
+    </div>
+    <!-- /#wrapper -->
+    </h:form>
+    
+    <!-- Bootstrap Core JavaScript -->
+    <script src="template/bower_components/bootstrap/dist/js/bootstrap.min.js" />
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="template/bower_components/metisMenu/dist/metisMenu.min.js" />
+    <!-- Custom Theme JavaScript -->
+    <script src="template/dist/js/sb-admin-2.js" />
+</h:body>
+</html>

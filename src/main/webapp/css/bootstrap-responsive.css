@@ -454,7 +454,7 @@
   .container,
   .navbar-fixed-top .container,
   .navbar-fixed-bottom .container {
-    width: 1370px;
+    width: 1170px;
   }
   .span12 {
     width: 1170px;
@@ -656,7 +656,7 @@
   input.span3,
   textarea.span3,
   .uneditable-input.span3 {
-    width: 260px;
+    width: 310px;
   }
   input.span2,
   textarea.span2,
@@ -701,7 +701,6 @@
     width: auto;
     padding: 0;
   }
-  
   .navbar .brand {
     padding-right: 10px;
     padding-left: 10px;

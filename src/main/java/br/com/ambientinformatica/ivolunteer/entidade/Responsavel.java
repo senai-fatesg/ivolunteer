@@ -10,12 +10,11 @@ import javax.persistence.PrimaryKeyJoinColumn;
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
 public class Responsavel extends Pessoa implements java.io.Serializable {
-
 	private static final long serialVersionUID = 1L;
 
-	public Responsavel() {
-		super();
-	}
+	public Responsavel() {}
+	
+	
 
 	private String indicacao;
 	private String informacoesSobreIntituicao;

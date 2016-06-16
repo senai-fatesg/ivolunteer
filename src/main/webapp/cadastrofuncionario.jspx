@@ -7,40 +7,34 @@
 	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
-		<p:panel header="Cadastro de Funcionário" id="panelFuncionario"
-			styleClass="align-panel-center">
+		<p:panel header="Cadastro de Funcionário" id="panelFuncionario" styleClass="align-panel-center">
 
-			<p:commandButton type="button" id="consultar" value="Consultar"
-				icon="ui-icon-search" onclick="PF('consultar').show();"
+			<p:commandButton type="button" id="consultar" value="Consultar" icon="ui-icon-search" onclick="PF('consultar').show();"
 				styleClass="marginbottom" />
 
-			<p:dialog id="modalPesquisa" header="Consultar" widgetVar="consultar"
-				modal="true" maximizable="false" minimizable="false" width="40%"
+			<p:dialog id="modalPesquisa" header="Consultar" widgetVar="consultar" modal="true" maximizable="false" minimizable="false" width="40%"
 				height="550px" resizable="false" closeOnEscape="true">
 
 				<a:field label="Nome">
-					<p:inputText id="filtro"
-						value="#{FuncionarioControl.filtro.nomePessoa}" />
+					<p:inputText id="filtro" value="#{FuncionarioControl.filtro.nomePessoa}" />
 				</a:field>
 				<a:field spaceLeft="15px">
-					<p:commandButton id="filtrar" icon="ui-icon-search"
-						actionListener="#{FuncionarioControl.aplicarFiltro}"
-						process="@this" update="@this" oncomplete="PF('consultar').show();" />
+					<p:commandButton id="filtrar" icon="ui-icon-search" actionListener="#{FuncionarioControl.aplicarFiltro}" process="@this" update="@this" oncomplete="PF('consultar').show();" />
 				</a:field>
 				<a:newLine />
-				<p:dataTable id="listaFuncionarios" var="itemFuncionario"
-					style="width:100%" value="#{FuncionarioControl.funcionarios}"
-					widgetVar="funcionariosTable" emptyMessage="Sem Registros a Exibir">
-					<p:column headerText="Nome" width="50%">#{itemFuncionario.nomePessoa}</p:column>
-					<p:column headerText="CPF">#{itemFuncionario.cpf}</p:column>
+				<p:dataTable id="listaFuncionarios" var="itemFuncionario" style="width:100%" value="#{FuncionarioControl.funcionarios}" widgetVar="funcionariosTable" emptyMessage="Sem Registros a Exibir">
+					<p:column headerText="Nome" width="50%">
+						#{itemFuncionario.nomePessoa}
+					</p:column>
+					
+					<p:column headerText="CPF">
+						#{itemFuncionario.cpf}
+					</p:column>
+					
 					<p:column width="20%">
-						<p:commandButton icon="ui-icon-pencil"
-							action="#{FuncionarioControl.carregaFuncionarioAlteracao(itemFuncionario)}"
-							oncomplete="PF('consultar').hide();"
-							update="@form" />
-						<p:commandButton icon="ui-icon-trash"
-							actionListener="#{FuncionarioControl.excluir(itemFuncionario)}"
-							update="listaFuncionarios" />
+						<p:commandButton icon="ui-icon-pencil" action="#{FuncionarioControl.carregaFuncionarioAlteracao(itemFuncionario)}"
+							oncomplete="PF('consultar').hide();" update="@form" />
+						<p:commandButton icon="ui-icon-trash" actionListener="#{FuncionarioControl.excluir(itemFuncionario)}" update="listaFuncionarios" />
 					</p:column>
 				</p:dataTable>
 			</p:dialog>
@@ -50,163 +44,124 @@
 					<p:growl id="msg" sticky="false" life="5000" />
 
 					<a:field label="Nome">
-						<p:inputText value="#{FuncionarioControl.funcionario.nomePessoa}"
-							style="width:450px;" />
+						<p:inputText value="#{FuncionarioControl.funcionario.nomePessoa}" style="width:480px;" />
 					</a:field>
 
 					<a:field label="Sexo" spaceLeft="10px">
-						<p:selectOneMenu id="enumSexo"
-							value="#{FuncionarioControl.funcionario.enumSexo}"
-							style="width:100px;">
+						<p:selectOneMenu id="enumSexo" value="#{FuncionarioControl.funcionario.enumSexo}" style="width:100px;">
 							<f:selectItems value="#{FuncionarioControl.completeEnumSexo}"></f:selectItems>
 						</p:selectOneMenu>
 					</a:field>
 
 					<a:field label="CPF" spaceLeft="10px">
-						<p:inputMask id="cpf"
-							value="#{FuncionarioControl.funcionario.cpf}"
-							mask="999.999.999-99">
+						<p:inputMask id="cpf" value="#{FuncionarioControl.funcionario.cpf}" mask="999.999.999-99">
 						</p:inputMask>
 					</a:field>
 
 					<a:newLine />
 
 					<a:field label="Data Nascimento">
-						<p:calendar
-							value="#{FuncionarioControl.funcionario.dataNascimento}"
-							locale="pt" navigator="true" pattern="dd/MM/yyy"
-							style="width:150px" />
+						<p:calendar value="#{FuncionarioControl.funcionario.dataNascimento}" locale="pt" navigator="true" pattern="dd/MM/yyy" style="width:150px" />
 					</a:field>
 
 					<a:field label="Naturalidade" spaceLeft="10px">
-						<p:inputText
-							value="#{FuncionarioControl.funcionario.naturalidade}"
-							style="width:220px" />
+						<p:inputText value="#{FuncionarioControl.funcionario.naturalidade}" style="width:480px" />
 					</a:field>
 
 					<a:field label="Estado Civil" spaceLeft="10px">
-						<p:selectOneMenu id="enumEstadoCivil"
-							value="#{FuncionarioControl.funcionario.enumEstadoCivil}"
-							style="width:100px;">
-							<f:selectItems
-								value="#{FuncionarioControl.completeEnumEstadoCivil}"></f:selectItems>
+						<p:selectOneMenu id="enumEstadoCivil" value="#{FuncionarioControl.funcionario.enumEstadoCivil}" style="width:100px;">
+							<f:selectItems value="#{FuncionarioControl.completeEnumEstadoCivil}"></f:selectItems>
 						</p:selectOneMenu>
 					</a:field>
 
 					<a:newLine />
 
 					<a:field label="Endereço">
-						<p:inputText value="#{FuncionarioControl.endereco.ruaOuAvenida}"
-							style="width:400px" />
+						<p:inputText value="#{FuncionarioControl.endereco.ruaOuAvenida}" style="width:480px" />
 					</a:field>
 
 					<a:field label="Bairro" spaceLeft="10px">
-						<p:inputText value="#{FuncionarioControl.endereco.bairro}"
-							style="width:150px" />
+						<p:inputText value="#{FuncionarioControl.endereco.bairro}" style="width:275px" />
 					</a:field>
+					<a:newLine />
 
-					<a:field label="Cidade" spaceLeft="10px">
-						<p:inputText value="#{FuncionarioControl.cidade.nomeCidade}"
-							style="width:150px" />
+					<a:field label="Cidade">
+						<p:inputText value="#{FuncionarioControl.cidade.nomeCidade}" style="width:330px" />
 					</a:field>
 
 					<a:field label="CEP" spaceLeft="10px">
-						<p:inputMask id="cep" style="width:100px;"
-							value="#{FuncionarioControl.endereco.cep}" mask="99.999-999">
+						<p:inputMask id="cep" style="width:100px;" value="#{FuncionarioControl.endereco.cep}" mask="99.999-999">
 						</p:inputMask>
 					</a:field>
 
 					<a:field label="Número" spaceLeft="10px">
-						<p:inputText value="#{FuncionarioControl.endereco.numero}"
-							style="width:50px" />
+						<p:inputText value="#{FuncionarioControl.endereco.numero}" style="width:50px" />
 					</a:field>
 
 					<a:field label="Complemento" spaceLeft="10px">
-						<p:inputText value="#{FuncionarioControl.endereco.complemento}"
-							style="width:200px;" />
+						<p:inputText value="#{FuncionarioControl.endereco.complemento}" style="width:250px;" />
 					</a:field>
 
 					<a:newLine />
+					<a:newLine />
 
-					<p:panelGrid columns="2" layout="grid" style="height: 270px;">
+					<p:panelGrid columns="2" layout="grid" style="height: 270px; width:768px">
 						<p:panel header="Dados Bancários" style="height:240px;">
 							<a:field label="Banco">
-								<p:inputText value="#{FuncionarioControl.funcionario.banco}"
-									style="width:250px;" />
+								<p:inputText value="#{FuncionarioControl.funcionario.banco}" style="width:250px;" />
 							</a:field>
 							<a:newLine />
 							<a:field label="Agencia">
-								<p:inputText value="#{FuncionarioControl.funcionario.banco}"
-									style="width:250px;" />
+								<p:inputText value="#{FuncionarioControl.funcionario.banco}" style="width:250px;" />
 							</a:field>
 							<a:newLine />
 							<a:field label="Conta Corrente">
-								<p:inputText value="#{FuncionarioControl.funcionario.conta}"
-									style="width:250px;" />
+								<p:inputText value="#{FuncionarioControl.funcionario.conta}" style="width:250px;" />
 							</a:field>
 						</p:panel>
 
 						<p:panel header="Filiação" style="height:240px;">
 							<a:field label="Nome da Mãe">
-								<p:inputText value="#{FuncionarioControl.funcionario.nomeMae}"
-									style="width:250px;" />
+								<p:inputText value="#{FuncionarioControl.funcionario.nomeMae}" style="width:250px;" />
 							</a:field>
 							<a:newLine />
 							<a:field label="Nome do Pai">
-								<p:inputText value="#{FuncionarioControl.funcionario.nomePai}"
-									style="width:250px;" />
+								<p:inputText value="#{FuncionarioControl.funcionario.nomePai}" style="width:250px;" />
 							</a:field>
 						</p:panel>
 					</p:panelGrid>
 
-					<p:panel header="Dados Profissionais"
-						style="maring-top: -100px !important;height: 100px !important;">
+					<p:panel header="Dados Profissionais" style="maring-top: -100px !important;height: 150px !important; width: 768px">
 						<a:field label="Data Contratação">
-							<p:calendar
-								value="#{FuncionarioControl.funcionario.dataAdmissao}"
-								locale="pt" navigator="true" pattern="dd/MM/yyy"
+							<p:calendar value="#{FuncionarioControl.funcionario.dataAdmissao}" locale="pt" navigator="true" pattern="dd/MM/yyy"
 								style="width:150px;" />
 						</a:field>
 						<a:field label="Data Demissão" spaceLeft="10px">
-							<p:calendar
-								value="#{FuncionarioControl.funcionario.dataDemissao}"
-								locale="pt" navigator="true" pattern="dd/MM/yyy"
+							<p:calendar value="#{FuncionarioControl.funcionario.dataDemissao}" locale="pt" navigator="true" pattern="dd/MM/yyy"
 								style="width:150px;" />
 						</a:field>
 						<a:field label="Cargo" spaceLeft="10px">
-							<p:selectOneMenu id="enumCargo"
-								value="#{FuncionarioControl.funcionario.cargo}"
-								style="width:100px;">
+							<p:selectOneMenu id="enumCargo" value="#{FuncionarioControl.funcionario.cargo}" style="width:100px;">
 								<f:selectItems value="#{FuncionarioControl.completeEnumCargo}"></f:selectItems>
 							</p:selectOneMenu>
 						</a:field>
 						<a:field label="Salário" spaceLeft="10px">
-							<p:inputText
-								value="#{FuncionarioControl.funcionario.valorInicial}"
-								style="width:100px" />
+							<p:inputText value="#{FuncionarioControl.funcionario.valorInicial}" style="width:100px" />
 						</a:field>
 						<a:field label="CTPS" spaceLeft="10px">
-							<p:inputText
-								value="#{FuncionarioControl.funcionario.carteiraDeTrabalho}"
-								style="width:100px" />
+							<p:inputText value="#{FuncionarioControl.funcionario.carteiraDeTrabalho}" style="width:100px" />
 						</a:field>
 						<a:field label="Serie" spaceLeft="10px">
-							<p:inputText
-								value="#{FuncionarioControl.funcionario.serieCarteiraDeTrabalho}"
-								style="width:25px" />
+							<p:inputText value="#{FuncionarioControl.funcionario.serieCarteiraDeTrabalho}" style="width:25px" />
 						</a:field>
 						<a:field label="PIS" spaceLeft="10px">
-							<p:inputText
-								value="#{FuncionarioControl.funcionario.pis}"
-								style="width:220px;" />
+							<p:inputText value="#{FuncionarioControl.funcionario.pis}" style="width:220px;" />
 						</a:field>
 					</p:panel>
 				</p:panel>
 			</h:form>
 			<a:newLine/>
-			<p:commandButton value="Salvar" icon="ui-icon-disk"
-				actionListener="#{FuncionarioControl.confirmar}"
-				update="panelFuncionario" />
+			<p:commandButton value="Salvar" icon="ui-icon-disk" actionListener="#{FuncionarioControl.confirmar}" update="panelFuncionario" />
 
 		</p:panel>
 	</ui:define>

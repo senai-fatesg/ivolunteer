@@ -1,0 +1,39 @@
+html, body, hr {
+	margin:0;
+	padding:0;	
+}
+.footer {
+	width: 100%;
+	background: #eeeeee;
+	padding: 5px 0;	
+}
+.footer p {
+	color:#666;
+	font-size: 10px;
+}
+.centralizar{
+	text-align: center;
+}
+
+.navbar ul.nav .open 
+{
+	 position: relative;
+	
+}
+
+.ui-spinner-input{
+	padding-right: 20px !important;
+	margin-bottom: 0 !important;
+}
+
+.align-panel-center {
+	width: 90%; 
+	padding: 10px; 
+	margin: auto; 
+	left: 0; 
+	right: 0;
+}
+
+.marginbottom{
+	margin-bottom: 10px;
+}

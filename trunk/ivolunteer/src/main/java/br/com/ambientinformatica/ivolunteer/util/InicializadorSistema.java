@@ -34,7 +34,7 @@ public class InicializadorSistema {
 			List<Usuario> usuarios = usuarioDao.listar();
 			if(usuarios.isEmpty()){
 				Pessoa pessoa = new Pessoa();
-				pessoa.setNomePessoa("ADMINISTRADOR PADRAO DO SISTEMA");
+				pessoa.setNomePessoa("ADMINISTRADOR");
 				pessoa.setEnumTipoPessoa(EnumTipoPessoa.COLABORADOR);
 				pessoa.setCpf("11111111111");
 				pessoaDao.incluir(pessoa);

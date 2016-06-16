@@ -1,21 +1,94 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ui:composition template="template.xhtml"
-	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
-	xmlns:p="http://primefaces.org/ui">
+<ui:composition template="template.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a="http://www.ambientinformatica.com.br/jsf2" xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
-		
-		<h:panelGrid columns="5">
-			<h:outputLink value="registrofrequencia.jsf">
-				<h:graphicImage value="imagens/cooperart.jpg"/><br/>
-				<h:outputText value="Registro de Frequência" style="margin-left: 130px"/>
-			</h:outputLink>
-	
-		</h:panelGrid>
-
+		<div class="row" style="margin-left: -15px;">
+        	<div class="col-lg-12">
+                <h2 class="page-header">Acesso Rápido</h2>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+            <!-- /.row -->
+            <div class="col-xs-12" style="text-align: center">
+	            <div class="row" style="margin-left: -15px;">
+	                 <div class="col-lg-3 col-md-6">
+	                     <a href="matricula.jsf">
+	                        <div class="panel panel-primary ">
+	                            <div class="panel-heading">
+	                                <div class="row">
+	                                    <div class="col-xs-3">
+		                                    <i class="fa fa-edit fa-5x"></i>
+		                                </div>
+		                                <div class="col-xs-9 text-right">
+		                                    <div class="huge">Matrícula</div>
+		                                    <div>Nova matrícula</div>
+		                                    <div>.</div>
+		                                    <div>.</div>
+		                                </div>
+		                            </div>
+		                        </div>
+	                        </div>
+	                    </a>
+	                </div>
+	                <div class="col-lg-3 col-md-6">
+	                    <div class="panel panel-green">
+	                        <a href="consulta.jsf">
+		                        <div class="panel-heading">
+		                            <div class="row">
+		                                <div class="col-xs-3">
+		                                    <i class="fa fa-search fa-5x"></i>
+		                                </div>
+		                                <div class="col-xs-9 text-right">
+		                                    <div class="huge">Consulta</div>
+		                                    <div>.</div>
+		                                    <div>.</div>
+		                                    <div>.</div>
+		                                </div>
+		                            </div>
+		                        </div>
+	                        </a>
+	                    </div>
+	                </div>
+	               <div class="col-lg-3 col-md-6">
+	                    <div class="panel panel-red">
+	                        <a href="candidato.jsf">
+	                            <div class="panel-heading">
+	                                <div class="row">
+	                                    <div class="col-xs-3">
+	                                        <i class="fa fa-child fa-5x"></i>
+	                                    </div>
+	                                    <div class="col-xs-9 text-right">
+	                                        <div class="huge">Candidato</div>
+	                                        <div>.</div>
+	                                        <div>.</div>
+	                                        <div>.</div>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </a>
+	                    </div>
+	                </div>
+	                <div class="col-lg-3 col-md-6">
+	                	<div class="panel panel-yellow">
+	                        <a href="registrofrequencia.jsf">
+		                        <div class="panel-heading">
+		                            <div class="row">
+		                                <div class="col-xs-3">
+		                                    <i class="fa fa-random fa-5x"></i>
+		                                </div>
+		                                <div class="col-xs-9 text-right">
+		                                    <div class="huge">Frequência</div>
+		                                    <div>.</div>
+		                                    <div>.</div>
+		                                    <div>.</div>
+		                                </div>
+		                            </div>
+		                        </div>
+	                        </a>
+	                    </div>
+	            	</div>
+	            </div>
+            </div>
 
 	</ui:define>
 </ui:composition>

@@ -9,7 +9,7 @@
 <%
 session.removeAttribute("UsuarioLogadoControl");
 session.invalidate();
-response.sendRedirect("login.jsf");
+response.sendRedirect("login.jsp");
 %>
 SAINDO DO SISTEMA ... AGUARDE ...
 </body>

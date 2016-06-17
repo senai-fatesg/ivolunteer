@@ -3,7 +3,6 @@
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a="http://www.ambientinformatica.com.br/jsf2"
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
-		<h:form id="formCorpo">
 			<p:panel header="Adicionar papeis ao usuário" id="panel" style="width:100%">
 				<a:field label="Nome" id="nomePessoa">
 					<p:inputText value="#{UsuarioControl.nome }" />
@@ -47,6 +46,5 @@
 			<a:field>
 				<p:commandButton value="Confirmar" actionListener="#{UsuarioControl.confirmar }" update="@form papeisUsuario" icon="ui-icon-disk"></p:commandButton>
 			</a:field>
-		</h:form>
 	</ui:define>
 </ui:composition>

@@ -25,7 +25,7 @@ import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 public class UsuarioControl {
 
     private Usuario usuario = new Usuario();
-
+    
     private EnumPapelUsuario papel;
 
     private List<EnumPapelUsuario> papeisAdicionados = new ArrayList<EnumPapelUsuario>();
@@ -47,9 +47,12 @@ public class UsuarioControl {
     private boolean usuarioAtivo = true;
 
     public void adicionarPapel(){
-        if(usuario.getLogin() != null)
+        if(usuario.getLogin() != null){
         	//busca usuario existente para edição 
-        	usuario = usuarioDao.consultarPorLogin(usuario.getLogin());
+        	Usuario consultaUsuario = new Usuario();
+        	consultaUsuario = usuarioDao.consultarPorLogin(usuario.getLogin());
+        	usuario = consultaUsuario != null ? consultaUsuario : usuario;
+        }
         else{
         	//novo usuario adicionado
         	Pessoa p = new Pessoa();

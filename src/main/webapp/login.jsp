@@ -1,34 +1,31 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Login</title>
-<link href="css/bootstrap.css" rel="stylesheet" />
-<link href="css/bootstrap-responsive.css" rel="stylesheet" />
-<link href="css/login.css" rel="stylesheet" />
-<script src="js/jquery.maskedinput.js" type="text/javascript"></script>
-
-<style>
-	body {
-		/*background-color:#D6E0E7; */
-		background-color:#E8E8E8
-	}
-</style>
-<script type="text/javascript">
-	jQuery(function($) {
-		$("#usuario").mask("999.999.999-99");
-	});
-	function focar() {
-		document.getElementById("usuario").focus();
-	}
-</script>
-
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<title>Login</title>
+	<link href="css/bootstrap.css" rel="stylesheet" />
+	<link href="css/bootstrap-responsive.css" rel="stylesheet" />
+	<link href="css/login.css" rel="stylesheet" />
+	<script src="js/jquery.maskedinput.js" type="text/javascript"></script>
+	
+	<style>
+		body {
+			/*background-color:#D6E0E7; */
+			background-color:#E8E8E8
+		}
+	</style>
+	<script type="text/javascript">
+		jQuery(function($) {
+			$("#usuario").mask("999.999.999-99");
+		});
+		function focar() {
+			document.getElementById("usuario").focus();
+		}
+	</script>
 </head>
 <body>
-
-	<div class="container" style="margin-top: 70px">
+	<div class="container" align="center" style="margin-top: 70px">
 	    <div class="row" style="width: 300px">
 	        <div class="col-sm-6 col-md-4 col-md-offset-4">
 	            <h1 class="text-center login-title"></h1>
@@ -73,7 +70,6 @@
 				</div>
 	        </div>
 	    </div>
-</div>
-
+	</div>
 </body>
 </html>

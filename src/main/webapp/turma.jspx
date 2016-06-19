@@ -56,27 +56,26 @@
 
 				<a:field label="Turno" width="265px;">
 					<p:selectOneMenu id="turno"
-						value="#{TurmaControl.turnoselecionado}" style="width:215px;">
+						value="#{TurmaControl.turnoselecionado}" style="width:215px;" required="true">
 						<f:selectItem itemLabel="Selecione o Turno" itemValue=""
-							noSelectionOption="true" />
-						<f:selectItems value="#{TurmaControl.turnos}" />
+							noSelectionOption="true"/>
+						<f:selectItems value="#{TurmaControl.getTurno()}" var="turno" itemValue="#{turno}" itemLabel="#{l.descricao}"/>
 					</p:selectOneMenu>
 				</a:field>
 
-				<a:field label="Quantidade Maxima De Alunos" style="width:230px;">
+				<a:field label="Quantidade Maxima De Alunos" style="width:230px;" required="true">
 					<p:spinner id="maximoAlunos"
 						value="#{TurmaControl.turma.maximoAlunos}" max="60" min="0"
 						styleClass="alinha-spinner" />
 				</a:field>
 
 				<a:field label="Professor" spaceLeft="20px">
-					<p:selectOneMenu id="funcionario">
+					<p:selectOneMenu id="funcionario" required="true">
 						<f:selectItem itemLabel="Selecione o Professor" itemValue=""
 							noSelectionOption="true" />
-						<f:selectItems value="#{TurmaControl.turma.funcionario.nomePessoa}" />
+						<f:selectItems value="#{TurmaControl.professor}" />
 					</p:selectOneMenu>
 				</a:field>
-
 
 				<a:newLine />
 				<a:newLine />
@@ -98,14 +97,8 @@
 				<f:facet name="header">
 					<h:outputText value="Nome"></h:outputText>
 				</f:facet>
-				<h:outputText value="#{cont.nome}"></h:outputText>
+				<h:outputText value="#{tur.nome}"></h:outputText>
 			</p:column>
-			<!-- <p:column sortBy="#{tur.agrupamentodeturma }">
-				<f:facet name="header">
-					<h:outputText value="Agrupamento De Turma"></h:outputText>
-				</f:facet>
-				<h:outputText value="#{tur.agrupamentodeturma }"></h:outputText>
-			</p:column>-->
 			<p:column sortBy="#{tur.turno}">
 				<f:facet name="header">
 					<h:outputText value="Turno"></h:outputText>
@@ -122,7 +115,7 @@
 				<f:facet name="header">
 					<h:outputText value="Professor"></h:outputText>
 				</f:facet>
-				<h:outputText value="#{tur.turno}"></h:outputText>
+				<h:outputText value="#{TurmaControl.getTurno(tur.turno)}"></h:outputText>
 			</p:column>
 		</p:dataTable>
 

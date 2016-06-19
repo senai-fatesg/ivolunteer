@@ -40,6 +40,4 @@ public class FuncionarioDaoJpa extends PersistenciaJpa<Funcionario> implements F
 			return null;
 		}
 	}
-	
-	
 }

@@ -222,7 +222,7 @@
 								</p:panel>
 								<a:newLine />
 							</p:tab>
-							<!--TAB ENDEREÇO -->d
+							<!--TAB ENDEREÇO -->
 
 							<p:tab title="Endereço" id="tabEndereco">
 

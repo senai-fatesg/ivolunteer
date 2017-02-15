@@ -1,6 +1,7 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
 import java.util.EnumSet;
+
 import br.com.ambientinformatica.util.IEnum;
 
 public enum EnumTurno implements IEnum {

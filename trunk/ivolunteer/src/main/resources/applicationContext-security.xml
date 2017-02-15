@@ -1,26 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <beans:beans xmlns="http://www.springframework.org/schema/security"
 	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
-    					http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    					http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
                         http://www.springframework.org/schema/security 
-                        http://www.springframework.org/schema/security/spring-security-2.0.4.xsd">
+                        http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
 
 	<global-method-security secured-annotations="enabled">
 
 	</global-method-security>
 
+	<http pattern="/login.jsp*" security="none"/>
+	<http pattern="/cadastroUsuario.jspx" security="none"/>
+	<http pattern="/javax.faces.resource/*" security="none" />
+
+	<http pattern="/alterarSenhaExterno.jspx" security="none" />
+	<http pattern="/auth.jspx" security="none" />
+	<http pattern="/usuario.jsf" security="none" />
+	
+		
+		
 	<http auto-config="true" access-denied-page="/acessoNegado.jsf" access-decision-manager-ref="accessDecisionManager">
-	    <intercept-url pattern="/javax.faces.resource/*" filters="none" />
-		<intercept-url pattern="/login.*" filters="none" />
+		
+		<intercept-url pattern="/admin/*" access="ADMIN" />
+		<intercept-url pattern="/gerencia/*" access="ADMIN,GERENCIA,USUARIO" /> 
 		<intercept-url pattern="/**.jsf" access="USUARIO" />
+		
 		<form-login authentication-failure-url="/login.jsp?msg=erro" login-page="/login.jsp" />
 		<logout logout-success-url="/inicio.jsf" />
 	</http>
 
-	<beans:bean id="accessDecisionManager"
-		class="org.springframework.security.vote.AffirmativeBased">
+	<beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
 		<beans:property name="decisionVoters">
 			<beans:list>
 				<beans:ref bean="roleVoter" />
@@ -29,21 +40,20 @@
 		</beans:property>
 	</beans:bean>
 
-	<beans:bean id="roleVoter" class="org.springframework.security.vote.RoleVoter">
+	<beans:bean id="roleVoter" class="org.springframework.security.access.vote.RoleVoter">
 		<beans:property name="rolePrefix" value="" />
 	</beans:bean>
-
-	<beans:bean id="authenticatedVoter"
-		class="org.springframework.security.vote.AuthenticatedVoter">
-	</beans:bean>
+	
+	<beans:bean id="authenticatedVoter" class="org.springframework.security.access.vote.AuthenticatedVoter"/>
 
 
 	<beans:bean id="usuarioService" class="br.com.ambientinformatica.ivolunteer.util.UsuarioService">
 		<beans:property name="dataSource" ref="dataSource"></beans:property>
 	</beans:bean>
 
-	<authentication-provider user-service-ref="usuarioService">
-		<password-encoder hash="md5"/>
-	</authentication-provider>
-
+	<authentication-manager>
+		<authentication-provider user-service-ref="usuarioService">
+			<password-encoder hash="md5" />
+		</authentication-provider>
+	</authentication-manager>
 </beans:beans>

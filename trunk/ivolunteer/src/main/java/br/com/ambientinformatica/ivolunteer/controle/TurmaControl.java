@@ -18,7 +18,6 @@ import br.com.ambientinformatica.ivolunteer.entidade.Turma;
 import br.com.ambientinformatica.ivolunteer.persistencia.FuncionarioDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.TurmaDao;
 import br.com.ambientinformatica.ivolunteer.service.TurmaService;
-import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 
 @Controller("TurmaControl")
 @Scope("conversation")

@@ -16,8 +16,8 @@ import br.com.ambientinformatica.ivolunteer.entidade.Usuario;
 import br.com.ambientinformatica.ivolunteer.persistencia.UsuarioDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 import br.com.ambientinformatica.util.UtilHash;
-import br.com.ambientinformatica.util.UtilLog;
 import br.com.ambientinformatica.util.UtilHash.Algoritimo;
+import br.com.ambientinformatica.util.UtilLog;
 
 @Controller("UsuarioLogadoControl")
 @Scope("session")

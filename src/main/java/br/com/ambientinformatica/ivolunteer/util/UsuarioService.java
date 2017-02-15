@@ -9,19 +9,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 import org.springframework.dao.DataAccessException;
-import org.springframework.security.GrantedAuthority;
-import org.springframework.security.GrantedAuthorityImpl;
-import org.springframework.security.userdetails.UserDetails;
-import org.springframework.security.userdetails.UserDetailsService;
-import org.springframework.security.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.util.UtilLog;
 
-@Service("usuarioService")
 public class UsuarioService implements UserDetailsService{
 
 	private DataSource dataSource;
@@ -43,7 +44,7 @@ public class UsuarioService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String username) throws DataAccessException {
 		try {
 			Connection con = dataSource.getConnection();
-			String sqlUsuario = "SELECT login AS username, senha as password, ativo AS enabled FROM usuario WHERE login = ?";
+			String sqlUsuario = "SELECT login AS username, senha as password, 'true' AS enabled FROM usuario WHERE login = ?";
 
 			String sqlPapeis = "select papel as authority from papelusuario where usuario_id = ?";
 			try{
@@ -60,13 +61,18 @@ public class UsuarioService implements UserDetailsService{
 						UserDetails user;
 						try {
 							while (rsPapeis.next()) {
-								papeis.add(new GrantedAuthorityImpl(rsPapeis.getString("authority")));
+								 papeis.add(new SimpleGrantedAuthority(rsPapeis.getString("authority")));
 							}
 
 							user = new UsuarioImpl(username,
 									rs.getString("password"),
 									rs.getBoolean("enabled"), true, true, true,
-									papeis.toArray(new GrantedAuthority[0]));
+									papeis);
+							
+							HttpServletRequest req = UtilFaces.getRequest();
+							boolean isLogged = true;
+                     HttpSession session = req.getSession();          
+                     session.setAttribute("isLogged", isLogged);
 
 							registrarHistoricoLogin(con, username);
 						} finally {

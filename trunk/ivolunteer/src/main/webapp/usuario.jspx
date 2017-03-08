@@ -32,7 +32,7 @@
 							<p:column headerText="Descrição">
 								<h:outputText value="#{permissao.descricao }" />
 							</p:column>
-							<p:column width="5%">
+							<p:column width="10%">
 								<f:facet name="header">
 									<h:outputText value="Remover"></h:outputText>
 								</f:facet>

@@ -20,23 +20,24 @@ import br.com.ambientinformatica.util.UtilLog;
 @Scope("conversation")
 public class UsuarioListaControl {
 
-	private Usuario usuario =  new Usuario();
+	private Usuario usuario = new Usuario();
 
 	private List<Usuario> usuarios = new ArrayList<Usuario>();
 
 	private String login;
 	private String nomePessoa;
+	private String status;
 	private Usuario usuarioAtivo;
 
 	@Autowired
 	private UsuarioDao usuarioDao;
 
 	@PostConstruct
-	public void init(){
+	public void init() {
 
 	}
 
-    public List<Usuario> listar(){
+	public List<Usuario> listar() {
 		try {
 			usuarios = usuarioDao.listar();
 		} catch (PersistenciaException e) {
@@ -45,12 +46,12 @@ public class UsuarioListaControl {
 		return usuarios;
 	}
 
-	public void buscarUsuario(){
+	public void buscarUsuario() {
 		usuarios = usuarioDao.consultarPorNome(nomePessoa);
 		limparCampos();
 	}
 
-	public void reiniciarSenha(Usuario usuario){
+	public void reiniciarSenha(Usuario usuario) {
 		usuario.setSenhaNaoCriptografada("123456");
 		try {
 			usuarioDao.alterar(usuario);
@@ -61,36 +62,45 @@ public class UsuarioListaControl {
 		}
 	}
 
-	public void desativarUsuario(ActionEvent evt){
-		if(!usuarioAtivo.isAtivo()){
+	public void desativarUsuario(ActionEvent evt) {
+		if (!usuarioAtivo.isAtivo()) {
 			UtilFaces.addMensagemFaces("Usuário já esta desativado");
-		}else{
+		} else {
 			usuarioAtivo.setAtivo(false);
 			try {
-	         usuarioDao.alterar(usuarioAtivo);
-	         UtilFaces.addMensagemFaces("Usuário desativado com sucesso");
-         } catch (PersistenciaException e) {
-         	UtilLog.getLog().error(e.getMessage(), e);
-         	UtilFaces.addMensagemFaces("Erro ao desativar o usuário");
-         }
+				usuarioDao.alterar(usuarioAtivo);
+				UtilFaces.addMensagemFaces("Usuário desativado com sucesso");
+			} catch (PersistenciaException e) {
+				UtilLog.getLog().error(e.getMessage(), e);
+				UtilFaces.addMensagemFaces("Erro ao desativar o usuário");
+			}
 		}
-			
+
 	}
-	
-	public void ativarUsuario(ActionEvent evt){
-		if(usuarioAtivo.isAtivo()){
+
+	public void ativarUsuario(ActionEvent evt) {
+		if (usuarioAtivo.isAtivo()) {
 			UtilFaces.addMensagemFaces("Usuário já esta ativado");
-		}else{
+		} else {
 			usuarioAtivo.setAtivo(true);
 			try {
-	         usuarioDao.alterar(usuarioAtivo);
-	         UtilFaces.addMensagemFaces("Usuário liberado para acesso ao sistema");
-         } catch (PersistenciaException e) {
-         	UtilLog.getLog().error(e.getMessage(), e);
-         	UtilFaces.addMensagemFaces("Erro ao ativar o usuário");
-         }
+				usuarioDao.alterar(usuarioAtivo);
+				UtilFaces
+						.addMensagemFaces("Usuário liberado para acesso ao sistema");
+			} catch (PersistenciaException e) {
+				UtilLog.getLog().error(e.getMessage(), e);
+				UtilFaces.addMensagemFaces("Erro ao ativar o usuário");
+			}
 		}
-			
+
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public Usuario getUsuarioAtivo() {
@@ -101,7 +111,7 @@ public class UsuarioListaControl {
 		this.usuarioAtivo = usuarioAtivo;
 	}
 
-	public void limparCampos(){
+	public void limparCampos() {
 		setNomePessoa("");
 	}
 
@@ -132,5 +142,5 @@ public class UsuarioListaControl {
 	public List<Usuario> getUsuarios() {
 		return usuarios;
 	}
-	
+
 }

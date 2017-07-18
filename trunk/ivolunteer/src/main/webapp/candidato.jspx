@@ -316,7 +316,7 @@
 										</f:facet>
 										<h:outputText value="#{ende.numero }"></h:outputText>
 									</p:column>
-									<p:column width="20">
+									<p:column width="50">
 										<p:commandButton icon="ui-icon-closethick"
 											action="#{CandidatoControl.removerEndereco(ende)}"
 											update="listaEndereco" ajax="false" />

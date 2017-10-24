@@ -7,7 +7,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<artifactId>ivolunteer</artifactId>
 	<name>ivolunteer</name>
-	<url>http://solutioin.com/projetos</url>
+	<url>http://inpai.com.br/ivolunteer</url>
 
 	<properties>
 		<jdk.version>1.7</jdk.version>
@@ -149,152 +149,166 @@
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports</artifactId>
-			<version>6.1.1</version>
+			<version>6.4.0</version>
 		</dependency>
 	</dependencies>
 	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.6.1</version>
-				<configuration>
-					<source>${jdk.version}</source>
-					<target>${jdk.version}</target>
-					<encoding>${project.build.sourceEncoding}</encoding>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<locales>pt_BR</locales>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.codehaus.plexus</groupId>
-						<artifactId>plexus-utils</artifactId>
-						<version>1.5.9</version>
-					</dependency>
-					<dependency>
-						<groupId>org.codehaus.plexus</groupId>
-						<artifactId>plexus-interpolation</artifactId>
-						<version>1.12</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-			<plugin>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>9.2.6.v20141205</version>
-				<configuration>
-					<webAppConfig>
-						<contextPath>/${project.artifactId}</contextPath>
-					</webAppConfig>
-					<scanIntervalSeconds>5</scanIntervalSeconds>
-					<systemPropertiesFile>${user.home}/.m2/system.properties</systemPropertiesFile>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.apache.tomcat</groupId>
-						<artifactId>tomcat-dbcp</artifactId>
-						<version>7.0.47</version>
-					</dependency>
-					<dependency>
-						<groupId>org.postgresql</groupId>
-						<artifactId>postgresql</artifactId>
-						<version>9.4-1200-jdbc41</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jasperreports-maven-plugin</artifactId>
-				<version>1.0-beta-2</version>
-				<configuration>
-					<outputDirectory>${project.build.directory}/classes/jasper</outputDirectory>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>compile</phase>
-						<goals>
-							<goal>compile-reports</goal>
-						</goals>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>net.sf.jasperreports</groupId>
-						<artifactId>jasperreports</artifactId>
-						<version>5.2.0</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-		</plugins>
-		<finalName>${project.artifactId}</finalName>
-	</build>
-	<reporting>
-		<plugins>
-			<plugin>
-				<!-- mvn site -Ddependency.locations.enabled=false -->
-				<!-- http://www.umlgraph.org/doc/indexw.html -->
-				<!-- http://www.umlgraph.org/doc/ceg-color.html -->
-				<!-- http://www.umlgraph.org/ver.html -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.7</version>
-				<configuration>
-					<links>
-						<link>${project.url}</link>
-					</links>
-					<show>private</show>
-					<source>1.6</source>
-					<aggregate>true</aggregate>
-					<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
-					<docletArtifact>
-						<groupId>org.umlgraph</groupId>
-						<artifactId>doclet</artifactId>
-						<version>5.1</version>
-					</docletArtifact>
-					<additionalparam>
-						-inferrel
-						-inferdep
-						-quiet
-						-hide java.*
-						-collpackages
-						java.util.*
-						-qualify
-						-postfixpackage
-						-nodefontsize 9
-						-nodefontpackagesize 7
-						-attributes -visibility -types -enumerations
-						-enumconstants
-					</additionalparam>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-report-plugin</artifactId>
-				<version>2.14.1</version>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.5.2</version>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>2.5.2</version>
-			</plugin>
-		</plugins>
-	</reporting>
-	<repositories>
-		<repository>
-			<id>ambient</id>
-			<name>Solutio-in Maven Repository</name>
-			<url>http://solutioin.com/nexus/content/groups/public</url>
-			<layout>default</layout>
-		</repository>
-	</repositories>
-</project>
+			<plugins>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.6.1</version>
+					<configuration>
+						<source>${jdk.version}</source>
+						<target>${jdk.version}</target>
+						<encoding>${project.build.sourceEncoding}</encoding>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>2.2</version>
+					<configuration>
+						<locales>pt_BR</locales>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>org.codehaus.plexus</groupId>
+							<artifactId>plexus-utils</artifactId>
+							<version>1.5.9</version>
+						</dependency>
+						<dependency>
+							<groupId>org.codehaus.plexus</groupId>
+							<artifactId>plexus-interpolation</artifactId>
+							<version>1.12</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-maven-plugin</artifactId>
+					<version>9.2.6.v20141205</version>
+					<configuration>
+						<webAppConfig>
+							<contextPath>/${project.artifactId}</contextPath>
+						</webAppConfig>
+						<scanIntervalSeconds>5</scanIntervalSeconds>
+						<systemPropertiesFile>${user.home}/.m2/system.properties</systemPropertiesFile>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>org.apache.tomcat</groupId>
+							<artifactId>tomcat-dbcp</artifactId>
+							<version>7.0.47</version>
+						</dependency>
+						<dependency>
+							<groupId>org.postgresql</groupId>
+							<artifactId>postgresql</artifactId>
+							<version>9.4.1212.jre7</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+				<!-- <plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>jasperreports-maven-plugin</artifactId>
+					<version>1.0-beta-2</version>
+					<configuration>
+						<sourceDirectory>src/main/jasperreports</sourceDirectory>
+						<outputDirectory>${project.build.directory}/classes/jasper</outputDirectory>
+						<outputFileExt>.jasper</outputFileExt>
+					</configuration>
+					<executions>
+						<execution>
+							<phase>compile</phase>
+							<goals>
+								<goal>compile-reports</goal>
+							</goals>
+						</execution>
+					</executions>
+					<dependencies>
+						<dependency>
+							<groupId>net.sf.jasperreports</groupId>
+							<artifactId>jasperreports</artifactId>
+							<version>5.2.0</version>
+						</dependency>
+					</dependencies>
+				</plugin> -->
+				
+			</plugins>
+			<finalName>${project.artifactId}</finalName>
+		</build>
+		<reporting>
+			<plugins>
+				<plugin>
+					<!-- mvn site -Ddependency.locations.enabled=false -->
+					<!-- http://www.umlgraph.org/doc/indexw.html -->
+					<!-- http://www.umlgraph.org/doc/ceg-color.html -->
+					<!-- http://www.umlgraph.org/ver.html -->
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.7</version>
+					<configuration>
+						<links>
+							<link>${project.url}</link>
+						</links>
+						<show>private</show>
+						<source>1.6</source>
+						<aggregate>true</aggregate>
+						<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+						<docletArtifact>
+							<groupId>org.umlgraph</groupId>
+							<artifactId>doclet</artifactId>
+							<version>5.1</version>
+						</docletArtifact>
+						<additionalparam>
+							-inferrel
+							-inferdep
+							-quiet
+							-hide java.*
+							-collpackages
+							java.util.*
+							-qualify
+							-postfixpackage
+							-nodefontsize 9
+							-nodefontpackagesize 7
+							-attributes -visibility -types -enumerations
+							-enumconstants
+						</additionalparam>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-report-plugin</artifactId>
+					<version>2.14.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>cobertura-maven-plugin</artifactId>
+					<version>2.5.2</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>findbugs-maven-plugin</artifactId>
+					<version>2.5.2</version>
+				</plugin>
+			</plugins>
+		</reporting>
+		<developers>
+			<developer>
+				<id>edjalma</id>
+				<name>Edjalma Queiroz</name>
+				<email>edjalmaqs@gmail.com</email>
+				<roles>
+					<role>Arquiteto</role>
+					<role>Analista</role>
+				</roles>
+			</developer>
+		</developers>
+		<repositories>
+			<repository>
+				<id>ambient</id>
+				<name>Solutio-in Maven Repository</name>
+				<url>http://solutioin.com/nexus/content/groups/public</url>
+				<layout>default</layout>
+			</repository>
+		</repositories>
+	</project>

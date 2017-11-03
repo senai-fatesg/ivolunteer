@@ -77,12 +77,15 @@ public class CandidatoControl {
 	
 	public void confirmar(ActionEvent evt) {
 		try {
-			preenchaInformacoesDefaultCandidato(candidato);
+		//	preenchaInformacoesDefaultCandidato(candidato);
 			candidato.setEnumTipoPessoa(EnumTipoPessoa.CANDIDATO);
+			validarCandidato(candidato);
 			pessoaDao.alterar(candidato);
 			candidato = new Pessoa();
+			
 			UtilFaces.addMensagemFaces("Informações salvas com sucesso!");
 		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e.getMessage());
 			UtilFaces.addMensagemFaces("Ocorreu uma falha ao tentar gravar as informações de candidato");
 		}
 	}
@@ -323,6 +326,20 @@ public class CandidatoControl {
 		}else{
 		    return false;
 		}
+	}
+	
+	
+	
+public void validarCandidato(Pessoa candidato) throws Exception{
+//		
+//		if (candidato.getNomePessoa().isEmpty()){
+//			throw new Exception("Por favor, informe o nome do candidato");
+//		}
+//		
+//		if (candidato.getNaturalidade().isEmpty()){
+//			throw new Exception("Por favor, informe a naturalidade do candidato");
+//		}
+		
 	}
 	
 	private boolean EhResponsavelConsistente(){

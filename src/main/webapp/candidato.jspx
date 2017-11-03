@@ -9,7 +9,7 @@
 	<ui:define name="corpo">
 
 		<p:panel header="Solicitação de vaga" id="panel">
-			<p:messages id="messages"/>
+<!-- 			<p:messages id="messages"/> -->
 
 			<p:commandButton id="consultar" value="Consultar"
 				icon="ui-icon-search" onclick="PF('consultar').show(); return false;" />
@@ -63,7 +63,7 @@
 					<p:panel rendered="true">
 						<a:field label="Nome">
 							<p:inputText id="nomePessoa"
-								value="#{CandidatoControl.candidato.nomePessoa}">
+								value="#{CandidatoControl.candidato.nomePessoa}" required="true" requiredMessage="Por favor, informe o nome">
 							</p:inputText>
 							<p:tooltip id="toolTipTrack" for="nomePessoa"
 								value="informe o nome do candidato" trackMouse="true" />
@@ -72,7 +72,7 @@
 						<a:field label="Data de nascimento" spaceLeft="15px">
 							<p:calendar id="dataNascimento"
 								value="#{CandidatoControl.candidato.dataNascimento}" locale="de"
-								navigator="true" pattern="dd-MM-yyyy" />
+								navigator="true" pattern="dd-MM-yyyy" required="true" requiredMessage="Por favor, informe a data de nascimento"/>
 						</a:field>
 
 						<!--a data de vencimento se refere a validade que o documento tera-->
@@ -476,26 +476,29 @@
 							<f:facet name="header">
 								<h:outputText value="Lista de Responsavéis"></h:outputText>
 							</f:facet>
-							<p:column sortBy="#{pessoaResponsavel.nomePessoa }">
+							<p:column width="20" sortBy="#{pessoaResponsavel.nomePessoa }">
 								<f:facet name="header">
 									<h:outputText value="Nome"></h:outputText>
 								</f:facet>
 								<h:outputText value="#{pessoaResponsavel.nomePessoa }"></h:outputText>
 							</p:column>
-							<p:column sortBy="#{pessoaResponsavel.cpf }">
+							<p:column  width="20" sortBy="#{pessoaResponsavel.cpf }">
 								<f:facet name="header">
 									<h:outputText value="cpf"></h:outputText>
 								</f:facet>
 								<h:outputText value="#{pessoaResponsavel.cpf }"></h:outputText>
 							</p:column>
-							<p:column sortBy="#{pessoaResponsavel.enumFiliacao }">
+							<p:column width="20"  sortBy="#{pessoaResponsavel.enumFiliacao }">
 								<f:facet name="header">
 									<h:outputText value="filiacao"></h:outputText>
 								</f:facet>
 								<h:outputText value="#{pessoaResponsavel.enumFiliacao }"></h:outputText>
 							</p:column>
 							<p:column width="20">
-								<p:commandButton icon="ui-icon-closethick"
+							<f:facet name="header">
+								<h:outputText value="Ações"></h:outputText>
+							</f:facet>
+								<p:commandButton icon="fa-close"
 									action="#{CandidatoControl.removerResponsavel(pess)}"
 									update="listaResponsavel" ajax="false" />
 							</p:column>
@@ -511,7 +514,7 @@
 			<a:newLine />
 
 			<p:commandButton actionListener="#{CandidatoControl.confirmar}"
-				value="Confirmar" icon="ui-icon-disk" update="@all" global="false" process="@this" >
+				value="Confirmar" icon="ui-icon-disk" update="@all" global="false"  process="@all">
 			</p:commandButton>
 		</p:panel>
 	</ui:define>

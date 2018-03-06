@@ -13,8 +13,7 @@
 			<p:tabView dynamic="true" id="tabviewFuncionario">
 				<p:tab title="Funcionário" id="tabFuncionario">
 					<p:panel id="buscaFuncionario" rendered="true">
-
-
+					
 						<a:field label="Mês/Ano" spaceLeft="15px">
 							<p:inputMask id="competencia" value="#{FrequenciaControl.data}"
 								mask="99/9999" />
@@ -31,20 +30,21 @@
 								var="func" itemLabel="#{func.nomePessoa}" itemValue="#{func}"
 								converter="FuncionarioConverter" forceSelection="true"
 								effect="fade"
-								style="height:15px; margin-top: -10px; width:150px">
+								style="height:15px;  width:150px">
 								<p:ajax event="itemSelect"
 									listener="#{FrequenciaControl.carregarFuncionario}" />
 							</p:autoComplete>
 						</a:field>
-
-						<a:field spaceLeft="15px">
+						<a:newLine/>
+						<a:field style="height:auto" spaceLeft="15px">
 							<p:commandButton value="Pesquisar"
 								icon="ui-icon-refresh" update="tabFuncionario"
 								action="#{FrequenciaControl.carregarFrequenciaMes}" />
 						</a:field>
-						<a:newLine></a:newLine>
+						<a:newLine/>
 					</p:panel>
-					<p:dataTable id="tbFuncionarios" var="func"
+					
+					<!--<p:dataTable id="tbFuncionarios" var="func"
 						emptyMessage="Sem Registros"
 						value="#{FrequenciaControl.funcionarios}" rendered="true">
 						<f:facet name="header">#{func.nomePessoa}</f:facet>
@@ -56,20 +56,22 @@
 
 							</p:selectBooleanCheckbox>
 						</p:columns>
-						<a:newLine></a:newLine>
-					</p:dataTable>
-					<a:newLine></a:newLine>
-					<a:field>
+						<a:newLine/>
+					</p:dataTable>-->
+					
+					
+					<a:newLine/>
+					
+					  <a:field>
 						<p:commandButton
 							actionListener="#{FrequenciaControl.manterFrequencia}" update="tabFuncionario"
 							icon="ui-icon-plusthick" value="Confirmar"></p:commandButton>
 					</a:field>
-					<a:newLine></a:newLine>
+					 
+					<a:newLine/>
 				</p:tab>
 
 				<p:tab title="Aluno">
-
-
 
 				</p:tab>
 			</p:tabView>

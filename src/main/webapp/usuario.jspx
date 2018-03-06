@@ -15,7 +15,7 @@
 				</a:field>
 				<a:newLine />
 				<a:newLine />
-				<p:panel header="Perimissões" style="width:95%">
+				<p:panel header="Permissões" style="width:95%">
 					<a:field label="Permissão">
 						<p:selectOneMenu styleClass="obrigatorio" value="#{UsuarioControl.papel}" converter="objectConverter" style="width:300px;">
 							<f:selectItem itemLabel="Selecione" itemDisabled="true" />

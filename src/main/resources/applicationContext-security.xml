@@ -17,7 +17,8 @@
 
 	<http pattern="/alterarSenhaExterno.jspx" security="none" />
 	<http pattern="/auth.jspx" security="none" />
-	<http pattern="/usuario.jsf" security="none" />
+	<!--  <http pattern="/usuario.jsf" security="none" />
+	-->
 	
 		
 		

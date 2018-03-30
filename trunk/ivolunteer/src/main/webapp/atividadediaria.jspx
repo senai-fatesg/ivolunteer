@@ -12,13 +12,16 @@
 				<p:messages id="messages" showDetail="true" autoUpdate="true"
 					closable="true" />
 				<p:panel id="tabAtividade">
+				
+				<p:panel>
+				
 					<a:field label="Funcionario">
 						<p:autoComplete minQueryLength="3"
 							value="#{AtividadeDiariaControl.funcionario}"
 							completeMethod="#{AtividadeDiariaControl.consultarFuncionario}"
 							var="func" itemLabel="#{func.nomePessoa}" itemValue="#{func}"
 							converter="FuncionarioConverter" forceSelection="true"
-							effect="fade" style="height:15px; margin-top: -10px; width:150px"
+							effect="fade" 
 							requiredMessage="Campo Funcionario obrigatório.">
 							<p:ajax event="itemSelect" update="atividades"
 								listener="#{AtividadeDiariaControl.carregarFuncionario}" />
@@ -43,7 +46,10 @@
 							value="#{AtividadeDiariaControl.atividadeDiaria.local}"
 							pattern="dd-MM-yyyy" mask="true" />
 					</a:field>
+					
 					<a:newLine></a:newLine>
+					</p:panel>
+					
 					<a:field label="Observações">
 						<p:editor widgetVar="editorWidget"
 							value="#{AtividadeDiariaControl.atividadeDiaria.atividade}"

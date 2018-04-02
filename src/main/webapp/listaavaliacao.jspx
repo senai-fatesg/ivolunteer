@@ -7,8 +7,21 @@
 	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
-		<p:commandButton value="Criar Coluna" actionListener="#{AvaliacaoControl.criarColuna}"></p:commandButton>
-		<p:dataTable id="avaliacaoes">
+		
+		<p:dataTable id="avaliacaoes" value="#{AvaliacaoControl.avaliacoes}" var="avaliacao" emptyMessage="Nenhuma avaliação cadastrada" >
+			<f:facet name="header">Lista de Avaliações</f:facet>
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="Título" />
+				</f:facet>
+				<h:outputText value="#{avaliacao.titulo}" />
+			</p:column>
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="Descrição" />
+				</f:facet>
+				<h:outputText value="#{avaliacao.descricao}" />
+			</p:column>
 		</p:dataTable>
 	</ui:define>
 

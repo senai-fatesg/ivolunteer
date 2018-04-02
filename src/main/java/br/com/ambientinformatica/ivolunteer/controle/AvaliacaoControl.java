@@ -165,6 +165,7 @@ public class AvaliacaoControl {
 	}
 
 	public List<Avaliacao> getAvaliacoes() {
+		this.avaliacoes = avaliacaoDao.listar();
 		return avaliacoes;
 	}
 

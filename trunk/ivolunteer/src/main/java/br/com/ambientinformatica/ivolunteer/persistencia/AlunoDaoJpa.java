@@ -4,9 +4,7 @@ import java.util.List;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-
 import org.springframework.stereotype.Repository;
-
 import br.com.ambientinformatica.ivolunteer.entidade.Aluno;
 import br.com.ambientinformatica.jpa.persistencia.PersistenciaJpa;
 
@@ -19,8 +17,7 @@ public class AlunoDaoJpa extends PersistenciaJpa<Aluno> implements AlunoDao {
 	@Override
 	public List<Aluno> listarPorCertidao(String nome) {
 
-		Query query = em
-				.createQuery("select f from Aluno f where upper(f.nomePessoa) like :nome");
+		Query query = em.createQuery("select f from Aluno f where upper(f.nomePessoa) like :nome");
 		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
 
 		return (List<Aluno>) query.getResultList();

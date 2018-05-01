@@ -21,12 +21,15 @@ import br.com.ambientinformatica.ivolunteer.entidade.EnumDiaSemana;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstadoCivil;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumSexo;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoPessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoTelefone;
 import br.com.ambientinformatica.ivolunteer.entidade.Frequencia;
 import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.ivolunteer.entidade.GradeHorario;
+import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.Telefone;
 import br.com.ambientinformatica.ivolunteer.persistencia.FuncionarioDao;
+import br.com.ambientinformatica.ivolunteer.persistencia.PessoaDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 
 @Controller("FuncionarioControl")
@@ -39,6 +42,7 @@ public class FuncionarioControl {
 	private Telefone telefone = new Telefone();
 	private Funcionario filtro = new Funcionario();
 	private Frequencia frequencia = new Frequencia();
+	
 
 	private List<Frequencia> frequencias = new ArrayList<Frequencia>();
 
@@ -46,20 +50,23 @@ public class FuncionarioControl {
 
 	@Autowired
 	private FuncionarioDao funcionarioDao;
-
+	
 	private List<Funcionario> funcionarios = new ArrayList<Funcionario>();
 
 	@PostConstruct
 	public void init() {
 		
+		
 	}
 
 	public void confirmar(ActionEvent evt) {
 		try {
+			funcionario = new Funcionario();
 			this.funcionario.addEndereco(endereco);
 			this.endereco = new Endereco();
 			funcionarioDao.alterar(funcionario);
-			funcionario = new Funcionario();
+			 
+			UtilFaces.addMensagemFaces("Informações salvas com sucesso!");
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -127,6 +134,7 @@ public class FuncionarioControl {
 			UtilFaces.addMensagemFaces("Ocorreu um erro ao adicionar a Frequencia");
 		}
 	}
+	
 
 	public void adicionarGradeHorario(ActionEvent evt) {
 		funcionario.addGradeHorario(gradeHorario);
@@ -203,6 +211,18 @@ public class FuncionarioControl {
 			UtilFaces.addMensagemFaces(e);
 		}
 
+	}
+
+	public FuncionarioDao getFuncionarioDao() {
+		return funcionarioDao;
+	}
+
+	public void setFuncionarioDao(FuncionarioDao funcionarioDao) {
+		this.funcionarioDao = funcionarioDao;
+	}
+
+	public void setFuncionarios(List<Funcionario> funcionarios) {
+		this.funcionarios = funcionarios;
 	}
 
 	public Funcionario getFuncionario() {

@@ -378,4 +378,9 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 		return atividadesDiaria;
 	}
 
+	public void setEnumCargo() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

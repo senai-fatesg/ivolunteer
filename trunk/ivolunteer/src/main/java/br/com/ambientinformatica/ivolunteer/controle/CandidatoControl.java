@@ -63,7 +63,8 @@ public class CandidatoControl {
 	@PostConstruct
 	public void init() {
 		listarCandidatoPorNome(null);
-		candidato = new Pessoa();
+
+
 		responsavel = new Responsavel();
 	}
 

@@ -4,9 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
-
 import org.springframework.stereotype.Repository;
-
 import br.com.ambientinformatica.ivolunteer.entidade.Avaliacao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 import br.com.ambientinformatica.jpa.persistencia.PersistenciaJpa;
@@ -28,8 +26,7 @@ public class AvalicaoDaoJpa extends PersistenciaJpa<Avaliacao> implements
 	@Override
 	public List<Avaliacao> listarTitulo(String titulo) {
 		try {
-			Query q = em
-					.createQuery("select a from Avaliacao a where a.titulo like :titulo");
+			Query q = em.createQuery("select a from Avaliacao a where a.titulo like :titulo");
 			q.setParameter("titulo", "%" + titulo + "%");
 			return q.getResultList();
 		} catch (EntityNotFoundException e) {
@@ -39,8 +36,7 @@ public class AvalicaoDaoJpa extends PersistenciaJpa<Avaliacao> implements
 
 	@Override
 	public Avaliacao consultarAvalicaoCompleta(Avaliacao avaliacao) {
-		Query q = em.createQuery("select a from Avaliacao a "
-				+ "left join fetch a.questoes ques " + "where a = :avaliacao order by ques.ordem");
+		Query q = em.createQuery("select a from Avaliacao a "+ "left join fetch a.questoes ques " + "where a = :avaliacao order by ques.ordem");
 		q.setParameter("avaliacao", avaliacao);
 		return (Avaliacao) q.getSingleResult();
 	}

@@ -92,7 +92,7 @@
 				<p:dataTable id="questoesTable"
 					emptyMessage="Sem questões adicionadas" style="width:70%"
 					value="#{AvaliacaoControl.avaliacao.questoes}" var="questaoItem">
-					<p:column headerText="Ordem" width="50">
+					<p:column headerText="Ordem" width="70">
 						<h:outputLabel value="#{questaoItem.ordem}" />
 					</p:column>
 					<p:column headerText="Tipo" width="60">

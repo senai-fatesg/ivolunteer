@@ -10,9 +10,9 @@
 		<p:panel header="Cadastro de Aluno" id="panelAluno">
 			<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 			
-			<p:commandButton id="consultar" value="Consultar Por Certidão" icon="ui-icon-search" onclick="consultar.show();" style="margin-top:15px;" />
+			<p:commandButton id="consultar" value="Consultar Por Certidão" icon="ui-icon-search" onclick="PF('consultar').show();" style="margin-top:15px;" />
 			
-			<p:dialog id="modalPesquisa" header="Consultar" widgetVar="consultar" modal="true" maximizable="false" minimizable="false" width="60%" height="70%" resizable="false">
+			<p:dialog id="modalPesquisa" header="Tabela de Consulta" widgetVar="consultar" modal="true" maximizable="false" minimizable="false" width="60%" height="95%" resizable="false">
 				<a:field label="Certidao de Nascimento">
 					<p:inputText id="filtro" value="#{AlunoControl.aluno.certidaoNascimento}" />
 				</a:field>
@@ -29,7 +29,7 @@
 					<p:column headerText="Naturalidade">#{itemAluno.naturalidade}</p:column>
 					<p:column headerText="Nacionalidade">#{itemAluno.nascionalidade}</p:column>
 					<p:column width="5%">
-						<p:commandButton icon="ui-icon-check" action="#{AlunoControl.carregaAlunoAlteracao(itemAluno)}" oncomplete="consultar.hide();" update=":formCorpo:tabCadastro" />
+						<p:commandButton icon="ui-icon-check" action="#{AlunoControl.carregaAlunoAlteracao(itemAluno)}" oncomplete="consultar.hide();" update=":formCorpo:painelAlunoDet" />
 						<!-- <p:commandButton icon="ui-icon-trash" /> -->
 					</p:column>
 				</p:dataTable>

@@ -98,18 +98,9 @@
 					</p:panel>
 					<a:newLine />
 
-
-
 				</p:tab>
 
-
-
-
-
-
 			</p:tabView>
-
-
 		</p:panel>
 
 	</ui:define>

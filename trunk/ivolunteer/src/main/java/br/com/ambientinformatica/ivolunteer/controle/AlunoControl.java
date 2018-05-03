@@ -18,6 +18,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.Endereco;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumSexo;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoPessoa;
+import br.com.ambientinformatica.ivolunteer.entidade.Matricula;
 import br.com.ambientinformatica.ivolunteer.persistencia.AlunoDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 
@@ -28,6 +29,7 @@ public class AlunoControl {
 	private Aluno aluno = new Aluno();
 	Cidade cidade = new Cidade();
 	Endereco endereco = new Endereco();
+	private Matricula matricula = new Matricula();
 	private String dataReal;
 
 	@Autowired
@@ -44,6 +46,8 @@ public class AlunoControl {
 		try {
 			alunoDao.alterar(aluno);
 			this.aluno = new Aluno();
+			this.endereco = new Endereco();
+			
 			UtilFaces.addMensagemFaces("Aluno salvo com sucesso!");
 		} catch (PersistenciaException e) {
 			UtilFaces.addMensagemFaces(e);

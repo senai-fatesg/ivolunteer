@@ -35,7 +35,7 @@ import br.com.ambientinformatica.util.UtilLog;
 @Scope("conversation")
 public class CandidatoControl {
 	
-	private Pessoa candidato;
+	private Pessoa candidato = new Pessoa();
 	private Responsavel responsavel;
 	private Pessoa filtro = new Pessoa();
 	

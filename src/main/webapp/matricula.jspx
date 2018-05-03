@@ -29,7 +29,7 @@
 					<p:column headerText="Naturalidade">#{itemAluno.naturalidade}</p:column>
 					<p:column headerText="Nacionalidade">#{itemAluno.nascionalidade}</p:column>
 					<p:column width="5%">
-						<p:commandButton icon="ui-icon-check" action="#{AlunoControl.carregaAlunoAlteracao(itemAluno)}" oncomplete="consultar.hide();" update=":formCorpo:painelAlunoDet" />
+						<p:commandButton icon="ui-icon-check" action="#{AlunoControl.carregaAlunoAlteracao(itemAluno)}" oncomplete="PF('consultar').hide();" update="@form" />
 						<!-- <p:commandButton icon="ui-icon-trash" /> -->
 					</p:column>
 				</p:dataTable>
@@ -178,7 +178,7 @@
 				<a:newLine />
 
 				<a:field>
-					<p:commandButton actionListener="#{AlunoControl.addEndereco}" value="Adicionar Endereco" icon="ui-icon-plusthick" update="enderecos,painelEndereco" ajax="false" style="margin-Bottom:15px;" />
+					<p:commandButton actionListener="#{AlunoControl.addEndereco}" value="Adicionar Endereço" icon="ui-icon-plusthick" update="enderecos" ajax="true" style="margin-Bottom:15px;" />
 				</a:field>
 
 				<a:newLine />
@@ -206,7 +206,7 @@
 						<h:outputText value="#{endereco.cidade.enumEstado.descricao}"></h:outputText>
 					</p:column>
 					<p:column style="width: 15px !important">
-						<p:commandButton icon="ui-icon-closethick" action="#{AlunoControl.removerEndereco(endereco)}" update="enderecos" ajax="false" />
+						<p:commandButton icon="ui-icon-closethick" action="#{AlunoControl.removerEndereco(endereco)}" update="enderecos" ajax="true" />
 					</p:column>
 				</p:dataTable>
 				<a:newLine />

@@ -102,6 +102,7 @@ public class AlunoControl {
 	}
 
 	public List<Aluno> getAlunos() {
+		listar(null);
 		return alunos;
 	}
 

@@ -8,11 +8,11 @@
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
 		<p:panel header="Cadastro de Aluno" id="panelAluno">
-			<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+			<!-- <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />  -->
 			
 			<p:commandButton id="consultar" value="Consultar Por Certidão" icon="ui-icon-search" onclick="PF('consultar').show();" style="margin-top:15px;" />
 			
-			<p:dialog id="modalPesquisa" header="Tabela de Consulta" widgetVar="consultar" modal="true" maximizable="false" minimizable="false" width="60%" height="95%" resizable="false">
+			<p:dialog id="modalPesquisa" header="Tabela de Consulta" widgetVar="consultar" modal="true" maximizable="false" minimizable="false" width="90%" height="100%" resizable="true">
 				<a:field label="Certidao de Nascimento">
 					<p:inputText id="filtro" value="#{AlunoControl.aluno.certidaoNascimento}" />
 				</a:field>
@@ -31,6 +31,9 @@
 					<p:column width="5%">
 						<p:commandButton icon="ui-icon-check" action="#{AlunoControl.carregaAlunoAlteracao(itemAluno)}" oncomplete="PF('consultar').hide();" update="@form" />
 						<!-- <p:commandButton icon="ui-icon-trash" /> -->
+					</p:column>
+					<p:column width="5%">
+						<p:commandButton icon="ui-icon-closethick" action="#{AlunoControl.excluir(itemAluno)}" ajax="true" update="listaAlunos" />
 					</p:column>
 				</p:dataTable>
 			</p:dialog>
@@ -213,7 +216,7 @@
 			</p:panel>
 			<a:newLine />
 						
-			<p:commandButton value="Salvar" icon="ui-icon-disk" actionListener="#{AlunoControl.incluir}" update="@all"> </p:commandButton>
+			<p:commandButton value="Salvar" icon="ui-icon-disk" actionListener="#{AlunoControl.incluir}" update="@form" oncomplete="#{AlunoControl.alunos}" />
 			<a:newLine />
 			<a:newLine />
 		</p:panel>

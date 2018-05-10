@@ -109,11 +109,13 @@ public class MatriculaControl {
 	
 	public void incluir(ActionEvent evt) {
 		try {
-			if(matriculaDao.consultar(this.matricula.getId()) != null){
-				matriculaDao.alterar(this.matricula);
-			} else {
+			if(this.matricula.getId() == null) {
 				matriculaDao.incluir(this.matricula);
 				aluno.setMatricula(this.matricula);
+				alunoDao.alterar(this.aluno);
+			} else {
+				matriculaDao.alterar(this.matricula);
+				this.aluno.setMatricula(this.matricula);
 				alunoDao.alterar(this.aluno);
 			}
 			this.aluno = new Aluno();

@@ -1,5 +1,6 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -12,7 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Matricula {
+public class Matricula implements Serializable {
 
 	@Id
 	@GeneratedValue(generator = "matricula_seq", strategy = GenerationType.SEQUENCE)

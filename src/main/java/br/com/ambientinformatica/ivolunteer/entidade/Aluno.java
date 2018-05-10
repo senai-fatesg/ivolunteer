@@ -8,6 +8,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -31,7 +32,7 @@ public class Aluno extends Pessoa{
 	@OneToMany
 	private List<RelatorioAprendizagem> relatorioApredizagem;
 
-	@OneToOne
+	@OneToOne(fetch=FetchType.EAGER)
 	private Matricula matricula;
 
 	public Date getDataSaida() {

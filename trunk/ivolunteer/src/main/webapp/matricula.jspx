@@ -14,26 +14,26 @@
 			
 			<p:dialog id="modalPesquisa" header="Tabela de Consulta" widgetVar="consultar" modal="true" maximizable="false" minimizable="false" width="90%" height="100%" resizable="true">
 				<a:field label="Certidao de Nascimento">
-					<p:inputText id="filtro" value="#{AlunoControl.aluno.certidaoNascimento}" />
+					<p:inputText id="filtro" value="#{MatriculaControl.aluno.certidaoNascimento}" />
 				</a:field>
 				<a:field spaceLeft="15px">
-					<p:commandButton id="filtrar" icon="ui-icon-search" actionListener="#{AlunoControl.aplicarFiltro}" update="listaAlunos" />
+					<p:commandButton id="filtrar" icon="ui-icon-search" actionListener="#{MatriculaControl.aplicarFiltro}" update="listaAlunos" />
 				</a:field>
 				
 				<a:newLine />
 
-				<p:dataTable id="listaAlunos" var="itemAluno" style="width:100%" value="#{AlunoControl.alunos}" widgetVar="funcionariosTable" emptyMessage="Sem Registros a Exibir">
+				<p:dataTable id="listaAlunos" var="itemAluno" style="width:100%" value="#{MatriculaControl.alunos}" widgetVar="funcionariosTable" emptyMessage="Sem Registros a Exibir">
 					<p:column headerText="Cod. Aluno">#{itemAluno.id}</p:column>
 					<p:column headerText="Nome" width="30%">#{itemAluno.nomePessoa}</p:column>
 					<p:column headerText="Certidão de Nascimento">#{itemAluno.certidaoNascimento}</p:column>
 					<p:column headerText="Naturalidade">#{itemAluno.naturalidade}</p:column>
 					<p:column headerText="Nacionalidade">#{itemAluno.nascionalidade}</p:column>
 					<p:column width="5%">
-						<p:commandButton icon="ui-icon-check" action="#{AlunoControl.carregaAlunoAlteracao(itemAluno)}" oncomplete="PF('consultar').hide();" update="@form" />
+						<p:commandButton icon="ui-icon-check" action="#{MatriculaControl.carregaAlunoAlteracao(itemAluno)}" oncomplete="PF('consultar').hide();" update="formCorpo:painelAlunoDet formCorpo:painelMatricula formCorpo:painelEndereco"  />
 						<!-- <p:commandButton icon="ui-icon-trash" /> -->
 					</p:column>
 					<p:column width="5%">
-						<p:commandButton icon="ui-icon-closethick" action="#{AlunoControl.excluir(itemAluno)}" ajax="true" update="listaAlunos" />
+						<p:commandButton icon="ui-icon-closethick" action="#{MatriculaControl.excluir(itemAluno)}" ajax="true" update="listaAlunos" />
 					</p:column>
 				</p:dataTable>
 			</p:dialog>
@@ -46,7 +46,7 @@
 					<p:row>
 						<p:column>
 							<a:field label="Certidão de Nascimento">
-								<p:inputText value="#{AlunoControl.aluno.certidaoNascimento}" style="width: 100%;" />
+								<p:inputText value="#{MatriculaControl.aluno.certidaoNascimento}" style="width: 100%;" />
 							</a:field>
 						</p:column>
 						<p:column colspan="2">
@@ -64,37 +64,37 @@
 					<a:newLine />
 					<p:row>
 						<a:field label="Tipo">
-							<p:selectOneMenu id="enumTipoPessoa" dropdown="true" value="#{AlunoControl.aluno.enumTipoPessoa}" style="width:100px !important">
-								<f:selectItems value="#{AlunoControl.completeEnumTipoPessoa}" style="width: 100%;" />
+							<p:selectOneMenu id="enumTipoPessoa" dropdown="true" value="#{MatriculaControl.aluno.enumTipoPessoa}" style="width:100px !important">
+								<f:selectItems value="#{MatriculaControl.completeEnumTipoPessoa}" style="width: 100%;" />
 							</p:selectOneMenu>
 						</a:field>
 						<a:field label="Sexo" spaceLeft="15px">
-							<p:selectOneMenu id="enumSexo" dropdown="true" value="#{AlunoControl.aluno.enumSexo}">
-								<f:selectItems value="#{AlunoControl.completeEnumSexo}" style="width: 100%;" />
+							<p:selectOneMenu id="enumSexo" dropdown="true" value="#{MatriculaControl.aluno.enumSexo}">
+								<f:selectItems value="#{MatriculaControl.completeEnumSexo}" style="width: 100%;" />
 							</p:selectOneMenu>
 						</a:field>
 					</p:row>
 					
 					<a:field  label="Nome" width="100%">
-						<p:inputText value="#{AlunoControl.aluno.nomePessoa}" style="width: 100%;" />
+						<p:inputText value="#{MatriculaControl.aluno.nomePessoa}" style="width: 100%;" />
 					</a:field>
 					<a:newLine />
 					
 					<a:field label="Data Nascimento" >
-						<p:calendar value="#{AlunoControl.aluno.dataNascimento}" locale="de" navigator="true" pattern="dd/MM/yyyy" style="width: 100%;">
-							<p:ajax event="dateSelect" listener="#{AlunoControl.calculaIdadeReal()}" global="false" update="@form" />
+						<p:calendar value="#{MatriculaControl.aluno.dataNascimento}" locale="de" navigator="true" pattern="dd/MM/yyyy" style="width: 100%;">
+							<p:ajax event="dateSelect" listener="#{MatriculaControl.calculaIdadeReal()}" global="false" update="@form" />
 						</p:calendar>
 					</a:field>	
 					<a:field label="Idade Real" spaceLeft="15px">
-						<p:inputText value="#{AlunoControl.dataReal}" disabled="true" style="width: 100%;" />
+						<p:inputText value="#{MatriculaControl.dataReal}" disabled="true" style="width: 100%;" />
 					</a:field>
 					<a:newLine />
 					
 					<a:field label="Naturalidade">
-						<p:inputText value="#{AlunoControl.aluno.naturalidade}" style="width: 100%;" />
+						<p:inputText value="#{MatriculaControl.aluno.naturalidade}" style="width: 100%;" />
 					</a:field>
 					<a:field label="Nacionalidade" spaceLeft="15px">
-						<p:inputText value="#{AlunoControl.aluno.nascionalidade}" style="width: 100%;" />
+						<p:inputText value="#{MatriculaControl.aluno.nascionalidade}" style="width: 100%;" />
 					</a:field>
 					<a:newLine />
 				</p:panel>
@@ -147,46 +147,46 @@
 			</h:panelGrid>
 			<a:newLine />
 
-			<p:panel id="paineEndereco">
+			<p:panel id="painelEndereco">
 				<a:field label="Bairro" style="width: 50% !important; padding-left: 15px !important;">
-					<p:inputText value="#{AlunoControl.endereco.bairro}" style="width: 100%" />
+					<p:inputText value="#{MatriculaControl.endereco.bairro}" style="width: 100%" />
 				</a:field>
 				<a:field label="Rua" spaceLeft="15px">
-					<p:inputText value="#{AlunoControl.endereco.ruaOuAvenida}" style="width: 100%." />
+					<p:inputText value="#{MatriculaControl.endereco.ruaOuAvenida}" style="width: 100%." />
 				</a:field>
 				<a:field label="Numero" spaceLeft="15px">
-					<p:inputText value="#{AlunoControl.endereco.numero}" style="width: 100%;" />
+					<p:inputText value="#{MatriculaControl.endereco.numero}" style="width: 100%;" />
 				</a:field>
 				<a:field label="Quadra" spaceLeft="15px">
-					<p:inputText value="#{AlunoControl.endereco.quadra}" style="width: 100%;" />
+					<p:inputText value="#{MatriculaControl.endereco.quadra}" style="width: 100%;" />
 				</a:field>
 
 				<a:newLine />
 
 				<a:field label="Lote">
-					<p:inputText value="#{AlunoControl.endereco.lote}" style="width: 100%;" />
+					<p:inputText value="#{MatriculaControl.endereco.lote}" style="width: 100%;" />
 				</a:field>
 				<a:field label="Complemento" spaceLeft="15px">
-					<p:inputText value="#{AlunoControl.endereco.complemento}" style="width: 100%;" />
+					<p:inputText value="#{MatriculaControl.endereco.complemento}" style="width: 100%;" />
 				</a:field>
 				<a:field label="Cidade" spaceLeft="15px">
-					<p:inputText value="#{AlunoControl.endereco.cidade.nomeCidade}" style="width: 100%;" />
+					<p:inputText value="#{MatriculaControl.endereco.cidade.nomeCidade}" style="width: 100%;" />
 				</a:field>
 				<a:field label="Estado" spaceLeft="15px">
-					<p:selectOneMenu id="uf" value="#{AlunoControl.endereco.cidade.enumEstado}" style="width: 100%;">
-						<f:selectItems value="#{AlunoControl.completeEnumEstado}"></f:selectItems>
+					<p:selectOneMenu id="uf" value="#{MatriculaControl.endereco.cidade.enumEstado}" style="width: 100%;">
+						<f:selectItems value="#{MatriculaControl.completeEnumEstado}"></f:selectItems>
 					</p:selectOneMenu>
 				</a:field>
 
 				<a:newLine />
 
 				<a:field>
-					<p:commandButton actionListener="#{AlunoControl.addEndereco}" value="Adicionar Endereço" icon="ui-icon-plusthick" update="enderecos" ajax="true" style="margin-Bottom:15px;" />
+					<p:commandButton actionListener="#{MatriculaControl.addEndereco}" value="Adicionar Endereço" icon="ui-icon-plusthick" update="painelEndereco" ajax="true" style="margin-Bottom:15px;" />
 				</a:field>
 
 				<a:newLine />
 
-				<p:dataTable id="enderecos" style="width:100%" emptyMessage="Sem Registros" value="#{AlunoControl.aluno.listaEndereco}" var="endereco">
+				<p:dataTable id="enderecos" style="width:100%" emptyMessage="Sem Registros" value="#{MatriculaControl.aluno.listaEndereco}" var="endereco">
 					<p:column headerText="Bairro" style="width: 12.5% !important">
 						<h:outputText value="#{endereco.bairro}"></h:outputText>
 					</p:column>
@@ -209,14 +209,14 @@
 						<h:outputText value="#{endereco.cidade.enumEstado.descricao}"></h:outputText>
 					</p:column>
 					<p:column style="width: 15px !important">
-						<p:commandButton icon="ui-icon-closethick" action="#{AlunoControl.removerEndereco(endereco)}" update="enderecos" ajax="true" />
+						<p:commandButton icon="ui-icon-closethick" action="#{MatriculaControl.removerEndereco(endereco)}" update="enderecos" ajax="true" />
 					</p:column>
 				</p:dataTable>
 				<a:newLine />
 			</p:panel>
 			<a:newLine />
 						
-			<p:commandButton value="Salvar" icon="ui-icon-disk" actionListener="#{AlunoControl.incluir}" update="@form" oncomplete="#{AlunoControl.alunos}" />
+			<p:commandButton value="Salvar" icon="ui-icon-disk" actionListener="#{MatriculaControl.incluir}" update="@form" oncomplete="#{MatriculaControl.alunos}" />
 			<a:newLine />
 			<a:newLine />
 		</p:panel>

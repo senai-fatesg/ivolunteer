@@ -81,6 +81,9 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 	private String historico;
 
 	@Enumerated
+	private EnumTipoFuncionario tipoFuncionario;
+	
+	@Enumerated
 	private EnumFuncao funcao;
 	
 	@Enumerated
@@ -138,6 +141,14 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 		super();
 	}
 	
+	public EnumTipoFuncionario getTipoFuncionario() {
+		return tipoFuncionario;
+	}
+
+	public void setTipoFuncionario(EnumTipoFuncionario tipoFuncionario) {
+		this.tipoFuncionario = tipoFuncionario;
+	}
+
 	public EnumCargo getCargo() {
 		return cargo;
 	}

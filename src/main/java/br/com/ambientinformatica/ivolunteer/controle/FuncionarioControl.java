@@ -21,6 +21,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.EnumDiaSemana;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstadoCivil;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumSexo;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoFuncionario;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoPessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoTelefone;
 import br.com.ambientinformatica.ivolunteer.entidade.Frequencia;
@@ -55,8 +56,7 @@ public class FuncionarioControl {
 
 	@PostConstruct
 	public void init() {
-		
-		
+		listarTodosFuncionarios(null);
 	}
 
 	public void confirmar(ActionEvent evt) {
@@ -110,9 +110,9 @@ public class FuncionarioControl {
 
 	}
 
-	public void listar(ActionEvent evt) {
+	public void listarTodosFuncionarios(ActionEvent evt) {
 		try {
-			funcionarios = funcionarioDao.listar();
+			this.funcionarios = funcionarioDao.listar();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -147,6 +147,10 @@ public class FuncionarioControl {
 	
 	public List<SelectItem> getCompleteEnumCargo() {
 		return UtilFaces.getListEnum(EnumCargo.values());
+	}
+	
+	public List<SelectItem> getCompleteEnumTipoFuncionario() {
+		return UtilFaces.getListEnum(EnumTipoFuncionario.values());
 	}
 
 	public List<SelectItem> getCompleteEnumSexo() {

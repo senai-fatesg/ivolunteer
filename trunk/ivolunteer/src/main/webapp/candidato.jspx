@@ -59,37 +59,67 @@
 			<a:newLine />
 
 			<p:tabView cache="false" id="tabCadastro">
+			
+			<!--INICIO DO TAB DE INFORMAÇÕES CANDIDATO -->
+			
 				<p:tab title="Informações do candidato" id="candidato">
 					<p:panel rendered="true">
+					<p:tabView cache="false" id="tabCadastroCandidato">
+					
+					<!--INICIO DO TAB DADOS DO CANDIDATO -->
+					
+					<p:tab title="Dados do Candidato" id="dadosCandidato">
+					 <p:panel rendered="true"> 
+					<h4>Dados Pessoais</h4>
+					<a:newLine />
 						<a:field label="Nome">
 							<p:inputText id="nomePessoa"
-								value="#{CandidatoControl.candidato.nomePessoa}" required="true" requiredMessage="Por favor, informe o nome">
+								value="#{CandidatoControl.candidato.nomePessoa}" style="width:535px" required="true" requiredMessage="Por favor, informe o nome">
 							</p:inputText>
 							<p:tooltip id="toolTipTrack" for="nomePessoa"
 								value="informe o nome do candidato" trackMouse="true" />
 						</a:field>
-
+						
 						<a:field label="Data de nascimento" spaceLeft="15px">
 							<p:calendar id="dataNascimento"
 								value="#{CandidatoControl.candidato.dataNascimento}" locale="de"
 								navigator="true" pattern="dd-MM-yyyy" required="true" requiredMessage="Por favor, informe a data de nascimento"/>
 						</a:field>
-
+						
+						<a:field label="CPF" spaceLeft="15px">
+						<p:inputMask id="cpf" value="#{CandidatoControl.candidato.cpf}" mask="999.999.999-99">
+						</p:inputMask>
+					</a:field>
+					
+					<a:field label="RG">
+						<p:inputMask id="rg" value="#{CandidatoControl.candidato.rg}" mask="9999999">
+						</p:inputMask>
+					</a:field>
+					
+					<a:field label="Orgão Emissor" spaceLeft="15px">
+							<p:inputText id="Emissor"
+								value="#{CandidatoControl.candidato.orgaoExpeditor}"></p:inputText>
+						</a:field>
+						
+						<a:field label="Data da expedição" spaceLeft="15px">
+							<p:calendar id="expedicao"
+								value="#{CandidatoControl.candidato.dataExpedicao}" locale="de"
+								navigator="true" pattern="dd-MM-yyyy" />
+						</a:field>
+						
 						<!--a data de vencimento se refere a validade que o documento tera-->
 						<a:field label="Data de vencimento" spaceLeft="15px">
 							<p:calendar id="dataVencimento"
 								value="#{CandidatoControl.candidato.dataVencimento}" locale="de"
 								navigator="true" pattern="dd-MM-yyyy" />
 						</a:field>
-
+						
 						<a:field label="Naturalidade" spaceLeft="15px">
 							<p:inputText id="naturalidade"
 								value="#{CandidatoControl.candidato.naturalidade}"></p:inputText>
 						</a:field>
 
-						<a:newLine />
-
-						<a:field label="Estado">
+						<a:field label="Estado" spaceLeft="15px">
 							<p:selectOneMenu id="estado"
 								value="#{CandidatoControl.endereco.cidade.enumEstado }">
 								<f:selectItems value="#{CandidatoControl.completeEnumEstado }"></f:selectItems>
@@ -100,18 +130,130 @@
 							<p:inputText id="certidaoNascimento"
 								value="#{CandidatoControl.candidato.certidaoNascimento}"></p:inputText>
 						</a:field>-->
+						<a:field label="Estado Civil" spaceLeft="15px">
+							<p:selectOneMenu id="estadocivil"
+								value="#{CandidatoControl.candidato.enumEstadoCivil }">
+								 <f:selectItems value="#{CandidatoControl.completeEnumEstadoCivil }"></f:selectItems> 
+							</p:selectOneMenu>
+						</a:field>
 
 						<a:field label="Sexo" spaceLeft="15px">
 							<p:selectOneMenu id="sexo"
 								value="#{CandidatoControl.candidato.enumSexo }">
-								<f:selectItems value="#{CandidatoControl.completeEnumSexo }">
-								</f:selectItems>
+								 <f:selectItems value="#{CandidatoControl.completeEnumSexo }"></f:selectItems> 
 							</p:selectOneMenu>
 						</a:field>
-
 						<a:newLine />
+						
+						
+					<a:newLine/>
+				</p:panel> 
+					<a:newLine />
+					
+					<p:panel>
+						<p:tab>
+						<h4>Endereço</h4>
+						
+						            <a:field label="Avenida/Rua">
+										<p:inputText id="candidatoRua"
+											value="#{CandidatoControl.endereco.ruaOuAvenida}" style="width:535px"></p:inputText>
+									</a:field>
+									
+									<a:field label="Quadra" spaceLeft="15px">
+										<p:inputText id="candidatoQuadra"
+											value="#{CandidatoControl.endereco.quadra}"></p:inputText>
+									</a:field>
+									
+									<a:field label="Lote" spaceLeft="15px">
+										<p:inputText id="candidatoLote"
+											value="#{CandidatoControl.endereco.lote}"></p:inputText>
+									</a:field>
+									
 
+									<a:field label="Numero">
+										<p:inputText id="Candidatonumero"
+											value="#{CandidatoControl.endereco.numero}"></p:inputText>
+									</a:field>
+									
+									<a:field label="Complemento" spaceLeft="15px">
+										<p:inputText id="candidatoComplemento"
+											value="#{CandidatoControl.endereco.complemento}"></p:inputText>
+									</a:field>
+									
+									<a:field label="Bairro" spaceLeft="15px">
+										<p:inputText id="candidatoBairro"
+											value="#{CandidatoControl.endereco.bairro}"></p:inputText>
+									</a:field>
+									
+									<a:field label="Telefone Residencial:" spaceLeft="15px">
+						<p:inputMask id="telefCandResidencia" value="#{CandidatoControl.telefone.numeroTelefone}" mask="(99)99999999">
+						                </p:inputMask>
+					                    </a:field>
+					                    
+					                    <a:field label="Telefone Celular:" spaceLeft="15px">
+						<p:inputMask id="telefCandCelular" value="#{CandidatoControl.telefone.numeroTelefone}" mask="(99)999999999">
+						                </p:inputMask>
+					                    </a:field>
+					                    
+					                    <a:field label="CEP" spaceLeft="10px">
+						<p:inputMask id="cep" style="width:100px;" value="#{CandidatoControl.endereco.cep}" mask="99.999-999">
+						</p:inputMask>
+					</a:field>			
+										
+                                    <a:field label="Cidade" spaceLeft="15px">
+										<p:inputText id="candidatoCidade"
+											value="#{CandidatoControl.endereco.cidade.nomeCidade}" style="width:350px">
+										</p:inputText>
+									</a:field>
+									
+									<a:field label="Estado" spaceLeft="15px">
+										<p:selectOneMenu id="candidatoEstado"
+											value="#{CandidatoControl.endereco.cidade.enumEstado }">
+											<f:selectItems
+												value="#{CandidatoControl.completeEnumEstado }">
+											</f:selectItems>
+										</p:selectOneMenu>
+										</a:field>
+										
+										<a:newLine />
+										<a:field label="Quem ligar em caso de emergência?"></a:field>
+										<a:newLine />
+										
+										<a:field label="Nome">
+										<p:inputText id="nomemergencia"
+											value="#{CandidatoControl.telefone.nomePessoaRecado}">
+										</p:inputText>
+									    </a:field>
+									    
+									    <a:field label="Telefone" spaceLeft="15px">
+											<p:inputMask id="telemergencia" value="#{CandidatoControl.telefone.numeroTelefone}" mask="()999999999">
+						                </p:inputMask>
+									    </a:field>
+									    
+										<a:newLine />
+		
+						</p:tab>
+						<a:newLine />
 					</p:panel>
+					<a:newLine />
+					
+					<p:panel>
+						<p:tab>
+						<h4>Formação e Profissão</h4>
+						</p:tab>			
+					</p:panel>
+					<a:newLine />
+					
+						</p:tab>
+						
+						<!--TAB PERGUNTAS SOCIAIS E ECONÔMICAS -->
+						
+						<p:tab title="Perguntas sociais e econômicas" id="tabSocioEconomica">
+						
+						</p:tab>
+						
+                      </p:tabView>
+			</p:panel>
 				</p:tab>
 				
 				<!--INICIO DO TAB DE INFORMAÇÕES RESPONSAVEL -->
@@ -120,7 +262,6 @@
 					<p:panel rendered="true">
 						<p:tabView cache="false" id="tabCadastroResponsavel">
 							<p:tab title="Dados do Responsavel" id="dadosResponsaveis">
-								<p:panel rendered="true" id="panelResponsavel">
 									<h4>Responsável</h4>
 
 									<a:newLine />
@@ -166,8 +307,22 @@
 											value="#{CandidatoControl.responsavel.profissao}">
 										</p:inputText>
 									</a:field>
+									
+									<a:field label="Nacionalidade" spaceLeft="15px">
+										<p:inputText id="nascionalidade"
+											value="#{CandidatoControl.responsavel.nascionalidade}">
+										</p:inputText>
+									</a:field>
 
-									<a:field label="Escolaridade" spaceLeft="15px">
+									<a:field label="Naturalidade" spaceLeft="15px">
+										<p:inputText id="naturalidadeResponsavel"
+											value="#{CandidatoControl.responsavel.naturalidade}">
+										</p:inputText>
+									</a:field>
+									
+									<a:newLine />
+
+									<a:field label="Escolaridade">
 										<p:selectOneMenu id="escolaridade"
 											value="#{CandidatoControl.responsavel.enumEscolaridade }"
 											style="width:200px;">
@@ -187,22 +342,12 @@
 										</p:selectOneMenu>
 									</a:field>
 									
-									<a:field label="Nascionalidade" spaceLeft="15px">
-										<p:inputText id="nascionalidade"
-											value="#{CandidatoControl.responsavel.nascionalidade}">
-										</p:inputText>
-									</a:field>
+									
 
-									<a:field label="Naturalidade" spaceLeft="15px">
-										<p:inputText id="naturalidadeResponsavel"
-											value="#{CandidatoControl.responsavel.naturalidade}">
-										</p:inputText>
-									</a:field>
+									
 
-									<a:newLine />
-
-									<a:field label="Sexo">
-										<p:selectOneMenu id="sexoResponsavel"
+									<a:field label="Sexo" spaceLeft="15px">
+										<p:selectOneMenu id="sexoResponsavel" 
 											value="#{CandidatoControl.responsavel.enumSexo }">
 											<f:selectItems value="#{CandidatoControl.completeEnumSexo }">
 											</f:selectItems>
@@ -212,14 +357,13 @@
 									<a:field label="Estado civil" spaceLeft="15px">
 										<p:selectOneMenu id="enumEstadoCivil"
 											value="#{CandidatoControl.responsavel.enumEstadoCivil }">
-											<f:selectItems
-												value="#{CandidatoControl.completenumEstadoCivil }">
+										<f:selectItems
+												value="#{CandidatoControl.completeEnumEstadoCivil }">
 											</f:selectItems>
 										</p:selectOneMenu>
 									</a:field>									
 
 									<a:newLine />
-								</p:panel>
 								<a:newLine />
 							</p:tab>
 							<!--TAB ENDEREÇO -->
@@ -233,7 +377,7 @@
 
 									<a:newLine />
 
-									<a:field label="Rua">
+									<a:field label="Avenida/Rua">
 										<p:inputText id="rua"
 											value="#{CandidatoControl.endereco.ruaOuAvenida}"></p:inputText>
 									</a:field>

@@ -64,7 +64,6 @@ public class CandidatoControl {
 	public void init() {
 		listarCandidatoPorNome(null);
 
-
 		responsavel = new Responsavel();
 	}
 
@@ -271,7 +270,7 @@ public class CandidatoControl {
 		return UtilFaces.getListEnum(EnumTipoCasa.values());
 	}
 	
-	public List<SelectItem> getCompletenumEstadoCivil(){
+	public List<SelectItem> getCompleteEnumEstadoCivil(){
 		return UtilFaces.getListEnum(EnumEstadoCivil.values());
 	}
 	

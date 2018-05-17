@@ -44,7 +44,6 @@ public class FuncionarioControl {
 	private Funcionario filtro = new Funcionario();
 	private Frequencia frequencia = new Frequencia();
 	
-
 	private List<Frequencia> frequencias = new ArrayList<Frequencia>();
 
 	private GradeHorario gradeHorario = new GradeHorario();
@@ -61,11 +60,10 @@ public class FuncionarioControl {
 
 	public void confirmar(ActionEvent evt) {
 		try {
-			funcionario = new Funcionario();
 			this.funcionario.addEndereco(endereco);
+			funcionarioDao.incluir(this.funcionario);
 			this.endereco = new Endereco();
-			funcionarioDao.alterar(funcionario);
-			 
+			this.funcionario = new Funcionario();
 			UtilFaces.addMensagemFaces("Informações salvas com sucesso!");
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
@@ -82,7 +80,7 @@ public class FuncionarioControl {
 	
 	public void carregaFuncionarioAlteracao(Funcionario funcionario){
 		try {
-	      this.funcionario = funcionarioDao.consultar(funcionario.getId());
+	      this.funcionario = funcionario;
       } catch (PersistenciaException e) {
       	UtilFaces.addMensagemFaces(e);
       }		

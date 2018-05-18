@@ -60,8 +60,14 @@ public class FuncionarioControl {
 
 	public void confirmar(ActionEvent evt) {
 		try {
-			this.funcionario.addEndereco(endereco);
-			funcionarioDao.incluir(this.funcionario);
+			if(this.funcionario.getId() == null) {
+				this.funcionario.addEndereco(endereco);
+				funcionarioDao.incluir(this.funcionario);
+			} else {
+				this.funcionario.addEndereco(this.endereco);
+				funcionarioDao.alterar(this.funcionario);
+			}
+			listarTodosFuncionarios(null);
 			this.endereco = new Endereco();
 			this.funcionario = new Funcionario();
 			UtilFaces.addMensagemFaces("Informações salvas com sucesso!");
@@ -80,7 +86,7 @@ public class FuncionarioControl {
 	
 	public void carregaFuncionarioAlteracao(Funcionario funcionario){
 		try {
-	      this.funcionario = funcionario;
+	      this.funcionario = funcionarioDao.carregarFuncionarioComEndereco(funcionario);
       } catch (PersistenciaException e) {
       	UtilFaces.addMensagemFaces(e);
       }		

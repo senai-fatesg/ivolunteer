@@ -139,7 +139,7 @@
 					<p:panel id="painelFuncionarioDadosProfissionais" rendered="true" style="height: 90pt!important;">
 						<a:field label="Tipo de Funcionário" spaceLeft="10px">
 							<p:selectOneMenu id="enumTipoFuncionario" value="#{FuncionarioControl.funcionario.tipoFuncionario}" style="width:120px;" >
-								<p:ajax event="change" listener="#{FuncionarioControl.validaFuncionarioContratacao}" update="painelFuncionarioDadosProfissionais" />
+								<p:ajax event="change" update="painelFuncionarioDadosProfissionais" />
 								<f:selectItems value="#{FuncionarioControl.completeEnumTipoFuncionario}"></f:selectItems>
 							</p:selectOneMenu>
 						</a:field>

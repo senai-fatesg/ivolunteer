@@ -60,14 +60,6 @@ public class FuncionarioControl {
 	public void init() {
 		listarTodosFuncionarios(null);
 	}
-	
-	public void validaFuncionarioContratacao() {
-		//FacesContext fc = FacesContext.getCurrentInstance();
-		//UIComponent findComponent = fc.getViewRoot().findComponent("formCorpo:tabCadastro:enumTipoFuncionario");
-		//System.out.println("COMPONENTE INPUTPIS: " + findComponent.getAttributes().get("Value"));
-		//this.tipoContratacaoFuncionario
-		System.out.println("TIPO DE FUNCIONÁRIO: " + this.funcionario.getTipoFuncionario());
-	}
 
 	public void confirmar(ActionEvent evt) {
 		try {

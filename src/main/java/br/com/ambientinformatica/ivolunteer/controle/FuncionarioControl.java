@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
@@ -56,6 +59,14 @@ public class FuncionarioControl {
 	@PostConstruct
 	public void init() {
 		listarTodosFuncionarios(null);
+	}
+	
+	public void validaFuncionarioContratacao() {
+		//FacesContext fc = FacesContext.getCurrentInstance();
+		//UIComponent findComponent = fc.getViewRoot().findComponent("formCorpo:tabCadastro:enumTipoFuncionario");
+		//System.out.println("COMPONENTE INPUTPIS: " + findComponent.getAttributes().get("Value"));
+		//this.tipoContratacaoFuncionario
+		System.out.println("TIPO DE FUNCIONÁRIO: " + this.funcionario.getTipoFuncionario());
 	}
 
 	public void confirmar(ActionEvent evt) {

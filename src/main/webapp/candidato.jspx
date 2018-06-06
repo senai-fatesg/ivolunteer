@@ -81,7 +81,7 @@
 						</a:field>
 						
 						<a:field label="Data de nascimento" spaceLeft="15px">
-							<p:calendar id="dataNascimento"
+							<p:calendar id="dataNascimento" yearRange="c-100:c0"
 								value="#{CandidatoControl.candidato.dataNascimento}" locale="de"
 								navigator="true" pattern="dd-MM-yyyy" required="true" requiredMessage="Por favor, informe a data de nascimento"/>
 						</a:field>

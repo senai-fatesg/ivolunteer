@@ -10,10 +10,8 @@
 		<h:form id="form">
 			<p:panel header="Atividade Diaria" id="panel">
 				<p:messages id="messages" showDetail="true" autoUpdate="true"
-					closable="true" />
-				<p:panel id="tabAtividade">
-				
-				<p:panel>
+					closable="true" />			
+					<a:newLine/>	
 				
 					<a:field label="Funcionario">
 						<p:autoComplete minQueryLength="3"
@@ -24,7 +22,7 @@
 							effect="fade" 
 							requiredMessage="Campo Funcionario obrigatório.">
 							<p:ajax event="itemSelect" update="atividades"
-								listener="#{AtividadeDiariaControl.carregarFuncionario}" />
+								listener="#{AtividadeDiariaControl.selecFuncionario}" />
 						</p:autoComplete>
 					</a:field>
 					<a:field label="Hora Inicial" spaceLeft="15px">
@@ -47,54 +45,55 @@
 							pattern="dd-MM-yyyy" mask="true" />
 					</a:field>
 					
-					<a:newLine></a:newLine>
-					</p:panel>
+					<a:newLine/>
+					<a:newLine/>
 					
 					<a:field label="Observações">
 						<p:editor widgetVar="editorWidget"
 							value="#{AtividadeDiariaControl.atividadeDiaria.atividade}"
-							width="600" />
+							style="width:100%" />
 					</a:field>
-					<a:newLine></a:newLine>
-				</p:panel>
+					
+					<a:newLine/>
+				
 				<a:field>
 					<p:commandButton ajax="false" icon="ui-icon-plusthick"
 						actionListener="#{AtividadeDiariaControl.adicionarGrade}"
 						value="Adicionar" update="atividades, tabAtividade">
 					</p:commandButton>
 				</a:field>
+				
 				<a:newLine />
 				<a:newLine />
-				<p:panel>
-					<p:dataTable id="atividades" style="width:60%"
+				
+					<p:dataTable id="atividades" style="width:100%"
 						emptyMessage="Sem Registros"
 						value="#{AtividadeDiariaControl.funcionario.atividadesDiaria}"
 						var="item">
 
+						<p:column headerText="Funcionario">
+							<h:outputText value="#{item.nomePessoa}"  />
+						</p:column>
+						
 						<p:column headerText="Hora Inicial">
-							<h:outputText value="#{item.horaInicial}" ajax="false"
-								immediate="true"></h:outputText>
+							<h:outputText value="#{item.horaInicial}" />
 						</p:column>
 
 						<p:column headerText="Hora Final">
-							<h:outputText value="#{item.horaFinal}" ajax="false"
-								immediate="true"></h:outputText>
+							<h:outputText value="#{item.horaFinal}" />
 						</p:column>
 
 						<p:column headerText="Atividade">
-							<h:outputText value="#{item.atividade}" ajax="false"
-								immediate="true"></h:outputText>
+							<h:outputText value="#{item.atividade}" />
 						</p:column>
 
-						<p:column width="20">
+						<p:column headerText="Ação">
 							<p:commandButton icon="ui-icon-closethick"
 								action="#{AtividadeDiariaControl.removerAtividade(item)}"
-								update="atividades" ajax="false" />
+								update="atividades" />
 						</p:column>
 					</p:dataTable>
 				</p:panel>
-				<a:newLine />
-			</p:panel>
 		</h:form>
 	</ui:define>
 </ui:composition>

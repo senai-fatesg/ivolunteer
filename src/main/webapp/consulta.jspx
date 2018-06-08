@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="corpo">
+		<p:panel id="panel" header="Consultas">
+			
+			<!-- VIEW DDE ABAS -->
+			<p:tabView dynamic="true" id="tabViewConsultaAluno">
+				<!-- ABA DE ALUNOS  -->
+				<p:tab title="Aluno" id="tabAluno">
+					<p:panel id="consultaAlunos" rendered="true">
+						
+						<a:field label="Certidão de Nascimento"  spaceLeft="15px">
+							<p:inputText id="certidaoAluno" value="#{MatriculaControl.aluno.certidaoNascimento}"/>
+						
+						</a:field>
+						<a:field spaceLeft="15px">
+							<p:commandButton icon="ui-icon-search" id="filtro" actionListener="#{MatriculaControl.aplicarFiltro}" />
+						</a:field>
+						
+						<a:newLine/>
+
+						<p:dataTable id="listaAlunos" var="itemAluno" style="width:100%" value="#{MatriculaControl.alunos}"	emptyMessage="Sem Registros">
+							<p:column headerText="Cod. Aluno">#{itemAluno.id}</p:column>
+							<p:column headerText="Nome" width="30%">#{itemAluno.nomePessoa}</p:column>
+							<p:column headerText="Certidão de Nascimento">#{itemAluno.certidaoNascimento}</p:column>
+							<p:column headerText="Naturalidade">#{itemAluno.naturalidade}</p:column>
+							<p:column headerText="Nacionalidade">#{itemAluno.nascionalidade}</p:column>
+							
+						</p:dataTable>
+
+					</p:panel>
+				</p:tab>
+				
+				<p:tab title="Candidato" id="tabViewConsultaFuncionario">
+					<p:panel id="consultaCandidatos" redered="true">
+					
+					</p:panel>
+				
+				</p:tab>
+			
+			</p:tabView>
+			
+			
+		</p:panel>
+
+	</ui:define>
+</ui:composition>

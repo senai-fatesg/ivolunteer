@@ -14,16 +14,10 @@
 					<a:newLine/>	
 				
 					<a:field label="Funcionario">
-						<p:autoComplete minQueryLength="3"
-							value="#{AtividadeDiariaControl.funcionario}"
-							completeMethod="#{AtividadeDiariaControl.consultarFuncionario}"
-							var="func" itemLabel="#{func.nomePessoa}" itemValue="#{func}"
-							converter="FuncionarioConverter" forceSelection="true"
-							effect="fade" 
-							requiredMessage="Campo Funcionario obrigatório.">
-							<p:ajax event="itemSelect" update="atividades"
-								listener="#{AtividadeDiariaControl.selecFuncionario}" />
-						</p:autoComplete>
+							<p:inputText>
+								
+							</p:inputText>
+							
 					</a:field>
 					<a:field label="Hora Inicial" spaceLeft="15px">
 						<p:calendar

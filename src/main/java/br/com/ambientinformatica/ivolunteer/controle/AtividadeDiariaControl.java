@@ -21,15 +21,19 @@ import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 @Controller("AtividadeDiariaControl")
 @Scope("conversation")
 public class AtividadeDiariaControl {
+
 	private AtividadeDiaria atividadeDiaria = new AtividadeDiaria();
+	
 	private Funcionario funcionario = new Funcionario();
 
 	public Funcionario getFuncionario() {
 		return funcionario;
 	}
 
+	
 	@Autowired
 	private AtividadeDiariaDao atividadeDiariaDao;
+	
 	@Autowired
 	private FuncionarioDao funcionarioDao;
 
@@ -107,22 +111,7 @@ public class AtividadeDiariaControl {
 		return funcionarioDao.listarPorNome(query);
 	}
 
-	public void adicionarGrade() {
-		try {
-			funcionario.addAtividadeDiaria(atividadeDiaria);
-		} catch (Exception e) {
-			UtilFaces.addMensagemFaces(e);
-		}
-	}
-	
-	public void removerAtividade(AtividadeDiaria atividadeDiaria){
-		try {
-			this.funcionario.removerAtividade(atividadeDiaria);
-		} catch (Exception e) {
-			UtilFaces.addMensagemFaces(e);
-		}
-	}
-	
+
 	public void inicializar(){
 		this.funcionario = new Funcionario();
 		this.atividadeDiaria = new AtividadeDiaria();

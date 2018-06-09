@@ -97,15 +97,7 @@ public class FrequenciaControl {
 		return frequencias;
 	}
 
-	public void adicionarFrequencia(Frequencia frequencia) {
-		try {
-			funcionario.addFrequencia(frequencia);
-			funcionarioDao.alterar(funcionario);
-		} catch (PersistenciaException e) {
-			UtilFaces
-					.addMensagemFaces("Ocorreu um erro ao adicionar a Frequencia");
-		}
-	}
+
 
 	public Funcionario getFuncionario() {
 		return funcionario;
@@ -151,19 +143,7 @@ public class FrequenciaControl {
 	// return turmaDao.listarPorNome(query);
 	// }
 
-	public void manterFrequencia() {
-		for (Frequencia auxiliar : frequencias) {
-			if (auxiliar.getPresente()) {
-				funcionario.addFrequencia(auxiliar);
-			} else {
-				funcionario.alterarFrequencia(auxiliar);
-			}
-		}
-		this.frequencias = new ArrayList<Frequencia>();
-		this.funcionarios = new ArrayList<Funcionario>();
-		this.funcionario = new Funcionario();
-		this.data = new String();
-	}
+
 
 	@SuppressWarnings("deprecation")
 	public void carregarFrequenciaMes() {

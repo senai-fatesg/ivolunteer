@@ -74,7 +74,7 @@
 			<artifactId>jsp-api</artifactId>
 			<version>2.1</version>
 			<scope>provided</scope>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>br.com.ambientinformatica</groupId>
 			<artifactId>ambient-jpa</artifactId>
@@ -86,11 +86,13 @@
 			<artifactId>mail</artifactId>
 			<version>1.4.5</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.primefaces.themes/bootstrap -->
 		<dependency>
 			<groupId>org.primefaces.themes</groupId>
 			<artifactId>bootstrap</artifactId>
 			<version>1.0.9</version>
 		</dependency>
+
 		<!-- Ambient JSF -->
 		<dependency>
 			<groupId>br.com.ambientinformatica</groupId>
@@ -108,7 +110,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-				<!-- Para o QRCode via JasperStudio -->
+		<!-- Para o QRCode via JasperStudio -->
 		<dependency>
 			<groupId>net.sf.barcode4j</groupId>
 			<artifactId>barcode4j</artifactId>

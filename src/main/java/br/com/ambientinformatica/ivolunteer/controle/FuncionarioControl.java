@@ -133,20 +133,6 @@ public class FuncionarioControl {
 		}
 	}
 
-	public void adicionarFrequencia(ActionEvent evt) {
-		try {
-			funcionario.addFrequencia(frequencia);
-			funcionarioDao.alterar(funcionario);
-		} catch (PersistenciaException e) {
-			UtilFaces.addMensagemFaces("Ocorreu um erro ao adicionar a Frequencia");
-		}
-	}
-	
-
-	public void adicionarGradeHorario(ActionEvent evt) {
-		funcionario.addGradeHorario(gradeHorario);
-		gradeHorario = new GradeHorario();
-	}
 
 	public List<SelectItem> getCompleteEnumEstado() {
 		return UtilFaces.getListEnum(EnumEstado.values());
@@ -298,19 +284,7 @@ public class FuncionarioControl {
 		return func;
 	}
 
-	@SuppressWarnings({ "deprecation", "rawtypes" })
-	public void carregarFrequenciaMes(ActionEvent evt) {
-		frequencias = funcionario.getFrequencias();
 
-		// int mes = frequencia.getData().getMonth();
-		//
-		// for (Frequencia frequenciaMes : auxiliar) {
-		// if (mes == frequenciaMes.getData().getMonth()) {
-		// frequencias.add(frequencia);
-		// }
-		// }
-
-	}
 
 	// metodo para preencher a data
 	public void preencheData(SelectEvent event) {

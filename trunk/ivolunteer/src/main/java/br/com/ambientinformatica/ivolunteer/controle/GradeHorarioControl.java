@@ -75,22 +75,6 @@ public class GradeHorarioControl {
 		return UtilFaces.getListEnum(EnumDiaSemana.values());
 	}
 
-	public void addHorario(ActionEvent ev) {
-		try {
-			this.funcionario.addGradeHorario(gradeHorario);
-			this.gradeHorario = new GradeHorario();
-		} catch (Exception e) {
-			UtilFaces.addMensagemFaces(e);
-		}
-	}
-	
-	public void removerHorario(GradeHorario gradeHorario) {
-		try {
-			this.funcionario.removerGradeHorario(gradeHorario);
-		} catch (Exception e) {
-			UtilFaces.addMensagemFaces(e);
-		}
-	}
 
 	public GradeHorario getGradeHorario() {
 		return gradeHorario;

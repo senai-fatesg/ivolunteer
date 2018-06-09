@@ -1,4 +1,4 @@
-package br.com.ambientinformatica.ivolunteer.util;
+package br.com.ambientinformatica.ivolunteer.controle;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -15,19 +15,9 @@ public class FuncionarioConverter implements Converter {
 	private FuncionarioDao funcionarioDao = (FuncionarioDao) FabricaAbstrata
 			.criarObjeto("funcionarioDao");
 
+	
 	@Override
-	public String getAsString(FacesContext facesContext, UIComponent component,
-			Object value) {
-		if (value == null || value.equals("")) {
-			return "";
-		} else {
-			return String.valueOf(((Funcionario) value).getId());
-		}
-	}
-
-	@Override
-	public Object getAsObject(FacesContext context, UIComponent component,
-			String value) {
+	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 		if (value != null && !value.trim().equals("")) {
 			Funcionario funcionario = new Funcionario();
 			try {
@@ -45,4 +35,17 @@ public class FuncionarioConverter implements Converter {
 			return null;
 		}
 	}
+	
+	
+	@Override
+	public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
+		
+		if (value == null || value.equals("")) {
+			return "";
+		} else {
+			return String.valueOf(((Funcionario) value).getId());
+		}
+	}
+
+	
 }

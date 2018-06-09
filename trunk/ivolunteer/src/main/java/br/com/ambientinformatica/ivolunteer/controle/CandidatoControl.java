@@ -54,6 +54,7 @@ public class CandidatoControl {
 	private Telefone telefone = new Telefone();
 	private Endereco endereco = new Endereco();
 	private Cidade cidade = new Cidade();
+	
 	//Atributo utilziado para tratamento de renda total do responsavel
 	private BigDecimal totalRenda = BigDecimal.ZERO;
 	
@@ -92,7 +93,9 @@ public class CandidatoControl {
 
 	/**Preenche os dados do candidato automaticamente.
 	 * Obs: As informações preenchidas não afetam a integridade dos dados **/
+	
 	private void preenchaInformacoesDefaultCandidato(Pessoa objeto) {
+	   
 	   objeto.setEnumEstadoCivil(EnumEstadoCivil.SOLTEIRO);
 	   objeto.setEnumPrioridade(EnumPrioridade.BAIXA);
 	   objeto.setProfissao("NULL");

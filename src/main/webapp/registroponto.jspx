@@ -23,16 +23,15 @@
 								completeMethod="#{GradeHorarioControl.consultarFuncionario}"
 								var="func" itemLabel="#{func.nomePessoa}" itemValue="#{func}"
 								converter="FuncionarioConverter" forceSelection="true"
-								effect="fade"
-								style="height:15px; margin-top: -10px; width:150px"
+								effect="fade"								
 								requiredMessage="Campo Funcionario obrigatório.">
 								<p:ajax event="itemSelect" update="horarios"
 									listener="#{GradeHorarioControl.carregarFuncionario}" />
 							</p:autoComplete>
 						</a:field>
 
-						<a:field label="Dia da semana" spaceLeft="8px" width="215px">
-							<p:selectOneMenu id="sexo"
+						<a:field label="Dia da semana" spaceLeft="10px" width="215px">
+							<p:selectOneMenu id="diaSemana"
 								value="#{GradeHorarioControl.gradeHorario.diaSemana}"
 								style="width:215px;">
 								<f:selectItems
@@ -43,7 +42,7 @@
 
 						<a:newLine />
 
-						<a:field label="Horario Entrada" width="200px">
+						<a:field label="Horario Entrada">
 
 							<p:calendar id="time1"
 								value="#{GradeHorarioControl.gradeHorario.horarioEntrada}"
@@ -51,23 +50,25 @@
 
 						</a:field>
 
-						<a:field label="Horario Saida" width="200px" spaceLeft="25px">
+						<a:field label="Horario Saida" spaceLeft="10px">
 
 							<p:calendar id="time2"
 								value="#{GradeHorarioControl.gradeHorario.horarioSaida}"
 								pattern="HH:mm" timeOnly="true" />
 
 						</a:field>
-
-
+						
 						<a:newLine />
-
+						
 						<a:field>
 							<p:commandButton
 								actionListener="#{GradeHorarioControl.addHorario}"
 								value="Adicionar Horario" icon="ui-icon-plusthick"
 								update="horarios" ajax="false" />
 						</a:field>
+						
+						<a:newLine />
+						<a:newLine />
 
 						<p:dataTable id="horarios" style="width:100%"
 							emptyMessage="Sem Registros"

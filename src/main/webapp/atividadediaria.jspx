@@ -18,15 +18,13 @@
 						value="#{AtividadeDiariaControl.funcionario}"
 						completeMethod="#{AtividadeDiariaControl.consultarFuncionario}"
 						var="func" itemLabel="#{func.nomePessoa}" itemValue="#{func}"
-						converter="funcionarioConverter" forceSelection="true"
+						converter="objectConverter" forceSelection="true"
 						effect="fade" requiredMessage="Campo Funcionario obrigatório.">
-
-						<p:ajax event="itemSelect"
-							listener="#{AtividadeDiariaControl.carregarFuncionario}" />
 					</p:autoComplete>
 
 				</a:field>
 
+				
 				<a:field label="Hora Inicial" spaceLeft="15px">
 					<p:calendar
 						value="#{AtividadeDiariaControl.atividadeDiaria.horaInicial}"

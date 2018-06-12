@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,6 +30,9 @@ public class AtividadeDiaria {
 	private String local;
 
 	private String observacao;
+	
+	@ManyToOne
+	private Funcionario funcionario;
 
 	public Integer getId() {
 		return id;
@@ -72,6 +76,14 @@ public class AtividadeDiaria {
 
 	public void setObservacao(String observacao) {
 		this.observacao = observacao;
+	}
+
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
 	}
 
 	@Override

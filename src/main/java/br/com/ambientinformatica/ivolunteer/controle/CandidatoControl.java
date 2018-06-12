@@ -70,7 +70,7 @@ public class CandidatoControl {
 
 	public void listarCandidatoPorNome(ActionEvent evt){
 		try {
-			//listaCandidato = pessoaDao.listaCandidatoPorNome(candidatoConsulta.getNomePessoa());
+			listaCandidato = pessoaDao.listaCandidatoPorNome(candidatoConsulta.getNomePessoa());
 		} catch (Exception e) {
 		   UtilFaces.addMensagemFaces(e);
 		}

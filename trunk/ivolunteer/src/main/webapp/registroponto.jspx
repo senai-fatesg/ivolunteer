@@ -22,11 +22,9 @@
 								value="#{GradeHorarioControl.funcionario}"
 								completeMethod="#{GradeHorarioControl.consultarFuncionario}"
 								var="func" itemLabel="#{func.nomePessoa}" itemValue="#{func}"
-								converter="FuncionarioConverter" forceSelection="true"
+								converter="objectConverter" forceSelection="true"
 								effect="fade"								
 								requiredMessage="Campo Funcionario obrigatório.">
-								<p:ajax event="itemSelect" update="horarios"
-									listener="#{GradeHorarioControl.carregarFuncionario}" />
 							</p:autoComplete>
 						</a:field>
 
@@ -62,7 +60,7 @@
 						
 						<a:field>
 							<p:commandButton
-								actionListener="#{GradeHorarioControl.addHorario}"
+								actionListener="#{GradeHorarioControl.confirmar}"
 								value="Adicionar Horario" icon="ui-icon-plusthick"
 								update="horarios" ajax="false" />
 						</a:field>
@@ -72,25 +70,33 @@
 
 						<p:dataTable id="horarios" style="width:100%"
 							emptyMessage="Sem Registros"
-							value="#{GradeHorarioControl.funcionario.gradesHorario}"
+							value="#{GradeHorarioControl.gradeHorarios}"
 							var="horario">
+							
+							<p:column headerText="Funcionario">
+								<h:outputText value="#{horario.funcionario.nomePessoa}"></h:outputText>
+							</p:column>
 
-							<p:column headerText="Horario Entrada" width="50px">
+							<p:column headerText="Horario Entrada">
 								<h:outputText value="#{horario.horarioEntrada}"></h:outputText>
 							</p:column>
 
-							<p:column headerText="Horario Saida" width="50px">
+							<p:column headerText="Horario Saida">
 								<h:outputText value="#{horario.horarioSaida}"></h:outputText>
 							</p:column>
 
-							<p:column headerText="Dia da Semana" width="35px">
+							<p:column headerText="Dia da Semana">
 								<h:outputText value="#{horario.diaSemana}"></h:outputText>
 							</p:column>
 
-							<p:column width="20">
+							<p:column headerText="Ação">
 								<p:commandButton icon="ui-icon-closethick"
 									action="#{GradeHorarioControl.removerHorario(horario)}"
 									update="horarios" ajax="false" />
+									
+								<p:commandButton icon="ui-icon-pencil" style="margin-left: 10px;"
+								action="#{GradeHorarioControl.carregarHorario(horario)}" update=":formCorpo:panelHorario">
+								</p:commandButton>
 							</p:column>
 						</p:dataTable>
 

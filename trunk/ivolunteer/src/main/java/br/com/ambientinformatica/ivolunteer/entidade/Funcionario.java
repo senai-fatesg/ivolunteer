@@ -104,11 +104,6 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 	@JoinColumn(name = "funcionario_id")
 	private List<AtividadeDiaria> atividadesDiaria = new ArrayList<AtividadeDiaria>();
 
-
-	
-	
-	
-
 	public String getPis() {
 		return pis;
 	}
@@ -376,8 +371,7 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 				+ ", terminoExperiencia=" + terminoExperiencia + ", banco=" + banco + ", agencia=" + agencia
 				+ ", conta=" + conta + ", dataDemissao=" + dataDemissao + ", valorAcerto=" + valorAcerto
 				+ ", observacao=" + observacao + ", historico=" + historico + ", tipoFuncionario=" + tipoFuncionario
-				+ ", funcao=" + funcao + ", cargo=" + cargo + ", frequencias=" + frequencias + ", gradesHorario="
-				+ gradesHorario + ", atividadesDiaria=" + atividadesDiaria + "]";
+				+ ", funcao=" + funcao + ", cargo=" + cargo + "]";
 	}
 
 	@Override
@@ -581,8 +575,5 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 			return false;
 		return true;
 	}
-
-	
-	
 	
 }

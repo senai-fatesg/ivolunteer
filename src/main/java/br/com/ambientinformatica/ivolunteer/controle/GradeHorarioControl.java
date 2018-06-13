@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
+import br.com.ambientinformatica.ivolunteer.entidade.AtividadeDiaria;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumDiaSemana;
 import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.ivolunteer.entidade.GradeHorario;
@@ -26,11 +27,10 @@ public class GradeHorarioControl {
 
 	private GradeHorario gradeHorario = new GradeHorario();
 	private Funcionario funcionario = new Funcionario();
-	
 
 	@Autowired
 	private GradeHorarioDao gradeHorarioDao;
-	
+
 	@Autowired
 	private FuncionarioDao funcionarioDao;
 
@@ -43,6 +43,7 @@ public class GradeHorarioControl {
 
 	public void confirmar(ActionEvent evt) {
 		try {
+			gradeHorario.setFuncionario(funcionario);
 			gradeHorarioDao.alterar(gradeHorario);
 			listar(evt);
 			gradeHorario = new GradeHorario();
@@ -50,12 +51,32 @@ public class GradeHorarioControl {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
-	
+
+	public void removerHorario(GradeHorario gradeHorario) {
+		try {
+			gradeHorarioDao.excluirPorId(gradeHorario.getId());
+			gradeHorario = new GradeHorario();
+			gradeHorarios = gradeHorarioDao.listar();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
 	public void carregarFuncionario(SelectEvent evt) {
 		try {
 			this.funcionario = funcionarioDao.consultar(funcionario.getId());
 		} catch (PersistenciaException e) {
 			UtilFaces.addMensagemFaces(e);
+		}
+	}
+
+	public void carregarHorario(GradeHorario gradeHorario){
+		try {
+			
+			this.gradeHorario = gradeHorarioDao.consultar(gradeHorario.getId());
+			
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
 	}
 	
@@ -74,7 +95,6 @@ public class GradeHorarioControl {
 	public List<SelectItem> getCompleteEnumDiaSemana() {
 		return UtilFaces.getListEnum(EnumDiaSemana.values());
 	}
-
 
 	public GradeHorario getGradeHorario() {
 		return gradeHorario;

@@ -17,7 +17,7 @@ public class AlunoDaoJpa extends PersistenciaJpa<Aluno> implements AlunoDao {
 	@Override
 	public List<Aluno> listarPorCertidao(String nome) {
 
-		Query query = em.createQuery("select f from Aluno f where upper(f.nomePessoa) like :nome");
+		Query query = em.createQuery("select f from Aluno f where upper(f.ceridaoNascimento) like :nome");
 		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
 
 		return (List<Aluno>) query.getResultList();

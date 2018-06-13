@@ -7,9 +7,12 @@ import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
+import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+
+import com.ibm.icu.text.SimpleDateFormat;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.Aluno;
@@ -22,6 +25,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.Matricula;
 import br.com.ambientinformatica.ivolunteer.persistencia.AlunoDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.MatriculaDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
+import net.sf.jasperreports.data.mondrian.SimpleSQLDataSource;
 
 @Controller("MatriculaControl")
 @Scope("conversation")
@@ -32,6 +36,7 @@ public class MatriculaControl {
 	private Endereco endereco = new Endereco();
 	private String dataReal;
 	private Matricula matricula = new Matricula();
+	private String certidaoNascimento; 
 
 	@Autowired
 	private AlunoDao alunoDao;
@@ -95,11 +100,14 @@ public class MatriculaControl {
 	
 	@PostConstruct
 	public void init() {
-		listarAlunos(null);
+//		listarAlunos(null);
+		aplicarFiltro(null);
 	}
 	
 	public List<Aluno> getAlunos() {
-		listarAlunos(null);
+		this.certidaoNascimento = "";
+		this.alunos = alunoDao.listar();
+//		listarAlunos(null);
 		return alunos;
 	}
 
@@ -192,11 +200,10 @@ public class MatriculaControl {
 	
 	public void aplicarFiltro(ActionEvent evt) {
 		try {
-			if (this.aluno.getCertidaoNascimento().isEmpty()) {
+			if(certidaoNascimento.equals("")){
 				this.alunos = this.alunoDao.listar();
 			} else {
-				this.alunos = this.alunoDao.listarPorCertidao(this.aluno
-						.getCertidaoNascimento());
+				this.alunos = this.alunoDao.listarPorCertidao(certidaoNascimento);					
 			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
@@ -227,4 +234,20 @@ public class MatriculaControl {
 		return UtilFaces.getListEnum(EnumEstado.values());
 	}
 
+	public String getCertidaoNascimento() {
+		return certidaoNascimento;
+	}
+
+	public void setCertidaoNascimento(String certidaoNascimento) {
+		this.certidaoNascimento = certidaoNascimento;
+	}
+	public void calculaIdadeReal(SelectEvent event){
+		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+		String dataFormatada = formato.format(aluno.getDataNascimento());
+		this.dataReal = aluno.CalcularIdadeReal(dataFormatada);
+		
+	}
+	
 }
+	
+

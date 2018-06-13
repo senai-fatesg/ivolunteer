@@ -7,7 +7,7 @@
 	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
-		<h:form id="form">
+		
 			<p:panel header="Atividade Diaria" id="panel">
 				<p:messages id="messages" showDetail="true" autoUpdate="true"
 					closable="true" />
@@ -86,17 +86,34 @@
 						<h:outputText value="#{item.horaFinal}" />
 					</p:column>
 					
+					<p:column headerText="Local">
+						<h:outputText value="#{item.local}" />
+					</p:column>
+					
 					<p:column headerText="Observação">
 						<h:outputText value="#{item.observacao}" />
 					</p:column>
 
 					<p:column headerText="Ação">
 						<p:commandButton icon="ui-icon-closethick"
-							action="#{AtividadeDiariaControl.removerAtividade(item)}"
-							update="atividades" />
+							 action="#{AtividadeDiariaControl.removerAtividade(item)}"
+							update="atividades">
+							<f:setPropertyActionListener value="#{item}" target="#{AtividadeDiariaControl.atividadeDiaria}" />
+							<p:confirm header="Confirmar a exclusão!"
+							message="Deseja Excluir essa atividade?" icon="ui-icon-alert"/>
+						</p:commandButton>
+							
+							<p:commandButton icon="ui-icon-pencil" style="margin-left: 10px;"
+								action="#{AtividadeDiariaControl.carregaAtividade(item)}" update=":formCorpo:panel">
+							</p:commandButton>
 					</p:column>
 				</p:dataTable>
+				
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+					<p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+				</p:confirmDialog>
 			</p:panel>
-		</h:form>
+		
 	</ui:define>
 </ui:composition>

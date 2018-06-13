@@ -1,5 +1,6 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -12,8 +13,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class AtividadeDiaria {
+public class AtividadeDiaria implements Serializable{
 
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(generator = "atividade_diaria_seq", strategy = GenerationType.SEQUENCE)
 	@SequenceGenerator(name = "atividade_diaria_seq", sequenceName = "atividade_diaria_seq", allocationSize = 1, initialValue = 1)
@@ -86,6 +89,13 @@ public class AtividadeDiaria {
 		this.funcionario = funcionario;
 	}
 
+	
+	@Override
+	public String toString() {
+		return "AtividadeDiaria [horaInicial=" + horaInicial + ", horaFinal=" + horaFinal + ", atividade=" + atividade
+				+ ", local=" + local + ", observacao=" + observacao + ", funcionario=" + funcionario + "]";
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -110,6 +120,5 @@ public class AtividadeDiaria {
 			return false;
 		return true;
 	}
-
 	
 }

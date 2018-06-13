@@ -23,24 +23,24 @@ import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 @Scope("conversation")
 public class AtividadeDiariaControl {
 
-	private AtividadeDiaria atividadeDiaria = new AtividadeDiaria();
-
-	private Funcionario funcionario = new Funcionario();
 	
-	public Funcionario getFuncionario() {
-		return funcionario;
-	}
+	
 
 	@Autowired
 	private AtividadeDiariaDao atividadeDiariaDao;
+	private AtividadeDiaria atividadeDiaria = new AtividadeDiaria();
 
 	@Autowired
 	private FuncionarioDao funcionarioDao;
+	private Funcionario funcionario = new Funcionario();
 
 	private List<AtividadeDiaria> atividadesDiarias = new ArrayList<AtividadeDiaria>();
 	
 	private List<Funcionario> listFuncionario = new ArrayList<Funcionario>();
 
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
 	@PostConstruct
 	public void init() {
 		listar(null);
@@ -48,6 +48,7 @@ public class AtividadeDiariaControl {
 
 	public void confirmar(ActionEvent evt) {
 		try {
+			atividadeDiaria.setFuncionario(funcionario);
 			atividadeDiariaDao.alterar(atividadeDiaria);
 			listar(evt);
 			atividadeDiaria = new AtividadeDiaria();
@@ -55,18 +56,20 @@ public class AtividadeDiariaControl {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
+	
+	public void removerAtividade(AtividadeDiaria atividadeDiaria) {
+		try {
+			atividadeDiariaDao.excluirPorId(atividadeDiaria.getId());
+			atividadeDiaria = new AtividadeDiaria();
+			atividadesDiarias = atividadeDiariaDao.listar();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 
 	public void listar(ActionEvent evt) {
 		try {
 			atividadesDiarias = atividadeDiariaDao.listar();
-		} catch (Exception e) {
-			UtilFaces.addMensagemFaces(e);
-		}
-	}
-
-	public void excluir(AtividadeDiaria atividadeDiaria) {
-		try {
-			atividadeDiariaDao.excluirPorId(atividadeDiaria.getId());
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -91,28 +94,23 @@ public class AtividadeDiariaControl {
 	public void setAtividadesDiarias(List<AtividadeDiaria> atividadesDiarias) {
 		this.atividadesDiarias = atividadesDiarias;
 	}
-
-	public void carregarFuncionario(SelectEvent evt) {
-		Pessoa ps = (Pessoa) evt.getObject();
-		try {
-			this.funcionario = funcionarioDao.consultar(ps.getId());
-		} catch (PersistenciaException e) {
-			UtilFaces.addMensagemFaces(e);
-		}
-	}
-
+	
 	public void carregaAtividade(AtividadeDiaria atividadeDiaria) {
 		try {
-			this.atividadeDiaria = atividadeDiariaDao.consultar(atividadeDiaria);
+			
+			this.atividadeDiaria = atividadeDiariaDao.consultar(atividadeDiaria.getId());
+			
 		} catch (PersistenciaException e) {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
 
 	public List<Funcionario> consultarFuncionario(String query) {
-		return funcionarioDao.listarPorNome(query);
+		this.listFuncionario = funcionarioDao.listarPorNome(query);
+		return listFuncionario;
 	}
-
+	
+	
 	public void inicializar() {
 		this.funcionario = new Funcionario();
 		this.atividadeDiaria = new AtividadeDiaria();
@@ -128,6 +126,18 @@ public class AtividadeDiariaControl {
 
 	public void setListFuncionario(List<Funcionario> listFuncionario) {
 		this.listFuncionario = listFuncionario;
+	}
+	public AtividadeDiariaDao getAtividadeDiariaDao() {
+		return atividadeDiariaDao;
+	}
+	public void setAtividadeDiariaDao(AtividadeDiariaDao atividadeDiariaDao) {
+		this.atividadeDiariaDao = atividadeDiariaDao;
+	}
+	public FuncionarioDao getFuncionarioDao() {
+		return funcionarioDao;
+	}
+	public void setFuncionarioDao(FuncionarioDao funcionarioDao) {
+		this.funcionarioDao = funcionarioDao;
 	}
 	
 }

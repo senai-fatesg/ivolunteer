@@ -84,10 +84,10 @@
 										<p:inputMask id="cpf" value="#{CandidatoControl.candidato.cpf}" mask="999.999.999-99"></p:inputMask>
 									</a:field>
 
-									<a:field label="RG">
+									<a:field label="RG" spaceLeft="15px">
 										<p:inputMask id="rg" value="#{CandidatoControl.candidato.rg}" mask="9999999"> </p:inputMask>
 									</a:field>
-
+								
 									<a:field label="Orgão Emissor" spaceLeft="15px">
 										<p:inputText id="Emissor" value="#{CandidatoControl.candidato.orgaoExpeditor}"></p:inputText>
 									</a:field>
@@ -144,7 +144,7 @@
 											<p:inputText id="candidatoLote" value="#{CandidatoControl.endereco.lote}"></p:inputText>
 										</a:field>
 
-										<a:field label="Numero">
+										<a:field label="Numero" spaceLeft="15px">
 											<p:inputText id="Candidatonumero" value="#{CandidatoControl.endereco.numero}"></p:inputText>
 										</a:field>
 
@@ -188,7 +188,7 @@
 										</a:field>
 
 										<a:field label="Telefone" spaceLeft="15px">
-											<p:inputMask id="telemergencia" value="#{CandidatoControl.telefone.numeroTelefone}" mask="()999999999"> </p:inputMask>
+											<p:inputMask id="telemergencia" value="#{CandidatoControl.telefone.numeroTelefone}" mask="(99)999999999"> </p:inputMask>
 										</a:field>
 
 										<a:newLine />
@@ -274,7 +274,7 @@
 								</a:field>
 
 								<a:field label="RG" spaceLeft="15px">
-									<p:inputText id="rg" value="#{CandidatoControl.responsavel.rg}"> </p:inputText>
+									<p:inputMask id="rg" value="#{CandidatoControl.responsavel.rg}" mask="9999999"> </p:inputMask>
 								</a:field>
 
 								<a:field label="Orgão expeditor" spaceLeft="15px">

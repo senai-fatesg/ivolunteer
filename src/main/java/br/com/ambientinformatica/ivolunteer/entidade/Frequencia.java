@@ -1,17 +1,21 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Frequencia {
+public class Frequencia implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(generator = "frequencia_seq", strategy = GenerationType.SEQUENCE)
@@ -20,6 +24,12 @@ public class Frequencia {
 
 	@Temporal(TemporalType.DATE)
 	private Date data;
+	
+	@ManyToOne
+	private Funcionario funcionario ;
+	
+	@ManyToOne
+	private Aluno aluno ;
 
 	private Boolean presente = false;
 
@@ -72,6 +82,26 @@ public class Frequencia {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Aluno getAluno() {
+		return aluno;
+	}
+
+	public void setAluno(Aluno aluno) {
+		this.aluno = aluno;
 	}
 
 	

@@ -19,7 +19,10 @@ public class FuncionarioDaoJpa extends PersistenciaJpa<Funcionario> implements F
 	public List<Funcionario> listarPorNome(String nome) {
 
 		Query query = em
-				.createQuery("select f from Funcionario f where upper(f.nomePessoa) like :nome");
+				.createQuery("select f from Funcionario f  "
+						+ " left join fetch f.frequencias freq "
+						
+						+ " where upper(f.nomePessoa) like :nome");
 		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
 		
 		return  (List<Funcionario>) query.getResultList();

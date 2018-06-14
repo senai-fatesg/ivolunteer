@@ -12,45 +12,38 @@
 
 			<p:tabView dynamic="true" id="tabviewFuncionario">
 				<p:tab title="Funcionário" id="tabFuncionario">
-					<p:panel id="buscaFuncionario" rendered="true">
-					
+					<p:panel id="buscaFuncionario" rendered="true">					
 						<a:field label="Mês/Ano" spaceLeft="15px">
 							<p:inputMask id="competencia" value="#{FrequenciaControl.data}"
 								mask="99/9999" />
-						</a:field>
-						
-
-
-						<p:remoteCommand update="tabFuncionario"
+						</a:field>						
+						<p:remoteCommand update="tbFuncionarios"
 							id="atualizaTbFuncionarios"></p:remoteCommand>
-
 						<a:field label="Nome" spaceLeft="15px">
-							<p:autoComplete id="acMinLength" minQueryLength="3"
+							<p:autoComplete id="acMinLength" minQueryLength="3" maxResults="2"
 								value="#{FrequenciaControl.funcionario}"
 								completeMethod="#{FrequenciaControl.consultarFuncionario}"
 								var="func" itemLabel="#{func.nomePessoa}" itemValue="#{func}"
-								converter="FuncionarioConverter" forceSelection="true"
+								converter="objectConverter" forceSelection="true"
 								effect="fade"
-								style="height:15px;  width:150px">
-								<p:ajax event="itemSelect"
-									listener="#{FrequenciaControl.carregarFuncionario}" />
+								style="height:15px;  width:150px">								
 							</p:autoComplete>
 						</a:field>
 						<a:newLine/>
 						<a:field style="height:auto" spaceLeft="15px">
 							<p:commandButton value="Pesquisar"
-								icon="ui-icon-refresh" update="tabFuncionario"
-								action="#{FrequenciaControl.carregarFrequenciaMes}" />
+								icon="ui-icon-refresh" update="tbFuncionarios"
+								action="#{FrequenciaControl.carregarFrequenciaMesFuncionario}" />
 						</a:field>
 						<a:newLine/>
 					</p:panel>
 					
-					<!--<p:dataTable id="tbFuncionarios" var="func"
+				<p:dataTable id="tbFuncionarios" 
 						emptyMessage="Sem Registros"
-						value="#{FrequenciaControl.funcionarios}" rendered="true">
-						<f:facet name="header">#{func.nomePessoa}</f:facet>
+						value="#{FrequenciaControl.funcionario}" rendered="true" >
+						<f:facet name="header">#{FrequenciaControl.funcionario.nomePessoa}</f:facet>						
 
-						<p:columns value="#{FrequenciaControl.frequencias}" var="coluna"
+						<p:columns value="#{FrequenciaControl.frequenciasF}" var="coluna"
 							columnIndexVar="colIndex" width="1200px">
 							<f:facet name="header" style="width:5%">#{coluna.data.date}</f:facet>
 							<p:selectBooleanCheckbox value="#{coluna.presente}">
@@ -58,13 +51,13 @@
 							</p:selectBooleanCheckbox>
 						</p:columns>
 						<a:newLine/>
-					</p:dataTable> -->
+					</p:dataTable>
 					
 					<a:newLine/>
 					
 					  <a:field>
 						<p:commandButton
-							actionListener="#{FrequenciaControl.manterFrequencia}" update="tabFuncionario"
+							actionListener="#{FrequenciaControl.manterFrequenciaFuncionario}" update="tabFuncionario"
 							icon="ui-icon-plusthick" value="Confirmar"></p:commandButton>
 					</a:field>
 					 
@@ -72,37 +65,57 @@
 				</p:tab>
 
 				<p:tab title="Aluno" id="tabAluno">
-				<p:panel id="buscaAluno" rendered="true">
-					
-						<!--<a:field label="Mês/Ano" spaceLeft="15px">
-							<p:inputMask id="competencia" value="#{FrequenciaControl.data}"
+				<p:panel id="buscaAluno" rendered="true">					
+					 	<a:field label="Mês/Ano" spaceLeft="15px">
+							<p:inputMask id="competencia2" value="#{FrequenciaControl.dataAluno}"
 								mask="99/9999" />
 						</a:field>
-
-
 						<p:remoteCommand update="tabAluno"
 							id="atualizaTbAlunos"></p:remoteCommand>
 
 						<a:field label="Nome" spaceLeft="15px">
-							<p:autoComplete id="acMinLength" minQueryLength="3"
-								value="#{FrequenciaControl.funcionario}"
-								completeMethod="#{FrequenciaControl.consultarFuncionario}"
-								var="func" itemLabel="#{func.nomePessoa}" itemValue="#{func}"
-								converter="FuncionarioConverter" forceSelection="true"
+							<p:autoComplete id="acMinLength2" minQueryLength="3"
+								value="#{FrequenciaControl.aluno}"
+								completeMethod="#{FrequenciaControl.consultarAluno}"
+								var="alun" itemLabel="#{alun.nomePessoa}" itemValue="#{alun}"
+								converter="objectConverter" forceSelection="true"
 								effect="fade"
-								style="height:15px;  width:150px">
-								<p:ajax event="itemSelect"
-									listener="#{FrequenciaControl.carregarFuncionario}" />
-							</p:autoComplete>
+								style="height:15px;  width:150px"></p:autoComplete>
+								
 						</a:field>
-						<a:newLine/>-->
+						<a:newLine/>
 						<a:field style="height:auto" spaceLeft="15px">
 							<p:commandButton value="Pesquisar"
 								icon="ui-icon-refresh" update="tabAluno"
-								action="#{FrequenciaControl.carregarFrequenciaMes}" />
+								action="#{FrequenciaControl.carregarFrequenciaMesAluno}" />
 						</a:field>
-						<a:newLine/>
+						<a:newLine/> 
 					</p:panel>
+					
+						<p:dataTable id="tbAlunos" var="alun"
+						emptyMessage="Sem Registros"
+						value="#{FrequenciaControl.alunos}" rendered="true">
+						<f:facet name="header">#{FrequenciaControl.aluno.nomePessoa}</f:facet>
+
+						<p:columns value="#{FrequenciaControl.frequenciasA}" var="colunaAluno"
+							columnIndexVar="colIndex" width="1200px">
+							<f:facet name="header" style="width:5%">#{colunaAluno.data.date}</f:facet>
+							<p:selectBooleanCheckbox value="#{colunaAluno.presente}">
+
+							</p:selectBooleanCheckbox>
+						</p:columns>
+						<a:newLine/>
+					</p:dataTable>
+					
+					<a:newLine/>
+					
+					  <a:field>
+						<p:commandButton
+							actionListener="#{FrequenciaControl.manterFrequenciaAluno}" update="tabAluno"
+							icon="ui-icon-plusthick" value="Confirmar"></p:commandButton>
+					</a:field>
+					 
+					<a:newLine/>
 				</p:tab>
 				
 			</p:tabView>

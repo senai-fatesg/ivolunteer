@@ -2,13 +2,16 @@ package br.com.ambientinformatica.ivolunteer.entidade;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -26,54 +29,18 @@ public class Aluno extends Pessoa{
 	@Temporal(TemporalType.DATE)
 	private Date dataExame;
 
-	@OneToMany
-	private List<Frequencia> frequencia;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "aluno_id")
+	private List<Frequencia> frequencias = new ArrayList<Frequencia>();
+
 
 	@OneToMany
 	private List<RelatorioAprendizagem> relatorioApredizagem;
 
 	@OneToOne(fetch=FetchType.EAGER)
 	private Matricula matricula;
-
-	public Date getDataSaida() {
-		return dataSaida;
-	}
-
-	public void setDataSaida(Date dataSaida) {
-		this.dataSaida = dataSaida;
-	}
-
-	public Date getDataExame() {
-		return dataExame;
-	}
-
-	public void setDataExame(Date dataExame) {
-		this.dataExame = dataExame;
-	}
-
-	public List<Frequencia> getFrequencia() {
-		return frequencia;
-	}
-
-	public void setFrequencia(List<Frequencia> frequencia) {
-		this.frequencia = frequencia;
-	}
-
-	public List<RelatorioAprendizagem> getRelatorioApredizagem() {
-		return relatorioApredizagem;
-	}
-
-	public void setRelatorioApredizagem(List<RelatorioAprendizagem> relatorioApredizagem) {
-		this.relatorioApredizagem = relatorioApredizagem;
-	}
-
-	public Matricula getMatricula() {
-		return matricula;
-	}
-
-	public void setMatricula(Matricula matricula) {
-		this.matricula = matricula;
-	}
+	
 	
 	public String CalcularIdadeReal(String dataNascimento) {
 		DateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");
@@ -109,6 +76,49 @@ public class Aluno extends Pessoa{
 			idade--;
 		}
 		return String.format("%d anos e %d meses", idade, meses);
+	}
+
+
+	public Date getDataSaida() {
+		return dataSaida;
+	}
+
+	public void setDataSaida(Date dataSaida) {
+		this.dataSaida = dataSaida;
+	}
+
+	public Date getDataExame() {
+		return dataExame;
+	}
+
+	public void setDataExame(Date dataExame) {
+		this.dataExame = dataExame;
+	}
+
+	
+	public List<RelatorioAprendizagem> getRelatorioApredizagem() {
+		return relatorioApredizagem;
+	}
+
+	public void setRelatorioApredizagem(List<RelatorioAprendizagem> relatorioApredizagem) {
+		this.relatorioApredizagem = relatorioApredizagem;
+	}
+
+	public Matricula getMatricula() {
+		return matricula;
+	}
+
+	public void setMatricula(Matricula matricula) {
+		this.matricula = matricula;
+	}
+	
+	
+	public List<Frequencia> getFrequencias() {
+		return frequencias;
+	}
+
+	public void setFrequencias(List<Frequencia> frequencias) {
+		this.frequencias = frequencias;
 	}
 
 }

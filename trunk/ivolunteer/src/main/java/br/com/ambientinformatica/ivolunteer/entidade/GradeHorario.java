@@ -14,8 +14,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class GradeHorario implements Serializable{
-	
+public class GradeHorario implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -31,7 +31,7 @@ public class GradeHorario implements Serializable{
 
 	@Temporal(TemporalType.TIME)
 	private Date horarioSaida;
-	
+
 	@ManyToOne
 	private Funcionario funcionario;
 

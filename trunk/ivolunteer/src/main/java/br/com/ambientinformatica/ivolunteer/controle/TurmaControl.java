@@ -126,7 +126,8 @@ public class TurmaControl implements TurmaService{
 
 	@Override
 	public Set<EnumTurno> getTurno() {
-		return EnumTurno.getListaTurnos();
+		return EnumTurno.values()funcionarioDao new Set
+//		return EnumTurno.getListaTurnos();
 	}
 	
 	public static EnumTurno getTurno(int codigo){

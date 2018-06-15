@@ -52,6 +52,7 @@ public class AtividadeDiariaControl {
 			atividadeDiariaDao.alterar(atividadeDiaria);
 			listar(evt);
 			atividadeDiaria = new AtividadeDiaria();
+			funcionario = new Funcionario();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -60,6 +61,7 @@ public class AtividadeDiariaControl {
 	public void removerAtividade(AtividadeDiaria atividadeDiaria) {
 		try {
 			atividadeDiariaDao.excluirPorId(atividadeDiaria.getId());
+			funcionario = new Funcionario();
 			atividadeDiaria = new AtividadeDiaria();
 			atividadesDiarias = atividadeDiariaDao.listar();
 		} catch (Exception e) {

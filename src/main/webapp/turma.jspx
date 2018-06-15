@@ -9,11 +9,13 @@
 
 	<ui:define name="corpo">
 
+		<!-- PAINEL DO CADASTRO DE TURMA -->
 		<p:panel header="Cadastro De Turma" id="painel">
 
 			<p:messages id="messages" showDetail="true" autoUpdate="true"
 				closable="true" />
 
+			<!-- ESTRUTURA PARA BUSCA DE TURMAS -->
 			<p:commandButton id="consultar" value="Consultar"
 				icon="ui-icon-search" onclick="consultar.show();" />
 			<p:dialog id="modalPesquisa" header="Consultar" widgetVar="consultar"
@@ -48,7 +50,7 @@
 			<a:newLine />
 			<a:newLine />
 
-
+			<!-- FORMULÁRIO DE CADASTRO DE TURMAS -->
 			<p:panel rendered="true">
 				<a:field label="Nome" width="240px;">
 					<p:inputText id="nome" value="#{TurmaControl.turma.nome}" />
@@ -95,6 +97,7 @@
 
 		<a:newLine />
 
+		<!-- LISTAGEM DAS TURAMS -->
 		<p:dataTable id="turmas" value="#{TurmaControl.turmas}" var="tur"
 			width="100%" emptyMessage="Sem registros">
 			<f:facet name="header">

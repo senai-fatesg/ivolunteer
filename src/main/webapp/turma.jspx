@@ -51,21 +51,28 @@
 
 			<p:panel rendered="true">
 				<a:field label="Nome" width="240px;">
-					<p:inputText id="nome" value="#{TurmaControl.turma.nome}"></p:inputText>
+					<p:inputText id="nome" value="#{TurmaControl.turma.nome}" />
+				</a:field>
+
+				<a:field label="Código" width="240px;">
+					<p:inputText id="codigo" value="#{TurmaControl.turma.codigo}" />
 				</a:field>
 
 				<a:field label="Turno" width="265px;">
 					<p:selectOneMenu id="turno"
-						value="#{TurmaControl.turnoselecionado}" style="width:215px;" required="true">
+						value="#{TurmaControl.turnoselecionado}" style="width:215px;"
+						required="true">
 						<f:selectItem itemLabel="Selecione o Turno" itemValue=""
-							noSelectionOption="true"/>
-						<f:selectItems value="#{TurmaControl.getTurno()}" var="turno" itemValue="#{turno}" itemLabel="#{l.descricao}"/>
+							noSelectionOption="true" />
+						<f:selectItems value="#{TurmaControl.getTurno()}" var="turno"
+							itemValue="#{turno}" itemLabel="#{l.descricao}" />
 					</p:selectOneMenu>
 				</a:field>
 
-				<a:field label="Quantidade Maxima De Alunos" style="width:230px;" required="true">
+				<a:field label="Quantidade de Vagas" style="width:230px;"
+					required="true">
 					<p:spinner id="maximoAlunos"
-						value="#{TurmaControl.turma.maximoAlunos}" max="60" min="0"
+						value="#{TurmaControl.turma.quantidadeVagas}" max="60" min="0"
 						styleClass="alinha-spinner" />
 				</a:field>
 

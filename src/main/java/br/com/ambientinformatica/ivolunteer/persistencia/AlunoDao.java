@@ -13,4 +13,6 @@ public interface AlunoDao extends Persistencia<Aluno> {
 	Aluno carregarAluno(Aluno aluno);
 
 	public List<Aluno> listarPorNome(String query);
+	
+	public List<Aluno> listarTodos();
 }

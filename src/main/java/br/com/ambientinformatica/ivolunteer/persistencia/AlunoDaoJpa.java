@@ -47,5 +47,12 @@ public class AlunoDaoJpa extends PersistenciaJpa<Aluno> implements AlunoDao {
 
 		return (List<Aluno>) query.getResultList();
 	}
+	
+	@Override
+	public List<Aluno> listarTodos() {
+
+		Query query = em.createQuery("select f from Aluno f");
+		return (List<Aluno>) query.getResultList();
+	}
 
 }

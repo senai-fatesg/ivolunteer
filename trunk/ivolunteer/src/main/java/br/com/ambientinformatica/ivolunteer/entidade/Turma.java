@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
@@ -36,8 +37,8 @@ public class Turma {
 
 	private Boolean ativo;
 
-	@OneToMany
-	private List<Funcionario> funcionario;
+	@ManyToOne
+	private Funcionario professor;
 
 	public Integer getId() {
 		return id;
@@ -103,12 +104,12 @@ public class Turma {
 		this.ativo = ativo;
 	}
 
-	public List<Funcionario> getFuncionario() {
-		return funcionario;
+	public Funcionario getProfessor() {
+		return professor;
 	}
 
-	public void setFuncionario(List<Funcionario> funcionario) {
-		this.funcionario = funcionario;
+	public void setProfessor(Funcionario professor) {
+		this.professor = professor;
 	}
 
 }

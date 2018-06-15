@@ -1,4 +1,5 @@
 package br.com.ambientinformatica.ivolunteer.controle;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +24,7 @@ import br.com.ambientinformatica.ivolunteer.service.TurmaService;
 
 @Controller("TurmaControl")
 @Scope("conversation")
-public class TurmaControl implements TurmaService{
+public class TurmaControl implements TurmaService {
 
 	private Turma turma = new Turma();
 
@@ -31,20 +32,20 @@ public class TurmaControl implements TurmaService{
 	private TurmaDao turmaDao;
 	@Autowired
 	private FuncionarioDao funcionarioDao;
-	
+
 	private EnumTurno turnoselecionado;
 	private TurmaService turmaService;
 	private List<Turma> turmas = new ArrayList<Turma>();
 	private List<String> professor = new ArrayList<String>();
 
 	@PostConstruct
-	public void init(){
+	public void init() {
 		listar(null);
-		//carregaTurnos();
+		// carregaTurnos();
 		carregaProfessor();
 	}
 
-	public void confirmar(ActionEvent evt){
+	public void confirmar(ActionEvent evt) {
 		try {
 			turmaDao.alterar(turma);
 			listar(evt);
@@ -54,14 +55,14 @@ public class TurmaControl implements TurmaService{
 		}
 	}
 
-	public void listar(ActionEvent evt){
+	public void listar(ActionEvent evt) {
 		try {
 			turmas = turmaDao.listar();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
-	
+
 	public TurmaService getTurmaService() {
 		return turmaService;
 	}
@@ -81,7 +82,7 @@ public class TurmaControl implements TurmaService{
 	public List<Turma> getTurmas() {
 		return turmas;
 	}
-	
+
 	public List<String> getProfessor() {
 		return professor;
 	}
@@ -107,8 +108,8 @@ public class TurmaControl implements TurmaService{
 		EnumCargo[] enumCargo = EnumCargo.values();
 		try {
 			itens = funcionarioDao.listar();
-			for (Funcionario funcionario : itens){
-				if(funcionario.getCargo() == enumCargo[0])
+			for (Funcionario funcionario : itens) {
+				if (funcionario.getCargo() == enumCargo[0])
 					professor.add(funcionario.getNomePessoa());
 			}
 		} catch (Exception e) {
@@ -116,11 +117,11 @@ public class TurmaControl implements TurmaService{
 		}
 	}
 
-	public List<String> completeEnumTurno(String query){
+	public List<String> completeEnumTurno(String query) {
 		List<String> retorno = new ArrayList<String>();
 		EnumTurno[] enunsTurno = EnumTurno.values();
 		for (int i = 0; i < enunsTurno.length; i++) {
-			retorno.add(enunsTurno[i].getDescricao());	
+			retorno.add(enunsTurno[i].getDescricao());
 		}
 
 		return retorno;
@@ -130,53 +131,39 @@ public class TurmaControl implements TurmaService{
 	public Set<EnumTurno> getTurno() {
 		return EnumTurno.getListaTurnos();
 	}
-	
-	public static EnumTurno getTurno(int codigo){
-		if(codigo == 0) return null;
+
+	public static EnumTurno getTurno(int codigo) {
+		if (codigo == 0)
+			return null;
 		EnumTurno[] enumTurno = EnumTurno.values();
-		for (EnumTurno tipo : enumTurno){
-			if (Integer.parseInt(tipo.getCodigo()) == codigo){
+		for (EnumTurno tipo : enumTurno) {
+			if (Integer.parseInt(tipo.getCodigo()) == codigo) {
 				return tipo;
 			}
 		}
 		return null;
 	}
-	
 
 	/*
-	// Aplica Filtro por identificador
-			public void aplicarFiltro(ActionEvent evt) {
-				try {
-					if (this.turma.getIdentificador().isEmpty()) {
-						this.agrupamentoTurmas = this.agrupamentoTurmaDao.listar();
-					} else {
-						this.agrupamentoTurmas = this.agrupamentoTurmaDao.listarIdentificador(this.agrupamentoTurma);
-					}
-				} catch (Exception e) {
-					UtilFaces.addMensagemFaces(e);
-				}
-
-			}
-			public void listaAgrupamentosDeTurmas() {
-				try {
-					this.agrupamentoTurmas = agrupamentoTurmaDao.listar();
-				} catch (PersistenciaException e) {
-					UtilFaces.addMensagemFaces(e);
-				}
-			}
-
-			public void carregaAgrupamentoTurma(AgrupamentoTurma agrupamentoTurma){
-				this.agrupamentoTurma = agrupamentoTurma;		
-			}
-
-			public void excluir(AgrupamentoTurma agrupamentoTurma) {
-				try {
-					agrupamentoTurmaDao.excluirPorId(agrupamentoTurma.getId());
-					UtilFaces.addMensagemFaces("Funcionário excluido com sucesso!");
-				} catch (PersistenciaException e) {
-					UtilFaces.addMensagemFaces(e);
-				}
-
-			}
+	 * // Aplica Filtro por identificador public void aplicarFiltro(ActionEvent
+	 * evt) { try { if (this.turma.getIdentificador().isEmpty()) {
+	 * this.agrupamentoTurmas = this.agrupamentoTurmaDao.listar(); } else {
+	 * this.agrupamentoTurmas =
+	 * this.agrupamentoTurmaDao.listarIdentificador(this.agrupamentoTurma); } }
+	 * catch (Exception e) { UtilFaces.addMensagemFaces(e); }
+	 * 
+	 * } public void listaAgrupamentosDeTurmas() { try { this.agrupamentoTurmas
+	 * = agrupamentoTurmaDao.listar(); } catch (PersistenciaException e) {
+	 * UtilFaces.addMensagemFaces(e); } }
+	 * 
+	 * public void carregaAgrupamentoTurma(AgrupamentoTurma agrupamentoTurma){
+	 * this.agrupamentoTurma = agrupamentoTurma; }
+	 * 
+	 * public void excluir(AgrupamentoTurma agrupamentoTurma) { try {
+	 * agrupamentoTurmaDao.excluirPorId(agrupamentoTurma.getId());
+	 * UtilFaces.addMensagemFaces("Funcionário excluido com sucesso!"); } catch
+	 * (PersistenciaException e) { UtilFaces.addMensagemFaces(e); }
+	 * 
+	 * }
 	 */
 }

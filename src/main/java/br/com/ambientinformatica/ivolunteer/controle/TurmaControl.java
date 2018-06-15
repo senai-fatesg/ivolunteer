@@ -1,7 +1,9 @@
 package br.com.ambientinformatica.ivolunteer.controle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
@@ -126,8 +128,7 @@ public class TurmaControl implements TurmaService{
 
 	@Override
 	public Set<EnumTurno> getTurno() {
-		return EnumTurno.values()funcionarioDao new Set
-//		return EnumTurno.getListaTurnos();
+		return EnumTurno.getListaTurnos();
 	}
 	
 	public static EnumTurno getTurno(int codigo){

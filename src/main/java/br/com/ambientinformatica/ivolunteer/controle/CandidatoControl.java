@@ -221,7 +221,7 @@ public class CandidatoControl {
 		try {
 			if (listaCandidato.contains(candidato)) {
 				this.pessoaDao.excluirPorId(candidato.getId());
-				listaCandidato = pessoaDao.listar();
+				listarCandidatoPorNome(null);
 				UtilFaces.addMensagemFaces("Candidato excluido com sucesso!");
 			}
 		} catch (Exception e) {
@@ -240,7 +240,7 @@ public class CandidatoControl {
 
 	public void excluir(Pessoa pessoa) {
 		try {
-			pessoaDao.excluirPorId(pessoa.getId());
+			pessoaDao.excluirPorId(pessoaDao.consultarPessoaCompleta(pessoa).getId());
 			UtilFaces.addMensagemFaces("Candidato excluido com sucesso!");
 		} catch (PersistenciaException e) {
 			UtilFaces.addMensagemFaces(e);

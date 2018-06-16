@@ -220,6 +220,8 @@ public class CandidatoControl {
 	public void removerCandidato(Pessoa candidato) {
 		try {
 			if (listaCandidato.contains(candidato)) {
+				// pega todas as informações do candidato para poder excluir todos os dados endereços,reponsáveis.
+				this.candidato = pessoaDao.consultarPessoaCompleta(candidato);
 				this.pessoaDao.excluirPorId(candidato.getId());
 				listarCandidatoPorNome(null);
 				UtilFaces.addMensagemFaces("Candidato excluido com sucesso!");

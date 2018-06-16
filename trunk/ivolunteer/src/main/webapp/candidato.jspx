@@ -36,7 +36,7 @@
 						<p:commandButton icon="ui-icon-pencil" action="#{CandidatoControl.carregaPessoaAlteracao(itemCandidato)}" 
 						    oncomplete="consulta" update=":formCorpo:tabCadastro" />
 						    
-						<p:commandButton icon="ui-icon-trash" action="#{CandidatoControl.removerCandidato(itemCandidato)}" update="listaCandidato" ajax="false">
+						<p:commandButton icon="ui-icon-trash" action="#{CandidatoControl.removerCandidato(itemCandidato)}" update="listaCandidato">
 							<f:setPropertyActionListener value="#{itemCandidato}" target="#{CandidatoControl.candidato}" />
 							<p:confirm header="Confirmar a exclusão!" message="Deseja Excluir o candidato?" icon="ui-icon-alert"/>
 					    </p:commandButton>

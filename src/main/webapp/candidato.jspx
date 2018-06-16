@@ -31,24 +31,26 @@
 					
 					<p:column headerText="Nome" width="30%">#{itemCandidato.nomePessoa}</p:column>
 					
+					
 					<p:column width="5%">
-						<p:commandButton icon="ui-icon-pencil" action="#{CandidatoControl.carregaPessoaAlteracao(itemCandidato)}" oncomplete="consulta" update=":formCorpo:tabCadastro" />
-						<p:commandButton icon="ui-icon-trash" type="button" onclick="PF('confirmaExclusao').show()"  />
+						<p:commandButton icon="ui-icon-pencil" action="#{CandidatoControl.carregaPessoaAlteracao(itemCandidato)}" 
+						    oncomplete="consulta" update=":formCorpo:tabCadastro" />
+						    
+						<p:commandButton icon="ui-icon-trash" action="#{CandidatoControl.removerCandidato(itemCandidato)}" update="listaCandidato" ajax="false">
+							<f:setPropertyActionListener value="#{itemCandidato}" target="#{CandidatoControl.candidato}" />
+							<p:confirm header="Confirmar a exclusão!" message="Deseja Excluir o candidato?" icon="ui-icon-alert"/>
+					    </p:commandButton>
+					
 					</p:column>
 				</p:dataTable>
-			</p:dialog>
-
-			<p:confirmDialog header="Atenção!" severity="alert" widgetVar="confirmaExclusao">
-				<f:facet name="message">
-					<h:outputText value="Deseja excluir o candidato? " />
-					<br />
-					<h:outputText value="Está operação não poderá ser desfeita." />
-				</f:facet>
 				
-				<p:commandButton value="Sim" action="#{CandidatoControl.excluir(itemCandidato)}" oncomplete="confirmaExclusao.hide()"  />
-				<p:commandButton value="Não" update="modalPesquisa" onclick="confirmaExclusao.hide()" />
+			</p:dialog>
+			
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
+				   <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+				   <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
 			</p:confirmDialog>
-
+           
 			<a:newLine />
 			<a:newLine />
 
@@ -588,7 +590,7 @@
 
 			<a:newLine />
 
-			<p:commandButton actionListener="#{CandidatoControl.confirmar}" value="Confirmar" icon="ui-icon-disk" update="@this"  global="false"  />
+			<p:commandButton actionListener="#{CandidatoControl.confirmar}"  value="Confirmar" icon="ui-icon-disk"   ajax="false"/>
 		</p:panel>
 	</ui:define>
 </ui:composition>

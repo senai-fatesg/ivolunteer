@@ -14,8 +14,8 @@
 
 	<context:property-placeholder location="classpath:application.properties" />
 	<context:component-scan base-package="br.com.ambientinformatica.ivolunteer" />
+	<context:component-scan base-package="br.com.ambientinformatica.ivolunteer.webservice" />
 	<tx:annotation-driven transaction-manager="transactionManager" />
-
 	
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">

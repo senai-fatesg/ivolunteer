@@ -12,7 +12,7 @@ public class JerseyClientGet {
 			Client client = Client.create();
 
 			WebResource webResource = client
-					.resource("http://localhost:8080/ivolunteer/rest/json/aluno/get");
+					.resource("http://localhost:8080/ivolunteer/rest/json/aluno/todos");
 
 			ClientResponse response = webResource.accept("application/json")
 					.get(ClientResponse.class);

@@ -17,8 +17,7 @@ public class TurmaDaoJpa extends PersistenciaJpa<Turma> implements TurmaDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Turma> listarPorNome(String nome) {
-		Query query = em
-				.createQuery("select t from Turma t where upper(t.nome) like :nome");
+		Query query = em.createQuery("select t from Turma t where upper(t.nome) like :nome");
 		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
 		return (List<Turma>) query.getResultList();
 	}
@@ -27,10 +26,8 @@ public class TurmaDaoJpa extends PersistenciaJpa<Turma> implements TurmaDao {
 	public Turma carregarTurma(Turma turma) {
 
 		try {
-			Query query = em.createQuery("select t from Turma t "
-					+ " left join fetch t.matricula mat "
-					+ " left join fetch mat.aluno alu " 
-					+ " where t  = :turma");
+			Query query = em.createQuery("select t from Turma t " + " left join fetch t.matricula mat "
+					+ " left join fetch mat.aluno alu " + " where t  = :turma");
 			query.setParameter("turma", turma);
 			return (Turma) query.getSingleResult();
 		} catch (NoResultException nre) {
@@ -38,4 +35,24 @@ public class TurmaDaoJpa extends PersistenciaJpa<Turma> implements TurmaDao {
 		}
 	}
 
+	@Override
+	public List<Turma> listarTodos() {
+		Query query = em.createQuery("select t from Turma t");
+		return query.getResultList();
+
+	}
+	
+	
+	@Override
+	public Turma getTurma(Integer idTurma) {
+
+		try {
+			Query query = em.createQuery("select t from Turma t " + " left join fetch t.matricula mat "
+					+ " left join fetch mat.aluno alu " + " where t  = :turma");
+			query.setParameter("turma", idTurma);
+			return (Turma) query.getSingleResult();
+		} catch (NoResultException nre) {
+			return null;
+		}
+	}
 }

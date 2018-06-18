@@ -12,34 +12,34 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import br.com.ambientinformatica.ivolunteer.entidade.Aluno;
-import br.com.ambientinformatica.ivolunteer.persistencia.AlunoDao;
+import br.com.ambientinformatica.ivolunteer.entidade.Turma;
+import br.com.ambientinformatica.ivolunteer.persistencia.TurmaDao;
 
-@Path("/json/aluno")
-public class AlunoWS {
-
+@Path("/json/turma")
+public class TurmWS {
+	
 	@PostConstruct
 	public void init() {
 		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
 	}
-
+	
 	@Autowired
-	public AlunoDao alunoDao;
-
+	public TurmaDao turmaDao;
+	
 	@GET
-	@Path("/{idAluno}")
+	@Path("/turmas")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Aluno getAlunoJSON(@PathParam("idAluno") Integer idAluno) {
-		return alunoDao.getAluno(idAluno);
+	public List<Turma> getAlunosJSON() {
 
+		return turmaDao.listarTodos();
 	}
-
+	
 	@GET
-	@Path("/alunos")
+	@Path("/{idTurma}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Aluno> getAlunosJSON() {
+	public Turma getAlunoJSON(@PathParam("idTurma") Integer idTurma) {
+		return turmaDao.getTurma(idTurma);
 
-		return alunoDao.listarTodos();
 	}
 
 }

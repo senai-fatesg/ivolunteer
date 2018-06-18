@@ -4,9 +4,10 @@ import java.util.List;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+
 import org.springframework.stereotype.Repository;
+
 import br.com.ambientinformatica.ivolunteer.entidade.Aluno;
-import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.jpa.persistencia.PersistenciaJpa;
 
 @Repository("alunoDao")
@@ -53,6 +54,20 @@ public class AlunoDaoJpa extends PersistenciaJpa<Aluno> implements AlunoDao {
 
 		Query query = em.createQuery("select f from Aluno f");
 		return query.getResultList();
+	}
+	
+	@Override
+	public Aluno getAluno(Integer idAluno) {
+
+		try {
+			Query query = em.createQuery("select f from Aluno f " + " left join fetch f.frequencias freq "
+					+ " left join fetch f.gradesHorario grade " + " left join fetch f.atividadesDiaria atividade "
+					+ " where f  = :aluno");
+			query.setParameter("aluno", idAluno);
+			return (Aluno) query.getSingleResult();
+		} catch (NoResultException nre) {
+			return null;
+		}
 	}
 
 }

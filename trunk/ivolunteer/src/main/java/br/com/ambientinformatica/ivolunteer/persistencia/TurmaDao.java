@@ -10,4 +10,8 @@ public interface TurmaDao extends Persistencia<Turma> {
 	List<Turma> listarPorNome(String query);
 
 	Turma carregarTurma(Turma turma);
+
+	List<Turma> listarTodos();
+
+	Turma getTurma(Integer idTurma);
 }

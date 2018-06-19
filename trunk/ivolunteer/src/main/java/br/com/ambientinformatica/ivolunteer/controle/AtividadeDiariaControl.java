@@ -61,9 +61,7 @@ public class AtividadeDiariaControl {
 	public void removerAtividade(AtividadeDiaria atividadeDiaria) {
 		try {
 			atividadeDiariaDao.excluirPorId(atividadeDiaria.getId());
-			funcionario = new Funcionario();
-			atividadeDiaria = new AtividadeDiaria();
-			atividadesDiarias = atividadeDiariaDao.listar();
+			listar(null);			
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

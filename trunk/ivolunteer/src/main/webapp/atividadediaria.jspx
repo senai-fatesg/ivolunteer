@@ -57,9 +57,9 @@
 				<a:newLine />
 
 				<a:field>
-					<p:commandButton ajax="false" icon="ui-icon-plusthick"
+					<p:commandButton ajax="true" icon="ui-icon-plusthick"
 						actionListener="#{AtividadeDiariaControl.confirmar}"
-						value="Adicionar" update="atividades">
+						value="Adicionar" update="atividades, panel">
 					</p:commandButton>
 				</a:field>
 
@@ -95,7 +95,7 @@
 					</p:column>
 
 					<p:column headerText="Ação">
-						<p:commandButton icon="ui-icon-closethick"
+						<p:commandButton icon="ui-icon-closethick" 
 							 action="#{AtividadeDiariaControl.removerAtividade(item)}"
 							update="atividades">
 							<f:setPropertyActionListener value="#{item}" target="#{AtividadeDiariaControl.atividadeDiaria}" />

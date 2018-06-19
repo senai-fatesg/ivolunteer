@@ -7,7 +7,7 @@
       maxActive="10" 
       maxIdle="3" 
       name="jdbc/ivolunteer" 
-      password=""
+      password="123456"
       type="javax.sql.DataSource" 
       url="jdbc:postgresql://localhost/ivolunteer"
       username="postgres" />

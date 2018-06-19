@@ -72,7 +72,7 @@
 
 						<p:tab title="Dados do Aluno" id="dadosCandidato">
 							<p:panel id="painelAlunoDet"
-								style="width: 98% !important; position:relative !important; float:left !important; padding: 15px !important; padding-right: 15px !important;border: none;">
+								style="width: 100% !important; position:relative !important; float:left !important; padding: 15px !important;border: none;">
 								<p:row>
 									<p:column>
 										<a:field label="Matricula">
@@ -101,22 +101,6 @@
 									<a:field label="Nome do Aluno" width="100%">
 										<p:inputText value="#{MatriculaControl.aluno.nomePessoa}"
 											style="width: 100%;" />
-									</a:field>
-
-								</p:row>
-								<a:newLine />
-								<a:newLine />
-								<p:row>
-									<a:field label="Nome do Pai" width="100%">
-										<p:inputText value="pai" style="width: 100%;" />
-									</a:field>
-
-								</p:row>
-								<a:newLine />
-								<a:newLine />
-								<p:row>
-									<a:field label="Nome da Mãe" width="100%">
-										<p:inputText value="mae" style="width: 100%;" />
 									</a:field>
 
 								</p:row>
@@ -154,8 +138,39 @@
 									</a:field>
 									<a:field label="Nacionalidade" spaceLeft="15px">
 										<p:inputText value="#{MatriculaControl.aluno.nascionalidade}"
-											style="width: 100%;" />
+											style="width:190px" />
 									</a:field>
+								</p:row>
+
+
+							</p:panel>
+							<a:newLine />
+							<a:newLine />
+							<p:panel id="painelCurso" style=" border: none;">
+								<h4>Dados do Curso</h4>
+								<a:newLine>
+								</a:newLine>
+								<p:row>
+									<p:column>
+										<a:field label="Curso">
+											<p:inputText id="curso" maxlength="20" value=""
+												style="width:530px"></p:inputText>
+										</a:field>
+									</p:column>
+									<p:column>
+										<a:field label="Ano" spaceLeft="15px">
+											<p:calendar value="" yearRange="c-100:c0" locale="de"
+												navigator="true" pattern="dd/MM/yyyy" style="width: 100%;">
+												<p:ajax event="dateSelect" global="false" update="@form" />
+											</p:calendar>
+										</a:field>
+									</p:column>
+									<p:column>
+										<a:field label="Turno" spaceLeft="15px">
+											<p:inputText id="turno" maxlength="150" value=""
+												style="width:220px"></p:inputText>
+										</a:field>
+									</p:column>
 								</p:row>
 								<a:newLine />
 								<a:newLine />
@@ -176,158 +191,18 @@
 											</p:calendar>
 										</a:field>
 									</p:column>
-									<p:column>
-										<a:field label="Sexo" spaceLeft="15px">
-											<p:selectOneMenu id="sexoResponsavel"
-												value="#{CandidatoControl.responsavel.enumSexo }">
-												<f:selectItems value="#{CandidatoControl.completeEnumSexo }">
-												</f:selectItems>
-											</p:selectOneMenu>
-										</a:field>
-									</p:column>
-
 								</p:row>
-
+								<a:newLine />
+								<a:newLine />
 							</p:panel>
-							<a:newLine />
-							<a:newLine />
 
 						</p:tab>
 
 
 						<!--TAB DOCUMENTOS PESSOAIS -->
 
-						<p:tab title="Documentos" id="tabDocumentos">
+						<p:tab title="Responsável" id="tabDocumentos">
 
-							<p:panel rendered="true" id="painelDocumentos"
-								style="width: 98% !important; position:relative !important; float:left !important; padding: 15px !important; padding-right: 15px !important;border: none;">
-								<a:newLine />
-								<a:newLine />
-
-								<p:row>
-									<p:column>
-										<a:field label="Certidão de Nascimento">
-											<p:inputText value="#{MatriculaControl.certidaoNascimento}"
-												style="width: 100%;" />
-										</a:field>
-									</p:column>
-								</p:row>
-								<a:newLine />
-								<a:newLine />
-
-								<a:newLine />
-
-								<p:row>
-									<p:column>
-										<a:field label="CPF">
-											<p:inputText value="1" style="width: 100%;" />
-										</a:field>
-									</p:column>
-									<p:column>
-										<a:field label="RG" spaceLeft="15px">
-											<p:inputText value="1" style="width: 100%;" />
-										</a:field>
-									</p:column>
-									<p:column>
-										<a:field label="Órgão Emissor" spaceLeft="15px">
-											<p:inputText value="1" style="width: 100%;" />
-										</a:field>
-									</p:column>
-								</p:row>
-							</p:panel>
-							<a:newLine />
-							<a:newLine />
-
-
-
-							<p:panel rendered="true" id="painelMatricula" padding-left="15px"
-								style="border-color: #00f;">
-								<p:row>
-									<p:column>
-										<a:field label="Cert. Nasc. Antiga">
-											<p:inputText disabled="true" style="width: 100%;" />
-										</a:field>
-									</p:column>
-									<p:column>
-										<a:field label="Livro" spaceLeft="15px">
-											<p:inputText
-												value="#{MatriculaControl.matricula.certidaoNascimentoAntigaLivro}"
-												style="width: 100%;" />
-										</a:field>
-									</p:column>
-									<p:column>
-										<a:field label="Folha" spaceLeft="15px">
-											<p:inputText
-												value="#{MatriculaControl.matricula.certidaoNascimentoAntigaFolha}"
-												style="width: 100%;" />
-										</a:field>
-									</p:column>
-									<p:column>
-										<a:field label="Cartório" spaceLeft="15px">
-											<p:inputText
-												value="#{MatriculaControl.matricula.certidaoNascimentoAntigaCartorio}"
-												style="width:100%" />
-										</a:field>
-									</p:column>
-									<p:column>
-										<a:field label="Cert. Nasc. Nova" spaceLeft="15px">
-											<p:inputText
-												value="#{MatriculaControl.matricula.certidaoNascimentoNova}"
-												style="width:100%" />
-										</a:field>
-									</p:column>
-								</p:row>
-								<a:newLine />
-								<a:newLine />
-								<p:row>
-									<p:column>
-										<a:field label="NIS">
-											<p:inputText value="#{MatriculaControl.matricula.nIS}"
-												style="width: 100%;" />
-										</a:field>
-									</p:column>
-									<p:column>
-
-
-										<a:field label="ID INEP" spaceLeft="15px">
-											<p:inputText value="#{MatriculaControl.matricula.idINEP}" />
-										</a:field>
-									</p:column>
-									<p:column>
-
-										<a:field label="Bolsa Família" spaceLeft="15px">
-											<p:inputText
-												value="#{MatriculaControl.matricula.bolsaFamilia}"
-												style="width: 100%;" />
-										</a:field>
-									</p:column>
-									<p:column>
-
-
-										<a:field label="Data da Matrícula" spaceLeft="15px">
-											<p:calendar
-												value="#{MatriculaControl.matricula.dataMatricula}"
-												locale="de" navigator="true" pattern="dd/MM/yyyy"
-												style="width: 100%;" />
-										</a:field>
-									</p:column>
-									<p:column>
-
-										<a:field label="Ano" spaceLeft="15px">
-											<p:calendar value="#{MatriculaControl.matricula.ano}"
-												locale="de" navigator="true" pattern="yyyy"
-												style="width: 100%;" />
-										</a:field>
-									</p:column>
-								</p:row>
-								<a:newLine />
-							</p:panel>
-
-						</p:tab>
-
-						<!--TAB DE ENDERECO -->
-
-						<p:tab title="Endereco/Contato" id="tabEndereco">
 							<p:panel id="painelContato"
 								style=" border: none;
 							;width: 98% !important; position:relative !important; float:left !important;
@@ -337,27 +212,46 @@
 								</a:newLine>
 								<p:row>
 									<p:column>
-										<a:field label="Telefone">
+										<a:field label="Nome do Reponsável">
+											<p:inputText id="nomeresponsavel" maxlength="20" value=""
+												style="width:440px"></p:inputText>
+										</a:field>
+									</p:column>
+									<p:column>
+										<a:field label="Grau de Parentesco" spaceLeft="15px">
+											<p:inputText id="grauparentesco" maxlength="150" value=""
+												style="width:220px"></p:inputText>
+										</a:field>
+									</p:column>
+									<p:column>
+										<a:field label="Telefone" spaceLeft="15px">
 											<p:inputText id="telefone" maxlength="150" value=""
 												mask="(99)999999999" style="width:220px"></p:inputText>
 										</a:field>
 									</p:column>
+								</p:row>
+								<a:newLine />
+								<a:newLine />
+								<p:row>
 									<p:column>
 
-										<a:field label="Celular" spaceLeft="15px">
+										<a:field label="Celular">
 											<p:inputText id="celular" maxlength="20" value=""
 												mask="(99)99999999" style="width:220px"></p:inputText>
 										</a:field>
 									</p:column>
-									<p:column>
 
-										<a:field label="Contato" spaceLeft="15px">
-											<p:inputText id="contato" maxlength="20" value=""
-												style="width:440px"></p:inputText>
-										</a:field>
-									</p:column>
 								</p:row>
 							</p:panel>
+
+							<a:newLine />
+							<a:newLine />
+
+						</p:tab>
+
+						<!--TAB DE ENDERECO -->
+
+						<p:tab title="Endereco" id="tabEndereco">
 							<a:newLine>
 							</a:newLine>
 							<p:panel id="painelEndereco" style="border: none;">

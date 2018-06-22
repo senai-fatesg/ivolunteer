@@ -25,6 +25,8 @@ public class Turma {
 
 	private String codigo;
 
+	private EnumTurno turno;
+
 	@Temporal(TemporalType.TIME)
 	private Date horarioInicio;
 
@@ -32,8 +34,6 @@ public class Turma {
 	private Date horarioFinal;
 
 	private Integer quantidadeVagas;
-
-	private EnumTurno turno;
 
 	private Boolean ativo;
 
@@ -64,6 +64,14 @@ public class Turma {
 		this.codigo = codigo;
 	}
 
+	public EnumTurno getTurno() {
+		return turno;
+	}
+
+	public void setTurno(EnumTurno turno) {
+		this.turno = turno;
+	}
+
 	public Date getHorarioInicio() {
 		return horarioInicio;
 	}
@@ -86,14 +94,6 @@ public class Turma {
 
 	public void setQuantidadeVagas(Integer quantidadeVagas) {
 		this.quantidadeVagas = quantidadeVagas;
-	}
-
-	public EnumTurno getTurno() {
-		return turno;
-	}
-
-	public void setTurno(EnumTurno turno) {
-		this.turno = turno;
 	}
 
 	public Boolean getAtivo() {

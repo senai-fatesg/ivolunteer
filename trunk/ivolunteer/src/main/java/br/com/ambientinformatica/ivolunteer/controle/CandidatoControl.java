@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
@@ -13,21 +14,28 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
+import br.com.ambientinformatica.ivolunteer.entidade.Candidato;
 import br.com.ambientinformatica.ivolunteer.entidade.Cidade;
 import br.com.ambientinformatica.ivolunteer.entidade.Endereco;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumAcessoComputador;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEscolaridade;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstadoCivil;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumFiliacao;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumLocalInternet;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumPrioridade;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumReside;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumResidencia;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumSexo;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumTemCelular;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumTemInternet;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoCasa;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoPessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoTelefone;
 import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.Responsavel;
 import br.com.ambientinformatica.ivolunteer.entidade.Telefone;
-import br.com.ambientinformatica.ivolunteer.persistencia.PessoaDao;
+import br.com.ambientinformatica.ivolunteer.persistencia.CandidatoDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 import br.com.ambientinformatica.util.UtilLog;
 
@@ -35,15 +43,15 @@ import br.com.ambientinformatica.util.UtilLog;
 @Scope("conversation")
 public class CandidatoControl {
 
-	private Pessoa candidato = new Pessoa();
-	private Responsavel responsavel;
-	private Pessoa filtro = new Pessoa();
+	private Candidato candidato = new Candidato();
+	private Responsavel responsavel = new Responsavel();
+	private Candidato filtro = new Candidato();
 
 	// instancia de candidato carregada para realização de consulta
-	private Pessoa candidatoConsulta = new Pessoa();
+	private Candidato candidatoConsulta = new Candidato();
 
 	// lista utilizada na consulta do candidato
-	private List<Pessoa> listaCandidato = new ArrayList<Pessoa>();
+	private List<Candidato> listaCandidato = new ArrayList<Candidato>();
 
 	// listas e utilizada para a apresentação na grid
 	private List<Responsavel> listaResponsavel = new ArrayList<Responsavel>();
@@ -58,18 +66,28 @@ public class CandidatoControl {
 	private BigDecimal totalRenda = BigDecimal.ZERO;
 
 	@Autowired
-	private PessoaDao pessoaDao;
+	private CandidatoDao candidatoDao;
 
 	@PostConstruct
 	public void init() {
-		listarCandidatoPorNome(null);
-
+		listarTodosCandidatos();
 		responsavel = new Responsavel();
 	}
 
 	public void listarCandidatoPorNome(ActionEvent evt) {
 		try {
-			listaCandidato = pessoaDao.listaCandidatoPorNome(candidatoConsulta.getNomePessoa());
+			listaCandidato = candidatoDao.listaCandidatoPorNome(candidatoConsulta.getNomePessoa());
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
+	
+	public void listarTodosCandidatos() {
+		try {
+			this.listaCandidato = candidatoDao.listar();
+			System.out.println("LISTANDO TODOS OS CANDIDATOS");
+			System.out.println("QUANTIDADE DE CANDIDATOS: " + this.listaCandidato.size());
+			
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -77,11 +95,16 @@ public class CandidatoControl {
 
 	public void confirmar(ActionEvent evt) {
 		try {
-			// preenchaInformacoesDefaultCandidato(candidato);
-			candidato.setEnumTipoPessoa(EnumTipoPessoa.CANDIDATO);
-			validarCandidato(candidato);
-			pessoaDao.alterar(candidato);
-			candidato = new Pessoa();
+			if(this.candidato.getId() == null) {
+				this.candidato.setEnumTipoPessoa(EnumTipoPessoa.CANDIDATO);
+				//validarCandidato(candidato);
+				candidatoDao.incluir(this.candidato);
+			} else {
+				this.candidato.setEnumTipoPessoa(EnumTipoPessoa.CANDIDATO);
+				//validarCandidato(candidato);
+				candidatoDao.alterar(this.candidato);
+			}
+			candidato = new Candidato();
 
 			UtilFaces.addMensagemFaces("Informações salvas com sucesso!");
 		} catch (Exception e) {
@@ -131,10 +154,10 @@ public class CandidatoControl {
 	}
 
 	// adicionar um endereco para o candidato ou responsavel
-	public void adicionarEndereco(Pessoa pessoa) {
+	public void adicionarEndereco(Pessoa candidato) {
 		try {
 			if (EhEnderecoConsistente()) {
-				pessoa.addEndereco(endereco);
+				candidato.addEndereco(endereco);
 				endereco = new Endereco();
 			} else {
 				UtilFaces.addMensagemFaces("Preencha os campos corretamente");
@@ -172,8 +195,8 @@ public class CandidatoControl {
 	}
 
 	/**
-	 * Preenche as informções do responsavel, as informções preenchidas não afeta a
-	 * integridade dos dados
+	 * Preenche as informções do responsavel, as informções preenchidas não
+	 * afeta a integridade dos dados
 	 **/
 	private void preenchaInformcoesDefaultResponsavel(Responsavel objeto) {
 		objeto.setCertidaoNascimento("NULL");
@@ -217,14 +240,16 @@ public class CandidatoControl {
 	 * Remove o objeto candidato, onde a exclusão e realizada com o cascade e é
 	 * utilizado o metodo de excluir por "id".
 	 **/
-	public void removerCandidato(Pessoa candidato) {
+	public void removerCandidato(Candidato candidato) {
 		try {
 			if (listaCandidato.contains(candidato)) {
-				// pega todas as informações do candidato para poder excluir todos os dados endereços,reponsáveis.
-				this.candidato = pessoaDao.consultarPessoaCompleta(candidato);
-				this.pessoaDao.excluirPorId(candidato.getId());
-				listarCandidatoPorNome(null);
-				UtilFaces.addMensagemFaces("Candidato excluido com sucesso!");
+				// pega todas as informações do candidato para poder excluir
+				// todos os dados endereços,reponsáveis.
+				//this.candidato = candidatoDao.consultarCandidatoCompleto(candidato);
+				this.candidatoDao.excluirPorId(candidato.getId());
+				listarTodosCandidatos();
+				UtilFaces.addMensagemFaces("Candidato excluído com sucesso!");
+				this.candidato = new Candidato();
 			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces("Ocorreu uma falha ao tentar excluir o candidato da base de dados.");
@@ -240,9 +265,9 @@ public class CandidatoControl {
 		}
 	}
 
-	public void excluir(Pessoa pessoa) {
+	public void excluir(Candidato candidato) {
 		try {
-			pessoaDao.excluirPorId(pessoaDao.consultarPessoaCompleta(pessoa).getId());
+			candidatoDao.excluirPorId(candidatoDao.consultarCandidatoCompleto(candidato).getId());
 			UtilFaces.addMensagemFaces("Candidato excluido com sucesso!");
 		} catch (PersistenciaException e) {
 			UtilFaces.addMensagemFaces(e);
@@ -250,18 +275,18 @@ public class CandidatoControl {
 	}
 
 	// carrega o objeto do candidato completo
-	public void carregaPessoaAlteracao(Pessoa pessoa) throws PersistenciaException {
-		this.candidato = pessoaDao.consultarPessoaCompleta(pessoa);
-		listaResponsavel = candidato.getListaResponsavel();
+	public void carregaCandidatoAlteracao(Candidato candidato) throws PersistenciaException {
+		this.candidato = candidatoDao.consultarCandidatoCompleto(candidato);
+		//listaResponsavel = candidato.getListaResponsavel();
 	}
 
 	// Aplica Filtro
 	public void aplicarFiltro(ActionEvent evt) {
 		try {
 			if (candidatoConsulta.getNomePessoa() == null || candidatoConsulta.getNomePessoa().isEmpty()) {
-				listaCandidato = pessoaDao.listaCandidato();
+				listaCandidato = candidatoDao.listaCandidato();
 			} else {
-				listaCandidato = pessoaDao.listaCandidatoPorNome(this.candidato.getNomePessoa());
+				listaCandidato = candidatoDao.listaCandidatoPorNome(this.candidato.getNomePessoa());
 			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
@@ -351,15 +376,15 @@ public class CandidatoControl {
 		}
 	}
 
-	public void validarCandidato(Pessoa candidato) throws Exception {
-		
-		 if (candidato.getNomePessoa().isEmpty()){
-		    throw new Exception("Por favor, informe o nome do candidato");
-		 }
-		
-		 if (candidato.getNaturalidade().isEmpty()){
-		    throw new Exception("Por favor, informe a naturalidade do candidato");
-		 }
+	public void validarCandidato(Candidato candidato) throws Exception {
+
+		if (candidato.getNomePessoa().isEmpty()) {
+			throw new Exception("Por favor, informe o nome do candidato");
+		}
+
+		if (candidato.getNaturalidade().isEmpty()) {
+			throw new Exception("Por favor, informe a naturalidade do candidato");
+		}
 	}
 
 	private boolean EhResponsavelConsistente() {
@@ -379,15 +404,15 @@ public class CandidatoControl {
 		return candidato;
 	}
 
-	public void setCandidato(Pessoa candidato) {
+	public void setCandidato(Candidato candidato) {
 		this.candidato = candidato;
 	}
 
-	public List<Pessoa> getListaCandidato() {
+	public List<Candidato> getListaCandidato() {
 		return listaCandidato;
 	}
 
-	public void setListaCandidato(List<Pessoa> listaCandidato) {
+	public void setListaCandidato(List<Candidato> listaCandidato) {
 		this.listaCandidato = listaCandidato;
 	}
 
@@ -399,7 +424,7 @@ public class CandidatoControl {
 		return candidatoConsulta;
 	}
 
-	public void setCandidatoConsulta(Pessoa candidatoConsulta) {
+	public void setCandidatoConsulta(Candidato candidatoConsulta) {
 		this.candidatoConsulta = candidatoConsulta;
 	}
 
@@ -414,5 +439,37 @@ public class CandidatoControl {
 	public void setCidade(Cidade cidade) {
 		this.cidade = cidade;
 	}
+	
+	public List<SelectItem> getCompleteEnumReside() {
+		return UtilFaces.getListEnum(EnumReside.values());
+	}
+	
+	public List<SelectItem> getCompleteEnumResidencia() {
+		return UtilFaces.getListEnum(EnumResidencia.values());
+	}
+	
+	public List<SelectItem> getCompleteEnumAcessoComputador() {
+		return UtilFaces.getListEnum(EnumAcessoComputador.values());
+	}
+	
+	public List<SelectItem> getCompleteEnumTemCelular() {
+		return UtilFaces.getListEnum(EnumTemCelular.values());
+	}
+	
+	public List<SelectItem> getCompleteEnumTemInternet() {
+		return UtilFaces.getListEnum(EnumTemInternet.values());
+	}
 
+	public List<SelectItem> getCompleteEnumLocalInternet() {
+		return UtilFaces.getListEnum(EnumLocalInternet.values());
+	}
+	
+	public void aplicaValorEmBranco() {
+		//FacesContext fc = FacesContext.getCurrentInstance();
+		//Object localInternet = fc.getViewRoot().getComponentResources(fc, )
+		if(this.candidato.getEnumTemInternet() == EnumTemInternet.NAO) {
+			this.candidato.setEnumLocalInternet(EnumLocalInternet.EM_BRANCO);
+		}
+		//System.out.println("VALOR DO CAMPO LOCAL INTERNET: " + localInternet);
+	}
 }

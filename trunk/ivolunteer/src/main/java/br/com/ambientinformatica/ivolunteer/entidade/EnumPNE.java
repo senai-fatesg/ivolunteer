@@ -4,9 +4,8 @@ import br.com.ambientinformatica.util.IEnum;
 
 public enum EnumPNE implements IEnum {
 	
-	SIM("Sim"), 
-	NAO("Não");
-	
+	NAO("Não"),
+	SIM("Sim");
 	private String descricao;
 	
 	private EnumPNE(String descricao) {

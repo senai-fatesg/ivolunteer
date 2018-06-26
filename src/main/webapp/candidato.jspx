@@ -260,32 +260,32 @@
 
 							<!--TAB PERGUNTAS SOCIAIS E ECONÔMICAS -->
 							<p:tab id="tabSocioEconomica" title="Perguntas sociais e econômicas" style="height: 300px!important;">
-								<p:panel id="painelTabSocioEconomica" style="height:215px;" >
+								<p:panel id="painelTabSocioEconomica" style="height:355px;" >
 									
 									<a:field label="Nome do pai:">
-										<p:inputText style="width: 300px;" id="nomeDoPai" value="#{CandidatoControl.candidato.nomedoPai}"></p:inputText>
+										<p:inputText style="width: 280px;" id="nomeDoPai" value="#{CandidatoControl.candidato.nomedoPai}"></p:inputText>
 									</a:field>
 									
 									<a:field spaceLeft="10px" label="Nome da mãe:">
-										<p:inputText style="width: 300px;" id="nomeDaMae" value="#{CandidatoControl.candidato.nomedaMae}"></p:inputText>
+										<p:inputText style="width: 280px;" id="nomeDaMae" value="#{CandidatoControl.candidato.nomedaMae}"></p:inputText>
 									</a:field>
 									
 									<a:field spaceLeft="10px" label="Nome do Avô paterno:">
-										<p:inputText style="width: 300px;" id="nomeDoAvoPaterno" value="#{CandidatoControl.candidato.nomedoavoPaterno}"></p:inputText>
+										<p:inputText style="width: 280px;" id="nomeDoAvoPaterno" value="#{CandidatoControl.candidato.nomedoavoPaterno}"></p:inputText>
 									</a:field>
 									
 									<a:newLine/>
 									
 									<a:field label="Nome da Avó paterno:">
-										<p:inputText style="width: 300px;" id="nomeDaAvoPaterno" value="#{CandidatoControl.candidato.nomedaavoPaterno}"></p:inputText>
+										<p:inputText style="width: 280px;" id="nomeDaAvoPaterno" value="#{CandidatoControl.candidato.nomedaavoPaterno}"></p:inputText>
 									</a:field>
 									
 									<a:field spaceLeft="10px" label="Nome do Avô materno:">
-										<p:inputText style="width: 300px;" id="nomeDoAvoMaterno" value="#{CandidatoControl.candidato.nomedoavoMaterno}"></p:inputText>
+										<p:inputText style="width: 280px;" id="nomeDoAvoMaterno" value="#{CandidatoControl.candidato.nomedoavoMaterno}"></p:inputText>
 									</a:field>
 									
 									<a:field spaceLeft="10px" label="Nome da Avó materno:">
-										<p:inputText style="width: 300px;" id="nomeDaAvoMaterna" value="#{CandidatoControl.candidato.nomedaavoPaterno}"></p:inputText>
+										<p:inputText style="width: 280px;" id="nomeDaAvoMaterna" value="#{CandidatoControl.candidato.nomedaavoPaterno}"></p:inputText>
 									</a:field>
 									
 									<a:newLine/>
@@ -335,6 +335,28 @@
 									
 									<a:field rendered="#{CandidatoControl.candidato.enumLocalInternet=='OUTRO'}" spaceLeft="10px" label="Em caso afirmativo indique o local:">
 										<p:inputText id="localInternetOutro" value="#{CandidatoControl.candidato.localInternetOutro}"></p:inputText>
+									</a:field>
+									
+									<a:field spaceLeft="10px" label="Qual é a sua participação na vida econômica de sua família?">
+										<p:selectOneMenu id="participacaoEconomicaFamilia" value="#{CandidatoControl.candidato.enumParticipacaoEconomicaFamilia}">
+											<f:selectItems value="#{CandidatoControl.completeEnumParticipacaoEconomicaFamilia}"/>
+										</p:selectOneMenu>
+									</a:field>
+									
+									<a:field spaceLeft="10px" label="Existe em seu grupo familiar membro portador
+									 de doença física ou mental que necessite acompanhamento terapêutico sistemático?">
+										<p:selectOneMenu id="enumPNE" value="#{CandidatoControl.candidato.enumPNE}">
+											<p:ajax event="change" listener="#{CandidatoControl.aplicaValorEmBranco}" update="painelTabSocioEconomica" />
+											<f:selectItems value="#{CandidatoControl.completeEnumPNE}"/>
+										</p:selectOneMenu>
+									</a:field>
+									
+									<a:field rendered="#{CandidatoControl.candidato.enumPNE == 'SIM'}" spaceLeft="10px" label="Parentesco:">
+										<p:inputText id="parentescoPNE" value="#{CandidatoControl.candidato.parentescoPNE}"></p:inputText>
+									</a:field>
+									
+									<a:field rendered="#{CandidatoControl.candidato.enumPNE == 'SIM'}" spaceLeft="10px" label="Qual doença?">
+										<p:inputText id="necessidadePNE" value="#{CandidatoControl.candidato.necessidadePNE}"></p:inputText>
 									</a:field>
 									
 								</p:panel>

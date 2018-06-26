@@ -23,6 +23,8 @@ import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstadoCivil;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumFiliacao;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumLocalInternet;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumPNE;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumParticipacaoEconomicaFamilia;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumPrioridade;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumReside;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumResidencia;
@@ -85,9 +87,6 @@ public class CandidatoControl {
 	public void listarTodosCandidatos() {
 		try {
 			this.listaCandidato = candidatoDao.listar();
-			System.out.println("LISTANDO TODOS OS CANDIDATOS");
-			System.out.println("QUANTIDADE DE CANDIDATOS: " + this.listaCandidato.size());
-			
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -329,6 +328,14 @@ public class CandidatoControl {
 	public List<SelectItem> getCompleteEnumPrioridade() {
 		return UtilFaces.getListEnum(EnumPrioridade.values());
 	}
+	
+	public List<SelectItem> getCompleteEnumParticipacaoEconomicaFamilia() {
+		return UtilFaces.getListEnum(EnumParticipacaoEconomicaFamilia.values());
+	}
+	
+	public List<SelectItem> getCompleteEnumPNE() {
+		return UtilFaces.getListEnum(EnumPNE.values());
+	}
 
 	public List<Telefone> getListaTelefone() {
 		return responsavel.getListaTelefone();
@@ -465,11 +472,12 @@ public class CandidatoControl {
 	}
 	
 	public void aplicaValorEmBranco() {
-		//FacesContext fc = FacesContext.getCurrentInstance();
-		//Object localInternet = fc.getViewRoot().getComponentResources(fc, )
 		if(this.candidato.getEnumTemInternet() == EnumTemInternet.NAO) {
 			this.candidato.setEnumLocalInternet(EnumLocalInternet.EM_BRANCO);
 		}
-		//System.out.println("VALOR DO CAMPO LOCAL INTERNET: " + localInternet);
+		if(this.candidato.getEnumPNE() == EnumPNE.NAO) {
+			this.candidato.setParentescoPNE("");
+			this.candidato.setNecessidadePNE("");
+		}
 	}
 }

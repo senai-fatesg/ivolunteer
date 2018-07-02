@@ -240,7 +240,7 @@
 								<a:newLine />
 
 								<p:tab>
-									<p:panel style="height: 110px;" >
+									<p:panel id="painelFormacao" style="height: 110px;" >
 										<h4>Formação e Profissão</h4>
 										<a:field label="Formação:">
 											<p:inputText id="formacao" value="#{CandidatoControl.candidato.formacao}"></p:inputText>
@@ -252,6 +252,10 @@
 										
 										<a:field spaceLeft="10px" label="Turno:">
 											<p:inputText id="turno" value="#{CandidatoControl.candidato.turno}"></p:inputText>
+										</a:field>
+										
+										<a:field spaceLeft="10px" label="Ano:">
+											<p:calendar id="ano" value="#{CandidatoControl.candidato.ano}" locale="de" pattern="yyyy" />
 										</a:field>
 									</p:panel>
 								</p:tab>
@@ -386,7 +390,7 @@
 									<p:inputMask id="cpf" value="#{CandidatoControl.responsavel.cpf }" mask="999.999.999-99"> </p:inputMask>
 								</a:field>
 
-								<a:field label="RG" >
+								<a:field label="RG" spaceLeft="15px" >
 									<p:inputMask id="rg" value="#{CandidatoControl.responsavel.rg}" mask="9999999"> </p:inputMask>
 								</a:field>
 
@@ -649,8 +653,8 @@
 
 						<a:newLine />
 						
-						<p:commandButton actionListener="#{CandidatoControl.adicionarResponsavel }" value="Adicionar Pessoa" icon="ui-icon-plusthick"
-						      update="listaResponsavel, painelResponsavel"  global="false" > </p:commandButton>
+						<p:commandButton actionListener="#{CandidatoControl.adicionarResponsavel}" value="Adicionar Pessoa" icon="ui-icon-plusthick"
+						      update="listaResponsavel painelResponsavel"  global="false" > </p:commandButton>
 						
 						<a:newLine />
 						<a:newLine />

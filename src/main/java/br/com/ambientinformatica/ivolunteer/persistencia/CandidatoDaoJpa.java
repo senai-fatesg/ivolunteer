@@ -37,7 +37,8 @@ public class CandidatoDaoJpa extends PersistenciaJpa<Candidato> implements Candi
 
 	@Override
 	public Candidato consultarCandidatoCompleto(Candidato candidato) {
-		Query query = em.createQuery("SELECT p FROM Pessoa p WHERE p.id = :id and p.enumTipoPessoa = :enumTipoPessoa ");
+		Query query = em.createQuery("SELECT p FROM Pessoa p left join fetch p.listaResponsavel"
+				+ " r WHERE p.id = :id and p.enumTipoPessoa = :enumTipoPessoa");
 		query.setParameter("id", candidato.getId());
 		query.setParameter("enumTipoPessoa", EnumTipoPessoa.CANDIDATO);
 		return (Candidato) query.getSingleResult();

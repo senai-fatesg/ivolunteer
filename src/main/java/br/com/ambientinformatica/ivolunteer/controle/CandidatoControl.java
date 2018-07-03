@@ -38,6 +38,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.Responsavel;
 import br.com.ambientinformatica.ivolunteer.entidade.Telefone;
 import br.com.ambientinformatica.ivolunteer.persistencia.CandidatoDao;
+import br.com.ambientinformatica.ivolunteer.persistencia.EnderecoDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 import br.com.ambientinformatica.util.UtilLog;
 
@@ -69,6 +70,9 @@ public class CandidatoControl {
 
 	@Autowired
 	private CandidatoDao candidatoDao;
+	
+	@Autowired
+	private EnderecoDao enderecoDao;
 
 	@PostConstruct
 	public void init() {
@@ -205,8 +209,10 @@ public class CandidatoControl {
 	public void removerEndereco(Endereco endereco, String candidatoOuResponsavel) {
 		try {
 			if (candidatoOuResponsavel.equals("Responsavel")) {
+				enderecoDao.excluirPorId(endereco.getId());
 				responsavel.removerEndereco(endereco);
 			} else {
+				enderecoDao.excluirPorId(endereco.getId());
 				candidato.removerEndereco(endereco);
 			}
 		} catch (Exception e) {

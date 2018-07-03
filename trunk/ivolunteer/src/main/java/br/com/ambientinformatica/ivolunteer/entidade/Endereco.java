@@ -1,5 +1,7 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,7 +13,7 @@ import javax.persistence.SequenceGenerator;
 
 
 @Entity
-public class Endereco {
+public class Endereco implements Serializable{
 
 	@Id
 	@GeneratedValue(generator = "endereco_seq", strategy = GenerationType.SEQUENCE)

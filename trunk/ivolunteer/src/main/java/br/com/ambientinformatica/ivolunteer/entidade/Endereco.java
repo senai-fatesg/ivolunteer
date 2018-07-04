@@ -36,6 +36,20 @@ public class Endereco implements Serializable{
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Cidade cidade = new Cidade();
+	
+	private Boolean isAtivo;
+	
+	public Boolean getIsAtivo() {
+		return isAtivo;
+	}
+
+	public void setIsAtivo(Boolean isAtivo) {
+		this.isAtivo = isAtivo;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public Integer getId() {
 		return id;

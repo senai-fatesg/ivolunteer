@@ -212,26 +212,26 @@
 												<f:facet name="header">
 													<h:outputText value="Rua"></h:outputText>
 												</f:facet>
-												<h:outputText value="#{end.ruaOuAvenida }"></h:outputText>
+												<h:outputText rendered="#{end.isAtivo}" value="#{end.ruaOuAvenida }"></h:outputText>
 											</p:column>
 											
 											<p:column sortBy="#{end.bairro }">
 												<f:facet name="header">
 													<h:outputText value="Bairro"></h:outputText>
 												</f:facet>
-												<h:outputText value="#{end.bairro }"></h:outputText>
+												<h:outputText rendered="#{end.isAtivo}" value="#{end.bairro }"></h:outputText>
 											</p:column>
 											
 											<p:column sortBy="#{end.numero }">
 												<f:facet name="header">
 													<h:outputText value="Numero"></h:outputText>
 												</f:facet>
-												<h:outputText value="#{end.numero }"></h:outputText>
+												<h:outputText rendered="#{end.isAtivo}" value="#{end.numero }"></h:outputText>
 											</p:column>
 											
 											<p:column width="50">
 												<p:commandButton icon="ui-icon-closethick" action="#{CandidatoControl.removerEndereco(end, 'Candidato')}"
-													update="listaEnderecoCandidato" ajax="false" />
+													update="listaEnderecoCandidato" ajax="true" />
 											</p:column>
 										</p:dataTable>
 									</p:tab>

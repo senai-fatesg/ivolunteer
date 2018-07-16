@@ -208,28 +208,28 @@
 												<h:outputText value="Lista de Endereço"></h:outputText>
 											</f:facet>
 
-											<p:column sortBy="#{end.ruaOuAvenida }">
+											<p:column rendered="#{end.isAtivo}" sortBy="#{end.ruaOuAvenida }">
 												<f:facet name="header">
 													<h:outputText value="Rua"></h:outputText>
 												</f:facet>
 												<h:outputText rendered="#{end.isAtivo}" value="#{end.ruaOuAvenida }"></h:outputText>
 											</p:column>
 											
-											<p:column sortBy="#{end.bairro }">
+											<p:column rendered="#{end.isAtivo}" sortBy="#{end.bairro }">
 												<f:facet name="header">
 													<h:outputText value="Bairro"></h:outputText>
 												</f:facet>
 												<h:outputText rendered="#{end.isAtivo}" value="#{end.bairro }"></h:outputText>
 											</p:column>
 											
-											<p:column sortBy="#{end.numero }">
+											<p:column rendered="#{end.isAtivo}" sortBy="#{end.numero }">
 												<f:facet name="header">
 													<h:outputText value="Numero"></h:outputText>
 												</f:facet>
 												<h:outputText rendered="#{end.isAtivo}" value="#{end.numero }"></h:outputText>
 											</p:column>
 											
-											<p:column width="50">
+											<p:column rendered="#{end.isAtivo}" width="5px">
 												<p:commandButton icon="ui-icon-closethick" action="#{CandidatoControl.removerEndereco(end, 'Candidato')}"
 													update="listaEnderecoCandidato" ajax="true" />
 											</p:column>
@@ -659,7 +659,7 @@
 						<a:newLine />
 						<a:newLine />
 
-						<p:dataTable id="listaResponsavel" value="#{CandidatoControl.listaResponsavel }"
+						<p:dataTable id="listaResponsavel" value="#{CandidatoControl.candidato.listaResponsavel }"
 							var="pessoaResponsavel" width="100%" emptyMessage="Sem registros">
 							
 							<f:facet name="header">

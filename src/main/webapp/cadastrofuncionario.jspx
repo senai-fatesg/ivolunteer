@@ -125,7 +125,7 @@
 						</a:field>
 						<a:newLine />
 						<a:field label="Agencia">
-							<p:inputMask value="#{FuncionarioControl.funcionario.banco}" mask="9999" style="width:250px;" />
+							<p:inputMask value="#{FuncionarioControl.funcionario.agencia}" mask="9999" style="width:250px;" />
 						</a:field>
 						<a:newLine />
 						<a:field label="Conta Corrente">

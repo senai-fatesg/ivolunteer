@@ -2,7 +2,9 @@ package br.com.ambientinformatica.ivolunteer.controle;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -100,6 +102,7 @@ public class CandidatoControl {
 		try {
 			if(this.candidato.getId() == null) {
 				this.candidato.setEnumTipoPessoa(EnumTipoPessoa.CANDIDATO);
+				this.candidato.addResponsavel(this.responsavel);
 				//validarCandidato(candidato);
 				candidatoDao.incluir(this.candidato);
 			} else {
@@ -107,8 +110,8 @@ public class CandidatoControl {
 				//validarCandidato(candidato);
 				candidatoDao.alterar(this.candidato);
 			}
-			candidato = new Candidato();
-
+			this.candidato = new Candidato();
+			this.listaResponsavel.clear();
 			UtilFaces.addMensagemFaces("Informações salvas com sucesso!");
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e.getMessage());
@@ -160,6 +163,7 @@ public class CandidatoControl {
 	public void adicionarEndereco(Pessoa candidato) {
 		try {
 			if (EhEnderecoConsistente()) {
+				this.endereco.setIsAtivo(true);
 				candidato.addEndereco(endereco);
 				endereco = new Endereco();
 			} else {
@@ -205,15 +209,20 @@ public class CandidatoControl {
 		objeto.setCertidaoNascimento("NULL");
 	}
 
-	// remove um endereço do responsavel ou candidato
+	// desativa um endereço do responsavel ou candidato
 	public void removerEndereco(Endereco endereco, String candidatoOuResponsavel) {
 		try {
 			if (candidatoOuResponsavel.equals("Responsavel")) {
-				enderecoDao.excluirPorId(endereco.getId());
-				responsavel.removerEndereco(endereco);
+				Endereco endAtualizado = enderecoDao.desativaEndereco(endereco);
+				this.responsavel.getListaEndereco().remove(endereco);
+				this.responsavel.getListaEndereco().add(endAtualizado);
+				//responsavel.removerEndereco(endereco);
 			} else {
-				enderecoDao.excluirPorId(endereco.getId());
-				candidato.removerEndereco(endereco);
+				Endereco endAtualizado = enderecoDao.desativaEndereco(endereco);
+				this.candidato.getListaEndereco().remove(endereco);
+				this.candidato.getListaEndereco().add(endAtualizado);
+				//this.candidato.getListaEndereco().remove(endereco);
+				//candidato.removerEndereco(endereco);
 			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces("Ocorreu uma falha ao tentar excluir o endereço da lista");

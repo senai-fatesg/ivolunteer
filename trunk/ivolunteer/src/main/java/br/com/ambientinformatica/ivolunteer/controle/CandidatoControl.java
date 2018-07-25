@@ -41,6 +41,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.Responsavel;
 import br.com.ambientinformatica.ivolunteer.entidade.Telefone;
 import br.com.ambientinformatica.ivolunteer.persistencia.CandidatoDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.EnderecoDao;
+import br.com.ambientinformatica.ivolunteer.persistencia.ResponsavelDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 import br.com.ambientinformatica.util.UtilLog;
 
@@ -61,7 +62,6 @@ public class CandidatoControl {
 	// listas e utilizada para a apresentação na grid
 	private List<Responsavel> listaResponsavel = new ArrayList<Responsavel>();
 	private List<Telefone> listaTelefone = new ArrayList<Telefone>();
-
 	// objetos utilizados para tratamento das listas
 	private Telefone telefone = new Telefone();
 	private Endereco endereco = new Endereco();
@@ -72,6 +72,9 @@ public class CandidatoControl {
 
 	@Autowired
 	private CandidatoDao candidatoDao;
+	
+	@Autowired
+	private ResponsavelDao responsavelDao;
 	
 	@Autowired
 	private EnderecoDao enderecoDao;
@@ -163,9 +166,21 @@ public class CandidatoControl {
 	public void adicionarEndereco(Pessoa candidato) {
 		try {
 			if (EhEnderecoConsistente()) {
-				this.endereco.setIsAtivo(true);
-				candidato.addEndereco(endereco);
-				endereco = new Endereco();
+				if (this.endereco.getId() == null) {
+					this.endereco.setIsAtivo(true);
+					candidato.addEndereco(endereco);
+					candidatoDao.alterar(this.candidato);
+					this.candidato = candidatoDao.consultarCandidatoCompleto(this.candidato);
+					endereco = new Endereco();
+					UtilFaces.addMensagemFaces("Endereço adicionado.");
+				} else {
+					this.candidato.addEndereco(this.endereco);
+					candidatoDao.alterar(this.candidato);
+					this.candidato = candidatoDao.consultarCandidatoCompleto(this.candidato);
+					this.endereco = new Endereco();
+					UtilFaces.addMensagemFaces("Endereço atualizado.");
+				}
+				
 			} else {
 				UtilFaces.addMensagemFaces("Preencha os campos corretamente");
 			}
@@ -213,16 +228,17 @@ public class CandidatoControl {
 	public void removerEndereco(Endereco endereco, String candidatoOuResponsavel) {
 		try {
 			if (candidatoOuResponsavel.equals("Responsavel")) {
-				Endereco endAtualizado = enderecoDao.desativaEndereco(endereco);
+				enderecoDao.desativaEndereco(endereco);
 				this.responsavel.getListaEndereco().remove(endereco);
-				this.responsavel.getListaEndereco().add(endAtualizado);
+				//this.responsavel.getListaEndereco().add(endAtualizado);
 				//responsavel.removerEndereco(endereco);
 			} else {
-				Endereco endAtualizado = enderecoDao.desativaEndereco(endereco);
-				this.candidato.getListaEndereco().remove(endereco);
-				this.candidato.getListaEndereco().add(endAtualizado);
-				//this.candidato.getListaEndereco().remove(endereco);
+				enderecoDao.desativaEndereco(endereco);
+				this.candidato.getListaEndereco().clear();
+				this.candidato.getListaEndereco().addAll((enderecoDao.buscaTodosEnderecosPorCandidato(this.candidato)));
+				//this.candidato.getListaEndereco().add(endAtualizado);
 				//candidato.removerEndereco(endereco);
+				UtilFaces.addMensagemFaces("Endereço removido.");
 			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces("Ocorreu uma falha ao tentar excluir o endereço da lista");
@@ -288,10 +304,26 @@ public class CandidatoControl {
 		}
 	}
 
+	public void carregaResponsavelAlteracao(Responsavel resp){
+		if(this.candidato.getListaResponsavel().contains(resp)){
+			this.responsavel = responsavelDao.consultar(resp.getId());
+		}
+	}
 	// carrega o objeto do candidato completo
 	public void carregaCandidatoAlteracao(Candidato candidato) throws PersistenciaException {
 		this.candidato = candidatoDao.consultarCandidatoCompleto(candidato);
 		//listaResponsavel = candidato.getListaResponsavel();
+	}
+	
+	public void carregaEnderecoAlteracao(Endereco end, String tipoPessoa){
+		if(tipoPessoa.equals("Candidato") && this.candidato.getListaEndereco().contains(end)){
+			this.endereco = enderecoDao.consultar(end.getId());
+			this.candidato.getListaEndereco().remove(end);
+			
+		} else if (tipoPessoa.equals("Responsavel") && this.responsavel.getListaEndereco().contains(end)) {
+			
+		}
+		
 	}
 
 	// Aplica Filtro

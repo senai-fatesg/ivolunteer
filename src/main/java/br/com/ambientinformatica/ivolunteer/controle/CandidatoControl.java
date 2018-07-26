@@ -110,11 +110,11 @@ public class CandidatoControl {
 			if (this.candidato.getId() == null) {
 				this.candidato.setEnumTipoPessoa(EnumTipoPessoa.CANDIDATO);
 				this.candidato.addResponsavel(this.responsavel);
-				// validarCandidato(candidato);
+				validarCandidato(this.candidato);
 				candidatoDao.incluir(this.candidato);
 			} else {
 				this.candidato.setEnumTipoPessoa(EnumTipoPessoa.CANDIDATO);
-				// validarCandidato(candidato);
+				validarCandidato(this.candidato);
 				candidatoDao.alterar(this.candidato);
 			}
 			this.candidato = new Candidato();
@@ -182,8 +182,8 @@ public class CandidatoControl {
 						endereco = new Endereco();
 						UtilFaces.addMensagemFaces("Endereço de " + this.candidato.getNomePessoa() + " adicionado.");
 					} else {
-						this.candidato.addEndereco(this.endereco);
-						candidatoDao.alterar(this.candidato);
+						//this.candidato.addEndereco(this.endereco);
+						enderecoDao.alterar(this.endereco);
 						this.candidato = candidatoDao.consultarCandidatoCompleto(this.candidato);
 						this.endereco = new Endereco();
 						UtilFaces.addMensagemFaces("Endereço de " + this.candidato.getNomePessoa() + " atualizado.");
@@ -306,7 +306,10 @@ public class CandidatoControl {
 	// remove o responsavel do candidato
 	public void removerResponsavel(Responsavel responsavel) {
 		try {
-			candidato.removerResponsavel(responsavel);
+			this.candidato.removerResponsavel(responsavel);
+			responsavelDao.excluirPorId(responsavel.getId());
+			candidatoDao.consultarCandidatoCompleto(this.candidato);
+			UtilFaces.addMensagemFaces("Responsável de " + this.candidato.getNomePessoa() + " removido.");
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces("Ocorreu uma falha ao tentar excluir o responsavel da lista");
 			UtilLog.getLog().error(e);

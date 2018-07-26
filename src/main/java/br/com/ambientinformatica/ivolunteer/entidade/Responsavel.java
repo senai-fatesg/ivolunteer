@@ -14,8 +14,6 @@ public class Responsavel extends Pessoa implements java.io.Serializable {
 
 	public Responsavel() {}
 	
-	
-
 	private String indicacao;
 	private String informacoesSobreIntituicao;
 	private String nomePessoaMoraComCrianca;

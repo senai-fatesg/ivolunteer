@@ -210,10 +210,10 @@
 										    </f:facet>
 											<p:columnGroup type="header">
 										        <p:row>
-										            <p:column headerText="Rua" width="auto" />
-										            <p:column headerText="Bairro" width="auto" />
-										            <p:column headerText="Número" width="auto" />
-										            <p:column headerText="Ações" width="auto" />
+										            <p:column headerText="Rua" />
+										            <p:column headerText="Bairro" />
+										            <p:column headerText="Número" />
+										            <p:column headerText="Ações" />
 										        </p:row>
 										    </p:columnGroup>
 											
@@ -221,7 +221,7 @@
 												<h:outputText value="Lista de Endereço"></h:outputText>
 											</f:facet>
 											-->
-											<p:column sortBy="#{end.ruaOuAvenida}" rendered="#{end.isAtivo and (CandidatoControl.endereco.id != end.id)}">
+											<p:column width="20" sortBy="#{end.ruaOuAvenida}" rendered="#{end.isAtivo and (CandidatoControl.endereco.id != end.id)}">
 												<!--  
 												<f:facet name="header">
 													<h:outputText value="Rua"/>
@@ -230,7 +230,7 @@
 												<h:outputText value="#{end.ruaOuAvenida }"/>
 											</p:column>
 											
-											<p:column sortBy="#{end.bairro}" rendered="#{end.isAtivo and (CandidatoControl.endereco.id != end.id)}">
+											<p:column width="20" sortBy="#{end.bairro}" rendered="#{end.isAtivo and (CandidatoControl.endereco.id != end.id)}">
 												<!--  
 												<f:facet name="header">
 													<h:outputText value="Bairro"/>
@@ -239,7 +239,7 @@
 												<h:outputText value="#{end.bairro}"/>
 											</p:column>
 											
-											<p:column sortBy="#{end.numero}" rendered="#{end.isAtivo and (CandidatoControl.endereco.id != end.id)}">
+											<p:column width="20" sortBy="#{end.numero}" rendered="#{end.isAtivo and (CandidatoControl.endereco.id != end.id)}">
 												<!--  
 												<f:facet name="header">
 													<h:outputText value="Numero"/>
@@ -248,21 +248,22 @@
 												<h:outputText value="#{end.numero }"></h:outputText>
 											</p:column>
 											
-											<p:column rendered="#{end.isAtivo and (CandidatoControl.endereco.id != end.id)}">
+											<p:column width="20" rendered="#{end.isAtivo and (CandidatoControl.endereco.id != end.id)}">
 												<!--  
 												<f:facet name="header">
 													<h:outputText value="Ações"/>
 												</f:facet>
 												-->
 												<p:commandButton rendered="#{end.isAtivo and (CandidatoControl.endereco.id != end.id)}" icon="ui-icon-closethick" action="#{CandidatoControl.removerEndereco(end, 'Candidato')}"
-												 update=":formCorpo:tabCadastro:tabCadastroCandidato:panelEnderecoCandidato" ajax="true" process="@this" />
+												 update=":formCorpo:tabCadastro:tabCadastroCandidato:panelEnderecoCandidato" ajax="true" />
 												
 												<p:commandButton rendered="#{end.isAtivo and (CandidatoControl.endereco.id != end.id)}" icon="ui-icon-pencil" action="#{CandidatoControl.carregaEnderecoAlteracao(end, 'Candidato')}"
-													update=":formCorpo:tabCadastro:tabCadastroCandidato:panelEnderecoCandidato"
-													ajax="true" />
+													update=":formCorpo:tabCadastro:tabCadastroCandidato:panelEnderecoCandidato"	ajax="true" />
 											</p:column>
 											
 										</p:dataTable>
+										<a:newLine />
+										<a:newLine />
 									</p:tab>
 								</p:panel>
 								
@@ -402,13 +403,10 @@
 
 				<!--INICIO DO TAB DE INFORMAÇÕES RESPONSAVEL -->
 
-				<p:tab title="Informações do responsável" id="responsaveis">
-					<p:panel rendered="true" id="painelResponsavel">
-						<p:tabView cache="false" id="tabCadastroResponsavel">
-							<p:tab title="Dados do Responsável" id="dadosResponsaveis">
-								
-
-								<a:newLine />
+				<p:tab id="responsaveis" title="Informações do responsável" style="height:auto!important;" >
+					<p:panel id="painelResponsavel" rendered="true" style="height:auto!important;" >
+						<p:tabView id="tabCadastroResponsavel" cache="false" >
+							<p:tab id="dadosResponsaveis" title="Dados do Responsável" >
 
 								<a:field label="Nome">
 									<p:inputText id="nomePessoaResponsavel" value="#{CandidatoControl.responsavel.nomePessoa}"> </p:inputText>
@@ -477,11 +475,11 @@
 							</p:tab>
 							<!--TAB ENDEREÇO -->
 
-							<p:tab title="Endereço" id="tabEnderecoResponsavel">
+							<p:tab id="tabEnderecoResponsavel" title="Endereço" >
 
 								<!--INICIO PANEL ENDEREÇO -->
 
-								<p:panel rendered="true" id="panelEnderecoResponsavel">
+								<p:panel id="panelEnderecoResponsavel" rendered="true" >
 									<h4>Endereço</h4>
 
 									<a:newLine />
@@ -683,10 +681,10 @@
 						<a:newLine />
 						
 						<p:commandButton rendered="#{CandidatoControl.responsavel.id == null}" actionListener="#{CandidatoControl.adicionarResponsavel}" value="Adicionar Reponsável" icon="ui-icon-plusthick"
-						      update="listaResponsavel painelResponsavel"  global="false" > </p:commandButton>
+						      update=":formCorpo:tabCadastro" oncomplete=":formCorpo:tabCadastro" ajax="true" /> 
 						
 						<p:commandButton rendered="#{CandidatoControl.responsavel.id != null}" actionListener="#{CandidatoControl.adicionarResponsavel}" value="Atualizar Reponsável" icon="ui-icon-plusthick"
-						      update="listaResponsavel painelResponsavel"  global="false" > </p:commandButton>
+						      update=":formCorpo:tabCadastro" global="false" ajax="true" />
 						
 						<a:newLine />
 						<a:newLine />
@@ -695,7 +693,7 @@
 							var="pessoaResponsavel" width="100%" emptyMessage="Sem registros">
 							
 							<f:facet name="header">
-								Lista de Responsavéis"
+								Lista de Responsavéis
 							</f:facet>
 							
 							<p:columnGroup type="header">
@@ -707,7 +705,7 @@
 								</p:row>
 							</p:columnGroup>
 							
-							<p:column width="20" sortBy="#{pessoaResponsavel.nomePessoa }" rendered="#{pessoaResponsavel.id != CandidatoControl.responsavel.id}">
+							<p:column width="20" sortBy="#{pessoaResponsavel.nomePessoa}" rendered="#{pessoaResponsavel.id != CandidatoControl.responsavel.id}">
 								<!--  
 								<f:facet name="header">
 									<h:outputText value="Nome"></h:outputText>
@@ -716,13 +714,13 @@
 								<h:outputText value="#{pessoaResponsavel.nomePessoa }"></h:outputText>
 							</p:column>
 							
-							<p:column width="20" sortBy="#{pessoaResponsavel.cpf }" rendered="#{pessoaResponsavel.id != CandidatoControl.responsavel.id}">
+							<p:column width="20" sortBy="#{pessoaResponsavel.cpf}" rendered="#{pessoaResponsavel.id != CandidatoControl.responsavel.id}">
 								<!--  
 								<f:facet name="header">
 									<h:outputText value="cpf"></h:outputText>
 								</f:facet>
 								-->
-								<h:outputText value="#{pessoaResponsavel.cpf }"></h:outputText>
+								<h:outputText value="#{pessoaResponsavel.cpf}"></h:outputText>
 							</p:column>
 							
 							<p:column width="20" sortBy="#{pessoaResponsavel.enumFiliacao}" rendered="#{pessoaResponsavel.id != CandidatoControl.responsavel.id}">
@@ -731,7 +729,7 @@
 									<h:outputText value="filiacao"></h:outputText>
 								</f:facet>
 								-->
-								<h:outputText value="#{pessoaResponsavel.enumFiliacao }"></h:outputText>
+								<h:outputText value="#{pessoaResponsavel.enumFiliacao}"></h:outputText>
 							</p:column>
 							
 							<p:column width="20" rendered="#{pessoaResponsavel.id != CandidatoControl.responsavel.id}">
@@ -741,7 +739,7 @@
 								</f:facet>
 								-->
 								<p:commandButton icon="ui-icon-closethick"
-								 action="#{CandidatoControl.removerResponsavel(pessoaResponsavel)}" update="listaResponsavel"  ajax="false" />
+								 action="#{CandidatoControl.removerResponsavel(pessoaResponsavel)}" update="listaResponsavel"  ajax="true" />
 								
 								<p:commandButton icon="ui-icon-pencil"
 								 action="#{CandidatoControl.carregaResponsavelAlteracao(pessoaResponsavel)}"

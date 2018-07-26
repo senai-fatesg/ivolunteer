@@ -19,4 +19,5 @@ public class ResponsavelDaoJpa extends PersistenciaJpa<Responsavel> implements R
 		query.setParameter("idResponsavel", responsavel.getId());
 		return (Responsavel) query.getSingleResult();
 	}
+
 }

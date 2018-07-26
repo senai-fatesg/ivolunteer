@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import br.com.ambientinformatica.ivolunteer.entidade.Candidato;
 import br.com.ambientinformatica.ivolunteer.entidade.Endereco;
+import br.com.ambientinformatica.ivolunteer.entidade.Responsavel;
 import br.com.ambientinformatica.jpa.persistencia.PersistenciaJpa;
 
 @Repository("enderecoDao")
@@ -29,7 +30,12 @@ public class EnderecoDaoJpa extends PersistenciaJpa<Endereco> implements Enderec
 		return query.getResultList();
 	}
 
-	
+	@Override
+	public List<Endereco> buscaTodosEnderecosPorResponsavel(Responsavel responsavel) {
+		Query query = em.createQuery("SELECT e FROM Endereco e WHERE pessoa_id = :idResponsavel");
+		query.setParameter("idResponsavel", responsavel.getId());
+		return query.getResultList();
+	}
 
 	
 }

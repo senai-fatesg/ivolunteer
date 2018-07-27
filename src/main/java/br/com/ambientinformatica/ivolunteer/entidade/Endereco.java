@@ -37,7 +37,7 @@ public class Endereco implements Serializable{
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Cidade cidade = new Cidade();
 	
-	private Boolean isAtivo;
+	private Boolean isAtivo = true;
 	
 	public Boolean getIsAtivo() {
 		return isAtivo;
@@ -45,6 +45,10 @@ public class Endereco implements Serializable{
 
 	public void setIsAtivo(Boolean isAtivo) {
 		this.isAtivo = isAtivo;
+	}
+	
+	public void inativaEndereco() {
+		setIsAtivo(false);
 	}
 
 	public void setId(Integer id) {

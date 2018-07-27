@@ -175,7 +175,7 @@ public class CandidatoControl {
 				System.out.println("É UM CANDIDATO!!!!!!!");
 				if (EhEnderecoConsistente(candidatoOuResponsavel)) {
 					if (this.endereco.getId() == null) {
-						this.endereco.setIsAtivo(true);
+						//this.endereco.setIsAtivo(true);
 						candidato.addEndereco(endereco);
 						candidatoDao.alterar(this.candidato);
 						this.candidato = candidatoDao.consultarCandidatoCompleto(this.candidato);
@@ -193,23 +193,35 @@ public class CandidatoControl {
 				}
 
 			} else if (candidatoOuResponsavel.getClass().equals(Responsavel.class)) {
-				if (EhEnderecoConsistente(candidatoOuResponsavel)) {
-					if (this.enderecoResponsavel.getId() == null) {
-						this.enderecoResponsavel.setIsAtivo(true);
-						this.responsavel.addEndereco(this.enderecoResponsavel);
-						this.responsavelDao.alterar(this.responsavel);
-						this.responsavel = responsavelDao.consultaResponsavelCompleto(this.responsavel);
-						this.enderecoResponsavel = new Endereco();
-						UtilFaces.addMensagemFaces("Endereço de " + this.responsavel.getNomePessoa() + " adicionado.");
+				if(EhResponsavelConsistente()) {
+					if(candidatoOuResponsavel.getId() == null) {
+						this.candidato.addResponsavel((Responsavel) candidatoOuResponsavel);
+						candidatoDao.alterar(this.candidato);
+						//responsavelDao.incluir((Responsavel) candidatoOuResponsavel);
 					} else {
-						this.responsavel.addEndereco(this.enderecoResponsavel);
-						responsavelDao.alterar(this.responsavel);
-						this.responsavel = responsavelDao.consultaResponsavelCompleto(this.responsavel);
-						this.enderecoResponsavel = new Endereco();
-						UtilFaces.addMensagemFaces("Endereço de " + this.responsavel.getNomePessoa() + " atualizado.");
+						if (EhEnderecoConsistente(candidatoOuResponsavel)) {
+							if (this.enderecoResponsavel.getId() == null) {
+								//this.enderecoResponsavel.setIsAtivo(true);
+								this.responsavel.addEndereco(this.enderecoResponsavel);
+								this.responsavelDao.alterar(this.responsavel);
+								this.responsavel = responsavelDao.consultaResponsavelCompleto(this.responsavel);
+								this.enderecoResponsavel = new Endereco();
+								UtilFaces.addMensagemFaces("Endereço de responsável " 
+								+ this.responsavel.getNomePessoa() + " adicionado.");
+							} else {
+								//this.responsavel.addEndereco(this.enderecoResponsavel);
+								enderecoDao.alterar(this.enderecoResponsavel);
+								this.responsavel = responsavelDao.consultaResponsavelCompleto(this.responsavel);
+								this.enderecoResponsavel = new Endereco();
+								UtilFaces.addMensagemFaces("Endereço de responsável " 
+								+ this.responsavel.getNomePessoa() + " atualizado.");
+							}
+						} else {
+							UtilFaces.addMensagemFaces("Preencha os campos de endereço de responsável corretamente");
+						}
 					}
 				} else {
-					UtilFaces.addMensagemFaces("Preencha os campos de endereço de responsável corretamente");
+					UtilFaces.addMensagemFaces("Preencha o nome e CPF de responsável antes de adicionar um endereço. ");
 				}
 
 			}
@@ -275,17 +287,22 @@ public class CandidatoControl {
 	public void removerEndereco(Endereco endereco, String candidatoOuResponsavel) {
 		try {
 			if (candidatoOuResponsavel.equals("Responsavel")) {
-				enderecoDao.desativaEndereco(endereco);
-				this.responsavel.getListaEndereco().remove(endereco);
+				endereco.inativaEndereco();
+				enderecoDao.alterar(endereco);
+				this.responsavel = responsavelDao.consultaResponsavelCompleto(this.responsavel);
+				UtilFaces.addMensagemFaces("Endereço de responsável demovido.");
+				//enderecoDao.desativaEndereco(endereco);
+				//this.responsavel.getListaEndereco().remove(endereco);
 				// this.responsavel.getListaEndereco().add(endAtualizado);
 				// responsavel.removerEndereco(endereco);
 			} else {
-				enderecoDao.desativaEndereco(endereco);
+				endereco.inativaEndereco();
+				enderecoDao.alterar(endereco);
 				this.candidato.getListaEndereco().clear();
 				this.candidato.getListaEndereco().addAll((enderecoDao.buscaTodosEnderecosPorCandidato(this.candidato)));
 				// this.candidato.getListaEndereco().add(endAtualizado);
 				// candidato.removerEndereco(endereco);
-				UtilFaces.addMensagemFaces("Endereço removido.");
+				UtilFaces.addMensagemFaces("Endereço de candidato removido.");
 			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces("Ocorreu uma falha ao tentar excluir o endereço da lista");
@@ -365,7 +382,7 @@ public class CandidatoControl {
 		if (tipoPessoa.equals("Candidato") && this.candidato.getListaEndereco().contains(end)) {
 			this.endereco = enderecoDao.consultar(end.getId());
 		} else if (tipoPessoa.equals("Responsavel") && this.responsavel.getListaEndereco().contains(end)) {
-
+			this.enderecoResponsavel = enderecoDao.consultar(end.getId());
 		}
 
 	}
@@ -504,8 +521,8 @@ public class CandidatoControl {
 	}
 
 	private boolean EhResponsavelConsistente() {
-		if (responsavel.getNomePessoa() != null && !responsavel.getNomePessoa().isEmpty()
-				&& responsavel.getCpf() != null && !responsavel.getCpf().isEmpty()) {
+		if (this.responsavel.getNomePessoa() != null && !this.responsavel.getNomePessoa().isEmpty()
+				&& this.responsavel.getCpf() != null && !this.responsavel.getCpf().isEmpty()) {
 			return true;
 		} else {
 			return false;

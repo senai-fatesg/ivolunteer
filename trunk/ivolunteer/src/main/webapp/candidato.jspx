@@ -525,43 +525,70 @@
 									<a:newLine />
 									<a:newLine />
 
-									<p:commandButton action="#{CandidatoControl.adicionarEnderecoResponsavel}"
+									<p:commandButton action="#{CandidatoControl.adicionarEnderecoResponsavel}" rendered="#{CandidatoControl.enderecoResponsavel.id == null}"
 										value="Adicionar endereço" icon="ui-icon-plusthick" update="listaEnderecoResponsavel, panelEnderecoResponsavel"
-										process="tabEnderecoResponsavel" global="false">
-									</p:commandButton>
+										process="tabEnderecoResponsavel" global="false"/>
+										
+									<p:commandButton action="#{CandidatoControl.adicionarEnderecoResponsavel}" rendered="#{CandidatoControl.enderecoResponsavel.id != null}"
+										value="Atualizar endereço" icon="ui-icon-refresh" update="listaEnderecoResponsavel, panelEnderecoResponsavel"
+										process="tabEnderecoResponsavel" global="false" />
 									<a:newLine />
 								</p:panel>
 
+								<a:newLine />
+								
 								<p:dataTable id="listaEnderecoResponsavel" value="#{CandidatoControl.responsavel.listaEndereco }"
 									var="ende" width="100%" emptyMessage="Sem registros">
 									
 									<f:facet name="header">
-										<h:outputText value="Lista de Endereço"></h:outputText>
+										<h:outputText value="Lista de Endereços do Responsável"></h:outputText>
 									</f:facet>
 									
-									<p:column sortBy="#{ende.ruaOuAvenida }">
+									<p:columnGroup type="header" >
+										<p:row>
+											<p:column headerText="Rua" />
+											<p:column headerText="Bairro" />
+											<p:column headerText="Número" />
+											<p:column headerText="Ações" />
+										</p:row>
+									</p:columnGroup>
+									
+									<p:column sortBy="#{ende.ruaOuAvenida}" rendered="#{ende.isAtivo and (ende.id != CandidatoControl.enderecoResponsavel.id)}">
+										<!--  
 										<f:facet name="header">
 											<h:outputText value="Rua"></h:outputText>
 										</f:facet>
-										<h:outputText value="#{ende.ruaOuAvenida }"></h:outputText>
+										-->
+										<h:outputText value="#{ende.ruaOuAvenida}" />
 									</p:column>
 									
-									<p:column sortBy="#{ende.bairro }">
+									<p:column sortBy="#{ende.bairro}" rendered="#{ende.isAtivo and (ende.id != CandidatoControl.enderecoResponsavel.id)}">
+										<!--  
 										<f:facet name="header">
 											<h:outputText value="Bairro"></h:outputText>
 										</f:facet>
-										<h:outputText value="#{ende.bairro }"></h:outputText>
+										-->
+										<h:outputText value="#{ende.bairro}" />
 									</p:column>
 									
-									<p:column sortBy="#{ende.numero }">
+									<p:column sortBy="#{ende.numero}" rendered="#{ende.isAtivo and (ende.id != CandidatoControl.enderecoResponsavel.id)}">
+										<!-- 
 										<f:facet name="header">
-											<h:outputText value="Numero"></h:outputText>
+											<h:outputText value="Número"></h:outputText>
 										</f:facet>
-										<h:outputText value="#{ende.numero }"></h:outputText>
+										-->
+										<h:outputText value="#{ende.numero}" />
 									</p:column>
 									
-									<p:column width="50">
+									<p:column width="100" rendered="#{ende.isAtivo and (ende.id != CandidatoControl.enderecoResponsavel.id)}">
+										<!--
+										<f:facet name="header">
+											<h:outputText value="Ações"></h:outputText>
+										</f:facet>
+										-->
 										<p:commandButton icon="ui-icon-closethick" action="#{CandidatoControl.removerEndereco(ende, 'Responsavel')}"
+											update="listaEnderecoResponsavel" ajax="false" />
+										<p:commandButton icon="ui-icon-pencil" action="#{CandidatoControl.carregaEnderecoAlteracao(ende, 'Responsavel')}"
 											update="listaEnderecoResponsavel" ajax="false" />
 									</p:column>
 								</p:dataTable>
@@ -683,7 +710,7 @@
 						<p:commandButton rendered="#{CandidatoControl.responsavel.id == null}" actionListener="#{CandidatoControl.adicionarResponsavel}" value="Adicionar Reponsável" icon="ui-icon-plusthick"
 						      update=":formCorpo:tabCadastro" oncomplete=":formCorpo:tabCadastro" ajax="true" /> 
 						
-						<p:commandButton rendered="#{CandidatoControl.responsavel.id != null}" actionListener="#{CandidatoControl.adicionarResponsavel}" value="Atualizar Reponsável" icon="ui-icon-plusthick"
+						<p:commandButton rendered="#{CandidatoControl.responsavel.id != null}" actionListener="#{CandidatoControl.adicionarResponsavel}" value="Atualizar Reponsável" icon="ui-icon-refresh"
 						      update=":formCorpo:tabCadastro" global="false" ajax="true" />
 						
 						<a:newLine />

@@ -705,7 +705,7 @@
 								</p:row>
 							</p:columnGroup>
 							
-							<p:column width="20" sortBy="#{pessoaResponsavel.nomePessoa}" rendered="#{pessoaResponsavel.id != CandidatoControl.responsavel.id}">
+							<p:column width="20" sortBy="#{pessoaResponsavel.nomePessoa}" rendered="#{pessoaResponsavel.id != CandidatoControl.responsavel.id and (pessoaResponsavel.isAtivo)}">
 								<!--  
 								<f:facet name="header">
 									<h:outputText value="Nome"></h:outputText>
@@ -714,7 +714,7 @@
 								<h:outputText value="#{pessoaResponsavel.nomePessoa }"></h:outputText>
 							</p:column>
 							
-							<p:column width="20" sortBy="#{pessoaResponsavel.cpf}" rendered="#{pessoaResponsavel.id != CandidatoControl.responsavel.id}">
+							<p:column width="20" sortBy="#{pessoaResponsavel.cpf}" rendered="#{pessoaResponsavel.id != CandidatoControl.responsavel.id and (pessoaResponsavel.isAtivo)}">
 								<!--  
 								<f:facet name="header">
 									<h:outputText value="cpf"></h:outputText>
@@ -723,7 +723,7 @@
 								<h:outputText value="#{pessoaResponsavel.cpf}"></h:outputText>
 							</p:column>
 							
-							<p:column width="20" sortBy="#{pessoaResponsavel.enumFiliacao}" rendered="#{pessoaResponsavel.id != CandidatoControl.responsavel.id}">
+							<p:column width="20" sortBy="#{pessoaResponsavel.enumFiliacao}" rendered="#{pessoaResponsavel.id != CandidatoControl.responsavel.id and (pessoaResponsavel.isAtivo)}">
 								<!-- 
 								<f:facet name="header">
 									<h:outputText value="filiacao"></h:outputText>
@@ -732,7 +732,7 @@
 								<h:outputText value="#{pessoaResponsavel.enumFiliacao}"></h:outputText>
 							</p:column>
 							
-							<p:column width="20" rendered="#{pessoaResponsavel.id != CandidatoControl.responsavel.id}">
+							<p:column width="20" rendered="#{pessoaResponsavel.id != CandidatoControl.responsavel.id and (pessoaResponsavel.isAtivo)}">
 								<!--  
 								<f:facet name="header">
 									<h:outputText value="Ações"></h:outputText>

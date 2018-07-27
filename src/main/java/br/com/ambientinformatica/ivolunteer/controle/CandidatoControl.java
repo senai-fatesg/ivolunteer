@@ -303,11 +303,11 @@ public class CandidatoControl {
 		}
 	}
 
-	// remove o responsavel do candidato
+	// inativa o responsavel do candidato
 	public void removerResponsavel(Responsavel responsavel) {
 		try {
-			this.candidato.removerResponsavel(responsavel);
-			responsavelDao.excluirPorId(responsavel.getId());
+			responsavel.inativaResponsavel();
+			responsavelDao.alterar(responsavel);
 			candidatoDao.consultarCandidatoCompleto(this.candidato);
 			UtilFaces.addMensagemFaces("Responsável de " + this.candidato.getNomePessoa() + " removido.");
 		} catch (Exception e) {

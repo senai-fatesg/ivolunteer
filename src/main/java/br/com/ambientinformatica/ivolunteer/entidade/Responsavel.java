@@ -14,6 +14,7 @@ public class Responsavel extends Pessoa implements java.io.Serializable {
 
 	public Responsavel() {}
 	
+	private Boolean isAtivo = true;
 	private String indicacao;
 	private String informacoesSobreIntituicao;
 	private String nomePessoaMoraComCrianca;
@@ -50,6 +51,18 @@ public class Responsavel extends Pessoa implements java.io.Serializable {
 
 	public void setIndicacao(String indicacao) {
 		this.indicacao = indicacao;
+	}
+
+	public Boolean getIsAtivo() {
+		return isAtivo;
+	}
+
+	public void setIsAtivo(Boolean isAtivo) {
+		this.isAtivo = isAtivo;
+	}
+	
+	public void inativaResponsavel() {
+		setIsAtivo(false);
 	}
 
 	public String getInformacoesSobreIntituicao() {

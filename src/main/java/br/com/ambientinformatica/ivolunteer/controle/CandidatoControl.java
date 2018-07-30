@@ -54,7 +54,7 @@ public class CandidatoControl {
 	private Candidato filtro = new Candidato();
 
 	// instancia de candidato carregada para realização de consulta
-	private Candidato candidatoConsulta = new Candidato();
+	private String candidatoConsulta;
 
 	// lista utilizada na consulta do candidato
 	private List<Candidato> listaCandidato = new ArrayList<Candidato>();
@@ -91,7 +91,7 @@ public class CandidatoControl {
 
 	public void listarCandidatoPorNome(ActionEvent evt) {
 		try {
-			listaCandidato = candidatoDao.listaCandidatoPorNome(candidatoConsulta.getNomePessoa());
+			listaCandidato = candidatoDao.listaCandidatoPorNome(this.candidatoConsulta);
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -390,10 +390,10 @@ public class CandidatoControl {
 	// Aplica Filtro
 	public void aplicarFiltro(ActionEvent evt) {
 		try {
-			if (candidatoConsulta.getNomePessoa() == null || candidatoConsulta.getNomePessoa().isEmpty()) {
+			if (candidatoConsulta == null || candidatoConsulta.isEmpty()) {
 				listaCandidato = candidatoDao.listaCandidato();
 			} else {
-				listaCandidato = candidatoDao.listaCandidatoPorNome(this.candidato.getNomePessoa());
+				listaCandidato = candidatoDao.listaCandidatoPorNome(this.candidatoConsulta);
 			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
@@ -553,11 +553,11 @@ public class CandidatoControl {
 		return listaResponsavel;
 	}
 
-	public Pessoa getCandidatoConsulta() {
+	public String getCandidatoConsulta() {
 		return candidatoConsulta;
 	}
 
-	public void setCandidatoConsulta(Candidato candidatoConsulta) {
+	public void setCandidatoConsulta(String candidatoConsulta) {
 		this.candidatoConsulta = candidatoConsulta;
 	}
 

@@ -17,11 +17,11 @@
 				height="550px" resizable="false" closeOnEscape="true">
 				
 				<a:field label="Nome">
-					<p:inputText id="filtro" value="#{CandidatoControl.candidatoConsulta.nomePessoa}" />
+					<p:inputText id="filtro" value="#{CandidatoControl.candidatoConsulta}" />
 				</a:field>
 				
 				<a:field spaceLeft="15px">
-					<p:commandButton id="filtrar" icon="ui-icon-search" actionListener="#{CandidatoControl.aplicarFiltro}" update="listaCandidato" />
+					<p:commandButton id="filtrar" icon="ui-icon-search" actionListener="#{CandidatoControl.aplicarFiltro}" update="listaCandidato" ajax="true" />
 				</a:field>
 				
 				<a:newLine />

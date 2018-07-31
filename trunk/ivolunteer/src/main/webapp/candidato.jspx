@@ -604,12 +604,12 @@
 
 									<a:field label="Renda:" >
 										<p:inputNumber id="renda" value="#{CandidatoControl.responsavel.renda}" 
-										symbol="R$ " minValue="0" maxValue="1000000" />
+										symbol="R$ " minValue="0" maxValue="1000000" thousandSeparator="." decimalSeparator=","/>
 									</a:field>
 
 									<a:field label="Renda extra:" spaceLeft="15px">
 										<p:inputNumber id="rendaExtra" value="#{CandidatoControl.responsavel.rendaExtra}"
-										symbol="R$ " minValue="0" maxValue="1000000" />
+										symbol="R$ " minValue="0" maxValue="1000000" thousandSeparator="." decimalSeparator=","/>
 									</a:field>
 
 									<a:field label="Número de pessoas:" spaceLeft="15px">
@@ -630,14 +630,14 @@
 
 									<a:field label="Valor do benefício:" rendered="#{CandidatoControl.responsavel.recebeBeneficio}">
 										<p:inputNumber id="valorBeneficio" value="#{CandidatoControl.responsavel.valorBeneficio}"
-										symbol="R$ " minValue="0" maxValue="1000000" />
+										symbol="R$ " minValue="0" maxValue="1000000" thousandSeparator="." decimalSeparator=","/>
 									</a:field>
 									
 									<a:newLine/>
 
 									<a:field label="Total:" >
 										<p:inputNumber id="totalRenda" disabled="true" value="#{CandidatoControl.totalRenda}"
-										symbol="R$ " minValue="0" maxValue="1000000" />
+										symbol="R$ " minValue="0" maxValue="1000000" thousandSeparator="." decimalSeparator=","/>
 									</a:field>
 
 									<a:newLine />
@@ -656,7 +656,8 @@
 									</a:field>
 
 									<a:field label="Valor do aluguel:" spaceLeft="15px" rendered="#{CandidatoControl.responsavel.enumTipoMoradia == 'ALUGADA'}">
-										<p:inputNumber id="valorAluguel" value="#{CandidatoControl.responsavel.valorAluguel}" minValue="0" maxValue="1000000" /> 
+										<p:inputNumber id="valorAluguel" value="#{CandidatoControl.responsavel.valorAluguel}" 
+										symbol="R$ " thousandSeparator="." decimalSeparator="," minValue="0" maxValue="1000000" /> 
 									</a:field>
 
 									<a:newLine />

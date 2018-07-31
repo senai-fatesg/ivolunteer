@@ -603,11 +603,13 @@
 									<h4>Renda Familiar</h4>
 
 									<a:field label="Renda:" >
-										<p:inputNumber id="renda" value="#{CandidatoControl.responsavel.renda}" minValue="0" maxValue="1000000" />
+										<p:inputNumber id="renda" value="#{CandidatoControl.responsavel.renda}" 
+										symbol="R$ " minValue="0" maxValue="1000000" />
 									</a:field>
 
 									<a:field label="Renda extra:" spaceLeft="15px">
-										<p:inputNumber id="rendaExtra" value="#{CandidatoControl.responsavel.rendaExtra}" minValue="0" maxValue="1000000" />
+										<p:inputNumber id="rendaExtra" value="#{CandidatoControl.responsavel.rendaExtra}"
+										symbol="R$ " minValue="0" maxValue="1000000" />
 									</a:field>
 
 									<a:field label="Número de pessoas:" spaceLeft="15px">
@@ -627,13 +629,15 @@
 									<a:newLine/>
 
 									<a:field label="Valor do benefício:" rendered="#{CandidatoControl.responsavel.recebeBeneficio}">
-										<p:inputNumber id="valorBeneficio" value="#{CandidatoControl.responsavel.valorBeneficio}" minValue="0" maxValue="1000000" />
+										<p:inputNumber id="valorBeneficio" value="#{CandidatoControl.responsavel.valorBeneficio}"
+										symbol="R$ " minValue="0" maxValue="1000000" />
 									</a:field>
 									
 									<a:newLine/>
 
 									<a:field label="Total:" >
-										<p:inputNumber id="totalRenda" value="#{CandidatoControl.totalRenda}" minValue="0" maxValue="1000000" />
+										<p:inputNumber id="totalRenda" disabled="true" value="#{CandidatoControl.totalRenda}"
+										symbol="R$ " minValue="0" maxValue="1000000" />
 									</a:field>
 
 									<a:newLine />
@@ -643,8 +647,6 @@
 
 								<p:panel rendered="true" id="residencia">
 									<h4>Residência</h4>
-
-									<a:newLine />
 
 									<a:field label="Tipo Moradia">
 										<p:selectOneMenu id="tipoMoradia" value="#{CandidatoControl.responsavel.enumTipoMoradia}" style="width:200px;">
@@ -678,8 +680,6 @@
 
 								<p:panel rendered="true" id="instituto">
 									<h4>Instituição</h4>
-
-									<a:newLine />
 
 									<a:field label="Criança possui nescessidades especiais?">
 										<p:inputText id="necessidadesEspeciais" value="#{CandidatoControl.responsavel.necessidadesEspeciais}" />

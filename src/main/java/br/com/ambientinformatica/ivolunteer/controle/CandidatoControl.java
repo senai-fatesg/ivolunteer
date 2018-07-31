@@ -1,16 +1,23 @@
 package br.com.ambientinformatica.ivolunteer.controle;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
+import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -50,6 +57,7 @@ import br.com.ambientinformatica.util.UtilLog;
 public class CandidatoControl {
 
 	private Candidato candidato = new Candidato();
+	private boolean maiorDeIdade;
 	private Responsavel responsavel = new Responsavel();
 	private Candidato filtro = new Candidato();
 
@@ -73,7 +81,7 @@ public class CandidatoControl {
 
 	// Flags para indicar se existe alguma alteração em andamento no formulario
 	private boolean editando;
-	
+
 	@Autowired
 	private CandidatoDao candidatoDao;
 
@@ -175,14 +183,14 @@ public class CandidatoControl {
 				System.out.println("É UM CANDIDATO!!!!!!!");
 				if (EhEnderecoConsistente(candidatoOuResponsavel)) {
 					if (this.endereco.getId() == null) {
-						//this.endereco.setIsAtivo(true);
+						// this.endereco.setIsAtivo(true);
 						candidato.addEndereco(endereco);
 						candidatoDao.alterar(this.candidato);
 						this.candidato = candidatoDao.consultarCandidatoCompleto(this.candidato);
 						endereco = new Endereco();
 						UtilFaces.addMensagemFaces("Endereço de " + this.candidato.getNomePessoa() + " adicionado.");
 					} else {
-						//this.candidato.addEndereco(this.endereco);
+						// this.candidato.addEndereco(this.endereco);
 						enderecoDao.alterar(this.endereco);
 						this.candidato = candidatoDao.consultarCandidatoCompleto(this.candidato);
 						this.endereco = new Endereco();
@@ -193,28 +201,29 @@ public class CandidatoControl {
 				}
 
 			} else if (candidatoOuResponsavel.getClass().equals(Responsavel.class)) {
-				if(EhResponsavelConsistente()) {
-					if(candidatoOuResponsavel.getId() == null) {
+				if (EhResponsavelConsistente()) {
+					if (candidatoOuResponsavel.getId() == null) {
 						this.candidato.addResponsavel((Responsavel) candidatoOuResponsavel);
 						candidatoDao.alterar(this.candidato);
-						//responsavelDao.incluir((Responsavel) candidatoOuResponsavel);
+						// responsavelDao.incluir((Responsavel)
+						// candidatoOuResponsavel);
 					} else {
 						if (EhEnderecoConsistente(candidatoOuResponsavel)) {
 							if (this.enderecoResponsavel.getId() == null) {
-								//this.enderecoResponsavel.setIsAtivo(true);
+								// this.enderecoResponsavel.setIsAtivo(true);
 								this.responsavel.addEndereco(this.enderecoResponsavel);
 								this.responsavelDao.alterar(this.responsavel);
 								this.responsavel = responsavelDao.consultaResponsavelCompleto(this.responsavel);
 								this.enderecoResponsavel = new Endereco();
-								UtilFaces.addMensagemFaces("Endereço de responsável " 
-								+ this.responsavel.getNomePessoa() + " adicionado.");
+								UtilFaces.addMensagemFaces(
+										"Endereço de responsável " + this.responsavel.getNomePessoa() + " adicionado.");
 							} else {
-								//this.responsavel.addEndereco(this.enderecoResponsavel);
+								// this.responsavel.addEndereco(this.enderecoResponsavel);
 								enderecoDao.alterar(this.enderecoResponsavel);
 								this.responsavel = responsavelDao.consultaResponsavelCompleto(this.responsavel);
 								this.enderecoResponsavel = new Endereco();
-								UtilFaces.addMensagemFaces("Endereço de responsável " 
-								+ this.responsavel.getNomePessoa() + " atualizado.");
+								UtilFaces.addMensagemFaces(
+										"Endereço de responsável " + this.responsavel.getNomePessoa() + " atualizado.");
 							}
 						} else {
 							UtilFaces.addMensagemFaces("Preencha os campos de endereço de responsável corretamente");
@@ -230,6 +239,47 @@ public class CandidatoControl {
 			UtilLog.getLog().error(erro);
 		}
 	}
+	
+	public void calculaIdadeCandidato(SelectEvent event) {
+		
+		Calendar dataDeHoje = Calendar.getInstance();
+		dataDeHoje.setTime(new Date(System.currentTimeMillis()));
+		
+		Date dataNasc = (Date) event.getObject();
+		
+		Calendar DataNascCand = Calendar.getInstance();
+		DataNascCand.setTime(dataNasc);
+		
+		long datn = dataNasc.getTime();
+		
+		long diferencaEmDias = ((System.currentTimeMillis() - datn) / ( 1000 * 60 * 60 * 24));
+		
+		long anosDeIdade = diferencaEmDias / 365;
+		
+		if(anosDeIdade <= 17) {
+			this.maiorDeIdade = false;
+			System.out.println("MENOR QUE 17");
+			System.out.println("IDADE: " + anosDeIdade);
+			return;
+		}
+		if(anosDeIdade >= 19) {
+			this.maiorDeIdade = true;
+			System.out.println("MAIOR OU IGUAL À 19");
+			System.out.println("IDADE: " + anosDeIdade);
+			return;
+		} 
+		if(anosDeIdade == 18) {
+			DataNascCand.set(Calendar.YEAR, dataDeHoje.get(Calendar.YEAR));
+			if(DataNascCand.before(dataDeHoje)) {
+				System.out.println("JÁ FEZ ANIVERSÁRIO!!!");
+				this.maiorDeIdade = true;
+				return;
+			} else {
+				System.out.println("NÃO FEZ ANIVERSÁRIO!!!");
+				this.maiorDeIdade = false;
+			}	
+		}
+	}
 
 	/**
 	 * Calcula a renda do responsavel, a renda e calculada com base na renda +
@@ -242,26 +292,29 @@ public class CandidatoControl {
 	// Adionar as responsaveis ao candidato
 	public void adicionarResponsavel(ActionEvent evt) {
 		try {
-			if (EhResponsavelConsistente()) {
-				if (this.responsavel.getId() == null) {
-					preenchaInformcoesDefaultResponsavel(responsavel);
-					responsavel.setEnumTipoPessoa(EnumTipoPessoa.RESPONSAVEL);
-					this.candidato.addResponsavel(this.responsavel);
-					this.candidatoDao.alterar(this.candidato);
-					// listaResponsavel = candidato.getListaResponsavel();
-					this.responsavel = new Responsavel();
-					UtilFaces.addMensagemFaces("Responsável adicionado.");
+			if(validarCandidato(this.candidato)) {
+				if (EhResponsavelConsistente()) {
+					if (this.responsavel.getId() == null) {
+						preenchaInformcoesDefaultResponsavel(responsavel);
+						responsavel.setEnumTipoPessoa(EnumTipoPessoa.RESPONSAVEL);
+						this.candidato.addResponsavel(this.responsavel);
+						this.candidatoDao.alterar(this.candidato);
+						// listaResponsavel = candidato.getListaResponsavel();
+						this.responsavel = new Responsavel();
+						UtilFaces.addMensagemFaces("Responsável adicionado.");
+					} else {
+						this.responsavelDao.alterar(this.responsavel);
+						// this.candidato.addResponsavel(responsavelDao.consultar(this.responsavel));
+						// this.candidatoDao.alterar(this.candidato);
+						this.candidato = this.candidatoDao.consultarCandidatoCompleto(this.candidato);
+						this.responsavel = new Responsavel();
+						UtilFaces.addMensagemFaces("Responsável atualizado.");
+					}
 				} else {
-					this.responsavelDao.alterar(this.responsavel);
-					//this.candidato.addResponsavel(responsavelDao.consultar(this.responsavel));
-					//this.candidatoDao.alterar(this.candidato);
-					this.candidato = this.candidatoDao.consultarCandidatoCompleto(this.candidato);
-					this.responsavel = new Responsavel();
-					UtilFaces.addMensagemFaces("Responsável atualizado.");
+					UtilFaces.addMensagemFaces("Preencha os dados de responsável corretamente");
 				}
-
 			} else {
-				UtilFaces.addMensagemFaces("Preencha os dados de responsável corretamente");
+				UtilFaces.addMensagemFaces("Preencha os dados de candidato corretamente");
 			}
 		} catch (Exception erro) {
 			UtilFaces.addMensagemFaces("Ocorreu uma falha ao tentar incluir o Responsável na lista.");
@@ -291,8 +344,8 @@ public class CandidatoControl {
 				enderecoDao.alterar(endereco);
 				this.responsavel = responsavelDao.consultaResponsavelCompleto(this.responsavel);
 				UtilFaces.addMensagemFaces("Endereço de responsável demovido.");
-				//enderecoDao.desativaEndereco(endereco);
-				//this.responsavel.getListaEndereco().remove(endereco);
+				// enderecoDao.desativaEndereco(endereco);
+				// this.responsavel.getListaEndereco().remove(endereco);
 				// this.responsavel.getListaEndereco().add(endAtualizado);
 				// responsavel.removerEndereco(endereco);
 			} else {
@@ -452,6 +505,14 @@ public class CandidatoControl {
 	public void gerarPdf() {
 		return;
 	}
+	
+	public boolean isMaiorDeIdade() {
+		return maiorDeIdade;
+	}
+
+	public void setMaiorDeIdade(boolean maiorDeIdade) {
+		this.maiorDeIdade = maiorDeIdade;
+	}
 
 	public Telefone getTelefone() {
 		return telefone;
@@ -509,14 +570,12 @@ public class CandidatoControl {
 		return false;
 	}
 
-	public void validarCandidato(Candidato candidato) throws Exception {
-
-		if (candidato.getNomePessoa().isEmpty()) {
-			throw new Exception("Por favor, informe o nome do candidato");
-		}
-
-		if (candidato.getNaturalidade().isEmpty()) {
-			throw new Exception("Por favor, informe a naturalidade do candidato");
+	public boolean validarCandidato(Candidato candidato) {
+		if (candidato.getNomePessoa().isEmpty() && candidato.getNaturalidade().isEmpty()) {
+			UtilFaces.addMensagemFaces("Por favor, informe o nome do candidato e a naturalidade");
+			return false;
+		} else {
+			return true;
 		}
 	}
 

@@ -21,10 +21,10 @@
 				height="550px" resizable="false" closeOnEscape="true">
 
 				<a:field label="Nome">
-					<p:inputText id="filtro" value="#{FuncionarioControl.filtro.nomePessoa}" />
+					<p:inputText id="filtro" value="#{FuncionarioControl.nomeFuncionarioPesquisa}" />
 				</a:field>
 				<a:field spaceLeft="15px">
-					<p:commandButton id="filtrar" icon="ui-icon-search" actionListener="#{FuncionarioControl.aplicarFiltro}" process="@this" update="@this" oncomplete="PF('consultar').show();" />
+					<p:commandButton id="filtrar" icon="ui-icon-search" actionListener="#{FuncionarioControl.aplicarFiltro}" process="filtrar filtro" update="listaFuncionarios" oncomplete="PF('consultar').show();" ajax="true"/>
 				</a:field>
 				<a:newLine />
 				<p:dataTable id="listaFuncionarios" var="itemFuncionario" style="width:100%" value="#{FuncionarioControl.funcionarios}" widgetVar="funcionariosTable" emptyMessage="Sem Registros a Exibir">
@@ -145,38 +145,70 @@
 					</p:panel>
 				</p:tab>
 				<p:tab title="Dados Profissionais" id="tabFuncionarioDadosProfissionais">
-					<p:panel id="painelFuncionarioDadosProfissionais" rendered="true" style="height: 90pt!important;">
-						<a:field label="Tipo de Funcionário" spaceLeft="10px">
+					<p:panel id="painelFuncionarioDadosProfissionais" rendered="true" style="height:170px!important;">
+						<a:field label="Tipo de Funcionário:" >
 							<p:selectOneMenu id="enumTipoFuncionario" value="#{FuncionarioControl.funcionario.tipoFuncionario}" style="width:120px;" >
 								<p:ajax event="change" update="painelFuncionarioDadosProfissionais" />
 								<f:selectItems value="#{FuncionarioControl.completeEnumTipoFuncionario}"></f:selectItems>
 							</p:selectOneMenu>
 						</a:field>
-						<a:field label="Cargo" spaceLeft="10px">
+						<a:field label="Cargo:" spaceLeft="10px">
 							<p:selectOneMenu id="enumCargo" value="#{FuncionarioControl.funcionario.cargo}" style="width:100px;">
 								<f:selectItems value="#{FuncionarioControl.completeEnumCargo}"></f:selectItems>
 							</p:selectOneMenu>
 						</a:field>
-						<a:field spaceLeft="10px" label="Data Contratação">
+						
+						<a:field rendered="#{FuncionarioControl.funcionario.tipoFuncionario == 'VOLUNTARIO'}" spaceLeft="10px" label="Data Entrada:">
+							<p:calendar value="#{FuncionarioControl.funcionario.dataEntrada}" locale="pt" navigator="true" pattern="dd/MM/yyy"
+								style="width:150px;" />
+						</a:field>
+						
+						<a:field rendered="#{FuncionarioControl.funcionario.tipoFuncionario != 'VOLUNTARIO'}" spaceLeft="10px" label="Data Contratação:">
 							<p:calendar value="#{FuncionarioControl.funcionario.dataAdmissao}" locale="pt" navigator="true" pattern="dd/MM/yyy"
 								style="width:150px;" />
 						</a:field>
-						<a:field label="Data Demissão" spaceLeft="10px">
+						
+						<a:field label="Data Demissão:" spaceLeft="10px">
 							<p:calendar value="#{FuncionarioControl.funcionario.dataDemissao}" locale="pt" navigator="true" pattern="dd/MM/yyy"
 								style="width:150px;" />
 						</a:field>
-						<a:field rendered="#{FuncionarioControl.funcionario.tipoFuncionario!='VOLUNTARIO'}" label="Salário" spaceLeft="10px">
-							<p:inputText id="inputSalario" value="#{FuncionarioControl.funcionario.valorInicial}" style="width:100px" />
+						
+						<a:field label="Salário:" spaceLeft="10px">
+							<p:inputNumber id="inputSalario" value="#{FuncionarioControl.funcionario.valorInicial}" style="width:100px" 
+							symbol="R$ " minValue="0" maxValue="1000000" thousandSeparator="." decimalSeparator=","/>
 						</a:field>
-						<a:field rendered="#{FuncionarioControl.funcionario.tipoFuncionario!='VOLUNTARIO'}" label="CTPS" spaceLeft="10px">
+						
+						<a:field label="CTPS:" spaceLeft="10px">
 							<p:inputText id="inputCTPS" value="#{FuncionarioControl.funcionario.carteiraDeTrabalho}" style="width:100px" />
 						</a:field>
-						<a:field rendered="#{FuncionarioControl.funcionario.tipoFuncionario!='VOLUNTARIO'}" label="Serie" spaceLeft="10px">
+						
+						<a:field label="Serie:" spaceLeft="10px">
 							<p:inputText id="inputSerie" value="#{FuncionarioControl.funcionario.serieCarteiraDeTrabalho}" style="width:25px" />
 						</a:field>
 						<a:newLine/>
-						<a:field rendered="#{FuncionarioControl.funcionario.tipoFuncionario!='VOLUNTARIO'}" label="PIS" spaceLeft="10px">
+						
+						<a:field label="PIS:" >
 							<p:inputText id="inputPIS" value="#{FuncionarioControl.funcionario.pis}"  />
+						</a:field>
+						
+						<a:field rendered="#{FuncionarioControl.funcionario.tipoFuncionario =='TERCEIRIZADO'}" label="CNPJ:" spaceLeft="10px">
+							<p:inputMask id="inputCNPJ" mask="99.999.999/9999-99" value="#{FuncionarioControl.funcionario.cnpj}"  />
+						</a:field>
+						
+						<a:field rendered="#{FuncionarioControl.funcionario.tipoFuncionario =='TERCEIRIZADO'}" label="Empresa:" spaceLeft="10px">
+							<p:inputText id="inputNomeEmpresa" value="#{FuncionarioControl.funcionario.nomeEmpresa}"  />
+						</a:field>
+						
+						<a:field rendered="#{FuncionarioControl.funcionario.tipoFuncionario =='TERCEIRIZADO'}" label="Segmento:" spaceLeft="10px">
+							<p:inputText id="inputSegmento" value="#{FuncionarioControl.funcionario.segmento}"  />
+						</a:field>
+						
+						<a:field rendered="#{FuncionarioControl.funcionario.tipoFuncionario =='TERCEIRIZADO'}" label="Email:" spaceLeft="10px">
+							<p:inputText id="inputEmail" value="#{FuncionarioControl.funcionario.email}"  />
+						</a:field>
+						
+						<a:field rendered="#{FuncionarioControl.funcionario.tipoFuncionario =='TERCEIRIZADO'}" label="Site:" spaceLeft="10px">
+							<p:inputText id="inputSite" value="#{FuncionarioControl.funcionario.site}"  />
 						</a:field>
 					</p:panel>
 				</p:tab>

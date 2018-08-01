@@ -44,7 +44,7 @@ public class FuncionarioControl {
 	private Endereco endereco = new Endereco();
 	private Cidade cidade = new Cidade();
 	private Telefone telefone = new Telefone();
-	private Funcionario filtro = new Funcionario();
+	private String nomeFuncionarioPesquisa;
 	private Frequencia frequencia = new Frequencia();
 	
 	private List<Frequencia> frequencias = new ArrayList<Frequencia>();
@@ -108,8 +108,9 @@ public class FuncionarioControl {
 
 	public void excluir(Funcionario funcionario) {
 		try {
-			funcionarioDao.excluirPorId(funcionario.getId());
-			this.funcionarios.remove(funcionario);
+			funcionario.desativa();
+			funcionarioDao.alterar(funcionario);
+			listarTodosFuncionarios(null);
 			UtilFaces.addMensagemFaces("Funcionário excluido com sucesso!");
 		} catch (PersistenciaException e) {
 			UtilFaces.addMensagemFaces(e);
@@ -119,7 +120,7 @@ public class FuncionarioControl {
 
 	public void listarTodosFuncionarios(ActionEvent evt) {
 		try {
-			this.funcionarios = funcionarioDao.listar();
+			this.funcionarios = funcionarioDao.listarFuncionariosAtivos();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -198,11 +199,12 @@ public class FuncionarioControl {
 	
 	// Aplica Filtro
 	public void aplicarFiltro(ActionEvent evt) {
+		System.out.println("ENTROU NO METODO APLICAR FILTRO");
 		try {
-			if (this.filtro.getNomePessoa() == null || this.filtro.getNomePessoa().isEmpty()) {
-				this.funcionarios = this.funcionarioDao.listar();
+			if (this.nomeFuncionarioPesquisa == null || this.nomeFuncionarioPesquisa.isEmpty()) {
+				this.funcionarios = this.funcionarioDao.listarFuncionariosAtivos();
 			} else {				
-				this.funcionarios = this.funcionarioDao.listarPorNome(this.filtro.getNomePessoa());
+				this.funcionarios = this.funcionarioDao.listarPorNome(this.nomeFuncionarioPesquisa);
 			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
@@ -267,12 +269,12 @@ public class FuncionarioControl {
 		return frequencias;
 	}
 
-	public Funcionario getFiltro() {
-		return filtro;
+	public String getNomeFuncionarioPesquisa() {
+		return nomeFuncionarioPesquisa;
 	}
 
-	public void setFiltro(Funcionario filtro) {
-		this.filtro = filtro;
+	public void setNomeFuncionarioPesquisa(String nomeFuncionarioPesquisa) {
+		this.nomeFuncionarioPesquisa = nomeFuncionarioPesquisa;
 	}
 
 	public Funcionario carregarFuncionario(SelectEvent evt) {

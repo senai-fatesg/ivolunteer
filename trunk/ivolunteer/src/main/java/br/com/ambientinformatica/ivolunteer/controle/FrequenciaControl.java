@@ -211,7 +211,7 @@ public class FrequenciaControl {
 	
 	
 	public List<Funcionario> consultarFuncionario(String query) {		
-		 this.funcionarios = funcionarioDao.listarPorNome(query);
+		 this.funcionarios = funcionarioDao.listarPorNomeAtivo(query);
 	
 		return funcionarios;
 	}

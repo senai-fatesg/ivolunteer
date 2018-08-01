@@ -137,9 +137,9 @@ public class FuncionarioControl {
 		String site = (String) ob;
 		if(!site.equals("")) {
 			System.out.println(site + " <- VALOR SITE");
-			if(!site.contains("www.")) {
+			if(!site.contains("www.") || !site.contains(".com")) {
 				((UIInput)uc).setValid(false);
-				UtilFaces.addMensagemFaces("Site inválido. O site deve conter 'www.'.");
+				UtilFaces.addMensagemFaces("Site inválido. O site deve conter 'www.' e '.com'.");
 			}
 		}
 	}
@@ -238,7 +238,7 @@ public class FuncionarioControl {
 			if (this.nomeFuncionarioPesquisa == null || this.nomeFuncionarioPesquisa.isEmpty()) {
 				this.funcionarios = this.funcionarioDao.listarFuncionariosAtivos();
 			} else {				
-				this.funcionarios = this.funcionarioDao.listarPorNome(this.nomeFuncionarioPesquisa);
+				this.funcionarios = this.funcionarioDao.listarPorNomeAtivo(this.nomeFuncionarioPesquisa);
 			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
@@ -316,7 +316,7 @@ public class FuncionarioControl {
 	}
 
 	public List<Funcionario> consultarFuncionario(String query) {
-		List<Funcionario> func = funcionarioDao.listarPorNome(query);
+		List<Funcionario> func = funcionarioDao.listarPorNomeAtivo(query);
 		return func;
 	}
 

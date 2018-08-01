@@ -16,12 +16,13 @@ public class FuncionarioDaoJpa extends PersistenciaJpa<Funcionario> implements F
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Funcionario> listarPorNome(String nome) {
+	public List<Funcionario> listarPorNomeAtivo(String nome) {
 
 		Query query = em
-				.createQuery("SELECT f FROM Funcionario f WHERE UPPER(f.nomePessoa) like :nome");
+				.createQuery("SELECT f FROM Funcionario f WHERE UPPER(f.nomePessoa) like :nome "
+						+ "AND WHERE f.isAtivo = :true");
 		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
-		
+		query.setParameter("true", true);
 		return  (List<Funcionario>) query.getResultList();
 	}
 

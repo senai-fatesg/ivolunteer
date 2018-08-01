@@ -20,6 +20,8 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private Boolean isAtivo = true;
+	
 	private String pis;
 
 	private String carteiraDeTrabalho;
@@ -88,10 +90,20 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 	
 	@Enumerated
 	private EnumCargo cargo;
-
 	
+	// atributos de funcionario terceirizado
+	private String segmento;
 	
+	private String cnpj;
 	
+	private String nomeEmpresa;
+	
+	private String site;
+	
+	// atributos de voluntário
+	@Temporal(TemporalType.DATE)
+	private Date dataEntrada;
+		
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "funcionario_id")
 	private List<Frequencia> frequencias = new ArrayList<Frequencia>();
@@ -104,12 +116,28 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 	@JoinColumn(name = "funcionario_id")
 	private List<AtividadeDiaria> atividadesDiaria = new ArrayList<AtividadeDiaria>();
 
+	public Boolean getIsAtivo() {
+		return isAtivo;
+	}
+
+	public void setIsAtivo(Boolean isAtivo) {
+		this.isAtivo = isAtivo;
+	}
+
 	public String getPis() {
 		return pis;
 	}
 
 	public void setPis(String pis) {
 		this.pis = pis;
+	}
+
+	public Date getDataEntrada() {
+		return dataEntrada;
+	}
+
+	public void setDataEntrada(Date dataEntrada) {
+		this.dataEntrada = dataEntrada;
 	}
 
 	public String getCarteiraDeTrabalho() {
@@ -134,6 +162,22 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 
 	public void setReservista(String reservista) {
 		this.reservista = reservista;
+	}
+
+	public String getNomeEmpresa() {
+		return nomeEmpresa;
+	}
+
+	public void setNomeEmpresa(String nomeEmpresa) {
+		this.nomeEmpresa = nomeEmpresa;
+	}
+
+	public String getSite() {
+		return site;
+	}
+
+	public void setSite(String site) {
+		this.site = site;
 	}
 
 	public Date getEmissaoReservista() {
@@ -174,6 +218,22 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 
 	public void setNomePai(String nomePai) {
 		this.nomePai = nomePai;
+	}
+
+	public String getSegmento() {
+		return segmento;
+	}
+
+	public void setSegmento(String segmento) {
+		this.segmento = segmento;
+	}
+
+	public String getCnpj() {
+		return cnpj;
+	}
+
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
 	}
 
 	public String getNomeMae() {
@@ -574,6 +634,10 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 		} else if (!zona.equals(other.zona))
 			return false;
 		return true;
+	}
+
+	public void desativa() {
+		this.setIsAtivo(false);
 	}
 	
 }

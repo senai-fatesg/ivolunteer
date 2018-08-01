@@ -19,10 +19,7 @@ public class FuncionarioDaoJpa extends PersistenciaJpa<Funcionario> implements F
 	public List<Funcionario> listarPorNome(String nome) {
 
 		Query query = em
-				.createQuery("select f from Funcionario f  "
-						+ " left join fetch f.frequencias freq "
-						
-						+ " where upper(f.nomePessoa) like :nome");
+				.createQuery("SELECT f FROM Funcionario f WHERE UPPER(f.nomePessoa) like :nome");
 		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
 		
 		return  (List<Funcionario>) query.getResultList();
@@ -56,4 +53,15 @@ public Funcionario carregarFuncionarioComEndereco(Funcionario funcionario) {
 			return null;
 		}
 	}
+
+		@Override
+		public List<Funcionario> listarFuncionariosAtivos() {
+			try {
+				Query query = em.createQuery("SELECT f FROM Funcionario f WHERE f.isAtivo = :true");
+				query.setParameter("true", true);
+				return (List<Funcionario>) query.getResultList();
+			} catch (NoResultException e) {
+				return null;
+			}
+		}
 }

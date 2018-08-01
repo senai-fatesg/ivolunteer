@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -64,6 +65,7 @@ public class FuncionarioControl {
 	public void confirmar(ActionEvent evt) {
 		try {
 			if(this.funcionario.getId() == null) {
+				this.funcionario.setEnumTipoPessoa(EnumTipoPessoa.COLABORADOR);
 				this.funcionario.addEndereco(endereco);
 				funcionarioDao.incluir(this.funcionario);
 			} else {
@@ -117,7 +119,39 @@ public class FuncionarioControl {
 		}
 
 	}
+	
+	public void validaEmail(FacesContext fc, UIComponent uc, Object ob) {
+		System.out.println("VALIDANDO EMAIL");
+		String email = (String) ob;
+		if(!email.equals("")) {
+			System.out.println(email + " <- VALOR EMAIL");
+			if(!email.contains(".com") || !email.contains("@")) {
+				((UIInput)uc).setValid(false);
+				UtilFaces.addMensagemFaces("Email inválido. O email deve conter '@' e '.com'.");
+			}
+		}
+	}
+	
+	public void validaSite(FacesContext fc, UIComponent uc, Object ob) {
+		System.out.println("VALIDANDO SITE");
+		String site = (String) ob;
+		if(!site.equals("")) {
+			System.out.println(site + " <- VALOR SITE");
+			if(!site.contains("www.")) {
+				((UIInput)uc).setValid(false);
+				UtilFaces.addMensagemFaces("Site inválido. O site deve conter 'www.'.");
+			}
+		}
+	}
 
+	public void limpaCamposFuncionario() {
+		this.funcionario.setSegmento(null);
+		this.funcionario.setSite(null);
+		this.funcionario.setEmail(null);
+		this.funcionario.setNomeEmpresa(null);
+		this.funcionario.setCnpj(null);
+	}
+	
 	public void listarTodosFuncionarios(ActionEvent evt) {
 		try {
 			this.funcionarios = funcionarioDao.listarFuncionariosAtivos();

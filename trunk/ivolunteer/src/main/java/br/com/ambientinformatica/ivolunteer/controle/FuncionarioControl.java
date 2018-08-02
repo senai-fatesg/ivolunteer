@@ -7,7 +7,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
-import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
@@ -35,6 +34,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.Telefone;
 import br.com.ambientinformatica.ivolunteer.persistencia.FuncionarioDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.PessoaDao;
+import br.com.ambientinformatica.ivolunteer.persistencia.TelefoneDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 
 @Controller("FuncionarioControl")
@@ -44,7 +44,7 @@ public class FuncionarioControl {
 	private Funcionario funcionario = new Funcionario();
 	private Endereco endereco = new Endereco();
 	private Cidade cidade = new Cidade();
-	private Telefone telefone = new Telefone();
+	private Telefone telefoneEmpresa = new Telefone();
 	private String nomeFuncionarioPesquisa;
 	private Frequencia frequencia = new Frequencia();
 	
@@ -53,9 +53,12 @@ public class FuncionarioControl {
 	private GradeHorario gradeHorario = new GradeHorario();
 
 	@Autowired
+	private TelefoneDao telefoneDao;
+	@Autowired
 	private FuncionarioDao funcionarioDao;
 	
 	private List<Funcionario> funcionarios = new ArrayList<Funcionario>();
+	private Telefone telefoneFuncionario = new Telefone();
 
 	@PostConstruct
 	public void init() {
@@ -152,6 +155,22 @@ public class FuncionarioControl {
 		this.funcionario.setCnpj(null);
 	}
 	
+	public void validaNome(FacesContext fc, UIComponent uc, Object ob) {
+		String nome = (String) ob;
+		if(nome.isEmpty()) {
+			((UIInput) uc).setValid(false);
+			UtilFaces.addMensagemFaces("Nome é obrigatório!");
+		}
+	}
+	
+	public void validaCPF(FacesContext fc, UIComponent uc, Object ob) {
+		String cpf = (String) ob;
+		if(cpf.isEmpty()) {
+			((UIInput) uc).setValid(false);
+			UtilFaces.addMensagemFaces("CPF é obrigatório!");
+		}
+	}
+	
 	public void listarTodosFuncionarios(ActionEvent evt) {
 		try {
 			this.funcionarios = funcionarioDao.listarFuncionariosAtivos();
@@ -214,18 +233,31 @@ public class FuncionarioControl {
 		}
 	}
 
-	public void addTelefone(ActionEvent ev) {
+	public void adicionarTelefone(String empresaOuFuncionario) {
 		try {
-			this.funcionario.addTelefone(telefone);
-			this.telefone = new Telefone();
+			if(empresaOuFuncionario.equals("Empresa")) {
+				this.funcionario.addTelefoneEmpresa(this.telefoneFuncionario);
+				this.telefoneEmpresa = new Telefone();
+				UtilFaces.addMensagemFaces("Telefone da empresa adicionado.");
+			} else if(empresaOuFuncionario.equals("Funcionario")) {
+				this.funcionario.addTelefone(this.telefoneFuncionario);
+				this.telefoneFuncionario = new Telefone();
+				UtilFaces.addMensagemFaces("Telefone de funcionário adicionado.");
+			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
 
-	public void removerTelefone(Telefone telefone) {
+	public void desativarTelefone(Telefone telefone, String empresaOuFuncionario) {
 		try {
-			this.funcionario.removerTelefone(telefone);
+			if(empresaOuFuncionario.equals("Empresa")) {
+				telefone.desativa();
+				telefoneDao.alterar(this.telefoneEmpresa);
+			} else if(empresaOuFuncionario.equals("Funcionario")) {
+				telefone.desativa();
+				telefoneDao.alterar(this.telefoneFuncionario);
+			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -286,12 +318,20 @@ public class FuncionarioControl {
 		this.cidade = cidade;
 	}
 
-	public Telefone getTelefone() {
-		return telefone;
+	public Telefone getTelefoneEmpresa() {
+		return telefoneEmpresa;
 	}
 
-	public void setTelefone(Telefone telefone) {
-		this.telefone = telefone;
+	public void setTelefoneEmpresa(Telefone telefoneEmpresa) {
+		this.telefoneEmpresa = telefoneEmpresa;
+	}
+
+	public Telefone getTelefoneFuncionario() {
+		return telefoneFuncionario;
+	}
+
+	public void setTelefoneFuncionario(Telefone telefoneFuncionario) {
+		this.telefoneFuncionario = telefoneFuncionario;
 	}
 
 	// Frequencia - Carregar lista para registar presença

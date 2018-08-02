@@ -48,7 +48,7 @@
 						<p:commandButton icon="ui-icon-pencil"
 							action="#{FuncionarioControl.carregaFuncionarioAlteracao(itemFuncionario)}"
 							oncomplete="PF('consultar').hide();"
-							update=":formCorpo:tabCadastro" />
+							update=":formCorpo:tabCadastro" process="@this" />
 						<p:commandButton icon="ui-icon-trash"
 							actionListener="#{FuncionarioControl.excluir(itemFuncionario)}"
 							update="listaFuncionarios" />
@@ -63,7 +63,7 @@
 					<p:panel rendered="true" style="height: 170pt!important">
 						<a:field label="Nome">
 							<p:inputText value="#{FuncionarioControl.funcionario.nomePessoa}"
-								style="width:280px;" />
+								style="width:280px;" validator="#{FuncionarioControl.validaNome}" />
 						</a:field>
 
 						<a:field label="Sexo" spaceLeft="10px">
@@ -77,7 +77,8 @@
 						<a:field label="CPF" spaceLeft="10px">
 							<p:inputMask id="cpf"
 								value="#{FuncionarioControl.funcionario.cpf}"
-								mask="999.999.999-99" style="width:120px!important;">
+								mask="999.999.999-99" style="width:120px!important;"
+								validator="#{FuncionarioControl.validaCPF}">
 							</p:inputMask>
 						</a:field>
 
@@ -187,16 +188,15 @@
 					id="tabFuncionarioDadosProfissionais">
 					<p:panel id="panelDadosProfissionais">
 						<p:panel id="painelFuncionarioDadosProfissionais" rendered="true"
-							style="height:160px!important;">
+							style="height:287px!important;">
 
 							<h4>Dados do Funcionário</h4>
 
 							<a:field label="Tipo de Funcionário:">
 								<p:selectOneMenu id="enumTipoFuncionario"
 									value="#{FuncionarioControl.funcionario.tipoFuncionario}"
-									style="width:120px;">
-									<p:ajax event="change"
-										update="panelDadosProfissionais"
+									style="width:160px;">
+									<p:ajax event="change" update="panelDadosProfissionais"
 										listener="#{FuncionarioControl.limpaCamposFuncionario}" />
 									<f:selectItems
 										value="#{FuncionarioControl.completeEnumTipoFuncionario}"></f:selectItems>
@@ -205,7 +205,7 @@
 							<a:field label="Cargo:" spaceLeft="10px">
 								<p:selectOneMenu id="enumCargo"
 									value="#{FuncionarioControl.funcionario.cargo}"
-									style="width:100px;">
+									style="width:150px;">
 									<f:selectItems value="#{FuncionarioControl.completeEnumCargo}"></f:selectItems>
 								</p:selectOneMenu>
 							</a:field>
@@ -242,35 +242,75 @@
 									maxValue="1000000" thousandSeparator="." decimalSeparator="," />
 							</a:field>
 
-							<a:field label="CTPS:" spaceLeft="10px">
-								<p:inputText id="inputCTPS"
+							<a:newLine />
+
+							<a:field label="CTPS:">
+								<p:inputMask id="inputCTPS" mask="9999999"
 									value="#{FuncionarioControl.funcionario.carteiraDeTrabalho}"
 									style="width:100px" />
 							</a:field>
 
-							<a:newLine />
-
-							<a:field label="Serie:">
-								<p:inputText id="inputSerie"
-									value="#{FuncionarioControl.funcionario.serieCarteiraDeTrabalho}"
-									style="width:25px" />
-							</a:field>
-
 							<a:field label="PIS:" spaceLeft="15px">
-								<p:inputText id="inputPIS"
+								<p:inputMask id="inputPIS" mask="999.99999.99-9"
 									value="#{FuncionarioControl.funcionario.pis}" />
 							</a:field>
+
+							<a:field label="Serie:" spaceLeft="15px">
+								<p:inputMask id="inputSerie" mask="9999"
+									value="#{FuncionarioControl.funcionario.serieCarteiraDeTrabalho}"
+									style="width:50px" />
+							</a:field>
+
+							<a:newLine />
+
+							<a:field label="Telefone:">
+								<p:inputMask id="inputTelefoneFuncionario" mask="(99)99999-9999"
+									value="#{FuncionarioControl.telefoneFuncionario}" />
+							</a:field>
+
+							<p:commandButton id="addTelFuncionario" icon="ui-icon-plus"
+								action="#{FuncionarioControl.adicionarTelefone('Funcionario')}"
+								style="margin-top: 23px; margin-left: 15px;	"
+								update="painelFuncionarioDadosProfissionais" />
+							<p:tooltip value="Adicionar telefone de funcionário"
+								for="addTelFuncionario" position="right" />
+
+							<a:newLine />
+							<a:newLine />
+
+							<p:dataTable id="listaTelefoneFuncionario"
+								value="#{FuncionarioControl.funcionario.listaTelefone}"
+								var="telFuncionario" emptyMessage="Nenhum telefone adicionado."
+								style="width:100%">
+
+								<f:facet name="header">Telefones do Funcionário</f:facet>
+
+								<p:column>
+									<p:outputLabel value="#{telFuncionario}" />
+								</p:column>
+
+								<p:column>
+									<p:commandButton id="editaTelFuncionario" icon="icon-pencil"
+										action="#{FuncionarioControl.editarTelefone(telFuncionairo)}"
+										update="painelFuncionarioDadosProfissionais" />
+									<p:commandButton id="desativaTelFuncionario" icon="icon-trash"
+										action="#{FuncionarioControl.desativarTelefone(telFuncionairo)}"
+										update="painelFuncionarioDadosProfissionais" />
+								</p:column>
+							</p:dataTable>
 
 						</p:panel>
 
 						<a:newLine />
 
-						<p:panel id="panelDadosEmpresa" rendered="#{FuncionarioControl.funcionario.tipoFuncionario == 'TERCEIRIZADO'}" style="height:110px!important;">
+						<p:panel id="panelDadosEmpresa"
+							rendered="#{FuncionarioControl.funcionario.tipoFuncionario == 'TERCEIRIZADO'}"
+							style="height:240px!important;">
 
 							<p:tab id="tabDadosEmpresa">
 								<h4>Dados da Empresa</h4>
 
-								<a:field label="CNPJ:" spaceLeft="10px">
+								<a:field label="CNPJ:">
 									<p:inputMask id="inputCNPJ" mask="99.999.999/9999-99"
 										value="#{FuncionarioControl.funcionario.cnpj}" />
 								</a:field>
@@ -296,6 +336,42 @@
 										value="#{FuncionarioControl.funcionario.site}"
 										validator="#{FuncionarioControl.validaSite}" />
 								</a:field>
+
+								<a:field label="Telefone:">
+									<p:inputMask id="inputTelefoneEmpresa" mask="(99)99999-9999"
+										value="#{FuncionarioControl.telefoneEmpresa}" />
+								</a:field>
+
+								<p:commandButton id="addTelEmpresa" icon="ui-icon-plus"
+									action="#{FuncionarioControl.adicionarTelefone('Empresa')}"
+									style="float: left; margin-top: 23px; margin-left: 10px;"
+									update="panelDadosEmpresa" />
+								<p:tooltip value="Adicionar telefone da empresa"
+									for="addTelEmpresa" position="right" />
+
+								<a:newLine />
+								<a:newLine />
+
+								<p:dataTable id="listaTelefoneEmpresa"
+									value="#{FuncionarioControl.funcionario.telefonesEmpresa}"
+									var="telEmpresa" emptyMessage="Nenhum telefone adicionado."
+									style="width:100%">
+
+									<f:facet name="header">Telefones da Empresa</f:facet>
+
+									<p:column>
+										<p:outputLabel value="#{telEmpresa}" />
+									</p:column>
+
+									<p:column>
+										<p:commandButton id="editaTelFuncionario" icon="icon-pencil"
+											action="#{FuncionarioControl.editarTelefone(telEmpresa)}"
+											update="panelDadosEmpresa" />
+										<p:commandButton id="desativaTelEmpresa" icon="icon-trash"
+											action="#{FuncionarioControl.desativarTelefone(telEmpresa)}"
+											update="panelDadosEmpresa" />
+									</p:column>
+								</p:dataTable>
 							</p:tab>
 						</p:panel>
 					</p:panel>

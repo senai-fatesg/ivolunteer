@@ -17,7 +17,17 @@ public class Telefone {
 	private EnumTipoTelefone enumTipoTelefone;
 	private String numeroTelefone;
 	private String nomePessoaRecado;
+
+	private Boolean isAtivo = true;
 	
+	public Boolean getIsAtivo() {
+		return isAtivo;
+	}
+
+	public void setIsAtivo(Boolean isAtivo) {
+		this.isAtivo = isAtivo;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -92,4 +102,8 @@ public class Telefone {
 		   return false;
 	   return true;
    }
+
+	public void desativa() {
+		setIsAtivo(false);
+	}
 }

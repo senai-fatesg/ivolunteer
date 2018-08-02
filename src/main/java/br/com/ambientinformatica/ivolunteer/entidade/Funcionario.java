@@ -96,6 +96,10 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 	
 	private String cnpj;
 	
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name = "empresa_id" )
+	private List<Telefone> telefonesEmpresa = new ArrayList<Telefone>() ; 
+	
 	private String nomeEmpresa;
 	
 	private String site;
@@ -115,6 +119,14 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "funcionario_id")
 	private List<AtividadeDiaria> atividadesDiaria = new ArrayList<AtividadeDiaria>();
+
+	public List<Telefone> getTelefonesEmpresa() {
+		return telefonesEmpresa;
+	}
+
+	public void setTelefonesEmpresa(List<Telefone> telefonesEmpresa) {
+		this.telefonesEmpresa = telefonesEmpresa;
+	}
 
 	public Boolean getIsAtivo() {
 		return isAtivo;
@@ -638,6 +650,12 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 
 	public void desativa() {
 		this.setIsAtivo(false);
+	}
+
+	public void addTelefoneEmpresa(Telefone telefoneEmpresa) {
+			if(!this.telefonesEmpresa.contains(telefoneEmpresa)) {
+				this.telefonesEmpresa.add(telefoneEmpresa);
+			}
 	}
 	
 }

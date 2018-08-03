@@ -32,6 +32,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.ivolunteer.entidade.GradeHorario;
 import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.Telefone;
+import br.com.ambientinformatica.ivolunteer.persistencia.EnderecoDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.FuncionarioDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.PessoaDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.TelefoneDao;
@@ -47,16 +48,18 @@ public class FuncionarioControl {
 	private Telefone telefoneEmpresa = new Telefone();
 	private String nomeFuncionarioPesquisa;
 	private Frequencia frequencia = new Frequencia();
-	
+
 	private List<Frequencia> frequencias = new ArrayList<Frequencia>();
 
 	private GradeHorario gradeHorario = new GradeHorario();
 
 	@Autowired
+	private EnderecoDao enderecoDao;
+	@Autowired
 	private TelefoneDao telefoneDao;
 	@Autowired
 	private FuncionarioDao funcionarioDao;
-	
+
 	private List<Funcionario> funcionarios = new ArrayList<Funcionario>();
 	private Telefone telefoneFuncionario = new Telefone();
 
@@ -67,17 +70,20 @@ public class FuncionarioControl {
 
 	public void confirmar(ActionEvent evt) {
 		try {
-			if(this.funcionario.getId() == null) {
+			if (this.funcionario.getId() == null) {
 				this.funcionario.setEnumTipoPessoa(EnumTipoPessoa.COLABORADOR);
 				this.funcionario.addEndereco(endereco);
 				funcionarioDao.incluir(this.funcionario);
 			} else {
 				this.funcionario.addEndereco(this.endereco);
+				enderecoDao.alterar(this.endereco);
 				funcionarioDao.alterar(this.funcionario);
 			}
 			listarTodosFuncionarios(null);
 			this.endereco = new Endereco();
 			this.funcionario = new Funcionario();
+			this.telefoneEmpresa = new Telefone();
+			this.telefoneFuncionario = new Telefone();
 			UtilFaces.addMensagemFaces("Informações salvas com sucesso!");
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
@@ -91,13 +97,13 @@ public class FuncionarioControl {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
-	
-	public void carregaFuncionarioAlteracao(Funcionario funcionario){
+
+	public void carregaFuncionarioAlteracao(Funcionario funcionario) {
 		try {
-	      this.funcionario = funcionarioDao.carregarFuncionarioComEndereco(funcionario);
-      } catch (PersistenciaException e) {
-      	UtilFaces.addMensagemFaces(e);
-      }		
+			this.funcionario = funcionarioDao.carregarFuncionarioComEnderecoTelefone(funcionario);
+		} catch (PersistenciaException e) {
+			UtilFaces.addMensagemFaces(e);
+		}
 	}
 
 	public void incluir(ActionEvent evt) {
@@ -122,26 +128,26 @@ public class FuncionarioControl {
 		}
 
 	}
-	
+
 	public void validaEmail(FacesContext fc, UIComponent uc, Object ob) {
 		System.out.println("VALIDANDO EMAIL");
 		String email = (String) ob;
-		if(!email.equals("")) {
+		if (!email.equals("")) {
 			System.out.println(email + " <- VALOR EMAIL");
-			if(!email.contains(".com") || !email.contains("@")) {
-				((UIInput)uc).setValid(false);
+			if (!email.contains(".com") || !email.contains("@")) {
+				((UIInput) uc).setValid(false);
 				UtilFaces.addMensagemFaces("Email inválido. O email deve conter '@' e '.com'.");
 			}
 		}
 	}
-	
+
 	public void validaSite(FacesContext fc, UIComponent uc, Object ob) {
 		System.out.println("VALIDANDO SITE");
 		String site = (String) ob;
-		if(!site.equals("")) {
+		if (!site.equals("")) {
 			System.out.println(site + " <- VALOR SITE");
-			if(!site.contains("www.") || !site.contains(".com")) {
-				((UIInput)uc).setValid(false);
+			if (!site.contains("www.") || !site.contains(".com")) {
+				((UIInput) uc).setValid(false);
 				UtilFaces.addMensagemFaces("Site inválido. O site deve conter 'www.' e '.com'.");
 			}
 		}
@@ -154,23 +160,23 @@ public class FuncionarioControl {
 		this.funcionario.setNomeEmpresa(null);
 		this.funcionario.setCnpj(null);
 	}
-	
+
 	public void validaNome(FacesContext fc, UIComponent uc, Object ob) {
 		String nome = (String) ob;
-		if(nome.isEmpty()) {
+		if (nome.isEmpty()) {
 			((UIInput) uc).setValid(false);
 			UtilFaces.addMensagemFaces("Nome é obrigatório!");
 		}
 	}
-	
+
 	public void validaCPF(FacesContext fc, UIComponent uc, Object ob) {
 		String cpf = (String) ob;
-		if(cpf.isEmpty()) {
+		if (cpf.isEmpty()) {
 			((UIInput) uc).setValid(false);
 			UtilFaces.addMensagemFaces("CPF é obrigatório!");
 		}
 	}
-	
+
 	public void listarTodosFuncionarios(ActionEvent evt) {
 		try {
 			this.funcionarios = funcionarioDao.listarFuncionariosAtivos();
@@ -187,15 +193,14 @@ public class FuncionarioControl {
 		}
 	}
 
-
 	public List<SelectItem> getCompleteEnumEstado() {
 		return UtilFaces.getListEnum(EnumEstado.values());
 	}
-	
+
 	public List<SelectItem> getCompleteEnumCargo() {
 		return UtilFaces.getListEnum(EnumCargo.values());
 	}
-	
+
 	public List<SelectItem> getCompleteEnumTipoFuncionario() {
 		return UtilFaces.getListEnum(EnumTipoFuncionario.values());
 	}
@@ -211,7 +216,7 @@ public class FuncionarioControl {
 	public List<SelectItem> getCompleteEnumEstadoCivil() {
 		return UtilFaces.getListEnum(EnumEstadoCivil.values());
 	}
-	
+
 	public List<SelectItem> getCompleteEnumDiaSemana() {
 		return UtilFaces.getListEnum(EnumDiaSemana.values());
 	}
@@ -233,13 +238,27 @@ public class FuncionarioControl {
 		}
 	}
 
+	public void atualizarTelefone(String empresaOuFuncionario) {
+		if (empresaOuFuncionario.equals("Empresa")) {
+			this.telefoneDao.alterar(this.telefoneEmpresa);
+			this.telefoneEmpresa = new Telefone();
+			UtilFaces.addMensagemFaces("Telefone da empresa atualizado.");
+			//this.funcionario = funcionarioDao.carregarFuncionarioComEnderecoTelefone(this.funcionario);
+		} else if (empresaOuFuncionario.equals("Funcionario")) {
+			this.telefoneDao.alterar(this.telefoneFuncionario);
+			this.telefoneFuncionario = new Telefone();
+			UtilFaces.addMensagemFaces("Telefone do funcionário atualizado.");
+			this.funcionario = funcionarioDao.consultar(this.funcionario.getId());
+		}
+	}
+
 	public void adicionarTelefone(String empresaOuFuncionario) {
 		try {
-			if(empresaOuFuncionario.equals("Empresa")) {
-				this.funcionario.addTelefoneEmpresa(this.telefoneFuncionario);
+			if (empresaOuFuncionario.equals("Empresa")) {
+				this.funcionario.addTelefoneEmpresa(this.telefoneEmpresa);
 				this.telefoneEmpresa = new Telefone();
 				UtilFaces.addMensagemFaces("Telefone da empresa adicionado.");
-			} else if(empresaOuFuncionario.equals("Funcionario")) {
+			} else if (empresaOuFuncionario.equals("Funcionario")) {
 				this.funcionario.addTelefone(this.telefoneFuncionario);
 				this.telefoneFuncionario = new Telefone();
 				UtilFaces.addMensagemFaces("Telefone de funcionário adicionado.");
@@ -249,12 +268,20 @@ public class FuncionarioControl {
 		}
 	}
 
+	public void editarTelefone(Telefone telefone, String empresaOuFuncionario) {
+		if (empresaOuFuncionario.equals("Funcionario")) {
+			this.telefoneFuncionario = telefoneDao.consultar(telefone.getId());
+		} else if (empresaOuFuncionario.equals("Empresa")) {
+			this.telefoneEmpresa = telefoneDao.consultar(telefone.getId());
+		}
+	}
+
 	public void desativarTelefone(Telefone telefone, String empresaOuFuncionario) {
 		try {
-			if(empresaOuFuncionario.equals("Empresa")) {
+			if (empresaOuFuncionario.equals("Empresa")) {
 				telefone.desativa();
 				telefoneDao.alterar(this.telefoneEmpresa);
-			} else if(empresaOuFuncionario.equals("Funcionario")) {
+			} else if (empresaOuFuncionario.equals("Funcionario")) {
 				telefone.desativa();
 				telefoneDao.alterar(this.telefoneFuncionario);
 			}
@@ -262,14 +289,14 @@ public class FuncionarioControl {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
-	
+
 	// Aplica Filtro
 	public void aplicarFiltro(ActionEvent evt) {
 		System.out.println("ENTROU NO METODO APLICAR FILTRO");
 		try {
 			if (this.nomeFuncionarioPesquisa == null || this.nomeFuncionarioPesquisa.isEmpty()) {
 				this.funcionarios = this.funcionarioDao.listarFuncionariosAtivos();
-			} else {				
+			} else {
 				this.funcionarios = this.funcionarioDao.listarPorNomeAtivo(this.nomeFuncionarioPesquisa);
 			}
 		} catch (Exception e) {
@@ -359,8 +386,6 @@ public class FuncionarioControl {
 		List<Funcionario> func = funcionarioDao.listarPorNomeAtivo(query);
 		return func;
 	}
-
-
 
 	// metodo para preencher a data
 	public void preencheData(SelectEvent event) {

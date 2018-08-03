@@ -26,13 +26,16 @@
 					<p:inputText id="filtro"
 						value="#{FuncionarioControl.nomeFuncionarioPesquisa}" />
 				</a:field>
-				<a:field spaceLeft="15px">
-					<p:commandButton id="filtrar" icon="ui-icon-search"
-						actionListener="#{FuncionarioControl.aplicarFiltro}"
-						process="filtrar filtro" update="listaFuncionarios"
-						oncomplete="PF('consultar').show();" ajax="true" />
-				</a:field>
+
+				<p:commandButton id="filtrar" icon="ui-icon-search"
+					actionListener="#{FuncionarioControl.aplicarFiltro}"
+					process="filtrar filtro" update="listaFuncionarios"
+					oncomplete="PF('consultar').show();" ajax="true"
+					style="margin-top: 24px; margin-left: 10px;" />
+
 				<a:newLine />
+				<a:newLine />
+
 				<p:dataTable id="listaFuncionarios" var="itemFuncionario"
 					style="width:100%" value="#{FuncionarioControl.funcionarios}"
 					widgetVar="funcionariosTable" emptyMessage="Sem Registros a Exibir">
@@ -63,7 +66,8 @@
 					<p:panel rendered="true" style="height: 170pt!important">
 						<a:field label="Nome">
 							<p:inputText value="#{FuncionarioControl.funcionario.nomePessoa}"
-								style="width:280px;" validator="#{FuncionarioControl.validaNome}" />
+								style="width:280px;"
+								validator="#{FuncionarioControl.validaNome}" />
 						</a:field>
 
 						<a:field label="Sexo" spaceLeft="10px">
@@ -188,7 +192,7 @@
 					id="tabFuncionarioDadosProfissionais">
 					<p:panel id="panelDadosProfissionais">
 						<p:panel id="painelFuncionarioDadosProfissionais" rendered="true"
-							style="height:287px!important;">
+							style="height:305px!important;">
 
 							<h4>Dados do Funcionário</h4>
 
@@ -263,17 +267,37 @@
 
 							<a:newLine />
 
-							<a:field label="Telefone:">
-								<p:inputMask id="inputTelefoneFuncionario" mask="(99)99999-9999"
-									value="#{FuncionarioControl.telefoneFuncionario}" />
+							<a:field label="Tipo:">
+								<p:selectOneMenu id="tipoTelefone"
+									value="#{FuncionarioControl.telefoneFuncionario.enumTipoTelefone}"
+									style="width:100px!important;">
+									<f:selectItems id="selecionaEnum"
+										value="#{FuncionarioControl.completeEnumTipoTelefone}"
+										var="tipoTelefone" itemValue="#{tipoTelefone}"
+										itemLabel="#{tipoTelefone.descricao}" />
+								</p:selectOneMenu>
+							</a:field>
+
+							<a:field label="Telefone:" spaceLeft="15px">
+								<p:inputMask id="inputTelefoneFuncionario" mask="(99)9999-9999"
+									value="#{FuncionarioControl.telefoneFuncionario.numeroTelefone}" />
 							</a:field>
 
 							<p:commandButton id="addTelFuncionario" icon="ui-icon-plus"
+								rendered="#{FuncionarioControl.telefoneFuncionario.id == null}"
 								action="#{FuncionarioControl.adicionarTelefone('Funcionario')}"
 								style="margin-top: 23px; margin-left: 15px;	"
 								update="painelFuncionarioDadosProfissionais" />
 							<p:tooltip value="Adicionar telefone de funcionário"
 								for="addTelFuncionario" position="right" />
+
+							<p:commandButton id="attTelFuncionario" icon="ui-icon-refresh"
+								rendered="#{FuncionarioControl.telefoneFuncionario.id != null}"
+								action="#{FuncionarioControl.atualizarTelefone('Funcionario')}"
+								style="margin-top: 23px; margin-left: 15px;	"
+								update="painelFuncionarioDadosProfissionais" />
+							<p:tooltip value="Atualizar telefone de funcionário"
+								for="attTelFuncionario" position="right" />
 
 							<a:newLine />
 							<a:newLine />
@@ -285,17 +309,30 @@
 
 								<f:facet name="header">Telefones do Funcionário</f:facet>
 
-								<p:column>
-									<p:outputLabel value="#{telFuncionario}" />
+								<p:columnGroup type="header">
+									<p:row>
+										<p:column headerText="Tipo de Telefone" />
+										<p:column headerText="Número" />
+										<p:column headerText="Ações" />
+									</p:row>
+								</p:columnGroup>
+
+								<p:column rendered="#{telFuncionario.id != FuncionarioControl.telefoneFuncionario.id}" >
+									<p:outputLabel value="#{telFuncionario.enumTipoTelefone}" />
 								</p:column>
 
-								<p:column>
-									<p:commandButton id="editaTelFuncionario" icon="icon-pencil"
-										action="#{FuncionarioControl.editarTelefone(telFuncionairo)}"
-										update="painelFuncionarioDadosProfissionais" />
-									<p:commandButton id="desativaTelFuncionario" icon="icon-trash"
+								<p:column rendered="#{telFuncionario.id != FuncionarioControl.telefoneFuncionario.id}" >
+									<p:outputLabel value="#{telFuncionario.numeroTelefone}" />
+								</p:column>
+
+								<p:column rendered="#{telFuncionario.id != FuncionarioControl.telefoneFuncionario.id}" >
+									<p:commandButton id="editaTelFuncionario" icon="ui-icon-pencil"
+										action="#{FuncionarioControl.editarTelefone(telFuncionario, 'Funcionario')}"
+										update="formCorpo:tabCadastro:painelFuncionarioDadosProfissionais" />
+									<p:commandButton id="desativaTelFuncionario"
+										icon="ui-icon-trash"
 										action="#{FuncionarioControl.desativarTelefone(telFuncionairo)}"
-										update="painelFuncionarioDadosProfissionais" />
+										update="formCorpo:tabCadastro:painelFuncionarioDadosProfissionais" />
 								</p:column>
 							</p:dataTable>
 
@@ -338,8 +375,8 @@
 								</a:field>
 
 								<a:field label="Telefone:">
-									<p:inputMask id="inputTelefoneEmpresa" mask="(99)99999-9999"
-										value="#{FuncionarioControl.telefoneEmpresa}" />
+									<p:inputMask id="inputTelefoneEmpresa" mask="(99)9999-9999"
+										value="#{FuncionarioControl.telefoneEmpresa.numeroTelefone}" />
 								</a:field>
 
 								<p:commandButton id="addTelEmpresa" icon="ui-icon-plus"

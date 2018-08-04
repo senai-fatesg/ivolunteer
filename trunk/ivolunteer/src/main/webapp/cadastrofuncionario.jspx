@@ -268,7 +268,7 @@
 							<a:newLine />
 
 							<a:field label="Tipo:">
-								<p:selectOneMenu id="tipoTelefone"
+								<p:selectOneMenu id="tipoTelefoneFuncionario"
 									value="#{FuncionarioControl.telefoneFuncionario.enumTipoTelefone}"
 									style="width:100px!important;">
 									<f:selectItems id="selecionaEnum"
@@ -286,7 +286,7 @@
 							<p:commandButton id="addTelFuncionario" icon="ui-icon-plus"
 								rendered="#{FuncionarioControl.telefoneFuncionario.id == null}"
 								action="#{FuncionarioControl.adicionarTelefone('Funcionario')}"
-								style="margin-top: 23px; margin-left: 15px;	"
+								style="margin-top: 23px; margin-left: 10px;	"
 								update="painelFuncionarioDadosProfissionais" />
 							<p:tooltip value="Adicionar telefone de funcionário"
 								for="addTelFuncionario" position="right" />
@@ -317,21 +317,24 @@
 									</p:row>
 								</p:columnGroup>
 
-								<p:column rendered="#{telFuncionario.id != FuncionarioControl.telefoneFuncionario.id}" >
+								<p:column
+									rendered="#{telFuncionario.id != FuncionarioControl.telefoneFuncionario.id}">
 									<p:outputLabel value="#{telFuncionario.enumTipoTelefone}" />
 								</p:column>
 
-								<p:column rendered="#{telFuncionario.id != FuncionarioControl.telefoneFuncionario.id}" >
+								<p:column
+									rendered="#{telFuncionario.id != FuncionarioControl.telefoneFuncionario.id}">
 									<p:outputLabel value="#{telFuncionario.numeroTelefone}" />
 								</p:column>
 
-								<p:column rendered="#{telFuncionario.id != FuncionarioControl.telefoneFuncionario.id}" >
+								<p:column
+									rendered="#{telFuncionario.id != FuncionarioControl.telefoneFuncionario.id}">
 									<p:commandButton id="editaTelFuncionario" icon="ui-icon-pencil"
 										action="#{FuncionarioControl.editarTelefone(telFuncionario, 'Funcionario')}"
 										update="formCorpo:tabCadastro:painelFuncionarioDadosProfissionais" />
 									<p:commandButton id="desativaTelFuncionario"
 										icon="ui-icon-trash"
-										action="#{FuncionarioControl.desativarTelefone(telFuncionairo)}"
+										action="#{FuncionarioControl.desativarTelefone(telFuncionairo, 'Funcionario')}"
 										update="formCorpo:tabCadastro:painelFuncionarioDadosProfissionais" />
 								</p:column>
 							</p:dataTable>
@@ -342,7 +345,7 @@
 
 						<p:panel id="panelDadosEmpresa"
 							rendered="#{FuncionarioControl.funcionario.tipoFuncionario == 'TERCEIRIZADO'}"
-							style="height:240px!important;">
+							style="height:255px!important;">
 
 							<p:tab id="tabDadosEmpresa">
 								<h4>Dados da Empresa</h4>
@@ -374,16 +377,36 @@
 										validator="#{FuncionarioControl.validaSite}" />
 								</a:field>
 
-								<a:field label="Telefone:">
+								<a:field label="Tipo:">
+									<p:selectOneMenu id="tipoTelefoneEmpresa"
+										value="#{FuncionarioControl.telefoneEmpresa.enumTipoTelefone}"
+										style="width:100px!important;">
+										<f:selectItems id="selecionaEnumTelEmpresa"
+											value="#{FuncionarioControl.completeEnumTipoTelefone}"
+											var="tipoTelefone" itemValue="#{tipoTelefone}"
+											itemLabel="#{tipoTelefone.descricao}" />
+									</p:selectOneMenu>
+								</a:field>
+
+								<a:field label="Telefone:" spaceLeft="15px">
 									<p:inputMask id="inputTelefoneEmpresa" mask="(99)9999-9999"
 										value="#{FuncionarioControl.telefoneEmpresa.numeroTelefone}" />
 								</a:field>
 
 								<p:commandButton id="addTelEmpresa" icon="ui-icon-plus"
+									rendered="#{FuncionarioControl.telefoneEmpresa.id == null}"
 									action="#{FuncionarioControl.adicionarTelefone('Empresa')}"
 									style="float: left; margin-top: 23px; margin-left: 10px;"
 									update="panelDadosEmpresa" />
 								<p:tooltip value="Adicionar telefone da empresa"
+									for="addTelEmpresa" position="right" />
+
+								<p:commandButton id="attTelEmpresa" icon="ui-icon-refresh"
+									rendered="#{FuncionarioControl.telefoneEmpresa.id != null}"
+									action="#{FuncionarioControl.atualizarTelefone('Empresa')}"
+									style="float: left; margin-top: 23px; margin-left: 10px;"
+									update="panelDadosEmpresa" />
+								<p:tooltip value="Atualizar telefone da empresa"
 									for="addTelEmpresa" position="right" />
 
 								<a:newLine />
@@ -396,16 +419,28 @@
 
 									<f:facet name="header">Telefones da Empresa</f:facet>
 
-									<p:column>
-										<p:outputLabel value="#{telEmpresa}" />
+									<p:columnGroup type="header">
+										<p:row>
+											<p:column headerText="Tipo de Telefone" />
+											<p:column headerText="Número" />
+											<p:column headerText="Ações" />
+										</p:row>
+									</p:columnGroup>
+									
+									<p:column rendered="#{telEmpresa.id != FuncionarioControl.telefoneEmpresa.id}">
+										<p:outputLabel value="#{telEmpresa.enumTipoTelefone}" />
 									</p:column>
 
-									<p:column>
-										<p:commandButton id="editaTelFuncionario" icon="icon-pencil"
-											action="#{FuncionarioControl.editarTelefone(telEmpresa)}"
+									<p:column rendered="#{telEmpresa.id != FuncionarioControl.telefoneEmpresa.id}">
+										<p:outputLabel value="#{telEmpresa.numeroTelefone}" />
+									</p:column>
+
+									<p:column rendered="#{telEmpresa.id != FuncionarioControl.telefoneEmpresa.id}">
+										<p:commandButton id="editaTelFuncionario" icon="ui-icon-pencil"
+											action="#{FuncionarioControl.editarTelefone(telEmpresa, 'Empresa')}"
 											update="panelDadosEmpresa" />
-										<p:commandButton id="desativaTelEmpresa" icon="icon-trash"
-											action="#{FuncionarioControl.desativarTelefone(telEmpresa)}"
+										<p:commandButton id="desativaTelEmpresa" icon="ui-icon-trash"
+											action="#{FuncionarioControl.desativarTelefone(telEmpresa, 'Empresa')}"
 											update="panelDadosEmpresa" />
 									</p:column>
 								</p:dataTable>

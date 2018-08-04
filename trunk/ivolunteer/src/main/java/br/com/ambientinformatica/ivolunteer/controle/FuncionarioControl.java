@@ -243,7 +243,7 @@ public class FuncionarioControl {
 			this.telefoneDao.alterar(this.telefoneEmpresa);
 			this.telefoneEmpresa = new Telefone();
 			UtilFaces.addMensagemFaces("Telefone da empresa atualizado.");
-			//this.funcionario = funcionarioDao.carregarFuncionarioComEnderecoTelefone(this.funcionario);
+			this.funcionario = funcionarioDao.carregarFuncionarioComEnderecoTelefone(this.funcionario);
 		} else if (empresaOuFuncionario.equals("Funcionario")) {
 			this.telefoneDao.alterar(this.telefoneFuncionario);
 			this.telefoneFuncionario = new Telefone();

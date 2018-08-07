@@ -82,4 +82,20 @@ public class CandidatoDaoJpa extends PersistenciaJpa<Candidato> implements Candi
 		return (List<Candidato>) query.getResultList();
 	}
 
+	@Override
+	public List<Candidato> listarCandidatosAtivos() {
+		Query buscaCandidatosAtivos = em.createQuery("SELECT p FROM Candidato p WHERE p.isAtivo = :true");
+		buscaCandidatosAtivos.setParameter("true", true);
+		return (List<Candidato>) buscaCandidatosAtivos.getResultList();
+	}
+
+	@Override
+	public List<Candidato> listarCandidatosAtivosPorNome(String candidatoConsulta) {
+		Query buscaCandidatoPorNome = em.createQuery("SELECT c FROM Candidato c WHERE UPPER(c.nomePessoa) LIKE :nomeCandidato "
+				+ " AND c.isAtivo = :true");
+		buscaCandidatoPorNome.setParameter("nomeCandidato", "%" + candidatoConsulta.toUpperCase() + "%");
+		buscaCandidatoPorNome.setParameter("true", true);
+		return (List<Candidato>) buscaCandidatoPorNome.getResultList();
+	}
+
 }

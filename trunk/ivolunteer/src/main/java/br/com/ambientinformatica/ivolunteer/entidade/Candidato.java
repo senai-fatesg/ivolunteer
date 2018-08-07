@@ -12,7 +12,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 public class Candidato extends Pessoa implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+	private Boolean isAtivo = true;
 	private String formacao;
 	private Date ano;
 	private Date semestre;
@@ -57,6 +57,12 @@ public class Candidato extends Pessoa implements java.io.Serializable {
 	private String parentescoPNE;
 	private String necessidadePNE;
 	
+	public Boolean getIsAtivo() {
+		return isAtivo;
+	}
+	public void setIsAtivo(Boolean isAtivo) {
+		this.isAtivo = isAtivo;
+	}
 	public String getFormacao() {
 		return formacao;
 	}
@@ -197,6 +203,9 @@ public class Candidato extends Pessoa implements java.io.Serializable {
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	public void desativa() {
+		setIsAtivo(false);
 	}
 	
 }

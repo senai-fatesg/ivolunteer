@@ -12,6 +12,7 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -381,8 +382,23 @@ public class CandidatoControl {
 	public void desativarCandidato(Candidato candidato) {
 		try {
 			if (listaCandidato.contains(candidato)) {
+				Candidato cand = candidatoDao.consultarCandidatoCompleto(candidato);
+				System.out.println("QTD DE ENDEREÇOS: " + cand.getListaEndereco().size());
+				if (cand.getListaEndereco().size() > 0) {
+					for (Endereco end : cand.getListaEndereco()) {
+						end.inativaEndereco();
+						enderecoDao.alterar(end);
+					}
+				}
+				if (cand.getListaResponsavel().size() > 0) {
+					for (Responsavel resp : cand.getListaResponsavel()) {
+						resp.inativaResponsavel();
+						responsavelDao.alterar(resp);
+					}
+				}
 				candidato.desativa();
 				candidatoDao.alterar(candidato);
+				System.out.println("QTD DE RESPONSÁVEIS: " + cand.getListaResponsavel().size());
 				UtilFaces.addMensagemFaces("Candidato desativado com sucesso!");
 				listarTodosCandidatos();
 			}
@@ -562,7 +578,23 @@ public class CandidatoControl {
 			return true;
 		}
 	}
+	
+	public void validaCandidatoNome(FacesContext fc, UIComponent uc, Object ob) {
+		String nome = (String) ob;
+		if(nome.isEmpty()) {
+			((UIInput) uc).setValid(false);
+			UtilFaces.addMensagemFaces("Nome de candidato é obrigatório.");
+		}
+	}
 
+	public void validaCandidatoCPF(FacesContext fc, UIComponent uc, Object ob) {
+		String cpf = (String) ob;
+		if(cpf.isEmpty()) {
+			((UIInput) uc).setValid(false);
+			UtilFaces.addMensagemFaces("CPF de candidato é obrigatório.");
+		}
+	}
+	
 	private boolean EhResponsavelConsistente() {
 		if (this.responsavel.getNomePessoa() != null && !this.responsavel.getNomePessoa().isEmpty()
 				&& this.responsavel.getCpf() != null && !this.responsavel.getCpf().isEmpty()) {

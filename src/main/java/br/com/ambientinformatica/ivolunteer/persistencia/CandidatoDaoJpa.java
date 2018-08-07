@@ -38,22 +38,6 @@ public class CandidatoDaoJpa extends PersistenciaJpa<Candidato> implements Candi
 
 	@Override
 	public Candidato consultarCandidatoCompleto(Candidato candidato) {
-		/*Query carregaCandidatoComEndereco = em.createQuery("SELECT p FROM Pessoa p "
-				+ " left join fetch p.listaEndereco listaEnd WHERE p.id = :idCandidado "
-				+ " AND listaEnd.isAtivo = :true"
-				+ " AND p.enumTipoPessoa = :tipoPessoa");
-		carregaCandidatoComEndereco.setParameter("idCandidato", candidato.getId());
-		carregaCandidatoComEndereco.setParameter("true", true);
-		carregaCandidatoComEndereco.setParameter("tipoPessoa", EnumTipoPessoa.CANDIDATO);
-		Candidato cand = (Candidato) carregaCandidatoComEndereco.getSingleResult();
-		
-		Query carregaCandidatoResponsaveis = em.createQuery("SELECT p FROM Pessoa p"
-				+ " left join fetch Responsavel");
-		*/
-		
-		//cand.getListaEndereco();
-		//cand.getListaResponsavel();
-		
 		Candidato cand = consultar(candidato.getId());
 		
 		Query carregaTodosEnderecos = em.createQuery("SELECT c FROM Candidato c LEFT JOIN FETCH c.listaEndereco ends"
@@ -65,8 +49,7 @@ public class CandidatoDaoJpa extends PersistenciaJpa<Candidato> implements Candi
 		} catch (NoResultException e) {
 			System.out.println("SEM LISTA ENDEREÇOS!");
 		}
-		
-		
+
 		Query carregaResponsaveis = em.createQuery("SELECT c FROM Candidato c LEFT JOIN FETCH c.listaResponsavel resp"
 				+ " WHERE c.id = :id");
 		carregaResponsaveis.setParameter("id", cand.getId());

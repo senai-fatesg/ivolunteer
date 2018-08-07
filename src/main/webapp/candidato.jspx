@@ -11,7 +11,7 @@
 		<p:panel header="Solicitação de vaga" id="panel">
 
 			<p:commandButton id="consultar" value="Consultar" action="#{CandidatoControl.listarTodosCandidatos}"
-				icon="ui-icon-search" onclick="PF('consultar').show();" />
+				icon="ui-icon-search" onclick="PF('consultar').show();" process="@this" />
 
 			<p:dialog id="modalPesquisa" header="Consultar" widgetVar="consultar"
 				modal="true" maximizable="false" minimizable="false" width="40%"
@@ -23,7 +23,7 @@
 				</a:field>
 
 				<p:commandButton id="filtrar" icon="ui-icon-search"
-					action="#{CandidatoControl.aplicarFiltro}" update="listaCandidato"
+					action="#{CandidatoControl.aplicarFiltro}" process="filtrar filtro" update="listaCandidato"
 					ajax="true" style="margin-left: 10px; margin-top: 24px;" />
 
 				<a:newLine />
@@ -33,18 +33,18 @@
 					style="width:100%" value="#{CandidatoControl.listaCandidato}"
 					widgetVar="funcionariosTable" emptyMessage="Sem Registros a Exibir">
 
-					<p:column headerText="Nome" width="30%">#{itemCandidato.nomePessoa}</p:column>
+					<p:column headerText="Nome" width="25%">#{itemCandidato.nomePessoa}</p:column>
+					<p:column headerText="CPF" width="12%">#{itemCandidato.cpf}</p:column>
 
-
-					<p:column width="6%">
+					<p:column width="8%">
 						<p:commandButton id="editarCandidato" icon="ui-icon-pencil"
 							action="#{CandidatoControl.carregaCandidatoAlteracao(itemCandidato)}"
-							oncomplete="PF('consultar').hide();" update=":formCorpo:panel" />
+							oncomplete="PF('consultar').hide();" update=":formCorpo:panel" process="@this"/>
 						<p:tooltip for="editarCandidato" position="top" value="Editar candidato." />
 
 						<p:commandButton id="inativaUsuario" icon="ui-icon-trash"
 							action="#{CandidatoControl.desativarCandidato(itemCandidato)}"
-							update="listaCandidato">
+							update="listaCandidato" process="@this">
 							<p:confirm header="Confirmar desativação!"
 								message="Tem certeza que deseja desativar o candidato #{itemCandidato.nomePessoa} ?" icon="ui-icon-alert" />
 							<p:tooltip for="inativaUsuario" position="top"
@@ -84,11 +84,8 @@
 										<p:inputText id="nomePessoa"
 											value="#{CandidatoControl.candidato.nomePessoa}"
 											style="width:535px" required="false"
-											requiredMessage="Por favor, informe o nome">
-										</p:inputText>
+											requiredMessage="Por favor, informe o nome" validator="#{CandidatoControl.validaCandidatoNome}" />
 
-										<p:tooltip id="toolTipTrack" for="nomePessoa"
-											value="informe o nome do candidato" trackMouse="true" />
 									</a:field>
 
 									<a:field label="Data de nascimento" spaceLeft="15px">
@@ -106,7 +103,8 @@
 									<a:field label="CPF" spaceLeft="15px">
 										<p:inputMask id="cpf"
 											value="#{CandidatoControl.candidato.cpf}"
-											mask="999.999.999-99"></p:inputMask>
+											mask="999.999.999-99" validator="#{CandidatoControl.validaCandidatoCPF}" />
+										
 									</a:field>
 
 									<a:field label="RG" spaceLeft="15px">
@@ -289,7 +287,7 @@
 													<p:column headerText="Ações" />
 												</p:row>
 											</p:columnGroup>
-
+												
 											<p:column sortBy="#{end.ruaOuAvenida}"
 												rendered="#{end.isAtivo and (end.id != CandidatoControl.endereco.id or end.id == null)}">
 												<h:outputText value="#{end.ruaOuAvenida }" />

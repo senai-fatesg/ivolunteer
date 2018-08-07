@@ -12,4 +12,6 @@ public interface CandidatoDao extends Persistencia<Candidato> {
 	public List<Candidato> pesquisaSelecaoCandidato(SelecaoCandidato selecaoCandidato);
 	public Candidato consultarCandidatoCompleto(Candidato Candidato);
 	public List<Candidato> listaCandidato();
+	public List<Candidato> listarCandidatosAtivos();
+	public List<Candidato> listarCandidatosAtivosPorNome(String candidatoConsulta);
 }

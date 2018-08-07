@@ -94,7 +94,6 @@ public class CandidatoControl {
 	@PostConstruct
 	public void init() {
 		listarTodosCandidatos();
-		responsavel = new Responsavel();
 	}
 
 	public void listarCandidatoPorNome(ActionEvent evt) {
@@ -107,32 +106,41 @@ public class CandidatoControl {
 
 	public void listarTodosCandidatos() {
 		try {
-			this.listaCandidato = candidatoDao.listar();
+			this.listaCandidato = candidatoDao.listarCandidatosAtivos();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
 
-	public void confirmar(ActionEvent evt) {
+	public void cadastrar() {
 		try {
-			if (this.candidato.getId() == null) {
-				this.candidato.setEnumTipoPessoa(EnumTipoPessoa.CANDIDATO);
-				this.candidato.addResponsavel(this.responsavel);
-				validarCandidato(this.candidato);
-				candidatoDao.incluir(this.candidato);
-			} else {
-				this.candidato.setEnumTipoPessoa(EnumTipoPessoa.CANDIDATO);
-				validarCandidato(this.candidato);
-				candidatoDao.alterar(this.candidato);
-			}
+			this.candidato.setEnumTipoPessoa(EnumTipoPessoa.CANDIDATO);
+			//this.candidato.addResponsavel(this.responsavel);
+			validarCandidato(this.candidato);
+			candidatoDao.incluir(this.candidato);
 			this.candidato = new Candidato();
 			this.endereco = new Endereco();
 			this.enderecoResponsavel = new Endereco();
 			this.responsavel = new Responsavel();
 			UtilFaces.addMensagemFaces("Informações salvas com sucesso!");
+			listarTodosCandidatos();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e.getMessage());
 			UtilFaces.addMensagemFaces("Ocorreu uma falha ao tentar gravar as informações de candidato");
+		}
+	}
+
+	public void atualizar() {
+		if (validarCandidato(this.candidato)) {
+			candidatoDao.alterar(this.candidato);
+			this.candidato = new Candidato();
+			this.endereco = new Endereco();
+			this.enderecoResponsavel = new Endereco();
+			this.responsavel = new Responsavel();
+			UtilFaces.addMensagemFaces("Candidato atualizado com sucesso!");
+			listarTodosCandidatos();
+		} else {
+			UtilFaces.addMensagemFaces("Candidato inválido!");
 		}
 	}
 
@@ -180,104 +188,88 @@ public class CandidatoControl {
 	public void adicionarEndereco(Pessoa candidatoOuResponsavel) {
 		try {
 			if (candidatoOuResponsavel.getClass().equals(Candidato.class)) {
-				System.out.println("É UM CANDIDATO!!!!!!!");
 				if (EhEnderecoConsistente(candidatoOuResponsavel)) {
-					if (this.endereco.getId() == null) {
-						// this.endereco.setIsAtivo(true);
-						candidato.addEndereco(endereco);
-						candidatoDao.alterar(this.candidato);
-						this.candidato = candidatoDao.consultarCandidatoCompleto(this.candidato);
-						endereco = new Endereco();
-						UtilFaces.addMensagemFaces("Endereço de " + this.candidato.getNomePessoa() + " adicionado.");
-					} else {
-						// this.candidato.addEndereco(this.endereco);
-						enderecoDao.alterar(this.endereco);
-						this.candidato = candidatoDao.consultarCandidatoCompleto(this.candidato);
-						this.endereco = new Endereco();
-						UtilFaces.addMensagemFaces("Endereço de " + this.candidato.getNomePessoa() + " atualizado.");
-					}
+					candidato.addEndereco(endereco);
+					this.endereco = new Endereco();
+					UtilFaces.addMensagemFaces("Endereço de candidato adicionado.");
 				} else {
 					UtilFaces.addMensagemFaces("Preencha os campos de endereço de candidato corretamente");
 				}
-
 			} else if (candidatoOuResponsavel.getClass().equals(Responsavel.class)) {
 				if (EhResponsavelConsistente()) {
 					if (candidatoOuResponsavel.getId() == null) {
 						this.candidato.addResponsavel((Responsavel) candidatoOuResponsavel);
-						candidatoDao.alterar(this.candidato);
-						// responsavelDao.incluir((Responsavel)
-						// candidatoOuResponsavel);
+						// candidatoDao.alterar(this.candidato);
 					} else {
-						if (EhEnderecoConsistente(candidatoOuResponsavel)) {
-							if (this.enderecoResponsavel.getId() == null) {
-								// this.enderecoResponsavel.setIsAtivo(true);
-								this.responsavel.addEndereco(this.enderecoResponsavel);
-								this.responsavelDao.alterar(this.responsavel);
-								this.responsavel = responsavelDao.consultaResponsavelCompleto(this.responsavel);
-								this.enderecoResponsavel = new Endereco();
-								UtilFaces.addMensagemFaces(
-										"Endereço de responsável " + this.responsavel.getNomePessoa() + " adicionado.");
-							} else {
-								// this.responsavel.addEndereco(this.enderecoResponsavel);
-								enderecoDao.alterar(this.enderecoResponsavel);
-								this.responsavel = responsavelDao.consultaResponsavelCompleto(this.responsavel);
-								this.enderecoResponsavel = new Endereco();
-								UtilFaces.addMensagemFaces(
-										"Endereço de responsável " + this.responsavel.getNomePessoa() + " atualizado.");
-							}
-						} else {
-							UtilFaces.addMensagemFaces("Preencha os campos de endereço de responsável corretamente");
-						}
+						this.responsavel.addEndereco(this.enderecoResponsavel);
+						// this.responsavelDao.alterar(this.responsavel);
+						// this.responsavel =
+						// responsavelDao.consultaResponsavelCompleto(this.responsavel);
+						this.enderecoResponsavel = new Endereco();
+						UtilFaces.addMensagemFaces("Endereço de responsável adicionado.");
 					}
 				} else {
 					UtilFaces.addMensagemFaces("Preencha o nome e CPF de responsável antes de adicionar um endereço. ");
 				}
-
 			}
 		} catch (Exception erro) {
 			UtilFaces.addMensagemFaces("Ocorreu uma falha ao tentar incluir o endereço na lista");
 			UtilLog.getLog().error(erro);
 		}
 	}
-	
+
+	public void atualizarEndereco(String candidatoOuResponsavel) {
+		if (candidatoOuResponsavel.equals("Candidato")) {
+			enderecoDao.alterar(this.endereco);
+			this.candidato = candidatoDao.consultarCandidatoCompleto(this.candidato);
+			this.endereco = new Endereco();
+			UtilFaces.addMensagemFaces("Endereço de candidato atualizado.");
+		} else if (candidatoOuResponsavel.equals("Responsavel")) {
+			enderecoDao.alterar(this.enderecoResponsavel);
+			this.responsavel = responsavelDao.consultaResponsavelCompleto(this.responsavel);
+			this.enderecoResponsavel = new Endereco();
+			UtilFaces.addMensagemFaces("Endereço de responsável atualizado.");
+		}
+	}
+
 	public void calculaIdadeCandidato(SelectEvent event) {
-		
+
 		Calendar dataDeHoje = Calendar.getInstance();
 		dataDeHoje.setTime(new Date(System.currentTimeMillis()));
-		
+
 		Date dataNasc = (Date) event.getObject();
-		
+
 		Calendar DataNascCand = Calendar.getInstance();
 		DataNascCand.setTime(dataNasc);
-		
+
 		long datn = dataNasc.getTime();
-		
-		long diferencaEmDias = ((System.currentTimeMillis() - datn) / ( 1000 * 60 * 60 * 24));
-		
+
+		long diferencaEmDias = ((System.currentTimeMillis() - datn) / (1000 * 60 * 60 * 24));
+
 		long anosDeIdade = diferencaEmDias / 365;
-		
-		if(anosDeIdade <= 17) {
+
+		if (anosDeIdade <= 17) {
 			this.maiorDeIdade = false;
 			System.out.println("MENOR QUE 17");
 			System.out.println("IDADE: " + anosDeIdade);
 			return;
 		}
-		if(anosDeIdade >= 19) {
+		if (anosDeIdade >= 19) {
 			this.maiorDeIdade = true;
 			System.out.println("MAIOR OU IGUAL À 19");
 			System.out.println("IDADE: " + anosDeIdade);
 			return;
-		} 
-		if(anosDeIdade == 18) {
+		}
+		if (anosDeIdade == 18) {
 			DataNascCand.set(Calendar.YEAR, dataDeHoje.get(Calendar.YEAR));
-			if(DataNascCand.before(dataDeHoje)) {
+			if (DataNascCand.before(dataDeHoje)) {
 				System.out.println("JÁ FEZ ANIVERSÁRIO!!!");
 				this.maiorDeIdade = true;
 				return;
 			} else {
 				System.out.println("NÃO FEZ ANIVERSÁRIO!!!");
 				this.maiorDeIdade = false;
-			}	
+			}
 		}
 	}
 
@@ -292,7 +284,7 @@ public class CandidatoControl {
 	// Adionar as responsaveis ao candidato
 	public void adicionarResponsavel(ActionEvent evt) {
 		try {
-			if(validarCandidato(this.candidato)) {
+			if (validarCandidato(this.candidato)) {
 				if (EhResponsavelConsistente()) {
 					if (this.responsavel.getId() == null) {
 						preenchaInformcoesDefaultResponsavel(responsavel);
@@ -386,24 +378,16 @@ public class CandidatoControl {
 		}
 	}
 
-	/**
-	 * Remove o objeto candidato, onde a exclusão e realizada com o cascade e é
-	 * utilizado o metodo de excluir por "id".
-	 **/
-	public void removerCandidato(Candidato candidato) {
+	public void desativarCandidato(Candidato candidato) {
 		try {
 			if (listaCandidato.contains(candidato)) {
-				// pega todas as informações do candidato para poder excluir
-				// todos os dados endereços,reponsáveis.
-				// this.candidato =
-				// candidatoDao.consultarCandidatoCompleto(candidato);
-				this.candidatoDao.excluirPorId(candidato.getId());
+				candidato.desativa();
+				candidatoDao.alterar(candidato);
+				UtilFaces.addMensagemFaces("Candidato desativado com sucesso!");
 				listarTodosCandidatos();
-				UtilFaces.addMensagemFaces("Candidato excluído com sucesso!");
-				this.candidato = new Candidato();
 			}
 		} catch (Exception e) {
-			UtilFaces.addMensagemFaces("Ocorreu uma falha ao tentar excluir o candidato da base de dados.");
+			UtilFaces.addMensagemFaces("Ocorreu uma falha ao tentar inativar o candidato.");
 			UtilLog.getLog().error(e);
 		}
 	}
@@ -441,12 +425,12 @@ public class CandidatoControl {
 	}
 
 	// Aplica Filtro
-	public void aplicarFiltro(ActionEvent evt) {
+	public void aplicarFiltro() {
 		try {
 			if (candidatoConsulta == null || candidatoConsulta.isEmpty()) {
-				listaCandidato = candidatoDao.listaCandidato();
+				listaCandidato = candidatoDao.listarCandidatosAtivos();
 			} else {
-				listaCandidato = candidatoDao.listaCandidatoPorNome(this.candidatoConsulta);
+				listaCandidato = candidatoDao.listarCandidatosAtivosPorNome(this.candidatoConsulta);
 			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
@@ -505,7 +489,7 @@ public class CandidatoControl {
 	public void gerarPdf() {
 		return;
 	}
-	
+
 	public boolean isMaiorDeIdade() {
 		return maiorDeIdade;
 	}

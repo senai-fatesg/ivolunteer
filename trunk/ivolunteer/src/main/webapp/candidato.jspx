@@ -10,8 +10,10 @@
 
 		<p:panel header="Solicitação de vaga" id="panel">
 
-			<p:commandButton id="consultar" value="Consultar" action="#{CandidatoControl.listarTodosCandidatos}"
-				icon="ui-icon-search" onclick="PF('consultar').show();" process="@this" />
+			<p:commandButton id="consultar" value="Consultar"
+				action="#{CandidatoControl.listarTodosCandidatos}"
+				icon="ui-icon-search" onclick="PF('consultar').show();"
+				process="@this" />
 
 			<p:dialog id="modalPesquisa" header="Consultar" widgetVar="consultar"
 				modal="true" maximizable="false" minimizable="false" width="40%"
@@ -23,8 +25,9 @@
 				</a:field>
 
 				<p:commandButton id="filtrar" icon="ui-icon-search"
-					action="#{CandidatoControl.aplicarFiltro}" process="filtrar filtro" update="listaCandidato"
-					ajax="true" style="margin-left: 10px; margin-top: 24px;" />
+					action="#{CandidatoControl.aplicarFiltro}" process="filtrar filtro"
+					update="listaCandidato" ajax="true"
+					style="margin-left: 10px; margin-top: 24px;" />
 
 				<a:newLine />
 				<a:newLine />
@@ -39,14 +42,17 @@
 					<p:column width="8%">
 						<p:commandButton id="editarCandidato" icon="ui-icon-pencil"
 							action="#{CandidatoControl.carregaCandidatoAlteracao(itemCandidato)}"
-							oncomplete="PF('consultar').hide();" update=":formCorpo:panel" process="@this"/>
-						<p:tooltip for="editarCandidato" position="top" value="Editar candidato." />
+							oncomplete="PF('consultar').hide();" update=":formCorpo:panel"
+							process="@this" />
+						<p:tooltip for="editarCandidato" position="top"
+							value="Editar candidato." />
 
 						<p:commandButton id="inativaUsuario" icon="ui-icon-trash"
 							action="#{CandidatoControl.desativarCandidato(itemCandidato)}"
 							update="listaCandidato" process="@this">
 							<p:confirm header="Confirmar desativação!"
-								message="Tem certeza que deseja desativar o candidato #{itemCandidato.nomePessoa} ?" icon="ui-icon-alert" />
+								message="Tem certeza que deseja desativar o candidato #{itemCandidato.nomePessoa} ?"
+								icon="ui-icon-alert" />
 							<p:tooltip for="inativaUsuario" position="top"
 								value="Desativar candidato." />
 						</p:commandButton>
@@ -83,8 +89,9 @@
 									<a:field label="Nome">
 										<p:inputText id="nomePessoa"
 											value="#{CandidatoControl.candidato.nomePessoa}"
-											style="width:535px" required="false"
-											requiredMessage="Por favor, informe o nome" validator="#{CandidatoControl.validaCandidatoNome}" />
+											style="width:535px"
+											validator="#{CandidatoControl.validaCandidatoNome}">
+										</p:inputText>
 
 									</a:field>
 
@@ -103,8 +110,10 @@
 									<a:field label="CPF" spaceLeft="15px">
 										<p:inputMask id="cpf"
 											value="#{CandidatoControl.candidato.cpf}"
-											mask="999.999.999-99" validator="#{CandidatoControl.validaCandidatoCPF}" />
-										
+											mask="999.999.999-99"
+											validator="#{CandidatoControl.validaCandidatoCPF}">
+										</p:inputMask>
+
 									</a:field>
 
 									<a:field label="RG" spaceLeft="15px">
@@ -152,6 +161,38 @@
 											<f:selectItems value="#{CandidatoControl.completeEnumSexo}"></f:selectItems>
 										</p:selectOneMenu>
 									</a:field>
+
+									<a:newLine />
+
+									<a:field label="Telefone Residencial:">
+										<p:inputMask id="telefCandResidencia"
+											value="#{CandidatoControl.candidato.telefoneResidencial}"
+											mask="(99)9999-9999">
+										</p:inputMask>
+									</a:field>
+
+									<a:field label="Telefone Celular:" spaceLeft="15px">
+										<p:inputMask id="telefCandCelular"
+											value="#{CandidatoControl.candidato.telefoneCelular}"
+											mask="(99)9999-9999">
+										</p:inputMask>
+									</a:field>
+
+									<a:newLine />
+									<a:field label="Quem ligar em caso de emergência?"></a:field>
+									<a:newLine />
+
+									<a:field label="Nome">
+										<p:inputText id="nomeEmergencia"
+											value="#{CandidatoControl.candidato.nomeTelefoneEmergencia}" />
+									</a:field>
+
+									<a:field label="Telefone" spaceLeft="15px">
+										<p:inputMask id="telEmergencia"
+											value="#{CandidatoControl.candidato.telefoneEmergencia}"
+											mask="(99)9999-9999" />
+									</a:field>
+
 									<a:newLine />
 									<a:newLine />
 								</p:panel>
@@ -218,39 +259,6 @@
 											</p:selectOneMenu>
 										</a:field>
 
-										<a:field label="Telefone Residencial:" spaceLeft="15px">
-											<p:inputMask id="telefCandResidencia"
-												value="#{CandidatoControl.telefone.numeroTelefone}"
-												mask="(99)9999-9999">
-											</p:inputMask>
-										</a:field>
-
-										<a:newLine />
-
-										<a:field label="Telefone Celular:">
-											<p:inputMask id="telefCandCelular"
-												value="#{CandidatoControl.telefone.numeroTelefone}"
-												mask="(99)9999-9999">
-											</p:inputMask>
-										</a:field>
-
-										<a:newLine />
-										<a:field label="Quem ligar em caso de emergência?"></a:field>
-										<a:newLine />
-
-										<a:field label="Nome">
-											<p:inputText id="nomemergencia"
-												value="#{CandidatoControl.telefone.nomePessoaRecado}">
-											</p:inputText>
-										</a:field>
-
-										<a:field label="Telefone" spaceLeft="15px">
-											<p:inputMask id="telemergencia"
-												value="#{CandidatoControl.telefone.numeroTelefone}"
-												mask="(99)9999-9999">
-											</p:inputMask>
-										</a:field>
-
 										<a:newLine />
 										<a:newLine />
 
@@ -284,10 +292,10 @@
 													<p:column headerText="Rua" />
 													<p:column headerText="Bairro" />
 													<p:column headerText="Número" />
-													<p:column headerText="Ações" />
+													<p:column headerText="Ações" width="10%" />
 												</p:row>
 											</p:columnGroup>
-												
+
 											<p:column sortBy="#{end.ruaOuAvenida}"
 												rendered="#{end.isAtivo and (end.id != CandidatoControl.endereco.id or end.id == null)}">
 												<h:outputText value="#{end.ruaOuAvenida }" />
@@ -307,20 +315,36 @@
 
 											<p:column
 												rendered="#{end.isAtivo and (end.id != CandidatoControl.endereco.id or end.id == null)}">
-
-												<p:commandButton
-													rendered="#{end.isAtivo and (end.id != CandidatoControl.endereco.id or end.id == null)}"
-													icon="ui-icon-closethick"
-													action="#{CandidatoControl.removerEndereco(end, 'Candidato')}"
-													update=":formCorpo:tabCadastro:tabCadastroCandidato:panelEnderecoCandidato"
-													ajax="true" />
-
-												<p:commandButton
+												<p:commandButton id="alterarEnderecoCandidato"
 													rendered="#{end.isAtivo and (end.id != CandidatoControl.endereco.id or end.id == null)}"
 													icon="ui-icon-pencil"
 													action="#{CandidatoControl.carregaEnderecoAlteracao(end, 'Candidato')}"
 													update=":formCorpo:tabCadastro:tabCadastroCandidato:panelEnderecoCandidato"
-													ajax="true" />
+													ajax="true">
+
+													<p:tooltip
+														rendered="#{end.isAtivo and (end.id != CandidatoControl.endereco.id or end.id == null)}"
+														for="alterarEnderecoCandidato" position="top"
+														value="Editar endereço." />
+
+												</p:commandButton>
+
+
+												<p:commandButton id="desativaEnderecoCandidato"
+													rendered="#{end.isAtivo and (end.id != CandidatoControl.endereco.id or end.id == null)}"
+													icon="ui-icon-closethick"
+													action="#{CandidatoControl.desativarEndereco(end, 'Candidato')}"
+													update=":formCorpo:tabCadastro:tabCadastroCandidato:panelEnderecoCandidato"
+													ajax="true" >
+													
+													<p:confirm header="Desativação de endereço!" 
+													message="Tem certeza que deseja desativar este endereço?" icon="ui-icon-alert" />
+													
+													<p:tooltip	for="desativaEnderecoCandidato" position="top"
+													value="Desativar endereço." />
+													
+												</p:commandButton>
+												
 											</p:column>
 
 										</p:dataTable>
@@ -352,7 +376,7 @@
 										<a:field spaceLeft="10px" label="Ano:">
 											<p:calendar id="ano"
 												value="#{CandidatoControl.candidato.ano}" locale="de"
-												pattern="yyyy" />
+												pattern="yyyy" navigator="true" yearRange="c-100:c0" />
 										</a:field>
 									</p:panel>
 								</p:tab>
@@ -514,7 +538,7 @@
 
 				<p:tab id="responsaveis" title="Informações do responsável"
 					style="height:auto!important;"
-					disabled="#{(CandidatoControl.maiorDeIdade)}">
+					disabled="#{CandidatoControl.maiorDeIdade}">
 					<p:panel id="painelResponsavel" rendered="true"
 						style="height:auto!important;">
 						<p:tabView id="tabCadastroResponsavel" cache="false">
@@ -752,7 +776,7 @@
 										</f:facet>
 										-->
 										<p:commandButton icon="ui-icon-closethick"
-											action="#{CandidatoControl.removerEndereco(ende, 'Responsavel')}"
+											action="#{CandidatoControl.desativarEndereco(ende, 'Responsavel')}"
 											update="listaEnderecoResponsavel" ajax="false" />
 										<p:commandButton icon="ui-icon-pencil"
 											action="#{CandidatoControl.carregaEnderecoAlteracao(ende, 'Responsavel')}"

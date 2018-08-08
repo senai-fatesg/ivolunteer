@@ -5,7 +5,12 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
@@ -25,6 +30,11 @@ public class Candidato extends Pessoa implements java.io.Serializable {
 	private String nomedaavoPaterno;
 	private String nomedoavoMaterno;
 	private String nomedaavoMaterno;
+	
+	private String telefoneCelular;
+	private String telefoneResidencial;
+	private String nomeTelefoneEmergencia;
+	private String telefoneEmergencia;
 	
 	@Enumerated(EnumType.STRING)
 	private EnumReside enumReside;
@@ -57,6 +67,30 @@ public class Candidato extends Pessoa implements java.io.Serializable {
 	private String parentescoPNE;
 	private String necessidadePNE;
 	
+	public String getTelefoneCelular() {
+		return telefoneCelular;
+	}
+	public void setTelefoneCelular(String telefoneCelular) {
+		this.telefoneCelular = telefoneCelular;
+	}
+	public String getTelefoneResidencial() {
+		return telefoneResidencial;
+	}
+	public void setTelefoneResidencial(String telefoneResidencial) {
+		this.telefoneResidencial = telefoneResidencial;
+	}
+	public String getNomeTelefoneEmergencia() {
+		return nomeTelefoneEmergencia;
+	}
+	public void setNomeTelefoneEmergencia(String nomeTelefoneEmergencia) {
+		this.nomeTelefoneEmergencia = nomeTelefoneEmergencia;
+	}
+	public String getTelefoneEmergencia() {
+		return telefoneEmergencia;
+	}
+	public void setTelefoneEmergencia(String telefoneEmergencia) {
+		this.telefoneEmergencia = telefoneEmergencia;
+	}
 	public Boolean getIsAtivo() {
 		return isAtivo;
 	}

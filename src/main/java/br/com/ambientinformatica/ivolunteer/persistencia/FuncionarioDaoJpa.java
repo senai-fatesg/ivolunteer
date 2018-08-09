@@ -42,10 +42,10 @@ public class FuncionarioDaoJpa extends PersistenciaJpa<Funcionario> implements F
 	public Funcionario carregarFuncionarioComEnderecoTelefone(Funcionario funcionario) {
 
 		try {
-			Query query = em.createQuery("select f from Funcionario f " + " left join fetch f.listaEndereco listEnd "
+			Query query = em.createQuery("select f from Funcionario f " + " left join fetch f.listaEndereco ListEnd "
 					+ " where f  = :funcionario");
 			query.setParameter("funcionario", funcionario);
-			funcionario = (Funcionario) query.getSingleResult();
+			funcionario = (Funcionario) query.setMaxResults(1).getSingleResult();
 			
 			Query carregaTelefones = em.createQuery("select f from Funcionario f left join fetch f.listaTelefone listaTelefone "
 					+ " where f = :funcionario");

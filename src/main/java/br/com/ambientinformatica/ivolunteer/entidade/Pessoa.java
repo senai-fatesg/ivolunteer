@@ -196,7 +196,7 @@ public class Pessoa extends Entidade implements Serializable{
 	}
 
 	public void setOrgaoExpeditor(String orgaoExpeditor) {
-		this.orgaoExpeditor = orgaoExpeditor;
+		this.orgaoExpeditor = orgaoExpeditor.toUpperCase();
 	}
 
 	public String getCpf() {

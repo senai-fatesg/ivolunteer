@@ -5,4 +5,6 @@ import br.com.ambientinformatica.jpa.persistencia.Persistencia;
 
 public interface TelefoneDao extends Persistencia<Telefone> {
 
+	public void desativarTelefone(Telefone telefone);
+
 }

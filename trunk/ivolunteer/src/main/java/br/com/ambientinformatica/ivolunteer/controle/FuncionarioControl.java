@@ -48,6 +48,8 @@ public class FuncionarioControl {
 	private Telefone telefoneEmpresa = new Telefone();
 	private String nomeFuncionarioPesquisa;
 	private Frequencia frequencia = new Frequencia();
+	
+	private boolean desabilitaCampoVoluntario;
 
 	private List<Frequencia> frequencias = new ArrayList<Frequencia>();
 
@@ -101,6 +103,7 @@ public class FuncionarioControl {
 	public void carregaFuncionarioAlteracao(Funcionario funcionario) {
 		try {
 			this.funcionario = funcionarioDao.carregarFuncionarioComEnderecoTelefone(funcionario);
+			this.endereco = this.funcionario.getListaEndereco().get(0);
 		} catch (PersistenciaException e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -134,9 +137,9 @@ public class FuncionarioControl {
 		String email = (String) ob;
 		if (!email.equals("")) {
 			System.out.println(email + " <- VALOR EMAIL");
-			if (!email.contains(".com") || !email.contains("@")) {
+			if (!email.contains("@")) {
 				((UIInput) uc).setValid(false);
-				UtilFaces.addMensagemFaces("Email inválido. O email deve conter '@' e '.com'.");
+				UtilFaces.addMensagemFaces("Email inválido. O email deve conter '@' em seu endereço.");
 			}
 		}
 	}
@@ -146,9 +149,9 @@ public class FuncionarioControl {
 		String site = (String) ob;
 		if (!site.equals("")) {
 			System.out.println(site + " <- VALOR SITE");
-			if (!site.contains("www.") || !site.contains(".com")) {
+			if (!site.contains("www.")) {
 				((UIInput) uc).setValid(false);
-				UtilFaces.addMensagemFaces("Site inválido. O site deve conter 'www.' e '.com'.");
+				UtilFaces.addMensagemFaces("Site inválido. O site deve conter 'www.' no início.");
 			}
 		}
 	}
@@ -159,6 +162,14 @@ public class FuncionarioControl {
 		this.funcionario.setEmail(null);
 		this.funcionario.setNomeEmpresa(null);
 		this.funcionario.setCnpj(null);
+	}
+	
+	public void desabilitaCamposVoluntario() {
+		if (this.funcionario.getTipoFuncionario().equals(EnumTipoFuncionario.VOLUNTARIO)) {
+			this.desabilitaCampoVoluntario = false;
+		} else {
+			this.desabilitaCampoVoluntario = false;
+		}
 	}
 
 	public void validaNome(FacesContext fc, UIComponent uc, Object ob) {
@@ -270,7 +281,12 @@ public class FuncionarioControl {
 
 	public void editarTelefone(Telefone telefone, String empresaOuFuncionario) {
 		if (empresaOuFuncionario.equals("Funcionario")) {
-			this.telefoneFuncionario = telefoneDao.consultar(telefone.getId());
+			if (telefone.getId() == null) {
+				this.telefoneFuncionario = telefone;
+				this.funcionario.getListaTelefone().remove(telefone);
+			} else {
+				this.telefoneFuncionario = telefoneDao.consultar(telefone.getId());
+			}
 		} else if (empresaOuFuncionario.equals("Empresa")) {
 			this.telefoneEmpresa = telefoneDao.consultar(telefone.getId());
 		}
@@ -280,10 +296,10 @@ public class FuncionarioControl {
 		try {
 			if (empresaOuFuncionario.equals("Empresa")) {
 				telefone.desativa();
-				telefoneDao.alterar(this.telefoneEmpresa);
+				telefoneDao.alterar(telefone);
 			} else if (empresaOuFuncionario.equals("Funcionario")) {
 				telefone.desativa();
-				telefoneDao.alterar(this.telefoneFuncionario);
+				telefoneDao.desativarTelefone(telefone);
 			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
@@ -406,6 +422,14 @@ public class FuncionarioControl {
 
 	public void setFrequencia(Frequencia frequencia) {
 		this.frequencia = frequencia;
+	}
+
+	public boolean isdesabilitaCampoVoluntario() {
+		return desabilitaCampoVoluntario;
+	}
+
+	public void setdesabilitaCampoVoluntario(boolean desabilitaCampoVoluntario) {
+		this.desabilitaCampoVoluntario = desabilitaCampoVoluntario;
 	}
 
 }

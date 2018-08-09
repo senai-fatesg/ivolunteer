@@ -192,7 +192,7 @@ public class Responsavel extends Pessoa implements java.io.Serializable {
 
 	// calcula a renda do responsavel
 	public BigDecimal calcularRenda() {
-		return this.totalRenda.add(renda).add(rendaExtra);
+		return this.totalRenda.add(renda).add(rendaExtra).add(valorBeneficio);
 	}
 
 	public BigDecimal getTotalRenda() {

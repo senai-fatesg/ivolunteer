@@ -95,7 +95,7 @@ public class CandidatoControl {
 
 	@Autowired
 	private EnderecoDao enderecoDao;
-	
+
 	@Autowired
 	private TelefoneDao telefoneDao;
 
@@ -124,15 +124,15 @@ public class CandidatoControl {
 		try {
 			this.candidato.setEnumTipoPessoa(EnumTipoPessoa.CANDIDATO);
 			this.candidato.setEnumPrioridade(EnumPrioridade.BAIXA);
-			//this.candidato.addTelefone(this.telefoneCelularCandidato);
-			//this.candidato.addTelefone(this.telefoneResidencialCandidato);
-			//this.candidato.addTelefone(this.telefoneEmergencia);
-			//this.candidato.addResponsavel(this.responsavel);
+			// this.candidato.addTelefone(this.telefoneCelularCandidato);
+			// this.candidato.addTelefone(this.telefoneResidencialCandidato);
+			// this.candidato.addTelefone(this.telefoneEmergencia);
+			// this.candidato.addResponsavel(this.responsavel);
 			validarCandidato(this.candidato);
 			candidatoDao.incluir(this.candidato);
-			//this.telefoneCelularCandidato = new Telefone();
-			//this.telefoneResidencialCandidato = new Telefone();
-			//this.telefoneEmergencia = new Telefone();
+			// this.telefoneCelularCandidato = new Telefone();
+			// this.telefoneResidencialCandidato = new Telefone();
+			// this.telefoneEmergencia = new Telefone();
 			this.candidato = new Candidato();
 			this.endereco = new Endereco();
 			this.enderecoResponsavel = new Endereco();
@@ -147,13 +147,13 @@ public class CandidatoControl {
 
 	public void atualizar() {
 		if (validarCandidato(this.candidato)) {
-			//verificaNovosTelefonesCandidato();
-			//atualizaTelefonesCandidato();
-			
+			// verificaNovosTelefonesCandidato();
+			// atualizaTelefonesCandidato();
+
 			candidatoDao.alterar(this.candidato);
-			//this.telefoneCelularCandidato = new Telefone();
-			//this.telefoneResidencialCandidato = new Telefone();
-			//this.telefoneEmergencia = new Telefone();
+			// this.telefoneCelularCandidato = new Telefone();
+			// this.telefoneResidencialCandidato = new Telefone();
+			// this.telefoneEmergencia = new Telefone();
 			this.candidato = new Candidato();
 			this.endereco = new Endereco();
 			this.enderecoResponsavel = new Endereco();
@@ -172,18 +172,20 @@ public class CandidatoControl {
 		if (this.telefoneResidencialCandidato.getId() != null) {
 			telefoneDao.alterar(this.telefoneResidencialCandidato);
 		}
-		if(this.telefoneEmergencia.getId() != null) {
+		if (this.telefoneEmergencia.getId() != null) {
 			telefoneDao.alterar(telefoneEmergencia);
 		}
 	}
 
 	private void verificaNovosTelefonesCandidato() {
-		if (!this.telefoneCelularCandidato.getNumeroTelefone().isEmpty() && this.telefoneCelularCandidato.getId() == null) {
+		if (!this.telefoneCelularCandidato.getNumeroTelefone().isEmpty()
+				&& this.telefoneCelularCandidato.getId() == null) {
 			this.telefoneCelularCandidato.setEnumTipoTelefone(EnumTipoTelefone.CELULAR);
 			this.telefoneCelularCandidato.setNomePessoaRecado(this.candidato.getNomePessoa());
 			this.candidato.addTelefone(telefoneCelularCandidato);
 		}
-		if (!this.telefoneResidencialCandidato.getNumeroTelefone().isEmpty() && this.telefoneResidencialCandidato.getId() == null) {
+		if (!this.telefoneResidencialCandidato.getNumeroTelefone().isEmpty()
+				&& this.telefoneResidencialCandidato.getId() == null) {
 			this.telefoneResidencialCandidato.setEnumTipoTelefone(EnumTipoTelefone.RESIDENCIAL);
 			this.telefoneResidencialCandidato.setNomePessoaRecado(this.candidato.getNomePessoa());
 			this.candidato.addTelefone(telefoneResidencialCandidato);
@@ -192,22 +194,23 @@ public class CandidatoControl {
 			this.candidato.addTelefone(telefoneEmergencia);
 		}
 	}
-	
+
 	public void validaTelefoneEmergencia(FacesContext fc, UIComponent uc, Object ob) {
 		String telEmergencia = (String) ob;
 		if (telEmergencia.equals("") && !(this.candidato.getNomeTelefoneEmergencia().equals(""))) {
-			((UIInput)uc).setValid(false);
+			((UIInput) uc).setValid(false);
 			UtilFaces.addMensagemFaces("Por favor, informe um telefone de emergência.");
 		}
 	}
 
 	public void validaTelefoneNomeEmergencia(FacesContext fc, UIComponent uc, Object ob) {
 		String nomeEmergencia = (String) ob;
-		if(nomeEmergencia.equals("") && !(this.candidato.getTelefoneEmergencia().equals(""))) {
-			((UIInput)uc).setValid(false);
+		if (nomeEmergencia.equals("") && !(this.candidato.getTelefoneEmergencia().equals(""))) {
+			((UIInput) uc).setValid(false);
 			UtilFaces.addMensagemFaces("Por favor, informe uma pessoa para caso de emergência.");
 		}
 	}
+
 	/**
 	 * Preenche os dados do candidato automaticamente. Obs: As informações
 	 * preenchidas não afetam a integridade dos dados
@@ -223,11 +226,11 @@ public class CandidatoControl {
 	}
 
 	// Adicionar o telefone do responsavel
-	
+
 	public void adicionarTelefone(ActionEvent evt) {
 		try {
 			if (EhTelefoneConsistente()) {
-				//responsavel.addTelefone(telefone);
+				// responsavel.addTelefone(telefone);
 				this.telefoneCelularCandidato = new Telefone();
 				this.telefoneResidencialCandidato = new Telefone();
 				this.candidato = candidatoDao.consultarCandidatoCompleto(this.candidato);
@@ -242,38 +245,30 @@ public class CandidatoControl {
 
 	// metodo apenas para chamar o adicionarEndereco passando o candidato
 	public void adicionarEnderecoCandidato() {
-		adicionarEndereco(this.candidato);
+		adicionarEndereco("Candidato");
 	}
 
 	// metodo apenas para chamar o adicionarEndereco passando o responsavel
 	public void adicionarEnderecoResponsavel() {
-		adicionarEndereco(this.responsavel);
+		adicionarEndereco("Responsavel");
 	}
 
 	// adicionar um endereco para o candidato ou responsavel
-	public void adicionarEndereco(Pessoa candidatoOuResponsavel) {
+	public void adicionarEndereco(String candidatoOuResponsavel) {
 		try {
-			if (candidatoOuResponsavel.getClass().equals(Candidato.class)) {
+			if (candidatoOuResponsavel.equals("Candidato")) {
 				if (EhEnderecoConsistente(candidatoOuResponsavel)) {
 					candidato.addEndereco(endereco);
 					this.endereco = new Endereco();
 					UtilFaces.addMensagemFaces("Endereço de candidato adicionado.");
-				} else {
-					UtilFaces.addMensagemFaces("Preencha os campos de endereço de candidato corretamente");
 				}
-			} else if (candidatoOuResponsavel.getClass().equals(Responsavel.class)) {
+			} else if (candidatoOuResponsavel.equals("Responsavel")) {
 				if (EhResponsavelConsistente()) {
-					if (candidatoOuResponsavel.getId() == null) {
-						this.candidato.addResponsavel((Responsavel) candidatoOuResponsavel);
-						// candidatoDao.alterar(this.candidato);
-					} else {
+					if(EhEnderecoConsistente(candidatoOuResponsavel)) {
 						this.responsavel.addEndereco(this.enderecoResponsavel);
-						// this.responsavelDao.alterar(this.responsavel);
-						// this.responsavel =
-						// responsavelDao.consultaResponsavelCompleto(this.responsavel);
 						this.enderecoResponsavel = new Endereco();
 						UtilFaces.addMensagemFaces("Endereço de responsável adicionado.");
-					}
+					} 
 				} else {
 					UtilFaces.addMensagemFaces("Preencha o nome e CPF de responsável antes de adicionar um endereço. ");
 				}
@@ -286,15 +281,19 @@ public class CandidatoControl {
 
 	public void atualizarEndereco(String candidatoOuResponsavel) {
 		if (candidatoOuResponsavel.equals("Candidato")) {
-			enderecoDao.alterar(this.endereco);
-			this.candidato = candidatoDao.consultarCandidatoCompleto(this.candidato);
-			this.endereco = new Endereco();
-			UtilFaces.addMensagemFaces("Endereço de candidato atualizado.");
+			if(EhEnderecoConsistente(candidatoOuResponsavel)) {
+				enderecoDao.alterar(this.endereco);
+				this.candidato = candidatoDao.consultarCandidatoCompleto(this.candidato);
+				this.endereco = new Endereco();
+				UtilFaces.addMensagemFaces("Endereço de candidato atualizado.");
+			}
 		} else if (candidatoOuResponsavel.equals("Responsavel")) {
-			enderecoDao.alterar(this.enderecoResponsavel);
-			this.responsavel = responsavelDao.consultaResponsavelCompleto(this.responsavel);
-			this.enderecoResponsavel = new Endereco();
-			UtilFaces.addMensagemFaces("Endereço de responsável atualizado.");
+			if(EhEnderecoConsistente(candidatoOuResponsavel)) {
+				enderecoDao.alterar(this.enderecoResponsavel);
+				this.responsavel = responsavelDao.consultaResponsavelCompleto(this.responsavel);
+				this.enderecoResponsavel = new Endereco();
+				UtilFaces.addMensagemFaces("Endereço de responsável atualizado.");
+			}
 		}
 	}
 
@@ -347,32 +346,49 @@ public class CandidatoControl {
 		return responsavel.calcularRenda();
 	}
 
+	public void atualizaTotalRenda() {
+		getTotalRenda();
+	}
+	
+	public void zeraValorBeneficio() {
+		if (this.responsavel.getRecebeBeneficio().equals(false)) {
+			System.out.println("VALOR BENEFÍCIO: " + this.responsavel.getValorBeneficio());
+			System.out.println("ESCOLHEU QUE NÃO RECEBE BENEFÍCIO");
+			this.responsavel.setValorBeneficio(BigDecimal.valueOf(0));
+			System.out.println("VALOR BENEFÍCIO: " + this.responsavel.getValorBeneficio() 
+			+ " RENDA: " + this.responsavel.getRenda() 
+			+ " RENDA EXTRA: " + this.responsavel.getRendaExtra());
+			System.out.println("RENDA TOTAL: " + getTotalRenda());
+		}
+	}
+	
+	public void atualizarResponsavel() {
+		try {
+			responsavelDao.alterar(this.responsavel);
+			this.responsavel = new Responsavel();
+			UtilFaces.addMensagemFaces("Responsável atualizado!");
+			this.candidato = candidatoDao.consultarCandidatoCompleto(this.candidato);
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces("Ocorreu um erro ao atualizar responsável.");
+		}
+
+	}
+
 	// Adionar as responsaveis ao candidato
 	public void adicionarResponsavel(ActionEvent evt) {
 		try {
 			if (validarCandidato(this.candidato)) {
 				if (EhResponsavelConsistente()) {
-					if (this.responsavel.getId() == null) {
-						preenchaInformcoesDefaultResponsavel(responsavel);
-						responsavel.setEnumTipoPessoa(EnumTipoPessoa.RESPONSAVEL);
-						this.candidato.addResponsavel(this.responsavel);
-						this.candidatoDao.alterar(this.candidato);
-						// listaResponsavel = candidato.getListaResponsavel();
-						this.responsavel = new Responsavel();
-						UtilFaces.addMensagemFaces("Responsável adicionado.");
-					} else {
-						this.responsavelDao.alterar(this.responsavel);
-						// this.candidato.addResponsavel(responsavelDao.consultar(this.responsavel));
-						// this.candidatoDao.alterar(this.candidato);
-						this.candidato = this.candidatoDao.consultarCandidatoCompleto(this.candidato);
-						this.responsavel = new Responsavel();
-						UtilFaces.addMensagemFaces("Responsável atualizado.");
-					}
+					responsavel.setEnumTipoPessoa(EnumTipoPessoa.RESPONSAVEL);
+					this.candidato.addResponsavel(this.responsavel);
+					this.responsavel = new Responsavel();
+					UtilFaces.addMensagemFaces("Responsável adicionado.");
 				} else {
-					UtilFaces.addMensagemFaces("Preencha os dados de responsável corretamente");
+					UtilFaces.addMensagemFaces("Preencha os dados de responsável corretamente.");
+					UtilFaces.addMensagemFaces("Nome e CPF de responsável são obrigatórios.");
 				}
 			} else {
-				UtilFaces.addMensagemFaces("Preencha os dados de candidato corretamente");
+				UtilFaces.addMensagemFaces("Preencha os dados de candidato corretamente.");
 			}
 		} catch (Exception erro) {
 			UtilFaces.addMensagemFaces("Ocorreu uma falha ao tentar incluir o Responsável na lista.");
@@ -382,7 +398,12 @@ public class CandidatoControl {
 
 	public void carregaResponsavelAlteracao(Responsavel resp) {
 		if (this.candidato.getListaResponsavel().contains(resp)) {
-			this.responsavel = responsavelDao.consultar(resp.getId());
+			if (resp.getId() == null) {
+				this.responsavel = resp;
+				this.candidato.getListaResponsavel().remove(resp);
+			} else {
+				this.responsavel = responsavelDao.consultar(resp.getId());
+			}
 		}
 	}
 
@@ -398,19 +419,30 @@ public class CandidatoControl {
 	public void desativarEndereco(Endereco endereco, String candidatoOuResponsavel) {
 		try {
 			if (candidatoOuResponsavel.equals("Responsavel")) {
-				endereco.inativaEndereco();
-				enderecoDao.alterar(endereco);
+				if (endereco.getId() == null) {
+					endereco.inativaEndereco();
+					this.responsavel.addEndereco(endereco);
+					responsavelDao.alterar(this.responsavel);
+				} else {
+					endereco.inativaEndereco();
+					enderecoDao.alterar(endereco);
+				}
 				this.responsavel = responsavelDao.consultaResponsavelCompleto(this.responsavel);
 				UtilFaces.addMensagemFaces("Endereço de responsável desativado.");
-			} else {
-				endereco.inativaEndereco();
-				enderecoDao.alterar(endereco);
-				this.candidato.getListaEndereco().clear();
-				this.candidato.getListaEndereco().addAll((enderecoDao.buscaTodosEnderecosPorCandidato(this.candidato)));
+			} else if (candidatoOuResponsavel.equals("Candidato")) {
+				if (endereco.getId() == null) {
+					endereco.inativaEndereco();
+					this.candidato.addEndereco(endereco);
+					candidatoDao.alterar(this.candidato);
+				} else {
+					endereco.inativaEndereco();
+					enderecoDao.alterar(endereco);
+				}
+				this.candidato = candidatoDao.consultarCandidatoCompleto(this.candidato);
 				UtilFaces.addMensagemFaces("Endereço de candidato desativado.");
 			}
 		} catch (Exception e) {
-			UtilFaces.addMensagemFaces("Ocorreu uma falha ao tentar excluir o endereço da lista");
+			UtilFaces.addMensagemFaces("Ocorreu uma falha ao tentar desativar o endereço da lista.");
 			UtilLog.getLog().error(e);
 		}
 	}
@@ -426,14 +458,20 @@ public class CandidatoControl {
 	}
 
 	// inativa o responsavel do candidato
-	public void removerResponsavel(Responsavel responsavel) {
+	public void desativarResponsavel(Responsavel responsavel) {
 		try {
-			responsavel.inativaResponsavel();
-			responsavelDao.alterar(responsavel);
-			candidatoDao.consultarCandidatoCompleto(this.candidato);
-			UtilFaces.addMensagemFaces("Responsável de " + this.candidato.getNomePessoa() + " removido.");
+			if (responsavel.getId() == null) {
+				responsavel.inativaResponsavel();
+				this.candidato.addResponsavel(responsavel);
+				candidatoDao.alterar(this.candidato);
+			} else {
+				responsavel.inativaResponsavel();
+				responsavelDao.alterar(responsavel);
+			}
+			this.candidato = candidatoDao.consultarCandidatoCompleto(this.candidato);
+			UtilFaces.addMensagemFaces("Responsável de " + this.candidato.getNomePessoa() + " desativado.");
 		} catch (Exception e) {
-			UtilFaces.addMensagemFaces("Ocorreu uma falha ao tentar excluir o responsavel da lista");
+			UtilFaces.addMensagemFaces("Ocorreu uma falha ao tentar desativar o responsável.");
 			UtilLog.getLog().error(e);
 		}
 	}
@@ -488,9 +526,11 @@ public class CandidatoControl {
 	public void carregaCandidatoAlteracao(Candidato candidato) throws PersistenciaException {
 		this.responsavel = new Responsavel();
 		this.candidato = candidatoDao.consultarCandidatoCompleto(candidato);
-		//this.telefoneCelularCandidato = this.candidato.getListaTelefone().get(0);
-		//this.telefoneResidencialCandidato = this.candidato.getListaTelefone().get(1);
-		//this.telefoneEmergencia = this.candidato.getListaTelefone().get(2);
+		// this.telefoneCelularCandidato =
+		// this.candidato.getListaTelefone().get(0);
+		// this.telefoneResidencialCandidato =
+		// this.candidato.getListaTelefone().get(1);
+		// this.telefoneEmergencia = this.candidato.getListaTelefone().get(2);
 	}
 
 	public void carregaEnderecoAlteracao(Endereco end, String tipoPessoa) {
@@ -639,28 +679,44 @@ public class CandidatoControl {
 	}
 
 	private boolean EhTelefoneConsistente() {
-		if (this.telefoneResponsavel.getNomePessoaRecado() != null && !this.telefoneResponsavel.getNomePessoaRecado().isEmpty()
-				&& this.telefoneResponsavel.getNumeroTelefone() != null && !this.telefoneResponsavel.getNumeroTelefone().isEmpty()) {
+		if (this.telefoneResponsavel.getNomePessoaRecado() != null
+				&& !this.telefoneResponsavel.getNomePessoaRecado().isEmpty()
+				&& this.telefoneResponsavel.getNumeroTelefone() != null
+				&& !this.telefoneResponsavel.getNumeroTelefone().isEmpty()) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
-	private boolean EhEnderecoConsistente(Pessoa enderecoCandidatoOuResponsavel) {
-		if (enderecoCandidatoOuResponsavel.getClass().equals(Candidato.class)) {
-			if (!endereco.getRuaOuAvenida().isEmpty() && !endereco.getBairro().isEmpty()
-					&& !endereco.getQuadra().isEmpty() && !endereco.getLote().isEmpty()) {
-				return true;
-			} else {
+
+	private boolean EhEnderecoConsistente(String enderecoCandidatoOuResponsavel) {
+		if (enderecoCandidatoOuResponsavel.equals("Candidato")) {
+			if (endereco.getCidade().getNomeCidade().isEmpty() && endereco.getBairro().isEmpty()) {
+				UtilFaces.addMensagemFaces("Cidade é obrigatório.");
+				UtilFaces.addMensagemFaces("Bairro é obrigatório.");
 				return false;
+			} else if (endereco.getCidade().getNomeCidade().isEmpty() && !(endereco.getBairro().isEmpty())) {
+				UtilFaces.addMensagemFaces("Cidade é obrigatório.");
+				return false;
+			} else if (endereco.getBairro().isEmpty() && !(endereco.getCidade().getNomeCidade().isEmpty())) {
+				UtilFaces.addMensagemFaces("Bairro é obrigatório.");
+				return false;
+			} else {
+				return true;
 			}
-		} else if (enderecoCandidatoOuResponsavel.getClass().equals(Responsavel.class)) {
-			if (!enderecoResponsavel.getRuaOuAvenida().isEmpty() && !enderecoResponsavel.getBairro().isEmpty()
-					&& !enderecoResponsavel.getQuadra().isEmpty() && !enderecoResponsavel.getLote().isEmpty()) {
-				return true;
-			} else {
+		} else if (enderecoCandidatoOuResponsavel.equals("Responsavel")) {
+			if (enderecoResponsavel.getCidade().getNomeCidade().isEmpty() && enderecoResponsavel.getBairro().isEmpty()) {
+				UtilFaces.addMensagemFaces("Cidade é obrigatório.");
+				UtilFaces.addMensagemFaces("Bairro é obrigatório.");
 				return false;
+			} else if (enderecoResponsavel.getCidade().getNomeCidade().isEmpty() && !(enderecoResponsavel.getBairro().isEmpty())) {
+				UtilFaces.addMensagemFaces("Cidade é obrigatório.");
+				return false;
+			} else if (enderecoResponsavel.getBairro().isEmpty() && !(enderecoResponsavel.getCidade().getNomeCidade().isEmpty())) {
+				UtilFaces.addMensagemFaces("Bairro é obrigatório.");
+				return false;
+			} else {
+				return true;
 			}
 		}
 		return false;
@@ -674,10 +730,10 @@ public class CandidatoControl {
 			return true;
 		}
 	}
-	
+
 	public void validaCandidatoNome(FacesContext fc, UIComponent uc, Object ob) {
 		String nome = (String) ob;
-		if(nome.isEmpty()) {
+		if (nome.isEmpty()) {
 			((UIInput) uc).setValid(false);
 			UtilFaces.addMensagemFaces("Nome de candidato é obrigatório.");
 		}
@@ -685,12 +741,12 @@ public class CandidatoControl {
 
 	public void validaCandidatoCPF(FacesContext fc, UIComponent uc, Object ob) {
 		String cpf = (String) ob;
-		if(cpf.isEmpty()) {
+		if (cpf.isEmpty()) {
 			((UIInput) uc).setValid(false);
 			UtilFaces.addMensagemFaces("CPF de candidato é obrigatório.");
 		}
 	}
-	
+
 	private boolean EhResponsavelConsistente() {
 		if (this.responsavel.getNomePessoa() != null && !this.responsavel.getNomePessoa().isEmpty()
 				&& this.responsavel.getCpf() != null && !this.responsavel.getCpf().isEmpty()) {

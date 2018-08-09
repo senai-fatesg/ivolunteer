@@ -47,7 +47,7 @@
 						<p:tooltip for="editarCandidato" position="top"
 							value="Editar candidato." />
 
-						<p:commandButton id="inativaUsuario" icon="ui-icon-trash"
+						<p:commandButton id="inativaUsuario" icon="ui-icon-closethick"
 							action="#{CandidatoControl.desativarCandidato(itemCandidato)}"
 							update="listaCandidato" process="@this">
 							<p:confirm header="Confirmar desativação!"
@@ -262,7 +262,7 @@
 										<a:newLine />
 										<a:newLine />
 
-										<p:commandButton
+										<p:commandButton id="addEnderecoCandidato"
 											rendered="#{CandidatoControl.endereco.id == null}"
 											action="#{CandidatoControl.adicionarEnderecoCandidato}"
 											value="Adicionar endereço" icon="ui-icon-plusthick"
@@ -270,7 +270,7 @@
 											global="false">
 										</p:commandButton>
 
-										<p:commandButton
+										<p:commandButton id="attEnderecoCandidato"
 											rendered="#{CandidatoControl.endereco.id != null}"
 											action="#{CandidatoControl.atualizarEndereco('Candidato')}"
 											value="Atualizar endereço" icon="ui-icon-refresh"
@@ -323,7 +323,6 @@
 													ajax="true">
 
 													<p:tooltip
-														rendered="#{end.isAtivo and (end.id != CandidatoControl.endereco.id or end.id == null)}"
 														for="alterarEnderecoCandidato" position="top"
 														value="Editar endereço." />
 
@@ -661,7 +660,7 @@
 											value="#{CandidatoControl.enderecoResponsavel.bairro}"></p:inputText>
 									</a:field>
 
-									<a:field label="Numero">
+									<a:field label="Numero" spaceLeft="15px">
 										<p:inputText id="numero"
 											value="#{CandidatoControl.enderecoResponsavel.numero}"></p:inputText>
 									</a:field>
@@ -686,7 +685,7 @@
 									<a:newLine />
 
 									<a:field label="Estado">
-										<p:selectOneMenu id="estado"
+										<p:selectOneMenu id="estado" style="width: 169px;"
 											value="#{CandidatoControl.enderecoResponsavel.cidade.enumEstado }">
 											<f:selectItems
 												value="#{CandidatoControl.completeEnumEstado }">
@@ -699,23 +698,26 @@
 											value="#{CandidatoControl.enderecoResponsavel.cidade.nomeCidade}">
 										</p:inputText>
 									</a:field>
-
+									
+									<a:field label="CEP" spaceLeft="15px">
+										<p:inputMask id="cepEndResp"
+											value="#{CandidatoControl.enderecoResponsavel.cep}" mask="99.999-999" />
+									</a:field>
 									<a:newLine />
 									<a:newLine />
 
-									<p:commandButton
+									<p:commandButton id="addEnderecoResponsavel"
 										action="#{CandidatoControl.adicionarEnderecoResponsavel}"
 										rendered="#{CandidatoControl.enderecoResponsavel.id == null}"
 										value="Adicionar endereço" icon="ui-icon-plusthick"
-										update="listaEnderecoResponsavel, panelEnderecoResponsavel"
-										process="tabEnderecoResponsavel" global="false" />
+										update="listaEnderecoResponsavel panelEnderecoResponsavel" />
 
-									<p:commandButton
-										action="#{CandidatoControl.atualizarEnderecoResponsavel}"
+									<p:commandButton id="attEnderecoResponsavel"
+										action="#{CandidatoControl.atualizarEndereco('Responsavel')}"
 										rendered="#{CandidatoControl.enderecoResponsavel.id != null}"
+										value="Atualizar endereço"
 										icon="ui-icon-refresh"
-										update="listaEnderecoResponsavel, panelEnderecoResponsavel"
-										process="tabEnderecoResponsavel" global="false" />
+										update="listaEnderecoResponsavel panelEnderecoResponsavel" />
 									<a:newLine />
 								</p:panel>
 
@@ -734,53 +736,53 @@
 											<p:column headerText="Rua" />
 											<p:column headerText="Bairro" />
 											<p:column headerText="Número" />
-											<p:column headerText="Ações" />
+											<p:column headerText="Ações" width="10%" />
 										</p:row>
 									</p:columnGroup>
 
 									<p:column sortBy="#{ende.ruaOuAvenida}"
-										rendered="#{ende.isAtivo and (ende.id != CandidatoControl.enderecoResponsavel.id)}">
-										<!--  
-										<f:facet name="header">
-											<h:outputText value="Rua"></h:outputText>
-										</f:facet>
-										-->
+										rendered="#{(ende.isAtivo and ende.id != CandidatoControl.enderecoResponsavel.id) or ende.id == null}" >
+
 										<h:outputText value="#{ende.ruaOuAvenida}" />
 									</p:column>
 
 									<p:column sortBy="#{ende.bairro}"
-										rendered="#{ende.isAtivo and (ende.id != CandidatoControl.enderecoResponsavel.id)}">
-										<!--  
-										<f:facet name="header">
-											<h:outputText value="Bairro"></h:outputText>
-										</f:facet>
-										-->
+										rendered="#{(ende.isAtivo and ende.id != CandidatoControl.enderecoResponsavel.id) or ende.id == null}" >
+
 										<h:outputText value="#{ende.bairro}" />
 									</p:column>
 
 									<p:column sortBy="#{ende.numero}"
-										rendered="#{ende.isAtivo and (ende.id != CandidatoControl.enderecoResponsavel.id)}">
-										<!-- 
-										<f:facet name="header">
-											<h:outputText value="Número"></h:outputText>
-										</f:facet>
-										-->
+										rendered="#{(ende.isAtivo and ende.id != CandidatoControl.enderecoResponsavel.id) or ende.id == null}" >
+
 										<h:outputText value="#{ende.numero}" />
 									</p:column>
 
-									<p:column width="100"
-										rendered="#{ende.isAtivo and (ende.id != CandidatoControl.enderecoResponsavel.id)}">
-										<!--
-										<f:facet name="header">
-											<h:outputText value="Ações"></h:outputText>
-										</f:facet>
-										-->
-										<p:commandButton icon="ui-icon-closethick"
-											action="#{CandidatoControl.desativarEndereco(ende, 'Responsavel')}"
-											update="listaEnderecoResponsavel" ajax="false" />
-										<p:commandButton icon="ui-icon-pencil"
+									<p:column
+										rendered="#{(ende.isAtivo and ende.id != CandidatoControl.enderecoResponsavel.id) or ende.id == null}" >
+	
+										<p:commandButton 
+											id="editarEndResponsavel"
+											icon="ui-icon-pencil"
+											rendered="#{(ende.isAtivo and ende.id != CandidatoControl.enderecoResponsavel.id) or ende.id == null}"
 											action="#{CandidatoControl.carregaEnderecoAlteracao(ende, 'Responsavel')}"
-											update="listaEnderecoResponsavel" ajax="false" />
+											update=":formCorpo:tabCadastro:tabCadastroResponsavel:panelEnderecoResponsavel listaEnderecoResponsavel" 
+											ajax="true" >
+											<p:tooltip for="editarEndResponsavel" position="top" value="Editar endereço" />
+										</p:commandButton>
+											
+										<p:commandButton 
+											id="desativarEndResponsavel"
+											icon="ui-icon-closethick"
+											rendered="#{(ende.isAtivo and ende.id != CandidatoControl.enderecoResponsavel.id) or ende.id == null}"
+											action="#{CandidatoControl.desativarEndereco(ende, 'Responsavel')}"
+											update=":formCorpo:tabCadastro:tabCadastroResponsavel:panelEnderecoResponsavel listaEnderecoResponsavel" 
+											ajax="true" >
+											<p:tooltip for="desativarEndResponsavel" position="top" value="Desativar endereço" />
+											<p:confirm header="Confirmar desativação!" message="Tem certeza de que deseja desativar este endereço?" />
+										</p:commandButton>
+										
+											
 									</p:column>
 								</p:dataTable>
 							</p:tab>
@@ -796,14 +798,18 @@
 										<p:inputNumber id="renda"
 											value="#{CandidatoControl.responsavel.renda}" symbol="R$ "
 											minValue="0" maxValue="1000000" thousandSeparator="."
-											decimalSeparator="," />
+											decimalSeparator="," >
+											<p:ajax event="blur" process="renda" listener="#{CandidatoControl.totalRenda}" />
+										</p:inputNumber>
 									</a:field>
 
 									<a:field label="Renda extra:" spaceLeft="15px">
 										<p:inputNumber id="rendaExtra"
 											value="#{CandidatoControl.responsavel.rendaExtra}"
 											symbol="R$ " minValue="0" maxValue="1000000"
-											thousandSeparator="." decimalSeparator="," />
+											thousandSeparator="." decimalSeparator="," >
+											<p:ajax event="blur" process="rendaExtra" listener="#{CandidatoControl.totalRenda}" />
+										</p:inputNumber>
 									</a:field>
 
 									<a:field label="Número de pessoas:" spaceLeft="15px">
@@ -815,10 +821,11 @@
 
 									<a:field label="Recebe algum benefício do governo?">
 										<p:selectOneMenu id="recebeBeneficio"
-											value="#{CandidatoControl.responsavel.recebeBeneficio}">
+											value="#{CandidatoControl.responsavel.recebeBeneficio}" >
 											<f:selectItem itemLabel="Sim" itemValue="true" />
 											<f:selectItem itemLabel="Não" itemValue="false" />
-											<p:ajax event="change" update="rendaFamiliar" />
+											<p:ajax event="change" update="rendaFamiliar" 
+												listener="#{CandidatoControl.zeraValorBeneficio}" />
 										</p:selectOneMenu>
 									</a:field>
 
@@ -829,7 +836,9 @@
 										<p:inputNumber id="valorBeneficio"
 											value="#{CandidatoControl.responsavel.valorBeneficio}"
 											symbol="R$ " minValue="0" maxValue="1000000"
-											thousandSeparator="." decimalSeparator="," />
+											thousandSeparator="." decimalSeparator="," >
+											<p:ajax event="blur" process="valorBeneficio" listener="#{CandidatoControl.totalRenda}"/>
+										</p:inputNumber>
 									</a:field>
 
 									<a:newLine />
@@ -932,12 +941,11 @@
 							rendered="#{CandidatoControl.responsavel.id == null}"
 							actionListener="#{CandidatoControl.adicionarResponsavel}"
 							value="Adicionar Reponsável" icon="ui-icon-plusthick"
-							update=":formCorpo:tabCadastro"
-							oncomplete=":formCorpo:tabCadastro" ajax="true" />
+							update=":formCorpo:tabCadastro:painelResponsavel listaResponsavel"	ajax="true" />
 
 						<p:commandButton
 							rendered="#{CandidatoControl.responsavel.id != null}"
-							actionListener="#{CandidatoControl.adicionarResponsavel}"
+							actionListener="#{CandidatoControl.atualizarResponsavel}"
 							value="Atualizar Reponsável" icon="ui-icon-refresh"
 							update=":formCorpo:tabCadastro" global="false" ajax="true" />
 
@@ -957,54 +965,49 @@
 									<p:column headerText="Nome" />
 									<p:column headerText="CPF" />
 									<p:column headerText="Filiação" />
-									<p:column headerText="Ações" />
+									<p:column headerText="Ações" width="10%" />
 								</p:row>
 							</p:columnGroup>
 
-							<p:column width="20" sortBy="#{pessoaResponsavel.nomePessoa}"
-								rendered="#{pessoaResponsavel.id != CandidatoControl.responsavel.id and (pessoaResponsavel.isAtivo)}">
-								<!--  
-								<f:facet name="header">
-									<h:outputText value="Nome"></h:outputText>
-								</f:facet>
-								-->
-								<h:outputText value="#{pessoaResponsavel.nomePessoa }"></h:outputText>
+							<p:column sortBy="#{pessoaResponsavel.nomePessoa}"
+								rendered="#{(pessoaResponsavel.id != CandidatoControl.responsavel.id and pessoaResponsavel.isAtivo) or pessoaResponsavel.id == null}">
+								<h:outputText value="#{pessoaResponsavel.nomePessoa}" />
 							</p:column>
 
-							<p:column width="20" sortBy="#{pessoaResponsavel.cpf}"
-								rendered="#{pessoaResponsavel.id != CandidatoControl.responsavel.id and (pessoaResponsavel.isAtivo)}">
-								<!--  
-								<f:facet name="header">
-									<h:outputText value="cpf"></h:outputText>
-								</f:facet>
-								-->
-								<h:outputText value="#{pessoaResponsavel.cpf}"></h:outputText>
+							<p:column sortBy="#{pessoaResponsavel.cpf}"
+								rendered="#{(pessoaResponsavel.id != CandidatoControl.responsavel.id and pessoaResponsavel.isAtivo) or pessoaResponsavel.id == null}">
+								<h:outputText value="#{pessoaResponsavel.cpf}" />
 							</p:column>
 
-							<p:column width="20" sortBy="#{pessoaResponsavel.enumFiliacao}"
-								rendered="#{pessoaResponsavel.id != CandidatoControl.responsavel.id and (pessoaResponsavel.isAtivo)}">
-								<!-- 
-								<f:facet name="header">
-									<h:outputText value="filiacao"></h:outputText>
-								</f:facet>
-								-->
-								<h:outputText value="#{pessoaResponsavel.enumFiliacao}"></h:outputText>
+							<p:column sortBy="#{pessoaResponsavel.enumFiliacao}"
+								rendered="#{(pessoaResponsavel.id != CandidatoControl.responsavel.id and pessoaResponsavel.isAtivo) or pessoaResponsavel.id == null}">
+								
+								<h:outputText value="#{pessoaResponsavel.enumFiliacao}"/>
 							</p:column>
 
-							<p:column width="20"
-								rendered="#{pessoaResponsavel.id != CandidatoControl.responsavel.id and (pessoaResponsavel.isAtivo)}">
-								<!--  
-								<f:facet name="header">
-									<h:outputText value="Ações"></h:outputText>
-								</f:facet>
-								-->
-								<p:commandButton icon="ui-icon-closethick"
-									action="#{CandidatoControl.removerResponsavel(pessoaResponsavel)}"
-									update="listaResponsavel" ajax="true" />
+							<p:column
+								rendered="#{(pessoaResponsavel.id != CandidatoControl.responsavel.id and pessoaResponsavel.isAtivo) or pessoaResponsavel.id == null}">
 
-								<p:commandButton icon="ui-icon-pencil"
+								<p:commandButton id="alterarResponsavel" icon="ui-icon-pencil"
+									rendered="#{(pessoaResponsavel.id != CandidatoControl.responsavel.id and pessoaResponsavel.isAtivo) or pessoaResponsavel.id == null}"
 									action="#{CandidatoControl.carregaResponsavelAlteracao(pessoaResponsavel)}"
-									update=":formCorpo:tabCadastro:painelResponsavel" ajax="true" />
+									update=":formCorpo:tabCadastro:painelResponsavel" ajax="true" >
+									<p:tooltip for="alterarResponsavel" position="top" value="Editar responsável." />
+								</p:commandButton>
+									
+								
+								<p:commandButton id="desativarResponsavel" icon="ui-icon-closethick"
+									rendered="#{(pessoaResponsavel.id != CandidatoControl.responsavel.id and pessoaResponsavel.isAtivo) or pessoaResponsavel.id == null}"
+									action="#{CandidatoControl.desativarResponsavel(pessoaResponsavel)}"
+									update=":formCorpo:tabCadastro:painelResponsavel" ajax="true" >
+									
+									<p:confirm message="Tem certeza que deseja desativar este responsável?" 
+									header="Desativar responsável!" icon="ui-icon-alert" />
+									
+									<p:tooltip for="desativarResponsavel" position="top" value="Desativar responsável." />
+								
+								</p:commandButton>
+								
 							</p:column>
 						</p:dataTable>
 

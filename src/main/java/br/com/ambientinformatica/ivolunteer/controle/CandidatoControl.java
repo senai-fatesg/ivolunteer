@@ -315,24 +315,18 @@ public class CandidatoControl {
 
 		if (anosDeIdade <= 17) {
 			this.maiorDeIdade = false;
-			System.out.println("MENOR QUE 17");
-			System.out.println("IDADE: " + anosDeIdade);
 			return;
 		}
 		if (anosDeIdade >= 19) {
 			this.maiorDeIdade = true;
-			System.out.println("MAIOR OU IGUAL À 19");
-			System.out.println("IDADE: " + anosDeIdade);
 			return;
 		}
 		if (anosDeIdade == 18) {
 			DataNascCand.set(Calendar.YEAR, dataDeHoje.get(Calendar.YEAR));
 			if (DataNascCand.before(dataDeHoje)) {
-				System.out.println("JÁ FEZ ANIVERSÁRIO!!!");
 				this.maiorDeIdade = true;
 				return;
 			} else {
-				System.out.println("NÃO FEZ ANIVERSÁRIO!!!");
 				this.maiorDeIdade = false;
 			}
 		}
@@ -347,18 +341,13 @@ public class CandidatoControl {
 	}
 
 	public void atualizaTotalRenda() {
-		getTotalRenda();
+		this.responsavel.setTotalRenda(BigDecimal.valueOf(0));
+		this.responsavel.calcularRenda();
 	}
 	
 	public void zeraValorBeneficio() {
 		if (this.responsavel.getRecebeBeneficio().equals(false)) {
-			System.out.println("VALOR BENEFÍCIO: " + this.responsavel.getValorBeneficio());
-			System.out.println("ESCOLHEU QUE NÃO RECEBE BENEFÍCIO");
 			this.responsavel.setValorBeneficio(BigDecimal.valueOf(0));
-			System.out.println("VALOR BENEFÍCIO: " + this.responsavel.getValorBeneficio() 
-			+ " RENDA: " + this.responsavel.getRenda() 
-			+ " RENDA EXTRA: " + this.responsavel.getRendaExtra());
-			System.out.println("RENDA TOTAL: " + getTotalRenda());
 		}
 	}
 	

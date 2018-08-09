@@ -799,7 +799,8 @@
 											value="#{CandidatoControl.responsavel.renda}" symbol="R$ "
 											minValue="0" maxValue="1000000" thousandSeparator="."
 											decimalSeparator="," >
-											<p:ajax event="blur" process="renda" listener="#{CandidatoControl.totalRenda}" />
+											<p:ajax event="blur" process="valorBeneficio rendaExtra renda" 
+												listener="#{CandidatoControl.atualizaTotalRenda}" update="rendaFamiliar" />
 										</p:inputNumber>
 									</a:field>
 
@@ -808,7 +809,8 @@
 											value="#{CandidatoControl.responsavel.rendaExtra}"
 											symbol="R$ " minValue="0" maxValue="1000000"
 											thousandSeparator="." decimalSeparator="," >
-											<p:ajax event="blur" process="rendaExtra" listener="#{CandidatoControl.totalRenda}" />
+											<p:ajax event="blur" process="valorBeneficio rendaExtra renda" 
+												listener="#{CandidatoControl.atualizaTotalRenda}" update="rendaFamiliar" />
 										</p:inputNumber>
 									</a:field>
 
@@ -837,7 +839,8 @@
 											value="#{CandidatoControl.responsavel.valorBeneficio}"
 											symbol="R$ " minValue="0" maxValue="1000000"
 											thousandSeparator="." decimalSeparator="," >
-											<p:ajax event="blur" process="valorBeneficio" listener="#{CandidatoControl.totalRenda}"/>
+											<p:ajax event="blur" process="valorBeneficio rendaExtra renda" 
+												listener="#{CandidatoControl.atualizaTotalRenda}" update="rendaFamiliar" />
 										</p:inputNumber>
 									</a:field>
 

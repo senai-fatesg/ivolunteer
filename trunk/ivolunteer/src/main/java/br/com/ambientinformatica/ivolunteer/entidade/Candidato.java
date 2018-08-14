@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CascadeType;
 
@@ -64,9 +66,67 @@ public class Candidato extends Pessoa implements java.io.Serializable {
 	@Enumerated(EnumType.STRING)
 	private EnumPNE enumPNE;
 	
+	@Enumerated(EnumType.STRING)
+	private EnumEscolaridade enumEscolaridade;
+	
+	@Temporal(TemporalType.DATE)
+	private Date anoDeConclusao;
+	
+	@Temporal(TemporalType.DATE)
+	private Date anoDeDesistencia;
+	
+	private String instituicao;
+	
+	private Boolean desistiu;
+	private Boolean concluiu;
+	
+	public Boolean getDesistiu() {
+		return desistiu;
+	}
+	public void setDesistiu(Boolean desistiu) {
+		this.desistiu = desistiu;
+	}
+	public Boolean getConcluiu() {
+		return concluiu;
+	}
+	public void setConcluiu(Boolean concluiu) {
+		this.concluiu = concluiu;
+	}
+	public String getInstituicao() {
+		return instituicao;
+	}
+	public void setInstituicao(String instituicao) {
+		this.instituicao = instituicao;
+	}
+	private Boolean temPrioridade = false;
+	
 	private String parentescoPNE;
 	private String necessidadePNE;
 	
+	public EnumEscolaridade getEnumEscolaridade() {
+		return enumEscolaridade;
+	}
+	public void setEnumEscolaridade(EnumEscolaridade enumEscolaridade) {
+		this.enumEscolaridade = enumEscolaridade;
+	}
+	public Date getAnoDeConclusao() {
+		return anoDeConclusao;
+	}
+	public void setAnoDeConclusao(Date anoDeConclusao) {
+		this.anoDeConclusao = anoDeConclusao;
+	}
+	public Date getAnoDeDesistencia() {
+		return anoDeDesistencia;
+	}
+	public void setAnoDeDesistencia(Date anoDeDesistencia) {
+		this.anoDeDesistencia = anoDeDesistencia;
+	}
+	public Boolean getTemPrioridade() {
+		return temPrioridade;
+	}
+	public void setTemPrioridade(Boolean temPrioridade) {
+		this.temPrioridade = temPrioridade;
+	}
 	public String getTelefoneCelular() {
 		return telefoneCelular;
 	}

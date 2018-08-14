@@ -87,6 +87,17 @@ public class Pessoa extends Entidade implements Serializable{
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "pessoa_id")
 	private List<Responsavel> listaResponsavel = new ArrayList<Responsavel>();
+	
+	@Enumerated(EnumType.STRING)
+	private EnumTipoEtnia etnia;
+
+	public EnumTipoEtnia getEtnia() {
+		return etnia;
+	}
+
+	public void setEtnia(EnumTipoEtnia etnia) {
+		this.etnia = etnia;
+	}
 
 	public Integer getIdade() {
 		if (this.dataNascimento == null) {

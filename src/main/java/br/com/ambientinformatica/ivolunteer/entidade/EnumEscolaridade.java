@@ -5,8 +5,11 @@ import br.com.ambientinformatica.util.IEnum;
 public enum EnumEscolaridade implements IEnum{
 
   FUNDAMENTAL("Fundamental"),
+  FUNDAMENTAL_INCOMPLETO("Fundamental incompleto"),
   MEDIO("Medio"),
-  SUPERIOR("Superior");
+  MEDIO_INCOMPLETO("Medio incompleto"),
+  SUPERIOR("Superior"),
+  SUPERIOR_INCOMPLETO("Superior incompleto");
   
 	private String descricao;
 

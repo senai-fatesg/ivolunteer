@@ -42,6 +42,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.EnumSexo;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTemCelular;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTemInternet;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoCasa;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoEtnia;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoPessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoTelefone;
 import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
@@ -264,11 +265,11 @@ public class CandidatoControl {
 				}
 			} else if (candidatoOuResponsavel.equals("Responsavel")) {
 				if (EhResponsavelConsistente()) {
-					if(EhEnderecoConsistente(candidatoOuResponsavel)) {
+					if (EhEnderecoConsistente(candidatoOuResponsavel)) {
 						this.responsavel.addEndereco(this.enderecoResponsavel);
 						this.enderecoResponsavel = new Endereco();
 						UtilFaces.addMensagemFaces("Endereço de responsável adicionado.");
-					} 
+					}
 				} else {
 					UtilFaces.addMensagemFaces("Preencha o nome e CPF de responsável antes de adicionar um endereço. ");
 				}
@@ -281,14 +282,14 @@ public class CandidatoControl {
 
 	public void atualizarEndereco(String candidatoOuResponsavel) {
 		if (candidatoOuResponsavel.equals("Candidato")) {
-			if(EhEnderecoConsistente(candidatoOuResponsavel)) {
+			if (EhEnderecoConsistente(candidatoOuResponsavel)) {
 				enderecoDao.alterar(this.endereco);
 				this.candidato = candidatoDao.consultarCandidatoCompleto(this.candidato);
 				this.endereco = new Endereco();
 				UtilFaces.addMensagemFaces("Endereço de candidato atualizado.");
 			}
 		} else if (candidatoOuResponsavel.equals("Responsavel")) {
-			if(EhEnderecoConsistente(candidatoOuResponsavel)) {
+			if (EhEnderecoConsistente(candidatoOuResponsavel)) {
 				enderecoDao.alterar(this.enderecoResponsavel);
 				this.responsavel = responsavelDao.consultaResponsavelCompleto(this.responsavel);
 				this.enderecoResponsavel = new Endereco();
@@ -344,13 +345,13 @@ public class CandidatoControl {
 		this.responsavel.setTotalRenda(BigDecimal.valueOf(0));
 		this.responsavel.calcularRenda();
 	}
-	
+
 	public void zeraValorBeneficio() {
 		if (this.responsavel.getRecebeBeneficio().equals(false)) {
 			this.responsavel.setValorBeneficio(BigDecimal.valueOf(0));
 		}
 	}
-	
+
 	public void atualizarResponsavel() {
 		try {
 			responsavelDao.alterar(this.responsavel);
@@ -587,6 +588,10 @@ public class CandidatoControl {
 		this.telefoneResidencialCandidato = telefoneResidencialCandidato;
 	}
 
+	public List<SelectItem> getCompleteEnumTipoEtnia() {
+		return UtilFaces.getListEnum(EnumTipoEtnia.values());
+	}
+
 	public List<SelectItem> getCompleteEnumFiliacao() {
 		return UtilFaces.getListEnum(EnumFiliacao.values());
 	}
@@ -694,14 +699,17 @@ public class CandidatoControl {
 				return true;
 			}
 		} else if (enderecoCandidatoOuResponsavel.equals("Responsavel")) {
-			if (enderecoResponsavel.getCidade().getNomeCidade().isEmpty() && enderecoResponsavel.getBairro().isEmpty()) {
+			if (enderecoResponsavel.getCidade().getNomeCidade().isEmpty()
+					&& enderecoResponsavel.getBairro().isEmpty()) {
 				UtilFaces.addMensagemFaces("Cidade é obrigatório.");
 				UtilFaces.addMensagemFaces("Bairro é obrigatório.");
 				return false;
-			} else if (enderecoResponsavel.getCidade().getNomeCidade().isEmpty() && !(enderecoResponsavel.getBairro().isEmpty())) {
+			} else if (enderecoResponsavel.getCidade().getNomeCidade().isEmpty()
+					&& !(enderecoResponsavel.getBairro().isEmpty())) {
 				UtilFaces.addMensagemFaces("Cidade é obrigatório.");
 				return false;
-			} else if (enderecoResponsavel.getBairro().isEmpty() && !(enderecoResponsavel.getCidade().getNomeCidade().isEmpty())) {
+			} else if (enderecoResponsavel.getBairro().isEmpty()
+					&& !(enderecoResponsavel.getCidade().getNomeCidade().isEmpty())) {
 				UtilFaces.addMensagemFaces("Bairro é obrigatório.");
 				return false;
 			} else {
@@ -709,6 +717,14 @@ public class CandidatoControl {
 			}
 		}
 		return false;
+	}
+
+	public void validaDesistiuConcluiu(){
+		if(this.candidato.getEnumEscolaridade().equals(EnumEscolaridade.FUNDAMENTAL) || this.candidato.getEnumEscolaridade().equals(EnumEscolaridade.MEDIO) || this.candidato.getEnumEscolaridade().equals(EnumEscolaridade.SUPERIOR)) {
+			this.candidato.setDesistiu(false);
+		} else {
+			this.candidato.setConcluiu(false);
+		}
 	}
 
 	public boolean validarCandidato(Candidato candidato) {

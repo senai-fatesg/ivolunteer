@@ -5,7 +5,8 @@ import br.com.ambientinformatica.util.IEnum;
 public enum EnumSexo implements IEnum {
 
 	M("Masculino"), 
-	F("Feminino");
+	F("Feminino"),
+	O("Outro");
 
 	private String descricao;
 

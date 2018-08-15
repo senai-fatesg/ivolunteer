@@ -37,6 +37,7 @@ import br.com.ambientinformatica.ivolunteer.persistencia.FuncionarioDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.PessoaDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.TelefoneDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
+import br.com.ambientinformatica.util.UtilLog;
 
 @Controller("FuncionarioControl")
 @Scope("conversation")
@@ -48,8 +49,6 @@ public class FuncionarioControl {
 	private Telefone telefoneEmpresa = new Telefone();
 	private String nomeFuncionarioPesquisa;
 	private Frequencia frequencia = new Frequencia();
-	
-	private boolean desabilitaCampoVoluntario;
 
 	private List<Frequencia> frequencias = new ArrayList<Frequencia>();
 
@@ -113,7 +112,7 @@ public class FuncionarioControl {
 		try {
 			funcionarioDao.alterar(funcionario);
 			this.funcionario = new Funcionario();
-			UtilFaces.addMensagemFaces("Funcionário salvo com sucesso!");
+			UtilFaces.addMensagemFaces("Colaborador salvo com sucesso!");
 		} catch (PersistenciaException e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -125,7 +124,7 @@ public class FuncionarioControl {
 			funcionario.desativa();
 			funcionarioDao.alterar(funcionario);
 			listarTodosFuncionarios(null);
-			UtilFaces.addMensagemFaces("Funcionário excluido com sucesso!");
+			UtilFaces.addMensagemFaces("Colaborador excluido com sucesso!");
 		} catch (PersistenciaException e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -133,10 +132,8 @@ public class FuncionarioControl {
 	}
 
 	public void validaEmail(FacesContext fc, UIComponent uc, Object ob) {
-		System.out.println("VALIDANDO EMAIL");
 		String email = (String) ob;
 		if (!email.equals("")) {
-			System.out.println(email + " <- VALOR EMAIL");
 			if (!email.contains("@")) {
 				((UIInput) uc).setValid(false);
 				UtilFaces.addMensagemFaces("Email inválido. O email deve conter '@' em seu endereço.");
@@ -145,10 +142,8 @@ public class FuncionarioControl {
 	}
 
 	public void validaSite(FacesContext fc, UIComponent uc, Object ob) {
-		System.out.println("VALIDANDO SITE");
 		String site = (String) ob;
 		if (!site.equals("")) {
-			System.out.println(site + " <- VALOR SITE");
 			if (!site.contains("www.")) {
 				((UIInput) uc).setValid(false);
 				UtilFaces.addMensagemFaces("Site inválido. O site deve conter 'www.' no início.");
@@ -162,14 +157,6 @@ public class FuncionarioControl {
 		this.funcionario.setEmail(null);
 		this.funcionario.setNomeEmpresa(null);
 		this.funcionario.setCnpj(null);
-	}
-	
-	public void desabilitaCamposVoluntario() {
-		if (this.funcionario.getTipoFuncionario().equals(EnumTipoFuncionario.VOLUNTARIO)) {
-			this.desabilitaCampoVoluntario = false;
-		} else {
-			this.desabilitaCampoVoluntario = false;
-		}
 	}
 
 	public void validaNome(FacesContext fc, UIComponent uc, Object ob) {
@@ -258,24 +245,38 @@ public class FuncionarioControl {
 		} else if (empresaOuFuncionario.equals("Funcionario")) {
 			this.telefoneDao.alterar(this.telefoneFuncionario);
 			this.telefoneFuncionario = new Telefone();
-			UtilFaces.addMensagemFaces("Telefone do funcionário atualizado.");
+			UtilFaces.addMensagemFaces("Telefone do colaborador atualizado.");
 			this.funcionario = funcionarioDao.consultar(this.funcionario.getId());
 		}
+	}
+	
+	public boolean campoVazio(String empresaOuFuncionario) {
+		if (empresaOuFuncionario.equals("Empresa") && this.telefoneEmpresa.getNumeroTelefone().isEmpty()) {
+			UtilFaces.addMensagemFaces("Informe um numero de telefone da empresa!");
+			return true;
+		} else if (empresaOuFuncionario.equals("Funcionario") && this.telefoneFuncionario.getNumeroTelefone().isEmpty()) {
+			UtilFaces.addMensagemFaces("Informe um numero de telefone do colaborador!");
+			return true;
+		}
+		return false; 
 	}
 
 	public void adicionarTelefone(String empresaOuFuncionario) {
 		try {
-			if (empresaOuFuncionario.equals("Empresa")) {
+			if (this.campoVazio(empresaOuFuncionario)) {
+				return;
+			} else if (empresaOuFuncionario.equals("Empresa")) {
 				this.funcionario.addTelefoneEmpresa(this.telefoneEmpresa);
 				this.telefoneEmpresa = new Telefone();
-				UtilFaces.addMensagemFaces("Telefone da empresa adicionado.");
+				UtilFaces.addMensagemFaces("Telefone da empresa adicionado.");					
 			} else if (empresaOuFuncionario.equals("Funcionario")) {
-				this.funcionario.addTelefone(this.telefoneFuncionario);
-				this.telefoneFuncionario = new Telefone();
-				UtilFaces.addMensagemFaces("Telefone de funcionário adicionado.");
-			}
+				 this.funcionario.addTelefone(this.telefoneFuncionario);
+				 this.telefoneFuncionario = new Telefone();
+				 UtilFaces.addMensagemFaces("Telefone do colaborador adicionado.");					
+			}				
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
+			UtilLog.getLog().error(e);
 		}
 	}
 
@@ -295,11 +296,21 @@ public class FuncionarioControl {
 	public void desativarTelefone(Telefone telefone, String empresaOuFuncionario) {
 		try {
 			if (empresaOuFuncionario.equals("Empresa")) {
-				telefone.desativa();
-				telefoneDao.alterar(telefone);
+				if (telefone.getId() == null) {
+					this.funcionario.getTelefonesEmpresa().remove(telefone);
+				} else {
+					telefone.desativa();
+					telefoneDao.alterar(telefone);
+				}
+				UtilFaces.addMensagemFaces("Telefone da empresa removido!");
 			} else if (empresaOuFuncionario.equals("Funcionario")) {
-				telefone.desativa();
-				telefoneDao.desativarTelefone(telefone);
+				if (telefone.getId() == null) {
+					this.funcionario.getListaTelefone().remove(telefone);
+				} else {
+					telefone.desativa();
+					telefoneDao.desativarTelefone(telefone);					
+				}
+				UtilFaces.addMensagemFaces("Telefone do colaborador removido!");
 			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
@@ -308,7 +319,6 @@ public class FuncionarioControl {
 
 	// Aplica Filtro
 	public void aplicarFiltro(ActionEvent evt) {
-		System.out.println("ENTROU NO METODO APLICAR FILTRO");
 		try {
 			if (this.nomeFuncionarioPesquisa == null || this.nomeFuncionarioPesquisa.isEmpty()) {
 				this.funcionarios = this.funcionarioDao.listarFuncionariosAtivos();
@@ -422,14 +432,6 @@ public class FuncionarioControl {
 
 	public void setFrequencia(Frequencia frequencia) {
 		this.frequencia = frequencia;
-	}
-
-	public boolean isdesabilitaCampoVoluntario() {
-		return desabilitaCampoVoluntario;
-	}
-
-	public void setdesabilitaCampoVoluntario(boolean desabilitaCampoVoluntario) {
-		this.desabilitaCampoVoluntario = desabilitaCampoVoluntario;
 	}
 
 }

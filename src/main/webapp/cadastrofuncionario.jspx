@@ -9,11 +9,22 @@
 
 	<ui:define name="corpo">
 
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<p:commandButton value="Sim" type="button"
+				styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			<p:commandButton value="Não" type="button"
+				styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		</p:confirmDialog>
+
 		<p:panel header="Cadastro de Funcionário" id="panelFuncionario">
 
 			<p:commandButton type="button" id="consultar" value="Consultar"
 				icon="ui-icon-search" onclick="PF('consultar').show();"
-				styleClass="marginbottom" />
+				action="#{FuncionarioControl.listarTodosFuncionarios}"
+				styleClass="marginbottom" process="@this" update="listaFuncionarios">
+				<p:tooltip for="consultar" position="top"
+					value="Consultar Colaborador" />
+			</p:commandButton>
 
 			<a:newLine />
 			<a:newLine />
@@ -37,7 +48,9 @@
 				<a:newLine />
 
 				<p:dataTable id="listaFuncionarios" var="itemFuncionario"
-					style="width:100%" value="#{FuncionarioControl.funcionarios}"
+					paginator="true" rows="10" rowsPerPageLabel="5,10,20"
+					rowsPerPageTemplate="5,10,20" style="width:100%"
+					value="#{FuncionarioControl.funcionarios}"
 					widgetVar="funcionariosTable" emptyMessage="Sem Registros a Exibir">
 					<p:column headerText="Nome" width="50%">
 						#{itemFuncionario.nomePessoa}
@@ -48,13 +61,23 @@
 					</p:column>
 
 					<p:column width="20%">
-						<p:commandButton icon="ui-icon-pencil"
+						<p:commandButton id="editarColaborador" icon="ui-icon-pencil"
 							action="#{FuncionarioControl.carregaFuncionarioAlteracao(itemFuncionario)}"
 							oncomplete="PF('consultar').hide();"
-							update=":formCorpo:tabCadastro" process="@this" />
-						<p:commandButton icon="ui-icon-trash"
+							update=":formCorpo:panelFuncionario" process="@this">
+							<p:tooltip for="editarColaborador" position="top"
+								value="Editar Colaborador" hideEvent="mouseleave click" />
+						</p:commandButton>
+						<p:commandButton id="desativarColaborador" icon="ui-icon-trash"
 							actionListener="#{FuncionarioControl.excluir(itemFuncionario)}"
-							update="listaFuncionarios" />
+							update="listaFuncionarios formCorpo:panelFuncionario"
+							process="@this">
+							<p:confirm header="Confirmar desativação!"
+								message="Tem certeza que deseja desativar o colaborador #{itemFuncionario.nomePessoa} ?"
+								icon="ui-icon-alert" />
+							<p:tooltip for="desativarColaborador" position="top"
+								value="Desativar Colaborador" hideEvent="mouseleave click" />
+						</p:commandButton>
 					</p:column>
 				</p:dataTable>
 			</p:dialog>
@@ -81,8 +104,7 @@
 						<a:field label="CPF" spaceLeft="10px">
 							<p:inputMask id="cpf"
 								value="#{FuncionarioControl.funcionario.cpf}"
-								mask="999.999.999-99" style="width:120px!important;"
-								validator="#{FuncionarioControl.validaCPF}">
+								mask="999.999.999-99" style="width:120px!important;">
 							</p:inputMask>
 						</a:field>
 
@@ -104,7 +126,7 @@
 							<p:calendar
 								value="#{FuncionarioControl.funcionario.dataNascimento}"
 								locale="pt" navigator="true" pattern="dd/MM/yyy"
-								style="width:150px" />
+								yearRange="c-100:c0" style="width:150px" />
 						</a:field>
 
 						<a:field label="Naturalidade" spaceLeft="10px">
@@ -136,7 +158,8 @@
 						<a:newLine />
 
 						<a:field label="Cidade">
-							<p:inputText value="#{FuncionarioControl.endereco.cidade.nomeCidade}"
+							<p:inputText
+								value="#{FuncionarioControl.endereco.cidade.nomeCidade}"
 								style="width:330px" />
 						</a:field>
 
@@ -201,8 +224,6 @@
 									style="width:160px;">
 									<p:ajax event="change" update="panelDadosProfissionais"
 										listener="#{FuncionarioControl.limpaCamposFuncionario}" />
-									<p:ajax event="change" update="inputSalario" 
-										listener="#{FuncionarioControl.desabilitaCamposVoluntario}" />
 									<f:selectItems
 										value="#{FuncionarioControl.completeEnumTipoFuncionario}"></f:selectItems>
 								</p:selectOneMenu>
@@ -221,7 +242,7 @@
 								<p:calendar
 									value="#{FuncionarioControl.funcionario.dataEntrada}"
 									locale="pt" navigator="true" pattern="dd/MM/yyy"
-									style="width:150px;" />
+									yearRange="c-100:c0" style="width:150px;" />
 							</a:field>
 
 							<a:field
@@ -230,20 +251,18 @@
 								<p:calendar
 									value="#{FuncionarioControl.funcionario.dataAdmissao}"
 									locale="pt" navigator="true" pattern="dd/MM/yyy"
-									style="width:150px;" />
+									yearRange="c-100:c0" style="width:150px;" />
 							</a:field>
 
 							<a:field label="Data Demissão:" spaceLeft="10px">
 								<p:calendar
 									value="#{FuncionarioControl.funcionario.dataDemissao}"
 									locale="pt" navigator="true" pattern="dd/MM/yyy"
-									style="width:150px;" />
+									yearRange="c-100:c0" style="width:150px;" />
 							</a:field>
 
-							<a:field 
-								label="Salário:" spaceLeft="10px">
+							<a:field label="Salário:" spaceLeft="10px">
 								<p:inputNumber id="inputSalario"
-									disabled="#{FuncionarioControl.desabilitaCampoVoluntario}"
 									value="#{FuncionarioControl.funcionario.valorInicial}"
 									style="width:100px" symbol="R$ " minValue="0"
 									maxValue="1000000" thousandSeparator="." decimalSeparator="," />
@@ -253,20 +272,17 @@
 
 							<a:field label="CTPS:">
 								<p:inputMask id="inputCTPS" mask="9999999"
-									disabled="#{FuncionarioControl.desabilitaCampoVoluntario}"
 									value="#{FuncionarioControl.funcionario.carteiraDeTrabalho}"
 									style="width:100px" />
 							</a:field>
 
 							<a:field label="PIS:" spaceLeft="15px">
 								<p:inputMask id="inputPIS" mask="999.99999.99-9"
-									disabled="#{FuncionarioControl.desabilitaCampoVoluntario}"
 									value="#{FuncionarioControl.funcionario.pis}" />
 							</a:field>
 
 							<a:field label="Serie:" spaceLeft="15px">
 								<p:inputMask id="inputSerie" mask="9999"
-									disabled="#{FuncionarioControl.desabilitaCampoVoluntario}"
 									value="#{FuncionarioControl.funcionario.serieCarteiraDeTrabalho}"
 									style="width:50px" />
 							</a:field>
@@ -293,7 +309,10 @@
 								rendered="#{FuncionarioControl.telefoneFuncionario.id == null}"
 								action="#{FuncionarioControl.adicionarTelefone('Funcionario')}"
 								style="margin-top: 23px; margin-left: 10px;	"
-								update="listaTelefoneFuncionario painelFuncionarioDadosProfissionais" />
+								update="listaTelefoneFuncionario painelFuncionarioDadosProfissionais">
+								<p:ajax event="click"
+									process="inputTelefoneFuncionario" />
+							</p:commandButton>
 							<p:tooltip value="Adicionar telefone de funcionário"
 								for="addTelFuncionario" position="right" />
 
@@ -337,11 +356,22 @@
 									rendered="#{telFuncionario.isAtivo and (telFuncionario.id != FuncionarioControl.telefoneFuncionario.id or telFuncionario.id == null)}">
 									<p:commandButton id="editaTelFuncionario" icon="ui-icon-pencil"
 										action="#{FuncionarioControl.editarTelefone(telFuncionario, 'Funcionario')}"
-										update="formCorpo:tabCadastro:painelFuncionarioDadosProfissionais" />
+										update="formCorpo:tabCadastro:painelFuncionarioDadosProfissionais">
+										<p:tooltip for="editaTelFuncionario" position="top"
+											value="Editar Telefone Colaborador"
+											hideEvent="mouseleave click" />
+									</p:commandButton>
 									<p:commandButton id="desativaTelFuncionario"
 										icon="ui-icon-trash"
 										action="#{FuncionarioControl.desativarTelefone(telFuncionario, 'Funcionario')}"
-										update="formCorpo:tabCadastro:painelFuncionarioDadosProfissionais" />
+										update="formCorpo:tabCadastro:painelFuncionarioDadosProfissionais">
+										<p:confirm header="Confirmar desativação!"
+											message="Tem certeza que deseja desativar o telefone #{telFuncionario.numeroTelefone} ?"
+											icon="ui-icon-alert" />
+										<p:tooltip for="desativaTelFuncionario" position="top"
+											value="Desativar Telefone Colaborador"
+											hideEvent="mouseleave click" />
+									</p:commandButton>
 								</p:column>
 							</p:dataTable>
 
@@ -350,8 +380,7 @@
 						<a:newLine />
 
 						<p:panel id="panelDadosEmpresa"
-							rendered="#{FuncionarioControl.funcionario.tipoFuncionario == 'TERCEIRIZADO'}"
-							style="height:255px!important;">
+							rendered="#{FuncionarioControl.funcionario.tipoFuncionario == 'TERCEIRIZADO'}">
 
 							<p:tab id="tabDadosEmpresa">
 								<h4>Dados da Empresa</h4>
@@ -403,7 +432,7 @@
 									rendered="#{FuncionarioControl.telefoneEmpresa.id == null}"
 									action="#{FuncionarioControl.adicionarTelefone('Empresa')}"
 									style="float: left; margin-top: 23px; margin-left: 10px;"
-									update="panelDadosEmpresa" />
+									update="listaTelefoneEmpresa panelDadosEmpresa" />
 								<p:tooltip value="Adicionar telefone da empresa"
 									for="addTelEmpresa" position="right" />
 
@@ -413,7 +442,7 @@
 									style="float: left; margin-top: 23px; margin-left: 10px;"
 									update="panelDadosEmpresa" />
 								<p:tooltip value="Atualizar telefone da empresa"
-									for="addTelEmpresa" position="right" />
+									for="attTelEmpresa" position="right" />
 
 								<a:newLine />
 								<a:newLine />
@@ -421,7 +450,7 @@
 								<p:dataTable id="listaTelefoneEmpresa"
 									value="#{FuncionarioControl.funcionario.telefonesEmpresa}"
 									var="telEmpresa" emptyMessage="Nenhum telefone adicionado."
-									style="width:100%">
+									style="width:100%; margin-bottom: 5px;">
 
 									<f:facet name="header">Telefones da Empresa</f:facet>
 
@@ -432,22 +461,34 @@
 											<p:column headerText="Ações" />
 										</p:row>
 									</p:columnGroup>
-									
-									<p:column rendered="#{telEmpresa.id != FuncionarioControl.telefoneEmpresa.id}">
+
+									<p:column
+										rendered="#{telEmpresa.isAtivo and (telEmpresa.id != FuncionarioControl.telefoneFuncionario.id or telEmpresa.id == null)}">
 										<p:outputLabel value="#{telEmpresa.enumTipoTelefone}" />
 									</p:column>
 
-									<p:column rendered="#{telEmpresa.id != FuncionarioControl.telefoneEmpresa.id}">
+									<p:column
+										rendered="#{telEmpresa.isAtivo and (telEmpresa.id != FuncionarioControl.telefoneFuncionario.id or telEmpresa.id == null)}">
 										<p:outputLabel value="#{telEmpresa.numeroTelefone}" />
 									</p:column>
 
-									<p:column rendered="#{telEmpresa.id != FuncionarioControl.telefoneEmpresa.id}">
-										<p:commandButton id="editaTelFuncionario" icon="ui-icon-pencil"
+									<p:column
+										rendered="#{telEmpresa.isAtivo and (telEmpresa.id != FuncionarioControl.telefoneFuncionario.id or telEmpresa.id == null)}">
+										<p:commandButton id="editaTelEmpresa" icon="ui-icon-pencil"
 											action="#{FuncionarioControl.editarTelefone(telEmpresa, 'Empresa')}"
-											update="panelDadosEmpresa" />
+											update="formCorpo:tabCadastro:panelDadosEmpresa" />
+										<p:tooltip for="editaTelEmpresa" position="top"
+											value="Editar Telefone Empresa" hideEvent="mouseleave click" />
 										<p:commandButton id="desativaTelEmpresa" icon="ui-icon-trash"
 											action="#{FuncionarioControl.desativarTelefone(telEmpresa, 'Empresa')}"
-											update="panelDadosEmpresa" />
+											update="formCorpo:tabCadastro:panelDadosEmpresa">
+											<p:confirm header="Confirmar desativação!"
+												message="Tem certeza que deseja desativar o telefone #{telEmpresa.numeroTelefone} ?"
+												icon="ui-icon-alert" />
+										</p:commandButton>
+										<p:tooltip for="desativaTelEmpresa" position="top"
+											value="Desativar Telefone Empresa"
+											hideEvent="mouseleave click" />
 									</p:column>
 								</p:dataTable>
 							</p:tab>
@@ -456,9 +497,22 @@
 				</p:tab>
 			</p:tabView>
 			<a:newLine />
-			<p:commandButton value="Salvar" icon="ui-icon-disk"
+			<p:commandButton id="buttonCadastraFuncionario"
+				rendered="#{FuncionarioControl.funcionario.id == null}"
+				value="Cadastrar" icon="ui-icon-disk"
 				actionListener="#{FuncionarioControl.confirmar}"
-				update="tabCadastro modalPesquisa" />
+				update=":formCorpo:panelFuncionario">
+				<p:tooltip for="buttonCadastraFuncionario" position="top"
+					value="Cadastrar Colaborador" hideEvent="mouseleave click" />
+			</p:commandButton>
+			<p:commandButton id="buttonAtualizaFuncionario"
+				rendered="#{FuncionarioControl.funcionario.id != null}"
+				value="Atualizar" icon="ui-icon-refresh"
+				actionListener="#{FuncionarioControl.confirmar}"
+				update=":formCorpo:panelFuncionario">
+				<p:tooltip for="buttonAtualizaFuncionario" position="top"
+					value="Atualizar Colaborador" hideEvent="mouseleave click" />
+			</p:commandButton>
 		</p:panel>
 		<!-- <script src="js/tipoFuncionario.js" /> -->
 	</ui:define>

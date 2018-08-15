@@ -33,8 +33,8 @@
 				<a:newLine />
 
 				<p:dataTable id="listaCandidato" var="itemCandidato"
-					paginator="true" rows="10" rowsPerPageLabel="5,10,15"
-					rowsPerPageTemplate="5,10,15" style="width:100%"
+					paginator="true" rows="10" rowsPerPageLabel="5,10,15,20"
+					rowsPerPageTemplate="5,10,15,20" style="width:100%"
 					value="#{CandidatoControl.listaCandidato}"
 					widgetVar="funcionariosTable" emptyMessage="Sem Registros a Exibir">
 
@@ -103,7 +103,7 @@
 											locale="de" navigator="true" pattern="dd-MM-yyyy">
 											<p:ajax event="dateSelect"
 												listener="#{CandidatoControl.calculaIdadeCandidato}"
-												update=":formCorpo:tabCadastro" />
+												update=":formCorpo:tabCadastro" process="@form"/>
 										</p:calendar>
 									</a:field>
 
@@ -300,9 +300,12 @@
 										<a:newLine />
 										<a:newLine />
 
-										<p:dataTable id="listaEnderecoCandidato"
+										<p:dataTable id="listaEnderecoCandidato" paginator="true"
+											rows="10" rowsPerPageLabel="5,10,15,20"
+											rowsPerPageTemplate="5,10,15,20"
 											value="#{CandidatoControl.candidato.listaEndereco }"
-											var="end" width="100%" emptyMessage="Sem registros">
+											var="end"
+											width="100%" emptyMessage="Sem registros">
 											<f:facet name="header">
 										        	Lista de endereços
 										    </f:facet>
@@ -382,42 +385,45 @@
 												value="#{CandidatoControl.candidato.enumEscolaridade}">
 												<f:selectItems
 													value="#{CandidatoControl.completeEnumEscolaridade}" />
-												<p:ajax event="change" process="@this"
-													update="painelFormacao" listener="#{CandidatoControl.validaDesistiuConcluiu}" />
+												<p:ajax event="change"
+													process="@this instituicao nomeDoCurso turno"
+													update="painelFormacao"
+													listener="#{CandidatoControl.validaDesistiuConcluiu}" />
 											</p:selectOneMenu>
 										</a:field>
 
-										<a:field label="Ano de desistência:" spaceLeft="15px"
-											rendered="#{CandidatoControl.candidato.enumEscolaridade == 'FUNDAMENTAL_INCOMPLETO' or CandidatoControl.candidato.enumEscolaridade == 'MEDIO_INCOMPLETO' or CandidatoControl.candidato.enumEscolaridade == 'SUPERIOR_INCOMPLETO'}">
-											<p:calendar id="anoDesistencia"
+										<a:field label="Ano de desistência/trancamento:"
+											spaceLeft="15px"
+											rendered="#{(CandidatoControl.candidato.enumEscolaridade == 'FUNDAMENTAL_INCOMPLETO') or (CandidatoControl.candidato.enumEscolaridade == 'MEDIO_INCOMPLETO') or (CandidatoControl.candidato.enumEscolaridade == 'SUPERIOR_INCOMPLETO')}">
+											<p:calendar id="anoDesistencia" style="width:900px;"
 												value="#{CandidatoControl.candidato.anoDeDesistencia}"
-												pattern="dd/MM/yy" navigator="true" yearRange="c-100:c0"
+												pattern="yyyy" navigator="true" yearRange="c-100:c0"
 												locale="de" />
 										</a:field>
 
-										<a:field label="Desistiu?" spaceLeft="15px"
-										rendered="#{CandidatoControl.candidato.enumEscolaridade == 'FUNDAMENTAL_INCOMPLETO' or CandidatoControl.candidato.enumEscolaridade == 'MEDIO_INCOMPLETO' or CandidatoControl.candidato.enumEscolaridade == 'SUPERIOR_INCOMPLETO'}" >
-											<p:selectOneMenu id="desistiuSN"
-												value="#{CandidatoControl.candidato.desistiu}">
-												<f:selectItem itemLabel="Sim" itemValue="true" />
-												<f:selectItem itemLabel="Não" itemValue="false" />
+										<a:field label="Status:" spaceLeft="15px"
+											rendered="#{(CandidatoControl.candidato.enumEscolaridade == 'FUNDAMENTAL_INCOMPLETO') or (CandidatoControl.candidato.enumEscolaridade == 'MEDIO_INCOMPLETO') or (CandidatoControl.candidato.enumEscolaridade == 'SUPERIOR_INCOMPLETO')}">
+											<p:selectOneMenu id="statusDesistenciaTrancamento"
+												value="#{CandidatoControl.candidato.enumStatusDesistiu}">
+												<f:selectItems
+													value="#{CandidatoControl.completeEnumStatusDesistiu}" />
 											</p:selectOneMenu>
 										</a:field>
 
-										<a:field label="Ano de conclusão:" spaceLeft="15px"
-										rendered="#{CandidatoControl.candidato.enumEscolaridade == 'FUNDAMENTAL' or CandidatoControl.candidato.enumEscolaridade == 'MEDIO' or CandidatoControl.candidato.enumEscolaridade == 'SUPERIOR'}" >
+										<a:field label="Ano/Período de conclusão:" spaceLeft="15px"
+											rendered="#{(CandidatoControl.candidato.enumEscolaridade == null) or (CandidatoControl.candidato.enumEscolaridade == 'FUNDAMENTAL') or (CandidatoControl.candidato.enumEscolaridade == 'MEDIO') or (CandidatoControl.candidato.enumEscolaridade == 'SUPERIOR')}">
 											<p:calendar id="anoDeConclusao"
 												value="#{CandidatoControl.candidato.anoDeConclusao}"
-												pattern="dd/MM/yy" navigator="true" yearRange="c-100:c0"
+												pattern="yyyy" navigator="true" yearRange="c-100:c0"
 												locale="de" />
 										</a:field>
 
-										<a:field label="Concluiu?" spaceLeft="15px"
-										rendered="#{CandidatoControl.candidato.enumEscolaridade == 'FUNDAMENTAL' or CandidatoControl.candidato.enumEscolaridade == 'MEDIO' or CandidatoControl.candidato.enumEscolaridade == 'SUPERIOR'}" >
-											<p:selectOneMenu id="anoDeConclusaoSN"
-												value="#{CandidatoControl.candidato.concluiu}">
-												<f:selectItem itemLabel="Sim" itemValue="true" />
-												<f:selectItem itemLabel="Não" itemValue="false" />
+										<a:field label="Status:" spaceLeft="15px"
+											rendered="#{(CandidatoControl.candidato.enumEscolaridade == null) or (CandidatoControl.candidato.enumEscolaridade == 'FUNDAMENTAL') or (CandidatoControl.candidato.enumEscolaridade == 'MEDIO') or (CandidatoControl.candidato.enumEscolaridade == 'SUPERIOR')}">
+											<p:selectOneMenu id="statusConclusao"
+												value="#{CandidatoControl.candidato.enumStatusConcluiu}">
+												<f:selectItems
+													value="#{CandidatoControl.completeEnumStatusConcluiu}" />
 											</p:selectOneMenu>
 										</a:field>
 
@@ -493,7 +499,7 @@
 
 								<a:newLine />
 
-								<p:panel id="perguntasCandidato" style="height:235px;">
+								<p:panel id="perguntasCandidato" style="height:400px;">
 									<a:field label="Atualmente você reside:">
 										<p:selectOneMenu id="enumReside"
 											value="#{CandidatoControl.candidato.enumReside}">
@@ -501,24 +507,29 @@
 										</p:selectOneMenu>
 									</a:field>
 
-									<a:field spaceLeft="10px" label="Tipo de residência:">
+									<a:newLine />
+
+									<a:field label="Tipo de residência:">
 										<p:selectOneMenu id="enumResidencia"
 											value="#{CandidatoControl.candidato.enumResidencia}">
-											<p:ajax event="change" update="perguntasCandidato" />
+											<p:ajax event="change" update="perguntasCandidato"
+												listener="#{CandidatoControl.aplicaValorEmBranco}"
+												process="@this enumReside enumAcessoComputador enumTemCelular enumTemInternet enumLocalInternet localInternetOutro participacaoEconomicaFamilia enumPNE parentescoPNE necessidadePNE" />
 											<f:selectItems
 												value="#{CandidatoControl.completeEnumResidencia}" />
 										</p:selectOneMenu>
 									</a:field>
 
-									<a:field
+									<a:field spaceLeft="15px"
 										rendered="#{CandidatoControl.candidato.enumResidencia == 'OUTROS'}"
-										spaceLeft="10px" label="Tipo de residência:">
+										label="Tipo de residência:">
 										<p:inputText id="residenciaOutro"
 											value="#{CandidatoControl.candidato.residenciaOutro}"></p:inputText>
 									</a:field>
 
-									<a:field spaceLeft="10px"
-										label="Você tem acesso ao computador?">
+									<a:newLine />
+
+									<a:field label="Você tem acesso ao computador?">
 										<p:selectOneMenu id="enumAcessoComputador"
 											value="#{CandidatoControl.candidato.enumAcessoComputador}">
 											<f:selectItems
@@ -534,11 +545,14 @@
 										</p:selectOneMenu>
 									</a:field>
 
-									<a:field spaceLeft="10px" label="Você tem acesso à internet?">
+									<a:newLine />
+
+									<a:field label="Você tem acesso à internet?">
 										<p:selectOneMenu id="enumTemInternet"
 											value="#{CandidatoControl.candidato.enumTemInternet}">
 											<p:ajax event="change" update="perguntasCandidato"
-												listener="#{CandidatoControl.aplicaValorEmBranco}" />
+												listener="#{CandidatoControl.aplicaValorEmBranco}"
+												process="@this enumReside residenciaOutro enumAcessoComputador enumTemCelular enumTemInternet enumLocalInternet localInternetOutro participacaoEconomicaFamilia enumPNE parentescoPNE necessidadePNE" />
 											<f:selectItems
 												value="#{CandidatoControl.completeEnumTemInternet}" />
 										</p:selectOneMenu>
@@ -549,7 +563,8 @@
 										spaceLeft="10px" label="Em caso afirmativo indique o local:">
 										<p:selectOneMenu id="enumLocalInternet"
 											value="#{CandidatoControl.candidato.enumLocalInternet}">
-											<p:ajax event="change" update="perguntasCandidato" />
+											<p:ajax event="change" update="perguntasCandidato"
+												process="@this enumReside residenciaOutro enumAcessoComputador enumTemCelular enumTemInternet enumLocalInternet localInternetOutro participacaoEconomicaFamilia enumPNE parentescoPNE necessidadePNE" />
 											<f:selectItems
 												value="#{CandidatoControl.completeEnumLocalInternet}" />
 										</p:selectOneMenu>
@@ -562,7 +577,9 @@
 											value="#{CandidatoControl.candidato.localInternetOutro}"></p:inputText>
 									</a:field>
 
-									<a:field spaceLeft="10px"
+									<a:newLine />
+
+									<a:field
 										label="Qual é a sua participação na vida econômica de sua família?">
 										<p:selectOneMenu id="participacaoEconomicaFamilia"
 											value="#{CandidatoControl.candidato.enumParticipacaoEconomicaFamilia}">
@@ -571,6 +588,8 @@
 										</p:selectOneMenu>
 									</a:field>
 
+									<a:newLine />
+
 									<a:field spaceLeft="10px"
 										label="Existe em seu grupo familiar membro portador
 									 de doença física ou mental que necessite acompanhamento terapêutico sistemático?">
@@ -578,10 +597,13 @@
 											value="#{CandidatoControl.candidato.enumPNE}">
 											<p:ajax event="change"
 												listener="#{CandidatoControl.aplicaValorEmBranco}"
-												update="perguntasCandidato" />
+												update="perguntasCandidato"
+												process="@this enumReside residenciaOutro enumAcessoComputador enumTemCelular enumTemInternet enumLocalInternet localInternetOutro participacaoEconomicaFamilia enumPNE" />
 											<f:selectItems value="#{CandidatoControl.completeEnumPNE}" />
 										</p:selectOneMenu>
 									</a:field>
+
+									<a:newLine />
 
 									<a:field
 										rendered="#{CandidatoControl.candidato.enumPNE == 'SIM'}"
@@ -794,6 +816,9 @@
 								<a:newLine />
 
 								<p:dataTable id="listaEnderecoResponsavel"
+									paginator="true"
+									rows="10" rowsPerPageLabel="5,10,15,20"
+									rowsPerPageTemplate="5,10,15,20"
 									value="#{CandidatoControl.responsavel.listaEndereco }"
 									var="ende" width="100%" emptyMessage="Sem registros">
 
@@ -1034,6 +1059,9 @@
 						<a:newLine />
 
 						<p:dataTable id="listaResponsavel"
+							paginator="true"
+							rows="10" rowsPerPageLabel="5,10,15,20"
+							rowsPerPageTemplate="5,10,15,20"
 							value="#{CandidatoControl.candidato.listaResponsavel }"
 							var="pessoaResponsavel" width="100%" emptyMessage="Sem registros">
 

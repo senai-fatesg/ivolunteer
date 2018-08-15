@@ -39,6 +39,8 @@ import br.com.ambientinformatica.ivolunteer.entidade.EnumPrioridade;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumReside;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumResidencia;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumSexo;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumStatusConcluiu;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumStatusDesistiu;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTemCelular;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTemInternet;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoCasa;
@@ -124,16 +126,8 @@ public class CandidatoControl {
 	public void cadastrar() {
 		try {
 			this.candidato.setEnumTipoPessoa(EnumTipoPessoa.CANDIDATO);
-			this.candidato.setEnumPrioridade(EnumPrioridade.BAIXA);
-			// this.candidato.addTelefone(this.telefoneCelularCandidato);
-			// this.candidato.addTelefone(this.telefoneResidencialCandidato);
-			// this.candidato.addTelefone(this.telefoneEmergencia);
-			// this.candidato.addResponsavel(this.responsavel);
 			validarCandidato(this.candidato);
 			candidatoDao.incluir(this.candidato);
-			// this.telefoneCelularCandidato = new Telefone();
-			// this.telefoneResidencialCandidato = new Telefone();
-			// this.telefoneEmergencia = new Telefone();
 			this.candidato = new Candidato();
 			this.endereco = new Endereco();
 			this.enderecoResponsavel = new Endereco();
@@ -588,6 +582,14 @@ public class CandidatoControl {
 		this.telefoneResidencialCandidato = telefoneResidencialCandidato;
 	}
 
+	public List<SelectItem> getCompleteEnumStatusConcluiu() {
+		return UtilFaces.getListEnum(EnumStatusConcluiu.values());
+	}
+	
+	public List<SelectItem> getCompleteEnumStatusDesistiu() {
+		return UtilFaces.getListEnum(EnumStatusDesistiu.values());
+	}
+	
 	public List<SelectItem> getCompleteEnumTipoEtnia() {
 		return UtilFaces.getListEnum(EnumTipoEtnia.values());
 	}
@@ -721,9 +723,11 @@ public class CandidatoControl {
 
 	public void validaDesistiuConcluiu(){
 		if(this.candidato.getEnumEscolaridade().equals(EnumEscolaridade.FUNDAMENTAL) || this.candidato.getEnumEscolaridade().equals(EnumEscolaridade.MEDIO) || this.candidato.getEnumEscolaridade().equals(EnumEscolaridade.SUPERIOR)) {
-			this.candidato.setDesistiu(false);
+			this.candidato.setEnumStatusDesistiu(EnumStatusDesistiu.EM_BRANCO);
+			this.candidato.setAnoDeDesistencia(null);
 		} else {
-			this.candidato.setConcluiu(false);
+			this.candidato.setEnumStatusConcluiu(EnumStatusConcluiu.EM_BRANCO);
+			this.candidato.setAnoDeConclusao(null);
 		}
 	}
 
@@ -836,6 +840,9 @@ public class CandidatoControl {
 		if (this.candidato.getEnumPNE() == EnumPNE.NAO) {
 			this.candidato.setParentescoPNE("");
 			this.candidato.setNecessidadePNE("");
+		}
+		if (this.candidato.getEnumResidencia() != EnumResidencia.OUTROS) {
+			this.candidato.setResidenciaOutro("");
 		}
 	}
 }

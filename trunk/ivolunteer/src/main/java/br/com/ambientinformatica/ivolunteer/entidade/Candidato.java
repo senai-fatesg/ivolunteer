@@ -77,20 +77,27 @@ public class Candidato extends Pessoa implements java.io.Serializable {
 	
 	private String instituicao;
 	
-	private Boolean desistiu;
-	private Boolean concluiu;
+	@Enumerated(EnumType.STRING)
+	private EnumStatusDesistiu enumStatusDesistiu;
+	@Enumerated(EnumType.STRING)
+	private EnumStatusConcluiu enumStatusConcluiu;
 	
-	public Boolean getDesistiu() {
-		return desistiu;
+	private Boolean temPrioridade = false;
+	
+	private String parentescoPNE;
+	private String necessidadePNE;
+	
+	public EnumStatusDesistiu getEnumStatusDesistiu() {
+		return enumStatusDesistiu;
 	}
-	public void setDesistiu(Boolean desistiu) {
-		this.desistiu = desistiu;
+	public void setEnumStatusDesistiu(EnumStatusDesistiu enumStatusDesistiu) {
+		this.enumStatusDesistiu = enumStatusDesistiu;
 	}
-	public Boolean getConcluiu() {
-		return concluiu;
+	public EnumStatusConcluiu getEnumStatusConcluiu() {
+		return enumStatusConcluiu;
 	}
-	public void setConcluiu(Boolean concluiu) {
-		this.concluiu = concluiu;
+	public void setEnumStatusConcluiu(EnumStatusConcluiu enumStatusConcluiu) {
+		this.enumStatusConcluiu = enumStatusConcluiu;
 	}
 	public String getInstituicao() {
 		return instituicao;
@@ -98,11 +105,6 @@ public class Candidato extends Pessoa implements java.io.Serializable {
 	public void setInstituicao(String instituicao) {
 		this.instituicao = instituicao;
 	}
-	private Boolean temPrioridade = false;
-	
-	private String parentescoPNE;
-	private String necessidadePNE;
-	
 	public EnumEscolaridade getEnumEscolaridade() {
 		return enumEscolaridade;
 	}

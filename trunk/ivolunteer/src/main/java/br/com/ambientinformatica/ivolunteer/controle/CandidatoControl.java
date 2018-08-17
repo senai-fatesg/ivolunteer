@@ -117,7 +117,7 @@ public class CandidatoControl {
 
 	public void listarTodosCandidatos() {
 		try {
-			this.listaCandidato = candidatoDao.listarCandidatosAtivos();
+			this.listaCandidato = candidatoDao.listaCandidatosComResponsavel();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -125,15 +125,17 @@ public class CandidatoControl {
 
 	public void cadastrar() {
 		try {
-			this.candidato.setEnumTipoPessoa(EnumTipoPessoa.CANDIDATO);
-			validarCandidato(this.candidato);
-			candidatoDao.incluir(this.candidato);
-			this.candidato = new Candidato();
-			this.endereco = new Endereco();
-			this.enderecoResponsavel = new Endereco();
-			this.responsavel = new Responsavel();
-			UtilFaces.addMensagemFaces("Informações salvas com sucesso!");
-			listarTodosCandidatos();
+			if(validaCandidatoNome()) {
+				this.candidato.setEnumTipoPessoa(EnumTipoPessoa.CANDIDATO);
+				validarCandidato(this.candidato);
+				candidatoDao.incluir(this.candidato);
+				this.candidato = new Candidato();
+				this.endereco = new Endereco();
+				this.enderecoResponsavel = new Endereco();
+				this.responsavel = new Responsavel();
+				UtilFaces.addMensagemFaces("Informações salvas com sucesso!");
+				listarTodosCandidatos();
+			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e.getMessage());
 			UtilFaces.addMensagemFaces("Ocorreu uma falha ao tentar gravar as informações de candidato");
@@ -361,7 +363,7 @@ public class CandidatoControl {
 	// Adionar as responsaveis ao candidato
 	public void adicionarResponsavel(ActionEvent evt) {
 		try {
-			if (validarCandidato(this.candidato)) {
+			if (validaCandidatoNome()) {
 				if (EhResponsavelConsistente()) {
 					responsavel.setEnumTipoPessoa(EnumTipoPessoa.RESPONSAVEL);
 					this.candidato.addResponsavel(this.responsavel);
@@ -371,8 +373,6 @@ public class CandidatoControl {
 					UtilFaces.addMensagemFaces("Preencha os dados de responsável corretamente.");
 					UtilFaces.addMensagemFaces("Nome e CPF de responsável são obrigatórios.");
 				}
-			} else {
-				UtilFaces.addMensagemFaces("Preencha os dados de candidato corretamente.");
 			}
 		} catch (Exception erro) {
 			UtilFaces.addMensagemFaces("Ocorreu uma falha ao tentar incluir o Responsável na lista.");
@@ -740,11 +740,12 @@ public class CandidatoControl {
 		}
 	}
 
-	public void validaCandidatoNome(FacesContext fc, UIComponent uc, Object ob) {
-		String nome = (String) ob;
-		if (nome.isEmpty()) {
-			((UIInput) uc).setValid(false);
+	public boolean validaCandidatoNome() {
+		if (this.candidato.getNomePessoa().isEmpty()) {
 			UtilFaces.addMensagemFaces("Nome de candidato é obrigatório.");
+			return false;
+		} else {
+			return true;
 		}
 	}
 

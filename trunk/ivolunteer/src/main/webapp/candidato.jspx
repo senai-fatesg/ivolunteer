@@ -16,7 +16,7 @@
 				process="@this" />
 
 			<p:dialog id="modalPesquisa" header="Consultar" widgetVar="consultar"
-				modal="true" maximizable="false" minimizable="false" width="40%"
+				modal="true" maximizable="false" minimizable="false" width="90%"
 				height="550px" resizable="false" closeOnEscape="true">
 
 				<a:field label="Nome:">
@@ -40,7 +40,9 @@
 
 					<p:column headerText="Nome" width="25%">#{itemCandidato.nomePessoa}</p:column>
 					<p:column headerText="CPF" width="12%">#{itemCandidato.cpf}</p:column>
-
+					<p:column headerText="Responsável" width="12%">#{itemCandidato.listaResponsavel[0].nomePessoa}</p:column>
+					<p:column headerText="Vínculo" width="5%">#{itemCandidato.listaResponsavel[0].enumFiliacao}</p:column>
+					
 					<p:column width="8%">
 						<p:commandButton id="editarCandidato" icon="ui-icon-pencil"
 							action="#{CandidatoControl.carregaCandidatoAlteracao(itemCandidato)}"
@@ -91,10 +93,7 @@
 									<a:field label="Nome:">
 										<p:inputText id="nomePessoa"
 											value="#{CandidatoControl.candidato.nomePessoa}"
-											style="width:535px"
-											validator="#{CandidatoControl.validaCandidatoNome}">
-										</p:inputText>
-
+											style="width:535px" />
 									</a:field>
 
 									<a:field label="Data de nascimento:" spaceLeft="15px">

@@ -7,136 +7,38 @@
 	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
-		<h:form>
-			<p:panel header="Cadastro de Avaliação" id="cadstroAvaliacao">
-				<p:messages id="messages" showDetail="true" autoUpdate="true"
-					closable="true" />
 
-				<p:commandButton id="consultar" value="Consultar"
-					icon="ui-icon-search" onclick="consultar.show();" />
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<p:commandButton value="Sim" type="button"
+				styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			<p:commandButton value="Não" type="button"
+				styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		</p:confirmDialog>
 
+		<p:panel header="Cadastro de Avaliação" id="cadastroAvaliacao">
 
-				<a:newLine />
-				<a:newLine />
-				<a:field label="Título" width="100%">
-					<p:growl id="verificaTitulo" />
-					<p:inputText id="titulo"
-						value="#{AvaliacaoControl.avaliacao.titulo}" style="width:100%;">
-						<p:ajax event="blur" update="verificaTitulo"
-							listener="#{AvaliacaoControl.verificaTitulo}" />
-					</p:inputText>
+			<p:commandButton id="consultar" value="Consultar"
+				icon="ui-icon-search" onclick="PF('consultaAvaliacoes').show();" />
 
-				</a:field>
-				<a:newLine />
-				<a:field label="Descricao" width="100%">
-					<p:inputTextarea value="#{AvaliacaoControl.avaliacao.descricao}"
-						style="width:100%;" />
-				</a:field>
-				<a:newLine />
-				<a:newLine />
-				<a:field label="Ordem" width="100%">
-					<p:spinner max="999" min="0" id="ordem"
-						value="#{AvaliacaoControl.questao.ordem}" style="width:238px" />
-				</a:field>
-				<a:newLine />
-				<a:field label="Pergunta" width="100%">
-					<p:editor id="pergunta"
-						value="#{AvaliacaoControl.questao.pergunta}" />
-				</a:field>
-				<a:newLine />
-				<a:newLine />
-				<p:tabView id="tabQuestoes">
-					<p:ajax event="tabChange" listener="#{AvaliacaoControl.alteraTab}" />
-					<p:tab title="Discursiva" id="tabDiscursiva">
-						<a:field label="Número de Linhas">
-							<p:spinner id="numeroLinhas" min="1" max="99" size="30"
-								value="#{AvaliacaoControl.discursiva.numeroLinhas}"
-								style="width:238px" />
-						</a:field>
-						<a:newLine />
-					</p:tab>
-					<p:tab title="Objetiva" id="tabOjbetiva">
-						<a:newLine />
-						<a:newLine />
-						<a:field label="Alterntiva" width="100px">
-							<p:inputText id="alternativa" style="width:100px"
-								value="#{AvaliacaoControl.alternativa.descricao}" />
-						</a:field>
-						<a:field spaceLeft="20px">
-							<p:commandButton
-								actionListener="#{AvaliacaoControl.addAlternativa}"
-								value="Adicionar Alternativa" icon="ui-icon-plusthick"
-								update="alternativa, alternativas" />
-						</a:field>
-						<a:newLine />
-						<p:dataTable id="alternativas" style="width:30%"
-							emptyMessage="Sem Registros"
-							value="#{AvaliacaoControl.objetiva.alternativas}" var="item">
-							<p:column headerText="Avaliacao">
-								<h:outputText value="#{item.descricao}"></h:outputText>
-							</p:column>
-							<p:column width="35">
-								<p:commandButton icon="ui-icon-closethick"
-									action="#{AvaliacaoControl.remAlternativa(item)}"
-									update="alternativas" />
-							</p:column>
-						</p:dataTable>
-						<a:newLine />
-					</p:tab>
-				</p:tabView>
-				<a:newLine />
-				<p:commandButton value="Adicionar Questão" icon="ui-icon-plusthick"
-					actionListener="#{AvaliacaoControl.addQuestao}" update="titulo, ordem, tabQuestoes, pergunta, questoesTable" />
-				<a:newLine />
-				<a:newLine />
-				<p:dataTable id="questoesTable"
-					emptyMessage="Sem questões adicionadas" style="width:70%"
-					value="#{AvaliacaoControl.avaliacao.questoes}" var="questaoItem">
-					<p:column headerText="Ordem" width="70">
-						<h:outputLabel value="#{questaoItem.ordem}" />
-					</p:column>
-					<p:column headerText="Tipo" width="60">
-						<h:outputLabel value="#{questaoItem.tipoQuestao.descricao}" />
-					</p:column>
-					<p:column headerText="Pergunta">
-						<h:outputLabel value="#{questaoItem.pergunta}" />
-					</p:column>
-					<p:column width="35">
-						<p:commandButton icon="ui-icon-closethick"
-							action="#{AvaliacaoControl.remQuestao(questaoItem)}"
-							update="questoesTable" />
-					</p:column>
-				</p:dataTable>
-				<a:newLine />
-				<p:separator />
-				<a:field spaceLeft="15px">
-					<p:commandButton value="Salvar" icon="ui-icon-disk"
-						actionListener="#{AvaliacaoControl.salvar}" update="@all" />
-				</a:field>
-				<a:field spaceLeft="15px">
-					<p:commandButton value="Excluir" icon="ui-icon-trash" />
-				</a:field>
-				<a:newLine />
-
-			</p:panel>
-			<p:dialog id="modalPesquisa" header="Consultar" widgetVar="consultar"
-				modal="true" maximizable="false" minimizable="false" width="40%"
-				height="70%" resizable="false">
+			<p:dialog id="modalPesquisa" header="Consultar"
+				widgetVar="consultaAvaliacoes" modal="true" maximizable="false"
+				minimizable="false" width="70%" resizable="false">
 				<a:field label="Título">
 					<p:inputText id="filtro" value="#{AvaliacaoControl.filtro.titulo}" />
 				</a:field>
-				<a:field spaceLeft="15px">
-					<p:commandButton id="filtrar" icon="ui-icon-search"
-						actionListener="#{AvaliacaoControl.aplicarFiltro}"
-						update="listaAvaliacoes" />
-				</a:field>
+
+				<p:commandButton id="filtrar" icon="ui-icon-search"
+					actionListener="#{AvaliacaoControl.aplicarFiltro}"
+					update="listaAvaliacoes" />
+
 				<a:newLine />
+
 				<p:dataTable id="listaAvaliacoes" var="itemAvaliacoes"
 					style="width:100%" value="#{AvaliacaoControl.avaliacoes}"
-					widgetVar="avaliacoesTable" emptyMessage="Sem Registros a Exibir">
+					widgetVar="avaliacoesTable" emptyMessage="Sem Registros a exibir">
 					<p:column headerText="Título" width="30%">#{itemAvaliacoes.titulo}</p:column>
 					<p:column headerText="Descricao">#{itemAvaliacoes.descricao}</p:column>
-					<p:column width="5%">
+					<p:column headerText="Ações" width="11%">
 						<p:commandButton icon="ui-icon-pencil"
 							action="#{AvaliacaoControl.carregaAvaliacao(itemAvaliacoes)}"
 							update="@all" />
@@ -145,20 +47,127 @@
 					</p:column>
 				</p:dataTable>
 			</p:dialog>
-			<p:confirmDialog header="Atenção!" severity="alert"
-				widgetVar="confirmaExclusao">
-				<f:facet name="message">
-					<h:outputText value="Deseja excluir a Avaliação? " />
-					<br />
-					<h:outputText value="Está operação não poderá ser desfeita." />
-				</f:facet>
-				<p:commandButton value="Sim"
-					action="#{AvaliacaoControl.excluir(itemAvaliacoes)}"
-					oncomplete="confirmaExclusao.hide()" update="@all" />
-				<p:commandButton value="Não" update="modalPesquisa"
-					onclick="confirmaExclusao.hide()" />
-			</p:confirmDialog>
 
-		</h:form>
+			<a:newLine />
+			<a:newLine />
+			<a:field label="Título" width="100%">
+				<p:growl id="verificaTitulo" />
+				<p:inputText id="titulo"
+					value="#{AvaliacaoControl.avaliacao.titulo}" style="width:100%;">
+					<p:ajax event="blur" update="verificaTitulo"
+						listener="#{AvaliacaoControl.verificaTitulo}" />
+				</p:inputText>
+
+			</a:field>
+			<a:newLine />
+			<a:field label="Descricao" width="100%">
+				<p:inputTextarea value="#{AvaliacaoControl.avaliacao.descricao}"
+					style="width:100%;" />
+			</a:field>
+			<a:newLine />
+			<a:newLine />
+			<a:field label="Ordem" width="100%">
+				<p:spinner max="999" min="0" id="ordem"
+					value="#{AvaliacaoControl.questao.ordem}" />
+			</a:field>
+			<a:newLine />
+			<a:field label="Pergunta" width="100%">
+				<p:editor id="pergunta" value="#{AvaliacaoControl.questao.pergunta}" />
+			</a:field>
+			<a:newLine />
+			<a:newLine />
+			<p:tabView id="tabQuestoes">
+			
+				<p:ajax event="tabChange" listener="#{AvaliacaoControl.alteraTab}" />
+				<p:tab title="Discursiva" id="tabDiscursiva">
+					<a:field label="Número de Linhas">
+						<p:spinner id="numeroLinhas" min="1" max="99" size="30"
+							value="#{AvaliacaoControl.discursiva.numeroLinhas}" />
+					</a:field>
+					<a:newLine />
+				</p:tab>
+				
+				<p:tab title="Objetiva" id="tabOjbetiva">
+				
+					<a:newLine />
+					<a:newLine />
+					
+					<a:field label="Alterntiva" width="100px">
+						<p:inputText id="alternativa" style="width:100px"
+							value="#{AvaliacaoControl.alternativa.descricao}" />
+					</a:field>
+					
+					<a:field spaceLeft="20px">
+						<p:commandButton
+							actionListener="#{AvaliacaoControl.addAlternativa}"
+							value="Adicionar Alternativa" icon="ui-icon-plusthick"
+							update="alternativa, alternativas" />
+					</a:field>
+					
+					<a:newLine />
+					
+					<p:dataTable id="alternativas" style="width:30%"
+						emptyMessage="Sem Registros"
+						value="#{AvaliacaoControl.objetiva.alternativas}" var="item">
+						<p:column headerText="Avaliacao">
+							<h:outputText value="#{item.descricao}"></h:outputText>
+						</p:column>
+						<p:column width="35">
+							<p:commandButton icon="ui-icon-closethick"
+								action="#{AvaliacaoControl.remAlternativa(item)}"
+								update="alternativas" />
+						</p:column>
+					</p:dataTable>
+					
+					<a:newLine />
+					
+				</p:tab>
+			</p:tabView>
+			
+			<a:newLine />
+			
+			<p:commandButton value="Adicionar Questão" icon="ui-icon-plusthick"
+				actionListener="#{AvaliacaoControl.addQuestao}"
+				update="titulo, ordem, tabQuestoes, pergunta, questoesTable" />
+				
+			<a:newLine />
+			<a:newLine />
+			
+			<p:dataTable id="questoesTable"
+				emptyMessage="Sem questões adicionadas" style="width:70%"
+				value="#{AvaliacaoControl.avaliacao.questoes}" var="questaoItem">
+				<p:column headerText="Ordem" width="70">
+					<h:outputLabel value="#{questaoItem.ordem}" />
+				</p:column>
+				<p:column headerText="Tipo" width="60">
+					<h:outputLabel value="#{questaoItem.tipoQuestao.descricao}" />
+				</p:column>
+				<p:column headerText="Pergunta">
+					<h:outputLabel value="#{questaoItem.pergunta}" />
+				</p:column>
+				<p:column width="35">
+					<p:commandButton icon="ui-icon-closethick"
+						action="#{AvaliacaoControl.remQuestao(questaoItem)}"
+						update="questoesTable" />
+				</p:column>
+			</p:dataTable>
+			
+			<a:newLine />
+
+			<p:commandButton rendered="#{AvaliacaoControl.avaliacao.id == null}"
+				id="botaoCadastrarAvaliacao" value="Cadastrar" icon="ui-icon-disk"
+				actionListener="#{AvaliacaoControl.salvarAvaliacao}" update="@all" />
+			<p:tooltip for="botaoCadastrarAvaliacao" value="Cadastrar avaliação" position="right" />
+				
+			<p:commandButton rendered="#{AvaliacaoControl.avaliacao.id != null}" 
+				id="botaoSalvarAvaliacao" value="Salvar" icon="ui-icon-disk"
+				actionListener="#{AvaliacaoControl.salvarAvaliacao}" update="@all" />
+			<p:tooltip for="botaoSalvarAvaliacao" value="Salvar avaliação" position="right" />
+			
+			<a:newLine />
+			<a:newLine />
+
+		</p:panel>
+
 	</ui:define>
 </ui:composition>

@@ -112,8 +112,16 @@ public class AvaliacaoControl {
 		this.questao = new Questao();
 	}
 
+	public void cadastrarAvaliacao(){
+		try {
+			avaliacaoDao.incluir(this.avaliacao);
+			this.avaliacao = new Avaliacao();
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
 	// Salvar Avaliacao
-	public void salvar(ActionEvent event) {
+	public void salvarAvaliacao() {
 		try {
 			this.avaliacaoDao.alterar(this.avaliacao);	
 			

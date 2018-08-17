@@ -43,21 +43,21 @@ public class CandidatoDaoJpa extends PersistenciaJpa<Candidato> implements Candi
 		Candidato cand = consultar(candidato.getId());
 		try {
 
-			Query carregaTodosEnderecos = em
-					.createQuery("SELECT c FROM Candidato c LEFT JOIN FETCH c.listaEndereco ends" + " WHERE c.id = :id");
+			Query carregaTodosEnderecos = em.createQuery(
+					"SELECT c FROM Candidato c LEFT JOIN FETCH c.listaEndereco ends" + " WHERE c.id = :id");
 			carregaTodosEnderecos.setParameter("id", cand.getId());
 			cand = (Candidato) carregaTodosEnderecos.getSingleResult();
 
-			Query carregaResponsaveis = em
-					.createQuery("SELECT c FROM Candidato c LEFT JOIN FETCH c.listaResponsavel resp" + " WHERE c.id = :id");
+			Query carregaResponsaveis = em.createQuery(
+					"SELECT c FROM Candidato c LEFT JOIN FETCH c.listaResponsavel resp" + " WHERE c.id = :id");
 			carregaResponsaveis.setParameter("id", cand.getId());
 			cand = (Candidato) carregaResponsaveis.getSingleResult();
-			
+
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces("Ocorreu um erro ao consultar candidato.");
 			UtilLog.getLog().error(e);
 		}
-		
+
 		return cand;
 	}
 
@@ -83,6 +83,15 @@ public class CandidatoDaoJpa extends PersistenciaJpa<Candidato> implements Candi
 		buscaCandidatoPorNome.setParameter("nomeCandidato", "%" + candidatoConsulta.toUpperCase() + "%");
 		buscaCandidatoPorNome.setParameter("true", true);
 		return (List<Candidato>) buscaCandidatoPorNome.getResultList();
+	}
+
+	@Override
+	public List<Candidato> listaCandidatosComResponsavel() {
+		Query candidatos = em.createQuery(
+				"SELECT c FROM Candidato c LEFT JOIN FETCH c.listaResponsavel listaResp WHERE c.isAtivo = :true");
+		candidatos.setParameter("true", true);
+		
+		return (List<Candidato>) candidatos.getResultList();
 	}
 
 }

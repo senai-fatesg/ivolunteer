@@ -8,6 +8,7 @@ import br.com.ambientinformatica.jpa.persistencia.Persistencia;
 
 public interface CandidatoDao extends Persistencia<Candidato> {
 	
+	public List<Candidato> listaCandidatosComResponsavel();
 	public List<Candidato> listaCandidatoPorNome(String nome);
 	public List<Candidato> pesquisaSelecaoCandidato(SelecaoCandidato selecaoCandidato);
 	public Candidato consultarCandidatoCompleto(Candidato Candidato);

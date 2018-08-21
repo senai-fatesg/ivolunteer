@@ -6,6 +6,7 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.event.TabChangeEvent;
@@ -93,6 +94,7 @@ public class AvaliacaoControl {
 	public void remQuestao(Questao questao) {
 		try {
 			this.avaliacao.remQuestao(questao);
+			questaoDao.excluirPorId(questao.getId());
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -100,21 +102,27 @@ public class AvaliacaoControl {
 
 	// Inclui questao a avaliacao
 	public void addQuestao(ActionEvent event) {
-		this.questao.setTipoQuestao(tipoQuestao);
-		if (tipoQuestao == EnumQuestao.D) {
+		//this.questao.setTipoQuestao(tipoQuestao);
+		System.out.println("ANTES DO IF | QTD AVALIACAO: " + this.avaliacao.getQuestoes().size());
+		if (this.questao.getTipoQuestao().equals(EnumQuestao.D)) {
 			this.questao.setDiscursiva(this.discursiva);
 			this.discursiva = new Discursiva();
+			System.out.println("DEPOIS DO IF | QTD AVALIACAO: " + this.avaliacao.getQuestoes().size());
 		} else {
 			this.questao.setObjetiva(objetiva);
 			this.objetiva = new Objetiva();
+			System.out.println("FIM DO ELSE | QTD AVALIACAO: " + this.avaliacao.getQuestoes().size());
 		}
 		this.avaliacao.addQuestao(this.questao);
 		this.questao = new Questao();
+		System.out.println("FIM ADD QUESTAO | QTD AVALIACAO: " + this.avaliacao.getQuestoes().size());
 	}
 
 	public void cadastrarAvaliacao(){
 		try {
+			System.out.println("ANTES DE CADASTRAR | QTD AVALIACAO: " + this.avaliacao.getQuestoes().size());
 			avaliacaoDao.incluir(this.avaliacao);
+			System.out.println("DEPOIS DE CADASTRAR | QTD AVALIACAO: " + this.avaliacao.getQuestoes().size());
 			this.avaliacao = new Avaliacao();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
@@ -156,6 +164,10 @@ public class AvaliacaoControl {
 		}
 	}
 
+	public List<SelectItem> getCompleteEnumQuestao(){
+		return UtilFaces.getListEnum(EnumQuestao.values());
+	}
+	
 	public Alternativa getAlternativa() {
 		return alternativa;
 	}
@@ -211,6 +223,14 @@ public class AvaliacaoControl {
 
 	public void setDiscursiva(Discursiva discursiva) {
 		this.discursiva = discursiva;
+	}
+
+	public EnumQuestao getTipoQuestao() {
+		return tipoQuestao;
+	}
+
+	public void setTipoQuestao(EnumQuestao tipoQuestao) {
+		this.tipoQuestao = tipoQuestao;
 	}
 
 }

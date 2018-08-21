@@ -5,7 +5,9 @@ import br.com.ambientinformatica.util.IEnum;
 public enum EnumTipoFuncionario implements IEnum {
 	CONTRATADO("Contratado"),
 	VOLUNTARIO("Voluntario"),
-	TERCEIRIZADO("Terceirizado");
+	TERCEIRIZADO("Terceirizado"),
+	ESTAGIARIO("Estagiário"),
+	BOLSISTA("Bolsista");
 
 	private String descricao;
 	

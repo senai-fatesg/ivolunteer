@@ -24,6 +24,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.EnumDiaSemana;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstadoCivil;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumSexo;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoEtnia;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoFuncionario;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoPessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoTelefone;
@@ -71,23 +72,34 @@ public class FuncionarioControl {
 
 	public void confirmar(ActionEvent evt) {
 		try {
-			if (this.funcionario.getId() == null) {
-				this.funcionario.setEnumTipoPessoa(EnumTipoPessoa.COLABORADOR);
-				this.funcionario.addEndereco(endereco);
-				funcionarioDao.incluir(this.funcionario);
-			} else {
-				this.funcionario.addEndereco(this.endereco);
-				enderecoDao.alterar(this.endereco);
-				funcionarioDao.alterar(this.funcionario);
+			if (this.validarNome()) {				
+				if (this.funcionario.getId() == null) {
+					this.funcionario.setEnumTipoPessoa(EnumTipoPessoa.COLABORADOR);
+					this.funcionario.addEndereco(endereco);
+					funcionarioDao.incluir(this.funcionario);
+				} else {
+					enderecoDao.alterar(this.endereco);
+					funcionarioDao.alterar(this.funcionario);
+				}
+				listarTodosFuncionarios(null);
+				this.endereco = new Endereco();
+				this.funcionario = new Funcionario();
+				this.telefoneEmpresa = new Telefone();
+				this.telefoneFuncionario = new Telefone();
+				UtilFaces.addMensagemFaces("Informações salvas com sucesso!");
 			}
-			listarTodosFuncionarios(null);
-			this.endereco = new Endereco();
-			this.funcionario = new Funcionario();
-			this.telefoneEmpresa = new Telefone();
-			this.telefoneFuncionario = new Telefone();
-			UtilFaces.addMensagemFaces("Informações salvas com sucesso!");
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
+			UtilLog.getLog().error(e);
+		}
+	}
+
+	private boolean validarNome() {
+		if (this.funcionario.getNomePessoa().isEmpty()) {
+			UtilFaces.addMensagemFaces("Nome do Colaborador é obrigatório!");
+			return false;
+		} else {
+			return true;			
 		}
 	}
 
@@ -121,6 +133,7 @@ public class FuncionarioControl {
 
 	public void excluir(Funcionario funcionario) {
 		try {
+			funcionario = this.desativarFuncionarioCompleto(funcionario);
 			funcionario.desativa();
 			funcionarioDao.alterar(funcionario);
 			listarTodosFuncionarios(null);
@@ -129,6 +142,31 @@ public class FuncionarioControl {
 			UtilFaces.addMensagemFaces(e);
 		}
 
+	}
+	
+	public Funcionario desativarFuncionarioCompleto(Funcionario funcionario) {
+		Funcionario func = funcionarioDao.carregarFuncionarioComEnderecoTelefone(funcionario);
+		if (func.getListaEndereco().size() > 0) {
+			for (Endereco endereco : func.getListaEndereco()) {
+				endereco.inativaEndereco();
+				enderecoDao.alterar(endereco);
+			}
+		}
+		if (func.getListaTelefone().size() > 0) {
+			for (Telefone telefone : func.getListaTelefone()) {
+				telefone.desativa();
+				telefoneDao.alterar(telefone);
+			}
+		}
+		if (func.getTelefonesEmpresa().size() > 0 && 
+				func.getTipoFuncionario().equals(EnumTipoFuncionario.TERCEIRIZADO)) {
+			System.out.println("Entrei no if 3!");
+			for (Telefone telefone : func.getTelefonesEmpresa()) {
+				telefone.desativa();
+				telefoneDao.alterar(telefone);
+			}
+		}
+		return func;
 	}
 
 	public void validaEmail(FacesContext fc, UIComponent uc, Object ob) {
@@ -205,6 +243,10 @@ public class FuncionarioControl {
 
 	public List<SelectItem> getCompleteEnumSexo() {
 		return UtilFaces.getListEnum(EnumSexo.values());
+	}
+	
+	public List<SelectItem> getCompleteEnumTipoEtnia() {
+		return UtilFaces.getListEnum(EnumTipoEtnia.values());
 	}
 
 	public List<SelectItem> getCompleteEnumTipoTelefone() {

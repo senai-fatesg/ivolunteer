@@ -16,7 +16,7 @@
 				styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 		</p:confirmDialog>
 
-		<p:panel header="Cadastro de Funcionário" id="panelFuncionario">
+		<p:panel header="Cadastro de Colaboradores" id="panelFuncionario">
 
 			<p:commandButton type="button" id="consultar" value="Consultar"
 				icon="ui-icon-search" onclick="PF('consultar').show();"
@@ -86,14 +86,13 @@
 			<p:tabView id="tabCadastro" cache="false">
 				<p:growl id="msg" sticky="false" life="5000" />
 				<p:tab title="Dados Pessoais" id="funcionarioDadosPessoais">
-					<p:panel rendered="true" style="height: 170pt!important">
+					<p:panel rendered="true" style="height: 200pt!important">
 						<a:field label="Nome">
 							<p:inputText value="#{FuncionarioControl.funcionario.nomePessoa}"
-								style="width:280px;"
-								validator="#{FuncionarioControl.validaNome}" />
+								style="width:280px;" />
 						</a:field>
 
-						<a:field label="Sexo" spaceLeft="10px">
+						<a:field label="Gênero" spaceLeft="10px">
 							<p:selectOneMenu id="enumSexo"
 								value="#{FuncionarioControl.funcionario.enumSexo}"
 								style="width:100px;">
@@ -144,6 +143,15 @@
 							</p:selectOneMenu>
 						</a:field>
 
+						<a:field label="Etnia:" spaceLeft="15px">
+							<p:selectOneMenu id="etnia"
+								value="#{FuncionarioControl.funcionario.etnia}"
+								style="width:166px;">
+								<f:selectItems
+									value="#{FuncionarioControl.completeEnumTipoEtnia}"></f:selectItems>
+							</p:selectOneMenu>
+						</a:field>
+
 						<a:newLine />
 
 						<a:field label="Endereço">
@@ -178,34 +186,18 @@
 							<p:inputText value="#{FuncionarioControl.endereco.complemento}"
 								style="width:250px;" />
 						</a:field>
-					</p:panel>
-				</p:tab>
-				<p:tab title="Dados Bancários" id="funcionarioDadosBancarios">
-					<p:panel rendered="true" style="height: 125pt!important;">
-						<a:field label="Banco">
-							<p:inputText value="#{FuncionarioControl.funcionario.banco}"
-								style="width:250px;" />
+
+						<a:field label="Email:" spaceLeft="10px">
+							<p:inputText value="#{FuncionarioControl.funcionario.email}"
+								validator="#{FuncionarioControl.validaEmail}" style="width:200px;" />
 						</a:field>
-						<a:newLine />
-						<a:field label="Agencia">
-							<p:inputMask value="#{FuncionarioControl.funcionario.agencia}"
-								mask="9999" style="width:250px;" />
-						</a:field>
-						<a:newLine />
-						<a:field label="Conta Corrente">
-							<p:inputMask value="#{FuncionarioControl.funcionario.conta}"
-								mask="99999999-9" style="width:250px;" />
-						</a:field>
-					</p:panel>
-				</p:tab>
-				<p:tab title="Filiação" id="funcionarioFiliacao">
-					<p:panel rendered="true" style="height: 90pt!important;">
-						<a:field label="Nome da Mãe">
+
+						<a:field label="Nome da Mãe" spaceLeft="10px">
 							<p:inputText value="#{FuncionarioControl.funcionario.nomeMae}"
 								style="width:250px;" />
 						</a:field>
-						<a:newLine />
-						<a:field label="Nome do Pai">
+
+						<a:field label="Nome do Pai" spaceLeft="10px">
 							<p:inputText value="#{FuncionarioControl.funcionario.nomePai}"
 								style="width:250px;" />
 						</a:field>
@@ -216,9 +208,9 @@
 					<p:panel id="panelDadosProfissionais">
 						<p:panel id="painelFuncionarioDadosProfissionais" rendered="true">
 
-							<h4>Dados do Funcionário</h4>
+							<h4>Dados do Colaborador</h4>
 
-							<a:field label="Tipo de Funcionário:">
+							<a:field label="Tipo de Colaborador">
 								<p:selectOneMenu id="enumTipoFuncionario"
 									value="#{FuncionarioControl.funcionario.tipoFuncionario}"
 									style="width:160px;">
@@ -310,8 +302,7 @@
 								action="#{FuncionarioControl.adicionarTelefone('Funcionario')}"
 								style="margin-top: 23px; margin-left: 10px;	"
 								update="listaTelefoneFuncionario painelFuncionarioDadosProfissionais">
-								<p:ajax event="click"
-									process="inputTelefoneFuncionario" />
+								<p:ajax event="click" process="inputTelefoneFuncionario" />
 							</p:commandButton>
 							<p:tooltip value="Adicionar telefone de funcionário"
 								for="addTelFuncionario" position="right" />
@@ -332,7 +323,7 @@
 								var="telFuncionario" emptyMessage="Nenhum telefone adicionado."
 								style="width:100%; margin-bottom: 5px;">
 
-								<f:facet name="header">Telefones do Funcionário</f:facet>
+								<f:facet name="header">Telefones do Colaborador</f:facet>
 
 								<p:columnGroup type="header">
 									<p:row>
@@ -375,6 +366,29 @@
 								</p:column>
 							</p:dataTable>
 
+						</p:panel>
+
+						<a:newLine />
+
+						<p:panel id="panelDadosBancarios" rendered="true"
+							style="height: 160pt!important;">
+
+							<h4>Dados Bancários</h4>
+
+							<a:field label="Banco">
+								<p:inputText value="#{FuncionarioControl.funcionario.banco}"
+									style="width:250px;" />
+							</a:field>
+							<a:newLine />
+							<a:field label="Agencia">
+								<p:inputMask value="#{FuncionarioControl.funcionario.agencia}"
+									mask="9999" style="width:250px;" />
+							</a:field>
+							<a:newLine />
+							<a:field label="Conta Corrente">
+								<p:inputMask value="#{FuncionarioControl.funcionario.conta}"
+									mask="99999999-9" style="width:250px;" />
+							</a:field>
 						</p:panel>
 
 						<a:newLine />

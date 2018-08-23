@@ -15,7 +15,7 @@ public class AvalicaoDaoJpa extends PersistenciaJpa<Avaliacao> implements
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public List<Avaliacao> listarTitulo(Avaliacao avaliacao) {
+	public List<Avaliacao> listarAvaliacoesPorTitulo(Avaliacao avaliacao) {
 		try {
 			return this.listarTitulo(avaliacao.getTitulo());
 		} catch (EntityNotFoundException e) {
@@ -26,8 +26,9 @@ public class AvalicaoDaoJpa extends PersistenciaJpa<Avaliacao> implements
 	@Override
 	public List<Avaliacao> listarTitulo(String titulo) {
 		try {
-			Query q = em.createQuery("select a from Avaliacao a where a.titulo like :titulo");
+			Query q = em.createQuery("select a from Avaliacao a where a.titulo like :titulo AND a.isAtivo = :true");
 			q.setParameter("titulo", "%" + titulo + "%");
+			q.setParameter("true", true);
 			return q.getResultList();
 		} catch (EntityNotFoundException e) {
 			return null;
@@ -50,6 +51,18 @@ public class AvalicaoDaoJpa extends PersistenciaJpa<Avaliacao> implements
 			e.printStackTrace();
 		}
 
+	}
+
+	@Override
+	public List<Avaliacao> listarAvaliacoesAtivas() {
+		try {
+			Query query = em.createQuery("SELECT a FROM Avaliacao a WHERE a.isAtivo = :true");
+			query.setParameter("true", true);
+			return (List<Avaliacao>) query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

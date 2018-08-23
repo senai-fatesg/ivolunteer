@@ -19,12 +19,12 @@
 
 			<p:growl autoUpdate="true" />
 
-			<p:commandButton id="consultar" value="Consultar"
-				icon="ui-icon-search" onclick="PF('consultaAvaliacoes').show();" />
+			<p:commandButton id="consultar" action="#{AvaliacaoControl.listarTodasAvaliacoes}" update="listaAvaliacoes"
+			value="Consultar" icon="ui-icon-search" onclick="PF('consultaAvaliacoes').show();"   />
 
 			<p:dialog id="modalPesquisa" header="Consultar"
 				widgetVar="consultaAvaliacoes" modal="true" maximizable="false"
-				minimizable="false" width="70%" resizable="false">
+				minimizable="false" width="70%" resizable="false" position="center" >
 				<a:field label="Título">
 					<p:inputText id="filtro" value="#{AvaliacaoControl.filtro.titulo}" />
 				</a:field>
@@ -37,7 +37,8 @@
 				<a:newLine />
 				<a:newLine />
 
-				<p:dataTable id="listaAvaliacoes" var="itemAvaliacoes"
+				<p:dataTable id="listaAvaliacoes" var="itemAvaliacoes" paginator="true" 
+					rowsPerPageLabel="5,10,15,20" rowsPerPageTemplate="5,10,15,20"
 					style="width:100%" value="#{AvaliacaoControl.avaliacoes}"
 					widgetVar="avaliacoesTable" emptyMessage="Sem Registros a exibir">
 					<p:column headerText="Título" width="30%">#{itemAvaliacoes.titulo}</p:column>
@@ -49,8 +50,9 @@
 							<p:tooltip for="botaoEditaAvaliacao" position="top" value="Editar avaliação" />
 						</p:commandButton>
 							
-						<p:commandButton id="botaoDesativaAvaliacao" icon="ui-icon-trash" type="button"
-							onclick="confirmaExclusao.show()" >
+						<p:commandButton id="botaoDesativaAvaliacao" icon="ui-icon-trash" action="#{AvaliacaoControl.desativar(itemAvaliacoes)}" update="listaAvaliacoes" >
+							<p:confirm icon="ui-icon-alert" message="Tem certeza que deseja inativar esta avaliação?" 
+							header="Desativação de avaliação!" />
 							<p:tooltip for="botaoDesativaAvaliacao" position="top" value="Desativar avaliação" />
 						</p:commandButton>
 					</p:column>
@@ -63,8 +65,6 @@
 				<p:growl id="verificaTitulo" />
 				<p:inputText id="titulo"
 					value="#{AvaliacaoControl.avaliacao.titulo}" style="width:100%;">
-					<p:ajax event="blur" update="verificaTitulo"
-						listener="#{AvaliacaoControl.verificaTitulo}" />
 				</p:inputText>
 
 			</a:field>
@@ -91,10 +91,12 @@
 			<a:newLine />
 			<a:newLine />
 			
-			<p:selectOneMenu id="tipoQuestao" value="#{AvaliacaoControl.questao.tipoQuestao}" >
+			<a:field label="Tipo de questão:">
+				<p:selectOneMenu id="tipoQuestao" value="#{AvaliacaoControl.tipoQuestao}" >
 				<f:selectItems value="#{AvaliacaoControl.completeEnumQuestao}" />
 				<p:ajax process="@this" update="tabQuestoes" />
 			</p:selectOneMenu>
+			</a:field>
 			
 			<a:newLine />
 			<a:newLine />
@@ -104,7 +106,7 @@
 				<!--  
 				<p:ajax event="tabChange" listener="#{AvaliacaoControl.alteraTab}" />
 				-->
-				<p:tab rendered="#{AvaliacaoControl.questao.tipoQuestao == 'D'}" 
+				<p:tab rendered="#{AvaliacaoControl.tipoQuestao == 'D'}" 
 				title="Discursiva" id="tabDiscursiva">
 					<a:field label="Número de Linhas:">
 						<p:spinner id="numeroLinhas" min="1" max="99" size="30"
@@ -113,7 +115,7 @@
 					<a:newLine />
 				</p:tab>
 
-				<p:tab rendered="#{AvaliacaoControl.questao.tipoQuestao == 'O'}" 
+				<p:tab rendered="#{AvaliacaoControl.tipoQuestao == 'O'}" 
 				title="Objetiva" id="tabOjbetiva">
 
 					<a:field label="Alternativa:" width="100px">
@@ -181,13 +183,15 @@
 
 			<p:commandButton rendered="#{AvaliacaoControl.avaliacao.id == null}"
 				id="botaoCadastrarAvaliacao" value="Cadastrar" icon="ui-icon-disk"
-				actionListener="#{AvaliacaoControl.salvarAvaliacao}" update="formCorpo:cadastroAvaliacao" />
+				actionListener="#{AvaliacaoControl.listarTodasAvaliacoes}" update="formCorpo:cadastroAvaliacao" 
+				action="#{AvaliacaoControl.cadastrarAvaliacao}" />
 			<p:tooltip for="botaoCadastrarAvaliacao" value="Cadastrar avaliação"
 				position="right" />
 
 			<p:commandButton rendered="#{AvaliacaoControl.avaliacao.id != null}"
-				id="botaoSalvarAvaliacao" value="Salvar" icon="ui-icon-disk"
-				actionListener="#{AvaliacaoControl.salvarAvaliacao}" update="formCorpo:cadastroAvaliacao" />
+				id="botaoSalvarAvaliacao" value="Atualizar" icon="ui-icon-disk"
+				actionListener="#{AvaliacaoControl.listarTodasAvaliacoes}" update="formCorpo:cadastroAvaliacao" 
+				action="#{AvaliacaoControl.salvarAvaliacao}" />
 			<p:tooltip for="botaoSalvarAvaliacao" value="Salvar avaliação"
 				position="right" />
 

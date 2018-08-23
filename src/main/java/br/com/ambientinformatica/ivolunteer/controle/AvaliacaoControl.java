@@ -3,6 +3,7 @@ package br.com.ambientinformatica.ivolunteer.controle;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -43,6 +44,15 @@ public class AvaliacaoControl {
 
 	@Autowired
 	private QuestaoDao questaoDao;
+	
+	@PostConstruct
+	public void init(){
+		listarTodasAvaliacoes();
+	}
+	
+	public void listarTodasAvaliacoes(){
+		this.avaliacoes = avaliacaoDao.listarAvaliacoesAtivas();
+	}
 
 	// Insere Alternativas em Questao do tipo Objetiva
 	public void addAlternativa(ActionEvent ev) {
@@ -54,9 +64,11 @@ public class AvaliacaoControl {
 		}
 	}
 
-	public void excluir(Avaliacao avaliacao) {
-		this.avaliacaoDao.removerAvaliacaoCompleta(avaliacao);
-		this.avaliacao = new Avaliacao();
+	public void desativar(Avaliacao avaliacao) {
+		System.out.println("ENTROU NO METODO");
+		avaliacao.desativa();
+		this.avaliacaoDao.alterar(avaliacao);
+		listarTodasAvaliacoes();
 	}
 
 	// Obtem Registro para Alteração
@@ -102,9 +114,9 @@ public class AvaliacaoControl {
 
 	// Inclui questao a avaliacao
 	public void addQuestao(ActionEvent event) {
-		//this.questao.setTipoQuestao(tipoQuestao);
+		this.questao.setTipoQuestao(tipoQuestao);
 		System.out.println("ANTES DO IF | QTD AVALIACAO: " + this.avaliacao.getQuestoes().size());
-		if (this.questao.getTipoQuestao().equals(EnumQuestao.D)) {
+		if (this.tipoQuestao.equals(EnumQuestao.D)) {
 			this.questao.setDiscursiva(this.discursiva);
 			this.discursiva = new Discursiva();
 			System.out.println("DEPOIS DO IF | QTD AVALIACAO: " + this.avaliacao.getQuestoes().size());
@@ -120,22 +132,36 @@ public class AvaliacaoControl {
 
 	public void cadastrarAvaliacao(){
 		try {
-			System.out.println("ANTES DE CADASTRAR | QTD AVALIACAO: " + this.avaliacao.getQuestoes().size());
-			avaliacaoDao.incluir(this.avaliacao);
-			System.out.println("DEPOIS DE CADASTRAR | QTD AVALIACAO: " + this.avaliacao.getQuestoes().size());
-			this.avaliacao = new Avaliacao();
+			if(avaliacaoValida()) {
+				System.out.println("ANTES DE CADASTRAR | QTD AVALIACAO: " + this.avaliacao.getQuestoes().size());
+				avaliacaoDao.incluir(this.avaliacao);
+				System.out.println("DEPOIS DE CADASTRAR | QTD AVALIACAO: " + this.avaliacao.getQuestoes().size());
+				this.avaliacao = new Avaliacao();
+			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
+	
+	public boolean avaliacaoValida(){
+		if(this.avaliacao.getTitulo().isEmpty()) {
+			UtilFaces.addMensagemFaces("Título de avaliação é obrigatório!");
+			return false;
+		} else if (this.avaliacao.getDescricao().isEmpty()){
+			UtilFaces.addMensagemFaces("Descrição de avaliação é obrigatório!");
+			return false;
+		}
+		return true;
+	}
 	// Salvar Avaliacao
 	public void salvarAvaliacao() {
 		try {
-			this.avaliacaoDao.alterar(this.avaliacao);	
-			
-			this.questaoDao.alterar(this.avaliacao.getQuestoes());
-			this.avaliacao = new Avaliacao();
-			UtilFaces.addMensagemFaces("Avaliação salva com sucesso");
+			if(avaliacaoValida()) {
+				this.avaliacaoDao.alterar(this.avaliacao);	
+				//this.questaoDao.alterar(this.avaliacao.getQuestoes());
+				this.avaliacao = new Avaliacao();
+				UtilFaces.addMensagemFaces("Avaliação atualizada com sucesso");
+			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -145,9 +171,9 @@ public class AvaliacaoControl {
 	public void aplicarFiltro(ActionEvent evt) {
 		try {
 			if (this.filtro.getTitulo().isEmpty()) {
-				this.avaliacoes = this.avaliacaoDao.listar();
+				this.avaliacoes = this.avaliacaoDao.listarAvaliacoesAtivas();
 			} else {
-				this.avaliacoes = this.avaliacaoDao.listarTitulo(this.filtro);
+				this.avaliacoes = this.avaliacaoDao.listarAvaliacoesPorTitulo(this.filtro);
 			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
@@ -185,7 +211,6 @@ public class AvaliacaoControl {
 	}
 
 	public List<Avaliacao> getAvaliacoes() {
-		this.avaliacoes = avaliacaoDao.listar();
 		return avaliacoes;
 	}
 

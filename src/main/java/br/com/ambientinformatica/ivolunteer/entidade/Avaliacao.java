@@ -22,11 +22,21 @@ public class Avaliacao {
 
 	private String titulo;
 
-	private String descricao;	
+	private String descricao;
+	
+	private Boolean isAtivo = true;
 
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="avaliacao_id")
 	private List<Questao> questoes = new ArrayList<Questao>();
+
+	public Boolean getIsAtivo() {
+		return isAtivo;
+	}
+
+	public void setIsAtivo(Boolean isAtivo) {
+		this.isAtivo = isAtivo;
+	}
 
 	public Integer getId() {
 		return id;
@@ -99,4 +109,7 @@ public class Avaliacao {
 		return true;
 	}
 
+	public void desativa(){
+		this.setIsAtivo(false);
+	}
 }

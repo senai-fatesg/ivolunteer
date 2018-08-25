@@ -61,7 +61,7 @@
 
 			<a:newLine />
 			<a:newLine />
-			<a:field label="Título:" width="100%">
+			<a:field label="Título da avaliação:" width="100%">
 				<p:growl id="verificaTitulo" />
 				<p:inputText id="titulo"
 					value="#{AvaliacaoControl.avaliacao.titulo}" style="width:100%;">
@@ -72,20 +72,20 @@
 			<a:newLine />
 			<a:newLine />
 
-			<a:field label="Descrição:" width="100%">
+			<a:field label="Descrição da avaliação:" width="100%">
 				<p:inputTextarea value="#{AvaliacaoControl.avaliacao.descricao}"
 					style="width:100%;" />
 			</a:field>
 
 			<a:newLine />
 
-			<a:field label="Ordem:" width="100%">
+			<a:field label="Ordem da questão:" width="100%">
 				<p:spinner max="999" min="0" id="ordem"
 					value="#{AvaliacaoControl.questao.ordem}" />
 			</a:field>
 			<a:newLine />
 			<a:newLine />
-			<a:field label="Pergunta:" width="100%">
+			<a:field label="Pergunta da questão:" width="100%">
 				<p:editor id="pergunta" value="#{AvaliacaoControl.questao.pergunta}" />
 			</a:field>
 			<a:newLine />
@@ -118,8 +118,8 @@
 				<p:tab rendered="#{AvaliacaoControl.tipoQuestao == 'O'}" 
 				title="Objetiva" id="tabOjbetiva">
 
-					<a:field label="Alternativa:" width="100px">
-						<p:inputText id="alternativa" style="width:100px"
+					<a:field label="Descrição da alternativa:" width="400px">
+						<p:inputText id="alternativa" style="width:400px"
 							value="#{AvaliacaoControl.alternativa.descricao}" />
 					</a:field>
 
@@ -131,16 +131,20 @@
 					<a:newLine />
 					<a:newLine />
 
-					<p:dataTable id="alternativas" style="width:30%"
+					<p:dataTable id="alternativas" style="width:100%"
 						emptyMessage="Sem Registros"
 						value="#{AvaliacaoControl.objetiva.alternativas}" var="item">
-						<p:column headerText="Avaliacao">
+						
+						<p:column headerText="Alternativa">
 							<h:outputText value="#{item.descricao}"></h:outputText>
 						</p:column>
-						<p:column width="35">
-							<p:commandButton icon="ui-icon-closethick"
+						<p:column headerText="Ações" width="10%">
+							<p:commandButton id="botaoRemoveAlternativa" icon="ui-icon-closethick"
 								action="#{AvaliacaoControl.remAlternativa(item)}"
-								update="alternativas" />
+								update="alternativas" >
+								<p:tooltip for="botaoRemoveAlternativa" value="Remover alternativa" position="top" />
+								<p:confirm header="Remover alternativa!" icon="ui-icon-alert" message="Tem certeza que deseja remover esta alternativa?" />
+							</p:commandButton>
 						</p:column>
 					</p:dataTable>
 
@@ -151,30 +155,44 @@
 
 			<a:newLine />
 
-			<p:commandButton value="Adicionar Questão" icon="ui-icon-plusthick"
+			<p:commandButton rendered="#{AvaliacaoControl.questao.id == null}" value="Adicionar Questão" icon="ui-icon-plusthick"
 				actionListener="#{AvaliacaoControl.addQuestao}"
-				update="titulo, ordem, tabQuestoes, pergunta, questoesTable" />
+				update="titulo ordem tabQuestoes pergunta questoesTable" ajax="true" />
 
+			<p:commandButton rendered="#{AvaliacaoControl.questao.id != null}" value="Atualizar Questão" icon="ui-icon-refresh"
+				actionListener="#{AvaliacaoControl.attQuestao}"
+				update="titulo ordem tabQuestoes pergunta questoesTable" ajax="true" />
+			
+			
 			<a:newLine />
 			<a:newLine />
 
 			<p:dataTable id="questoesTable"
 				emptyMessage="Sem questões adicionadas" style="width:100%"
 				value="#{AvaliacaoControl.avaliacao.questoes}" var="questaoItem">
-				<p:column headerText="Ordem" width="10">
+				<f:facet name="header">
+										        	Lista de questões da avaliação
+				</f:facet>
+				<p:column sortBy="#{questaoItem.ordem}" headerText="Ordem" width="20%">
 					<h:outputLabel value="#{questaoItem.ordem}" />
 				</p:column>
-				<p:column headerText="Tipo" width="10">
+				<p:column headerText="Tipo" width="20%">
 					<h:outputLabel value="#{questaoItem.tipoQuestao.descricao}" />
 				</p:column>
-				<p:column headerText="Pergunta" width="190">
+				<p:column headerText="Questão" width="190%">
 					<h:outputLabel value="#{questaoItem.pergunta}" />
 				</p:column>
-				<p:column width="7" >
+				<p:column width="20%" >
+					<p:commandButton id="botaoEditarQuestao" icon="ui-icon-pencil"
+						action="#{AvaliacaoControl.editarQuestao(questaoItem)}"
+						update="formCorpo:cadastroAvaliacao" >
+						<p:tooltip for="botaoEditarQuestao" position="top" value="Editar questão" />
+					</p:commandButton>
 					<p:commandButton id="botaoRemoverQuestao" icon="ui-icon-closethick"
 						action="#{AvaliacaoControl.remQuestao(questaoItem)}"
 						update="questoesTable" >
 						<p:tooltip for="botaoRemoverQuestao" position="top" value="Remover questão" />
+						<p:confirm header="Remover questão!" icon="ui-icon-alert" message="Tem certeza de que deseja remover esta questão?" />
 					</p:commandButton>
 				</p:column>
 			</p:dataTable>

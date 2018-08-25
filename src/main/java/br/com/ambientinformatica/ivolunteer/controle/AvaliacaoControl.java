@@ -22,6 +22,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.Discursiva;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumQuestao;
 import br.com.ambientinformatica.ivolunteer.entidade.Objetiva;
 import br.com.ambientinformatica.ivolunteer.entidade.Questao;
+import br.com.ambientinformatica.ivolunteer.persistencia.AlternativaDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.AvaliacaoDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.QuestaoDao;
 
@@ -40,6 +41,9 @@ public class AvaliacaoControl {
 	private List<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
 
 	@Autowired
+	private AlternativaDao alternativaDao;
+	
+	@Autowired
 	private AvaliacaoDao avaliacaoDao;
 
 	@Autowired
@@ -56,16 +60,23 @@ public class AvaliacaoControl {
 
 	// Insere Alternativas em Questao do tipo Objetiva
 	public void addAlternativa(ActionEvent ev) {
-		try {
+		if(validaAlternativa()) {
 			this.objetiva.addAlternativa(alternativa);
 			this.alternativa = new Alternativa();
-		} catch (Exception e) {
-			UtilFaces.addMensagemFaces(e);
+			UtilFaces.addMensagemFaces("Alternativa adicionada.");
+		}
+	}
+	
+	public boolean validaAlternativa() {
+		if(!this.alternativa.getDescricao().isEmpty()) {
+			return true;
+		} else {
+			UtilFaces.addMensagemFaces("Descrição da alternativa é obrigatória!");
+			return false;
 		}
 	}
 
 	public void desativar(Avaliacao avaliacao) {
-		System.out.println("ENTROU NO METODO");
 		avaliacao.desativa();
 		this.avaliacaoDao.alterar(avaliacao);
 		listarTodasAvaliacoes();
@@ -80,6 +91,8 @@ public class AvaliacaoControl {
 	public void remAlternativa(Alternativa alternativa) {
 		try {
 			this.objetiva.remAlternativa(alternativa);
+			alternativaDao.excluirPorId(alternativa.getId());
+			UtilFaces.addMensagemFaces("Alternativa removida.");
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -107,6 +120,7 @@ public class AvaliacaoControl {
 		try {
 			this.avaliacao.remQuestao(questao);
 			questaoDao.excluirPorId(questao.getId());
+			UtilFaces.addMensagemFaces("Questão removida.");
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -114,22 +128,46 @@ public class AvaliacaoControl {
 
 	// Inclui questao a avaliacao
 	public void addQuestao(ActionEvent event) {
-		this.questao.setTipoQuestao(tipoQuestao);
-		System.out.println("ANTES DO IF | QTD AVALIACAO: " + this.avaliacao.getQuestoes().size());
-		if (this.tipoQuestao.equals(EnumQuestao.D)) {
-			this.questao.setDiscursiva(this.discursiva);
-			this.discursiva = new Discursiva();
-			System.out.println("DEPOIS DO IF | QTD AVALIACAO: " + this.avaliacao.getQuestoes().size());
-		} else {
-			this.questao.setObjetiva(objetiva);
-			this.objetiva = new Objetiva();
-			System.out.println("FIM DO ELSE | QTD AVALIACAO: " + this.avaliacao.getQuestoes().size());
+		if(validaQuestao()) {
+			this.questao.setTipoQuestao(tipoQuestao);
+			if (this.tipoQuestao.equals(EnumQuestao.D)) {
+				this.questao.setDiscursiva(this.discursiva);
+				this.discursiva = new Discursiva();
+			} else {
+				this.questao.setObjetiva(objetiva);
+				this.objetiva = new Objetiva();
+			}
+			UtilFaces.addMensagemFaces("Questão adicionada.");
+			this.avaliacao.addQuestao(this.questao);
+			this.questao = new Questao();
 		}
-		this.avaliacao.addQuestao(this.questao);
+	}
+	
+	public boolean validaQuestao() {
+		if(!this.questao.getPergunta().isEmpty()) {
+			return true;
+		} else {
+			UtilFaces.addMensagemFaces("Pergunta da questão é obrigatória!");
+			return false;
+		}
+	}
+	
+	public void attQuestao() {
+		questaoDao.alterar(this.questao);
+		this.avaliacao = avaliacaoDao.consultarAvalicaoCompleta(this.avaliacao);
+		this.objetiva = new Objetiva();
 		this.questao = new Questao();
-		System.out.println("FIM ADD QUESTAO | QTD AVALIACAO: " + this.avaliacao.getQuestoes().size());
+		UtilFaces.addMensagemFaces("Questão atualizada com sucesso!");
 	}
 
+	public void editarQuestao(Questao questao) {
+		this.questao = questaoDao.consultar(questao.getId());
+		this.tipoQuestao = this.questao.getTipoQuestao();
+		if(tipoQuestao == EnumQuestao.O) {
+			this.objetiva.setAlternativas(this.questao.getObjetiva().getAlternativas());
+		}
+	}
+	
 	public void cadastrarAvaliacao(){
 		try {
 			if(avaliacaoValida()) {
@@ -137,6 +175,7 @@ public class AvaliacaoControl {
 				avaliacaoDao.incluir(this.avaliacao);
 				System.out.println("DEPOIS DE CADASTRAR | QTD AVALIACAO: " + this.avaliacao.getQuestoes().size());
 				this.avaliacao = new Avaliacao();
+				UtilFaces.addMensagemFaces("Avaliação cadastrada com sucesso!");
 			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
@@ -160,7 +199,7 @@ public class AvaliacaoControl {
 				this.avaliacaoDao.alterar(this.avaliacao);	
 				//this.questaoDao.alterar(this.avaliacao.getQuestoes());
 				this.avaliacao = new Avaliacao();
-				UtilFaces.addMensagemFaces("Avaliação atualizada com sucesso");
+				UtilFaces.addMensagemFaces("Avaliação atualizada com sucesso!");
 			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);

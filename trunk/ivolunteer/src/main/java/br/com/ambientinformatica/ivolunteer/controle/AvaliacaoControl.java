@@ -49,6 +49,8 @@ public class AvaliacaoControl {
 	@Autowired
 	private QuestaoDao questaoDao;
 	
+	private boolean desabilitaTipoQuestao;
+	
 	@PostConstruct
 	public void init(){
 		listarTodasAvaliacoes();
@@ -157,14 +159,29 @@ public class AvaliacaoControl {
 		this.avaliacao = avaliacaoDao.consultarAvalicaoCompleta(this.avaliacao);
 		this.objetiva = new Objetiva();
 		this.questao = new Questao();
+		this.desabilitaTipoQuestao = false;
 		UtilFaces.addMensagemFaces("Questão atualizada com sucesso!");
+	}
+	
+	public void desabilitaEditarTipoQuestao() {
+		this.desabilitaTipoQuestao = true;
+		System.out.println("DESABILITADO? " + this.desabilitaTipoQuestao);
 	}
 
 	public void editarQuestao(Questao questao) {
-		this.questao = questaoDao.consultar(questao.getId());
-		this.tipoQuestao = this.questao.getTipoQuestao();
-		if(tipoQuestao == EnumQuestao.O) {
-			this.objetiva.setAlternativas(this.questao.getObjetiva().getAlternativas());
+		if(questao.getId() != null) {
+			this.questao = questaoDao.consultar(questao.getId());
+			this.tipoQuestao = this.questao.getTipoQuestao();
+			if(tipoQuestao == EnumQuestao.O) {
+				this.objetiva.setAlternativas(this.questao.getObjetiva().getAlternativas());
+			}
+		} else {
+			this.questao = questao;
+			this.tipoQuestao = this.questao.getTipoQuestao();
+			if(tipoQuestao == EnumQuestao.O) {
+				this.objetiva.setAlternativas(this.questao.getObjetiva().getAlternativas());
+			}
+			this.avaliacao.remQuestao(questao);
 		}
 	}
 	
@@ -227,6 +244,14 @@ public class AvaliacaoControl {
 					new FacesMessage(
 							"Titulo deve conter no minimo 2 caracteres"));
 		}
+	}
+
+	public boolean isDesabilitaTipoQuestao() {
+		return desabilitaTipoQuestao;
+	}
+
+	public void setDesabilitaTipoQuestao(boolean desabilitaTipoQuestao) {
+		this.desabilitaTipoQuestao = desabilitaTipoQuestao;
 	}
 
 	public List<SelectItem> getCompleteEnumQuestao(){

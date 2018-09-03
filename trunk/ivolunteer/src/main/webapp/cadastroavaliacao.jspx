@@ -73,7 +73,7 @@
 			<a:newLine />
 
 			<a:field label="Descrição da avaliação:" width="100%">
-				<p:inputTextarea value="#{AvaliacaoControl.avaliacao.descricao}"
+				<p:inputTextarea disabled="#{AvalicaoControl.desabilitaTipoQuestao}" value="#{AvaliacaoControl.avaliacao.descricao}"
 					style="width:100%;" />
 			</a:field>
 
@@ -91,11 +91,11 @@
 			<a:newLine />
 			<a:newLine />
 			
-			<a:field label="Tipo de questão:">
-				<p:selectOneMenu id="tipoQuestao" value="#{AvaliacaoControl.tipoQuestao}" >
-				<f:selectItems value="#{AvaliacaoControl.completeEnumQuestao}" />
-				<p:ajax process="@this" update="tabQuestoes" />
-			</p:selectOneMenu>
+			<a:field  label="Tipo de questão:" >
+				<p:selectOneMenu disabled="#{AvalicaoControl.desabilitaTipoQuestao}" id="tipoQuestao" value="#{AvaliacaoControl.tipoQuestao}" >
+					<f:selectItems value="#{AvaliacaoControl.completeEnumQuestao}" />
+					<p:ajax event="change" update="tabQuestoes" />
+				</p:selectOneMenu>
 			</a:field>
 			
 			<a:newLine />
@@ -167,28 +167,33 @@
 			<a:newLine />
 			<a:newLine />
 
-			<p:dataTable id="questoesTable"
+			<p:dataTable id="questoesTable" paginator="true" rows="5" rowsPerPageTemplate="5,10,15,20"
 				emptyMessage="Sem questões adicionadas" style="width:100%"
 				value="#{AvaliacaoControl.avaliacao.questoes}" var="questaoItem">
 				<f:facet name="header">
 										        	Lista de questões da avaliação
 				</f:facet>
 				<p:column sortBy="#{questaoItem.ordem}" headerText="Ordem" width="20%">
-					<h:outputLabel value="#{questaoItem.ordem}" />
+					<h:outputLabel rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}" 
+						value="#{questaoItem.ordem}" />
 				</p:column>
 				<p:column headerText="Tipo" width="20%">
-					<h:outputLabel value="#{questaoItem.tipoQuestao.descricao}" />
+					<h:outputLabel rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}" 
+						value="#{questaoItem.tipoQuestao.descricao}" />
 				</p:column>
 				<p:column headerText="Questão" width="190%">
-					<h:outputLabel value="#{questaoItem.pergunta}" />
+					<h:outputLabel rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}" 
+						value="#{questaoItem.pergunta}" />
 				</p:column>
-				<p:column width="20%" >
-					<p:commandButton id="botaoEditarQuestao" icon="ui-icon-pencil"
+				<p:column width="20%" headerText="Ações" >
+					<p:commandButton rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}" 
+						id="botaoEditarQuestao" icon="ui-icon-pencil"
 						action="#{AvaliacaoControl.editarQuestao(questaoItem)}"
-						update="formCorpo:cadastroAvaliacao" >
+						update="formCorpo:cadastroAvaliacao" ajax="true" >
 						<p:tooltip for="botaoEditarQuestao" position="top" value="Editar questão" />
 					</p:commandButton>
-					<p:commandButton id="botaoRemoverQuestao" icon="ui-icon-closethick"
+					<p:commandButton rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}" 
+						id="botaoRemoverQuestao" icon="ui-icon-closethick"
 						action="#{AvaliacaoControl.remQuestao(questaoItem)}"
 						update="questoesTable" >
 						<p:tooltip for="botaoRemoverQuestao" position="top" value="Remover questão" />

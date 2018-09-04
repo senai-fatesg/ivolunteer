@@ -38,6 +38,7 @@ public class AvaliacaoControl {
 	private Alternativa alternativa = new Alternativa();
 	private Avaliacao filtro = new Avaliacao();
 
+	private List<Avaliacao> listaAvaliacoesCompleto = new ArrayList<Avaliacao>();
 	private List<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
 
 	@Autowired
@@ -56,8 +57,13 @@ public class AvaliacaoControl {
 		listarTodasAvaliacoes();
 	}
 	
+	public void listarTodasAvaliacoesCompleto(){
+		this.avaliacoes = avaliacaoDao.listar();
+	}
+	
 	public void listarTodasAvaliacoes(){
-		this.avaliacoes = avaliacaoDao.listarAvaliacoesAtivas();
+		//this.avaliacoes = avaliacaoDao.listarAvaliacoesAtivas();
+		this.avaliacoes = avaliacaoDao.listar();
 	}
 
 	// Insere Alternativas em Questao do tipo Objetiva
@@ -244,6 +250,14 @@ public class AvaliacaoControl {
 					new FacesMessage(
 							"Titulo deve conter no minimo 2 caracteres"));
 		}
+	}
+
+	public List<Avaliacao> getListaAvaliacoesCompleto() {
+		return listaAvaliacoesCompleto;
+	}
+
+	public void setListaAvaliacoesCompleto(List<Avaliacao> listaAvaliacoesCompleto) {
+		this.listaAvaliacoesCompleto = listaAvaliacoesCompleto;
 	}
 
 	public boolean isDesabilitaTipoQuestao() {

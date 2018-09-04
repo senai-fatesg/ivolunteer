@@ -8,20 +8,24 @@
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
 		
-		<p:dataTable id="avaliacaoes" value="#{AvaliacaoControl.avaliacoes}" var="avaliacao" emptyMessage="Nenhuma avaliação cadastrada" >
+		<p:dataTable id="avaliacaoes" paginator="true" rows="10" rowsPerPageLabel="10,15,20" rowsPerPageTemplate="10,15,20" 
+		value="#{AvaliacaoControl.avaliacoes}" var="avaliacao" emptyMessage="Nenhuma avaliação cadastrada" >
 			<f:facet name="header">Lista de Avaliações</f:facet>
+			<p:columnGroup type="header">
+				<p:row>
+					<p:column sortBy="#{avaliacao.titulo}" headerText="Título" />
+					<p:column sortBy="#{avaliacao.descricao}" headerText="Descrição" />
+				</p:row>
+			</p:columnGroup>
+			
 			<p:column>
-				<f:facet name="header">
-					<h:outputText value="Título" />
-				</f:facet>
 				<h:outputText value="#{avaliacao.titulo}" />
 			</p:column>
+			
 			<p:column>
-				<f:facet name="header">
-					<h:outputText value="Descrição" />
-				</f:facet>
 				<h:outputText value="#{avaliacao.descricao}" />
 			</p:column>
+		
 		</p:dataTable>
 	</ui:define>
 

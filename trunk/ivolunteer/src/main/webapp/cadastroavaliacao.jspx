@@ -81,7 +81,9 @@
 
 			<a:field label="Ordem da questão:" width="100%">
 				<p:spinner max="999" min="0" id="ordem"
-					value="#{AvaliacaoControl.questao.ordem}" />
+					value="#{AvaliacaoControl.questao.ordem}" >
+					<p:ajax event="change" process="@this" />
+				</p:spinner>
 			</a:field>
 			<a:newLine />
 			<a:newLine />
@@ -91,8 +93,8 @@
 			<a:newLine />
 			<a:newLine />
 			
-			<a:field  label="Tipo de questão:" >
-				<p:selectOneMenu disabled="#{AvalicaoControl.desabilitaTipoQuestao}" id="tipoQuestao" value="#{AvaliacaoControl.tipoQuestao}" >
+			<a:field label="Tipo de questão:" >
+				<p:selectOneMenu disabled="#{AvaliacaoControl.desabilitaTipoQuestao}" id="tipoQuestao" value="#{AvaliacaoControl.tipoQuestao}" >
 					<f:selectItems value="#{AvaliacaoControl.completeEnumQuestao}" />
 					<p:ajax event="change" update="tabQuestoes" />
 				</p:selectOneMenu>
@@ -161,7 +163,7 @@
 
 			<p:commandButton rendered="#{AvaliacaoControl.questao.id != null}" value="Atualizar Questão" icon="ui-icon-refresh"
 				actionListener="#{AvaliacaoControl.attQuestao}"
-				update="titulo ordem tabQuestoes pergunta questoesTable" ajax="true" />
+				update="titulo ordem tabQuestoes pergunta questoesTable tipoQuestao" ajax="true" />
 			
 			
 			<a:newLine />
@@ -174,28 +176,28 @@
 										        	Lista de questões da avaliação
 				</f:facet>
 				<p:column sortBy="#{questaoItem.ordem}" headerText="Ordem" width="20%">
-					<h:outputLabel rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}" 
+					<h:outputText rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}" 
 						value="#{questaoItem.ordem}" />
 				</p:column>
 				<p:column headerText="Tipo" width="20%">
-					<h:outputLabel rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}" 
+					<h:outputText rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}" 
 						value="#{questaoItem.tipoQuestao.descricao}" />
 				</p:column>
 				<p:column headerText="Questão" width="190%">
-					<h:outputLabel rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}" 
+					<h:outputText rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}" 
 						value="#{questaoItem.pergunta}" />
 				</p:column>
 				<p:column width="20%" headerText="Ações" >
 					<p:commandButton rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}" 
 						id="botaoEditarQuestao" icon="ui-icon-pencil"
 						action="#{AvaliacaoControl.editarQuestao(questaoItem)}"
-						update="formCorpo:cadastroAvaliacao" ajax="true" >
+						update="formCorpo:cadastroAvaliacao formCorpo:tipoQuestao" ajax="true" >
 						<p:tooltip for="botaoEditarQuestao" position="top" value="Editar questão" />
 					</p:commandButton>
 					<p:commandButton rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}" 
 						id="botaoRemoverQuestao" icon="ui-icon-closethick"
 						action="#{AvaliacaoControl.remQuestao(questaoItem)}"
-						update="questoesTable" >
+						update="formCorpo:cadastroAvaliacao" >
 						<p:tooltip for="botaoRemoverQuestao" position="top" value="Remover questão" />
 						<p:confirm header="Remover questão!" icon="ui-icon-alert" message="Tem certeza de que deseja remover esta questão?" />
 					</p:commandButton>

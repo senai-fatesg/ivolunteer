@@ -7,6 +7,7 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
+import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoFuncionario;
 import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.jpa.persistencia.PersistenciaJpa;
 
@@ -17,7 +18,6 @@ public class FuncionarioDaoJpa extends PersistenciaJpa<Funcionario> implements F
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Funcionario> listarPorNomeAtivo(String nome) {
-
 		Query query = em.createQuery(
 				"SELECT f FROM Funcionario f WHERE UPPER(f.nomePessoa) like :nome " + "AND f.isAtivo = :true");
 		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
@@ -72,5 +72,26 @@ public class FuncionarioDaoJpa extends PersistenciaJpa<Funcionario> implements F
 		} catch (NoResultException e) {
 			return null;
 		}
+	}
+
+	@Override
+	public List<Funcionario> listarPorTipoAtivo(EnumTipoFuncionario tipo) {
+		Query query = em.createQuery(
+				"SELECT f FROM Funcionario f WHERE f.tipoFuncionario = :tipoFunc AND f.isAtivo = :true");
+		query.setParameter("tipoFunc", tipo);
+		query.setParameter("true", true);
+		return (List<Funcionario>) query.getResultList();
+	}
+
+	@Override
+	public List<Funcionario> listarPorNomeETipoAtivo(String nome, EnumTipoFuncionario tipo) {
+		System.out.println("ENTREI POHAAA!!! GAMIL PRA SEMPRE!!!");
+		Query query = em.createQuery(
+				"SELECT f FROM Funcionario f WHERE UPPER(f.nomePessoa) like :nome AND f.tipoFuncionario = :tipo "
+				+ "AND f.isAtivo = :true");
+		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
+		query.setParameter("tipo", tipo);
+		query.setParameter("true", true);
+		return (List<Funcionario>) query.getResultList();
 	}
 }

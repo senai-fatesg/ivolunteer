@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -45,9 +46,11 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 	private String nomePai;
 
 	private String nomeMae;
+	
+	private String emailDoFuncionario;
 
-	private String email;
-
+	private String emailDaEmpresa;
+	
 	private String titulo;
 
 	private String zona;
@@ -83,7 +86,7 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 
 	private String historico;
 
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	private EnumTipoFuncionario tipoFuncionario;
 	
 	@Enumerated
@@ -256,13 +259,21 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 	public void setNomeMae(String nomeMae) {
 		this.nomeMae = nomeMae;
 	}
-
-	public String getEmail() {
-		return email;
+	
+	public String getEmailDoFuncionario() {
+		return emailDoFuncionario;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setEmailDoFuncionario(String emailDoFuncionario) {
+		this.emailDoFuncionario = emailDoFuncionario;
+	}
+
+	public String getEmailDaEmpresa() {
+		return emailDaEmpresa;
+	}
+
+	public void setEmailDaEmpresa(String emailDaEmpresa) {
+		this.emailDaEmpresa = emailDaEmpresa;
 	}
 
 	public String getTitulo() {
@@ -438,7 +449,7 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 		return "Funcionario [pis=" + pis + ", carteiraDeTrabalho=" + carteiraDeTrabalho + ", serieCarteiraDeTrabalho="
 				+ serieCarteiraDeTrabalho + ", reservista=" + reservista + ", emissaoReservista=" + emissaoReservista
 				+ ", cNH=" + cNH + ", emissaoCNH=" + emissaoCNH + ", validadeCNH=" + validadeCNH + ", nomePai="
-				+ nomePai + ", nomeMae=" + nomeMae + ", email=" + email + ", titulo=" + titulo + ", zona=" + zona
+				+ nomePai + ", nomeMae=" + nomeMae + ", emailDaEmpresa=" + emailDaEmpresa + ", titulo=" + titulo + ", zona=" + zona
 				+ ", secao=" + secao + ", exameAdmissional=" + exameAdmissional + ", dataExameAdmissional="
 				+ dataExameAdmissional + ", dataAdmissao=" + dataAdmissao + ", inicioExperiencia=" + inicioExperiencia
 				+ ", terminoExperiencia=" + terminoExperiencia + ", banco=" + banco + ", agencia=" + agencia
@@ -461,7 +472,7 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 		result = prime * result + ((dataAdmissao == null) ? 0 : dataAdmissao.hashCode());
 		result = prime * result + ((dataDemissao == null) ? 0 : dataDemissao.hashCode());
 		result = prime * result + ((dataExameAdmissional == null) ? 0 : dataExameAdmissional.hashCode());
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((emailDaEmpresa == null) ? 0 : emailDaEmpresa.hashCode());
 		result = prime * result + ((emissaoCNH == null) ? 0 : emissaoCNH.hashCode());
 		result = prime * result + ((emissaoReservista == null) ? 0 : emissaoReservista.hashCode());
 		result = prime * result + ((exameAdmissional == null) ? 0 : exameAdmissional.hashCode());
@@ -542,10 +553,10 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 				return false;
 		} else if (!dataExameAdmissional.equals(other.dataExameAdmissional))
 			return false;
-		if (email == null) {
-			if (other.email != null)
+		if (emailDaEmpresa == null) {
+			if (other.emailDaEmpresa != null)
 				return false;
-		} else if (!email.equals(other.email))
+		} else if (!emailDaEmpresa.equals(other.emailDaEmpresa))
 			return false;
 		if (emissaoCNH == null) {
 			if (other.emissaoCNH != null)

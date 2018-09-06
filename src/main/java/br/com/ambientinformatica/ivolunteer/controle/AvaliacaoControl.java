@@ -93,6 +93,11 @@ public class AvaliacaoControl {
 	// Obtem Registro para Alteração
 	public void carregaAvaliacao(Avaliacao avaliacao) {
 		this.avaliacao = this.avaliacaoDao.consultarAvalicaoCompleta(avaliacao);
+		if(this.avaliacao.getQuestoes().size() == 0) {
+			this.questao.setOrdem(this.avaliacao.getQuestoes().size());
+		} else {
+			this.questao.setOrdem(this.avaliacao.getQuestoes().size() + 1);
+		}
 	}
 
 	// Remove Questao em Avaliacao
@@ -127,6 +132,7 @@ public class AvaliacaoControl {
 	public void remQuestao(Questao questao) {
 		try {
 			this.avaliacao.remQuestao(questao);
+			//Questao quest = questaoDao.consultar(questao.getId());
 			questaoDao.excluirPorId(questao.getId());
 			UtilFaces.addMensagemFaces("Questão removida.");
 		} catch (Exception e) {
@@ -134,9 +140,37 @@ public class AvaliacaoControl {
 		}
 	}
 
+	public void ordenaNovasQuestoes() {
+		//System.out.println("Alterou ordem da questão!!!");
+		//System.out.println("ORDENAMENTO DE NÚMERO :" + this.questao.getOrdem());
+		if((this.questao.getOrdem() <= this.avaliacao.getQuestoes().size()) && this.questao.getId() == null) {
+			for (Questao questao : this.avaliacao.getQuestoes()) {
+				if (this.questao.getOrdem() == questao.getOrdem()) {
+					//this.questao.setOrdem(questao.getOrdem());
+					questao.setOrdem(this.avaliacao.getQuestoes().size() + 1);
+					questaoDao.alterar(this.avaliacao.getQuestoes());
+				}
+			}
+		} 
+	}
+	
+	public void ordenaAtualizacoesQuestoes() {
+		if((this.questao.getOrdem() <= this.avaliacao.getQuestoes().size()) && this.questao.getId() != null) {
+			for (Questao questao : this.avaliacao.getQuestoes()) {
+				if (this.questao.getOrdem() == questao.getOrdem()) {
+					Questao quest = questaoDao.consultar(this.questao.getId());
+					Integer ordemOriginal = quest.getOrdem();
+					//this.questao.setOrdem(questao.getOrdem());
+					questao.setOrdem(ordemOriginal);
+					questaoDao.alterar(this.avaliacao.getQuestoes());
+				}
+			}
+		}
+	}
+	
 	// Inclui questao a avaliacao
 	public void addQuestao(ActionEvent event) {
-		if(validaQuestao()) {
+		if(validaQuestao() && validaOrdemQuestao()) {
 			this.questao.setTipoQuestao(tipoQuestao);
 			if (this.tipoQuestao.equals(EnumQuestao.D)) {
 				this.questao.setDiscursiva(this.discursiva);
@@ -145,10 +179,25 @@ public class AvaliacaoControl {
 				this.questao.setObjetiva(objetiva);
 				this.objetiva = new Objetiva();
 			}
+			ordenaNovasQuestoes();
 			UtilFaces.addMensagemFaces("Questão adicionada.");
 			this.avaliacao.addQuestao(this.questao);
 			this.questao = new Questao();
 		}
+	}
+	
+	public boolean validaOrdemQuestao() {
+		if((this.questao.getOrdem() > this.avaliacao.getQuestoes().size() + 1) && this.questao.getId() == null) {
+			UtilFaces.addMensagemFaces("Número de ordenação da questão inválida. "
+					+ "Questão atual pode receber número de ordenação máximo de "
+					+ (this.avaliacao.getQuestoes().size() + 1) + "!");
+			return false;
+		} else if ((this.questao.getOrdem() > this.avaliacao.getQuestoes().size()) && this.questao.getId() != null) {
+			UtilFaces.addMensagemFaces("Número de ordenação da questão inválida. "
+					+ "Questão atual pode receber número de ordenação máximo de "
+					+ this.avaliacao.getQuestoes().size() + "!");
+			return false;
+		} else return true;
 	}
 	
 	public boolean validaQuestao() {
@@ -161,12 +210,19 @@ public class AvaliacaoControl {
 	}
 	
 	public void attQuestao() {
-		questaoDao.alterar(this.questao);
-		this.avaliacao = avaliacaoDao.consultarAvalicaoCompleta(this.avaliacao);
-		this.objetiva = new Objetiva();
-		this.questao = new Questao();
+		if(validaQuestao() && validaOrdemQuestao()) {
+			ordenaAtualizacoesQuestoes();
+			questaoDao.alterar(this.questao);
+			this.avaliacao = avaliacaoDao.consultarAvalicaoCompleta(this.avaliacao);
+			this.objetiva = new Objetiva();
+			this.questao = new Questao();
+			habilitarEditarTipoQuestao();
+			UtilFaces.addMensagemFaces("Questão atualizada com sucesso!");
+		}
+	}
+	
+	public void habilitarEditarTipoQuestao() {
 		this.desabilitaTipoQuestao = false;
-		UtilFaces.addMensagemFaces("Questão atualizada com sucesso!");
 	}
 	
 	public void desabilitaEditarTipoQuestao() {
@@ -175,6 +231,7 @@ public class AvaliacaoControl {
 	}
 
 	public void editarQuestao(Questao questao) {
+		this.desabilitaEditarTipoQuestao();
 		if(questao.getId() != null) {
 			this.questao = questaoDao.consultar(questao.getId());
 			this.tipoQuestao = this.questao.getTipoQuestao();
@@ -198,6 +255,7 @@ public class AvaliacaoControl {
 				avaliacaoDao.incluir(this.avaliacao);
 				System.out.println("DEPOIS DE CADASTRAR | QTD AVALIACAO: " + this.avaliacao.getQuestoes().size());
 				this.avaliacao = new Avaliacao();
+				this.questao = new Questao();
 				UtilFaces.addMensagemFaces("Avaliação cadastrada com sucesso!");
 			}
 		} catch (Exception e) {

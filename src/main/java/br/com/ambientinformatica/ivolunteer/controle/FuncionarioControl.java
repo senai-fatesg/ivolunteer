@@ -15,6 +15,7 @@ import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.jsf.FacesContextUtils;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.Cidade;
@@ -49,6 +50,7 @@ public class FuncionarioControl {
 	private Cidade cidade = new Cidade();
 	private Telefone telefoneEmpresa = new Telefone();
 	private String nomeFuncionarioPesquisa;
+	private EnumTipoFuncionario tipoFuncionarioPesquisa;
 	private Frequencia frequencia = new Frequencia();
 
 	private List<Frequencia> frequencias = new ArrayList<Frequencia>();
@@ -91,15 +93,6 @@ public class FuncionarioControl {
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 			UtilLog.getLog().error(e);
-		}
-	}
-
-	private boolean validarNome() {
-		if (this.funcionario.getNomePessoa().isEmpty()) {
-			UtilFaces.addMensagemFaces("Nome do Colaborador é obrigatório!");
-			return false;
-		} else {
-			return true;			
 		}
 	}
 
@@ -160,7 +153,6 @@ public class FuncionarioControl {
 		}
 		if (func.getTelefonesEmpresa().size() > 0 && 
 				func.getTipoFuncionario().equals(EnumTipoFuncionario.TERCEIRIZADO)) {
-			System.out.println("Entrei no if 3!");
 			for (Telefone telefone : func.getTelefonesEmpresa()) {
 				telefone.desativa();
 				telefoneDao.alterar(telefone);
@@ -168,31 +160,37 @@ public class FuncionarioControl {
 		}
 		return func;
 	}
+	
+	private boolean validarNome() {
+		if (this.funcionario.getNomePessoa().isEmpty()) {
+			UtilFaces.addMensagemFaces("Nome do Colaborador é obrigatório!");
+			return false;
+		} else {
+			return true;			
+		}
+	}
 
 	public void validaEmail(FacesContext fc, UIComponent uc, Object ob) {
 		String email = (String) ob;
-		if (!email.equals("")) {
-			if (!email.contains("@")) {
-				((UIInput) uc).setValid(false);
-				UtilFaces.addMensagemFaces("Email inválido. O email deve conter '@' em seu endereço.");
-			}
+		if (!email.isEmpty() && !email.contains("@")) {
+			((UIInput) uc).setValid(false);
+			UtilFaces.addMensagemFaces("Email inválido. O email deve conter '@' em seu endereço.");
 		}
 	}
 
 	public void validaSite(FacesContext fc, UIComponent uc, Object ob) {
 		String site = (String) ob;
-		if (!site.equals("")) {
-			if (!site.contains("www.")) {
-				((UIInput) uc).setValid(false);
-				UtilFaces.addMensagemFaces("Site inválido. O site deve conter 'www.' no início.");
-			}
+		if (!site.isEmpty() && !site.contains("www.")) {
+			((UIInput) uc).setValid(false);
+			UtilFaces.addMensagemFaces("Site inválido. O site deve conter 'www.' no início.");
 		}
 	}
 
 	public void limpaCamposFuncionario() {
 		this.funcionario.setSegmento(null);
 		this.funcionario.setSite(null);
-		this.funcionario.setEmail(null);
+		this.funcionario.setEmailDoFuncionario(null);
+		this.funcionario.setEmailDaEmpresa(null);
 		this.funcionario.setNomeEmpresa(null);
 		this.funcionario.setCnpj(null);
 	}
@@ -362,15 +360,40 @@ public class FuncionarioControl {
 	// Aplica Filtro
 	public void aplicarFiltro(ActionEvent evt) {
 		try {
-			if (this.nomeFuncionarioPesquisa == null || this.nomeFuncionarioPesquisa.isEmpty()) {
-				this.funcionarios = this.funcionarioDao.listarFuncionariosAtivos();
-			} else {
+			if (this.validarFiltroPorNome() && this.tipoFuncionarioPesquisa == null) {
 				this.funcionarios = this.funcionarioDao.listarPorNomeAtivo(this.nomeFuncionarioPesquisa);
+			}
+			else if (this.validarFiltroPorTipo() && this.nomeFuncionarioPesquisa.isEmpty()) {
+				this.funcionarios = this.funcionarioDao.listarPorTipoAtivo(this.tipoFuncionarioPesquisa);	
+			}
+			else if (this.validarFiltroPorNome() && this.validarFiltroPorTipo()) {
+				this.funcionarios = this.funcionarioDao.listarPorNomeETipoAtivo(
+						this.nomeFuncionarioPesquisa, this.tipoFuncionarioPesquisa);
+			}
+			else {
+				this.funcionarios = this.funcionarioDao.listarFuncionariosAtivos();
 			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
+			UtilLog.getLog().error(e);
 		}
 
+	}
+	
+	public boolean validarFiltroPorNome() {
+		if (this.nomeFuncionarioPesquisa != null || !this.nomeFuncionarioPesquisa.isEmpty()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean validarFiltroPorTipo() {
+		if (this.tipoFuncionarioPesquisa != null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public FuncionarioDao getFuncionarioDao() {
@@ -444,6 +467,14 @@ public class FuncionarioControl {
 
 	public void setNomeFuncionarioPesquisa(String nomeFuncionarioPesquisa) {
 		this.nomeFuncionarioPesquisa = nomeFuncionarioPesquisa;
+	}
+
+	public EnumTipoFuncionario getTipoFuncionarioPesquisa() {
+		return tipoFuncionarioPesquisa;
+	}
+
+	public void setTipoFuncionarioPesquisa(EnumTipoFuncionario tipoFuncionarioPesquisa) {
+		this.tipoFuncionarioPesquisa = tipoFuncionarioPesquisa;
 	}
 
 	public Funcionario carregarFuncionario(SelectEvent evt) {

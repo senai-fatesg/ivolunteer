@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,7 +38,7 @@ public class Turma {
 
 	private Boolean ativo;
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	private Funcionario professor;
 
 	public Integer getId() {

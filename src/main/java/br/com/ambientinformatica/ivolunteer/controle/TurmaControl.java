@@ -52,7 +52,7 @@ public class TurmaControl implements TurmaService {
 	/*** INICIALIZADOR ***/
 	@PostConstruct
 	public void init() {
-		listar(null);
+		listar();
 		carregaProfessores();
 	}
 
@@ -126,17 +126,30 @@ public class TurmaControl implements TurmaService {
 	}
 
 	/*** AÇÕES DA PÁGINA ***/
-	public void confirmar(ActionEvent evt) {
+	public void cadastrarTurma() {
 		try {
-			validarTurma(turma);
-			turmaDao.alterar(turma);
-			listar(evt);
-			turma = new Turma();
+			validarTurma(this.turma);
+			turmaDao.incluir(this.turma);
+			listar();
+			this.turma = new Turma();
+			UtilFaces.addMensagemFaces("Turma cadastrada com sucesso!");
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
 
+	public void salvarAlteracoesTurma() {
+		try {
+			validarTurma(this.turma);
+			turmaDao.alterar(this.turma);
+			listar();
+			this.turma = new Turma();
+			UtilFaces.addMensagemFaces("Turma alterada com sucesso!");
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
+	
 	private void validarTurma(Turma turma) throws Exception {
 		if (turma.getNome().isEmpty()) {
 			throw new Exception("É obrigatório informar o Nome");
@@ -155,8 +168,9 @@ public class TurmaControl implements TurmaService {
 		}
 	}
 
-	public void listar(ActionEvent evt) {
+	public void listar() {
 		try {
+			this.turmasConsulta = turmaDao.listar();
 			turmas = turmaDao.listar();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
@@ -185,7 +199,8 @@ public class TurmaControl implements TurmaService {
 	}
 	
 	public void carregaTurmaAlteracao(Turma turma) {
-		this.turma = turma;
+		this.turma = turmaDao.consultar(turma.getId());
+		System.out.println("PROFESSOR DA TURMA CONSULTADA: " + this.turma.getProfessor().getNomePessoa());
 	}
 
 	public void aplicarFiltro(ActionEvent evt) {

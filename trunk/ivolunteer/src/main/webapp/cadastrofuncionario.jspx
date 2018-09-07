@@ -268,7 +268,7 @@
 									style="width:160px;">
 									<p:ajax event="change" update="panelDadosProfissionais"
 										listener="#{FuncionarioControl.limpaCamposFuncionario}" />
-									<f:selectItem itemLabel="Selecione uma opção"
+									   <f:selectItem itemLabel="Selecione uma opção"
 										itemValue="#{null}" noSelectionOption="true"></f:selectItem>
 									<f:selectItems
 										value="#{FuncionarioControl.completeEnumTipoFuncionario}"></f:selectItems>

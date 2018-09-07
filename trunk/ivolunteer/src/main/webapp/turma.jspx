@@ -24,13 +24,17 @@
 				<a:field label="Nome da Turma">
 					<p:inputText id="filtro" value="#{TurmaControl.turmaConsulta.nome}" />
 				</a:field>
-				<a:field spaceLeft="15px">
-					<p:commandButton id="filtrar" icon="ui-icon-search"
-						actionListener="#{TurmaControl.aplicarFiltro}"
-						update="listaTurmas" />
-				</a:field>
+				
+				<p:commandButton style="margin-left: 10px; margin-top: 23px;" 
+					id="filtrar" icon="ui-icon-search"
+					actionListener="#{TurmaControl.aplicarFiltro}"
+					update="listaTurmas" />
+				
 				<a:newLine />
-				<p:dataTable id="listaTurmas" var="turma" style="width:100%"
+				<a:newLine />
+				
+				<p:dataTable paginator="true" rows="10" rowsPerPageTemplate="5,10,15,20,25" 
+				id="listaTurmas" var="turma" style="width:100%"
 					value="#{TurmaControl.turmasConsulta}"
 					widgetVar="agrupamentosTable" emptyMessage="Sem Registros a Exibir">
 					<p:column sortBy="#{turma.nome}">
@@ -58,11 +62,15 @@
 						<h:outputText value="#{turma.professor.nomePessoa}"></h:outputText>
 					</p:column>
 					<p:column width="10%">
-						<p:commandButton icon="ui-icon-pencil"
+						<p:commandButton id="botaoEditarTurma" icon="ui-icon-pencil"
 							action="#{TurmaControl.carregaTurmaAlteracao(turma)}"
 							oncomplete="PF('consultar').hide();" update="formCorpo:cadastro" />
-						<p:commandButton icon="ui-icon-trash" type="button" action="#{TurmaControl.carregaTurmaAlteracao(turma)}"
+							<p:tooltip for="botaoEditarTurma" value="Editar Turma" position="top" />
+							
+						<p:commandButton id="botaoExcluirTurma" icon="ui-icon-trash" type="button" action="#{TurmaControl.carregaTurmaAlteracao(turma)}"
 							onclick="PF('confirmaExclusao').show();" />
+							<p:tooltip for="botaoExcluirTurma" value="Excluir Turma" position="top" />
+							
 					</p:column>
 				</p:dataTable>
 			</p:dialog>
@@ -70,7 +78,7 @@
 			<p:confirmDialog header="Atenção!" severity="alert"
 				widgetVar="confirmaExclusao">
 				<f:facet name="message">
-					<h:outputText value="Deseja excluir a Turma? " />
+					<h:outputText value="Deseja excluir esta Turma? " />
 					<br />
 					<h:outputText value="Está operação não poderá ser desfeita." />
 				</f:facet>
@@ -80,9 +88,7 @@
 				<p:commandButton value="Não" onclick="PF('confirmaExclusao').hide()" />
 			</p:confirmDialog>
 
-			<p:messages id="messages" showDetail="true" autoUpdate="true"
-				closable="true" />
-
+			
 			<a:newLine />
 			<a:newLine />
 
@@ -138,8 +144,7 @@
 				</a:field>
 
 				<a:field label="Professor" spaceLeft="20px">
-					<p:selectOneMenu id="funcionario"
-						value="#{TurmaControl.turma.professor}"
+					<p:selectOneMenu id="funcionario" value="#{TurmaControl.turma.professor}"
 						converter="objectConverter">
 						<f:selectItem itemLabel="Selecione o Professor"
 							noSelectionOption="true" />
@@ -148,6 +153,19 @@
 					</p:selectOneMenu>
 				</a:field>
 
+				<!-- Renderizado quando já existir um professor para a turma 
+				<a:field rendered="#{TurmaControl.turma.professor.id != null}" label="Professor" spaceLeft="20px">
+					<p:selectOneMenu id="funcionarioExistente" 
+						value="#{TurmaControl.turma.professor}"
+						converter="objectConverter">
+						<f:selectItem itemLabel="#{TurmaControl.turma.professor.nomePessoa}" itemValue="#{TurmaControl.turma.professor.nomePessoa}" />
+						<f:selectItems value="#{TurmaControl.professores}" var="professor"
+							itemValue="#{professor}" itemLabel="#{professor.nomePessoa}" />
+					</p:selectOneMenu>
+				</a:field>
+				
+				-->
+				
 				<a:field label="Ativo" spaceLeft="20px">
 					<p:selectBooleanCheckbox value="#{TurmaControl.turma.ativo}" />
 				</a:field>
@@ -155,8 +173,13 @@
 				<a:newLine />
 				<a:newLine />
 
-				<p:commandButton value="Confirmar" update="painel"
-					actionListener="#{TurmaControl.confirmar}"></p:commandButton>
+				<p:commandButton id="botaoCadastrarTurma" rendered="#{TurmaControl.turma.id == null}" value="Cadastrar" update="painel turmas"
+					actionListener="#{TurmaControl.cadastrarTurma}"  />
+					<p:tooltip for="botaoCadastrarTurma" value="Cadastrar turma" position="top" />
+					
+				<p:commandButton id="botaoSalvarTurma" rendered="#{TurmaControl.turma.id != null}" value="Salvar" update="painel turmas"
+					actionListener="#{TurmaControl.salvarAlteracoesTurma}"  />
+					<p:tooltip for="botaoSalvarTurma" value="Salvar alterações" position="top" />
 
 			</p:panel>
 		</p:panel>
@@ -164,7 +187,8 @@
 		<a:newLine />
 
 		<!-- LISTAGEM DAS TURMAS -->
-		<p:dataTable id="turmas" value="#{TurmaControl.turmas}" var="turma"
+		<p:dataTable paginator="true" rows="10" rowsPerPageTemplate="5,10,15,20,25" 
+			id="turmas" value="#{TurmaControl.turmas}" var="turma"
 			width="100%" emptyMessage="Sem registros">
 			<f:facet name="header">
 				<h:outputText value="Lista de Turmas"></h:outputText>

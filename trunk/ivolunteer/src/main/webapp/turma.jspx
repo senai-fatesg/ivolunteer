@@ -12,6 +12,13 @@
 		<!-- PAINEL DO CADASTRO DE TURMA -->
 		<p:panel header="Cadastro De Turma" id="painel">
 
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+
 			<!-- ESTRUTURA PARA BUSCA DE TURMAS -->
 			<p:commandButton id="consultar" value="Consultar"
 				icon="ui-icon-search"
@@ -21,88 +28,104 @@
 				modal="true" maximizable="false" minimizable="false" width="70%"
 				height="70%" resizable="false" closeOnEscape="true">
 
-				<a:field label="Nome da Turma">
-					<p:inputText id="filtro" value="#{TurmaControl.turmaConsulta.nome}" />
+				<a:field label="Nome da Turma:">
+					<p:inputText id="filtroNomeTurma"
+						value="#{TurmaControl.turmaConsulta.nome}" />
 				</a:field>
-				
-				<p:commandButton style="margin-left: 10px; margin-top: 23px;" 
+
+				<a:field label="Status:" spaceLeft="15px">
+					<p:selectOneMenu id="filtroStatusTurma"
+						value="#{TurmaControl.statusFiltro}">
+						<f:selectItem itemLabel="TODOS" itemValue="#{null}" noSelectionOption="true" />
+						<f:selectItem itemLabel="ATIVO" itemValue="t" />
+						<f:selectItem itemLabel="INATIVO" itemValue="f" />
+					</p:selectOneMenu>
+				</a:field>
+
+				<p:commandButton style="margin-left: 10px; margin-top: 23px;"
 					id="filtrar" icon="ui-icon-search"
-					actionListener="#{TurmaControl.aplicarFiltro}"
-					update="listaTurmas" />
-				
+					actionListener="#{TurmaControl.aplicarFiltro}" update="listaTurmas" />
+
 				<a:newLine />
 				<a:newLine />
-				
-				<p:dataTable paginator="true" rows="10" rowsPerPageTemplate="5,10,15,20,25" 
-				id="listaTurmas" var="turma" style="width:100%"
-					value="#{TurmaControl.turmasConsulta}"
+
+				<p:dataTable paginator="true" rows="10"
+					rowsPerPageTemplate="5,10,15,20,25" id="listaTurmas" var="turma"
+					style="width:100%" value="#{TurmaControl.turmasConsulta}"
 					widgetVar="agrupamentosTable" emptyMessage="Sem Registros a Exibir">
 					<p:column sortBy="#{turma.nome}">
 						<f:facet name="header">
-							<h:outputText value="Nome"></h:outputText>
+							<h:outputText value="Nome" />
 						</f:facet>
-						<h:outputText value="#{turma.nome}"></h:outputText>
+						<h:outputText value="#{turma.nome}" />
 					</p:column>
 					<p:column sortBy="#{turma.turno}">
 						<f:facet name="header">
-							<h:outputText value="Turno"></h:outputText>
+							<h:outputText value="Turno" />
 						</f:facet>
-						<h:outputText value="#{turma.turno}"></h:outputText>
+						<h:outputText value="#{turma.turno}" />
 					</p:column>
 					<p:column sortBy="#{turma.quantidadeVagas}">
 						<f:facet name="header">
-							<h:outputText value="Quantidade de Vagas"></h:outputText>
+							<h:outputText value="Quantidade de Vagas" />
 						</f:facet>
-						<h:outputText value="#{turma.quantidadeVagas}"></h:outputText>
+						<h:outputText value="#{turma.quantidadeVagas}" />
 					</p:column>
 					<p:column sortBy="#{turma.professor}">
 						<f:facet name="header">
 							<h:outputText value="Professor"></h:outputText>
 						</f:facet>
-						<h:outputText value="#{turma.professor.nomePessoa}"></h:outputText>
+						<h:outputText value="#{turma.professor.nomePessoa}" />
 					</p:column>
-					<p:column width="10%">
-						<p:commandButton id="botaoEditarTurma" icon="ui-icon-pencil"
+
+					<p:column width="8%">
+						<f:facet name="header">
+							<h:outputText value="Status" />
+						</f:facet>
+						<h:outputText rendered="#{turma.ativo == false}" value="INATIVO" />
+						<h:outputText rendered="#{turma.ativo == true}" value="ATIVO" />
+					</p:column>
+
+					<p:column headerText="Ações" width="10%">
+						<p:commandButton rendered="#{turma.ativo != false}" 
+							id="botaoEditarTurma" icon="ui-icon-pencil"
 							action="#{TurmaControl.carregaTurmaAlteracao(turma)}"
 							oncomplete="PF('consultar').hide();" update="formCorpo:cadastro" />
-							<p:tooltip for="botaoEditarTurma" value="Editar Turma" position="top" />
-							
-						<p:commandButton id="botaoExcluirTurma" icon="ui-icon-trash" type="button" action="#{TurmaControl.carregaTurmaAlteracao(turma)}"
-							onclick="PF('confirmaExclusao').show();" />
-							<p:tooltip for="botaoExcluirTurma" value="Excluir Turma" position="top" />
-							
+						<p:tooltip for="botaoEditarTurma" value="Editar Turma"
+							position="top" />
+
+						<p:commandButton rendered="#{turma.ativo != false}" 
+							id="botaoDesativarTurma" icon="ui-icon-trash"
+							action="#{TurmaControl.desativar(turma)}" update="listaTurmas">
+							<p:confirm header="Confirmar desativação!"
+								message="Deseja realmente inativar esta turma?"
+								icon="ui-icon-alert" />
+							<p:tooltip for="botaoDesativarTurma" value="Inativar Turma"
+								position="top" />
+
+						</p:commandButton>
+
+
 					</p:column>
 				</p:dataTable>
 			</p:dialog>
 
-			<p:confirmDialog header="Atenção!" severity="alert"
-				widgetVar="confirmaExclusao">
-				<f:facet name="message">
-					<h:outputText value="Deseja excluir esta Turma? " />
-					<br />
-					<h:outputText value="Está operação não poderá ser desfeita." />
-				</f:facet>
+			<p:growl autoUpdate="true" />
 
-				<p:commandButton value="Sim" action="#{TurmaControl.excluir(turma)}"
-					update="modalPesquisa" oncomplete="PF('confirmaExclusao').hide()" />
-				<p:commandButton value="Não" onclick="PF('confirmaExclusao').hide()" />
-			</p:confirmDialog>
-
-			
 			<a:newLine />
 			<a:newLine />
 
 			<!-- FORMULÁRIO DE CADASTRO DE TURMAS -->
 			<p:panel rendered="true" id="cadastro">
-				<a:field label="Nome" width="180px;">
+				<a:field label="Nome:" width="180px;">
 					<p:inputText id="nome" value="#{TurmaControl.turma.nome}" />
 				</a:field>
 
-				<a:field label="Código" width="180px;">
+				<a:field label="Código:" width="180px;">
 					<p:inputText id="codigo" value="#{TurmaControl.turma.codigo}" />
 				</a:field>
 
-				<a:field label="Turno" width="240px;">
+				<a:field label="Turno:" width="240px;">
 					<p:selectOneMenu id="turno" value="#{TurmaControl.turma.turno}"
 						style="width:215px;">
 						<p:ajax update="horarioInicio,horarioFinal"></p:ajax>
@@ -113,7 +136,7 @@
 					</p:selectOneMenu>
 				</a:field>
 
-				<a:field label="Horário de Início" width="240px;">
+				<a:field label="Horário de Início:" width="240px;">
 					<p:selectOneMenu id="horarioInicio"
 						value="#{TurmaControl.turma.horarioInicio}" style="width:215px;">
 						<f:convertDateTime pattern="HH:mm" />
@@ -125,7 +148,7 @@
 					</p:selectOneMenu>
 				</a:field>
 
-				<a:field label="Horário de Fim" width="240px;">
+				<a:field label="Horário de Fim:" width="240px;">
 					<p:selectOneMenu id="horarioFinal"
 						value="#{TurmaControl.turma.horarioFinal}" style="width:215px;">
 						<f:convertDateTime pattern="HH:mm" />
@@ -137,20 +160,25 @@
 					</p:selectOneMenu>
 				</a:field>
 
-				<a:field label="Quantidade de Vagas" width="180px">
+				<a:field label="Quantidade de Vagas:" width="180px">
 					<p:spinner id="maximoAlunos"
 						value="#{TurmaControl.turma.quantidadeVagas}" max="60" min="0"
 						styleClass="alinha-spinner" />
 				</a:field>
 
-				<a:field label="Professor" spaceLeft="20px">
-					<p:selectOneMenu id="funcionario" value="#{TurmaControl.turma.professor}"
+				<a:field label="Professor:" spaceLeft="20px">
+
+					<p:selectOneMenu id="funcionario"
+						value="#{TurmaControl.turma.professor}"
 						converter="objectConverter">
+
 						<f:selectItem itemLabel="Selecione o Professor"
 							noSelectionOption="true" />
-						<f:selectItems value="#{TurmaControl.professores}" var="professor"
-							itemValue="#{professor}" itemLabel="#{professor.nomePessoa}" />
+
+						<f:selectItems value="#{TurmaControl.professores}" var="prof"
+							itemValue="#{prof}" itemLabel="#{prof.nomePessoa}" />
 					</p:selectOneMenu>
+
 				</a:field>
 
 				<!-- Renderizado quando já existir um professor para a turma 
@@ -165,21 +193,27 @@
 				</a:field>
 				
 				-->
-				
-				<a:field label="Ativo" spaceLeft="20px">
+
+				<a:field label="Ativo:" spaceLeft="20px">
 					<p:selectBooleanCheckbox value="#{TurmaControl.turma.ativo}" />
 				</a:field>
 
 				<a:newLine />
 				<a:newLine />
 
-				<p:commandButton id="botaoCadastrarTurma" rendered="#{TurmaControl.turma.id == null}" value="Cadastrar" update="painel turmas"
-					actionListener="#{TurmaControl.cadastrarTurma}"  />
-					<p:tooltip for="botaoCadastrarTurma" value="Cadastrar turma" position="top" />
-					
-				<p:commandButton id="botaoSalvarTurma" rendered="#{TurmaControl.turma.id != null}" value="Salvar" update="painel turmas"
-					actionListener="#{TurmaControl.salvarAlteracoesTurma}"  />
-					<p:tooltip for="botaoSalvarTurma" value="Salvar alterações" position="top" />
+				<p:commandButton id="botaoCadastrarTurma"
+					rendered="#{TurmaControl.turma.id == null}" value="Cadastrar"
+					update="painel turmas"
+					actionListener="#{TurmaControl.cadastrarTurma}" />
+				<p:tooltip for="botaoCadastrarTurma" value="Cadastrar turma"
+					position="top" />
+
+				<p:commandButton id="botaoSalvarTurma"
+					rendered="#{TurmaControl.turma.id != null}" value="Salvar"
+					update="painel turmas"
+					actionListener="#{TurmaControl.salvarAlteracoesTurma}" />
+				<p:tooltip for="botaoSalvarTurma" value="Salvar alterações"
+					position="top" />
 
 			</p:panel>
 		</p:panel>
@@ -187,9 +221,10 @@
 		<a:newLine />
 
 		<!-- LISTAGEM DAS TURMAS -->
-		<p:dataTable paginator="true" rows="10" rowsPerPageTemplate="5,10,15,20,25" 
-			id="turmas" value="#{TurmaControl.turmas}" var="turma"
-			width="100%" emptyMessage="Sem registros">
+		<p:dataTable paginator="true" rows="10"
+			rowsPerPageTemplate="5,10,15,20,25" id="turmas"
+			value="#{TurmaControl.turmas}" var="turma" width="100%"
+			emptyMessage="Sem registros">
 			<f:facet name="header">
 				<h:outputText value="Lista de Turmas"></h:outputText>
 			</f:facet>

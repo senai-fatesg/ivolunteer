@@ -55,4 +55,42 @@ public class TurmaDaoJpa extends PersistenciaJpa<Turma> implements TurmaDao {
 			return null;
 		}
 	}
+
+	@Override
+	public List<Turma> listarPorStatus(String status) {
+		try {
+			boolean st;
+			if(status.contains("t")) {
+				st = true;
+			} else {
+				st = false;
+			}
+			Query query = em.createQuery("SELECT t FROM Turma t WHERE isAtivo = :status");
+			query.setParameter("status", st);
+			List<Turma> turmas = query.getResultList();
+			return turmas;
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public List<Turma> consultaPorNomeStatus(Turma turmaConsulta,String status) {
+		try {
+			boolean st;
+			if(status.contains("t")) {
+				st = true;
+			} else {
+				st = false;
+			}
+			Query query = em.createQuery("SELECT t FROM Turma t WHERE UPPER(t.nome) LIKE :nome "
+					+ " AND isAtivo = :status");
+			query.setParameter("nome", "%" + turmaConsulta.getNome().toUpperCase() + "%");
+			query.setParameter("status", st);
+			List turmas = query.getResultList();
+			return turmas;
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
 }

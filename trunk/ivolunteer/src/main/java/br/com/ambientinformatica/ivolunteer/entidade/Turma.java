@@ -36,7 +36,7 @@ public class Turma {
 
 	private Integer quantidadeVagas;
 
-	private Boolean ativo;
+	private Boolean isAtivo;
 
 	@ManyToOne(fetch=FetchType.EAGER)
 	private Funcionario professor;
@@ -98,11 +98,11 @@ public class Turma {
 	}
 
 	public Boolean getAtivo() {
-		return ativo;
+		return isAtivo;
 	}
 
 	public void setAtivo(Boolean ativo) {
-		this.ativo = ativo;
+		this.isAtivo = ativo;
 	}
 
 	public Funcionario getProfessor() {
@@ -113,4 +113,7 @@ public class Turma {
 		this.professor = professor;
 	}
 
+	public void inativar() {
+		setAtivo(false);
+	}
 }

@@ -37,6 +37,7 @@ public class TurmaControl implements TurmaService {
 	/*** ATRIBUTOS DA PÁGINA ***/
 	private Turma turma = new Turma();
 
+	private String statusFiltro;
 	private Turma turmaConsulta = new Turma();
 	private List<Turma> turmasConsulta = new ArrayList<>();
 
@@ -57,8 +58,18 @@ public class TurmaControl implements TurmaService {
 	}
 
 	/*** GETTERS E SETTERS ***/
+	
+	
 	public Turma getTurma() {
 		return turma;
+	}
+
+	public String getStatusFiltro() {
+		return statusFiltro;
+	}
+
+	public void setStatusFiltro(String statusFiltro) {
+		this.statusFiltro = statusFiltro;
 	}
 
 	public void setTurma(Turma turma) {
@@ -177,10 +188,17 @@ public class TurmaControl implements TurmaService {
 		}
 	}
 	
-	public void excluir(Turma turma) {
+	public void desativar(Turma turma) {
 		try {
-			turmaDao.excluirPorId(turma.getId());
-			UtilFaces.addMensagemFaces("Turma excluída com sucesso!");
+			//turmaDao.excluirPorId(turma.getId());
+			System.out.println("TURMA NULL? " + (turma == null));
+			Turma tm = turmaDao.consultar(turma.getId());
+			System.out.println("TURMA ATIVA? " + (tm.getAtivo()));
+			tm.inativar();
+			System.out.println("TURMA ATIVA? " + (tm.getAtivo()));
+			turmaDao.alterar(tm);
+			listar();
+			UtilFaces.addMensagemFaces("Turma inativada com sucesso!");
 		} catch (PersistenciaException e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -201,15 +219,26 @@ public class TurmaControl implements TurmaService {
 	public void carregaTurmaAlteracao(Turma turma) {
 		this.turma = turmaDao.consultar(turma.getId());
 		System.out.println("PROFESSOR DA TURMA CONSULTADA: " + this.turma.getProfessor().getNomePessoa());
+		System.out.println("PROFESSOR É NULO? " + (this.turma.getProfessor() == null));
+		System.out.println("TURMA ATIVA? " + (this.turma.getAtivo()));
 	}
 
 	public void aplicarFiltro(ActionEvent evt) {
 		try {
-			if (turmaConsulta != null && !turmaConsulta.getNome().isEmpty()) {
+			System.out.println("NOME EMPTY? " + (turmaConsulta.getNome().isEmpty()));
+			System.out.println("STATUS TURMA? " + (statusFiltro.isEmpty()));
+			System.out.println("TURMA NULL? " + (turmaConsulta == null));
+			
+			if (turmaConsulta != null && !turmaConsulta.getNome().isEmpty() && statusFiltro.isEmpty()) {
 				turmasConsulta = turmaDao.listarPorNome(turmaConsulta.getNome());
-			} else {
+			} else if(turmaConsulta != null && turmaConsulta.getNome().isEmpty() && !statusFiltro.isEmpty()) {
+				turmasConsulta = turmaDao.listarPorStatus(statusFiltro);
+			} else if (!turmaConsulta.getNome().isEmpty() && !statusFiltro.isEmpty()) {
+				turmasConsulta = turmaDao.consultaPorNomeStatus(turmaConsulta, statusFiltro);
+			} else if(turmaConsulta.getNome().isEmpty() && statusFiltro.isEmpty()) {
 				turmasConsulta = turmaDao.listar();
 			}
+			
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}

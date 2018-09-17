@@ -36,6 +36,7 @@ public class TurmaControl implements TurmaService {
 
 	/*** ATRIBUTOS DA PÁGINA ***/
 	private Turma turma = new Turma();
+	private Turma exibeTurmaInfo = new Turma();
 
 	private String statusFiltro;
 	private Turma turmaConsulta = new Turma();
@@ -59,9 +60,16 @@ public class TurmaControl implements TurmaService {
 
 	/*** GETTERS E SETTERS ***/
 	
-	
 	public Turma getTurma() {
 		return turma;
+	}
+
+	public Turma getExibeTurmaInfo() {
+		return exibeTurmaInfo;
+	}
+
+	public void setExibeTurmaInfo(Turma exibeTurmaInfo) {
+		this.exibeTurmaInfo = exibeTurmaInfo;
 	}
 
 	public String getStatusFiltro() {
@@ -202,6 +210,10 @@ public class TurmaControl implements TurmaService {
 		} catch (PersistenciaException e) {
 			UtilFaces.addMensagemFaces(e);
 		}
+	}
+	
+	public void exibeInfoTurma(Turma turma) {
+		this.exibeTurmaInfo = turma;
 	}
 
 	public void carregaProfessores() {

@@ -27,6 +27,14 @@ public class Turma {
 	private String codigo;
 
 	private EnumTurno turno;
+	
+	@Temporal(TemporalType.DATE)
+	private Date dataInicio;
+	
+	@Temporal(TemporalType.DATE)
+	private Date dataTermino;
+	
+	private String cargaHoraria;
 
 	@Temporal(TemporalType.TIME)
 	private Date horarioInicio;
@@ -47,6 +55,30 @@ public class Turma {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	
+	public Date getDataInicio() {
+		return dataInicio;
+	}
+
+	public void setDataInicio(Date dataInicio) {
+		this.dataInicio = dataInicio;
+	}
+
+	public Date getDataTermino() {
+		return dataTermino;
+	}
+
+	public void setDataTermino(Date dataTermino) {
+		this.dataTermino = dataTermino;
+	}
+
+	public String getCargaHoraria() {
+		return cargaHoraria;
+	}
+
+	public void setCargaHoraria(String cargaHoraria) {
+		this.cargaHoraria = cargaHoraria;
 	}
 
 	public String getNome() {

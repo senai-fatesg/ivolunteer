@@ -41,6 +41,7 @@ public class TurmaControl implements TurmaService {
 	private String statusFiltro;
 	private Turma turmaConsulta = new Turma();
 	private List<Turma> turmasConsulta = new ArrayList<>();
+	private Funcionario professorSelecionado;
 
 	@Autowired
 	private TurmaDao turmaDao;
@@ -62,6 +63,14 @@ public class TurmaControl implements TurmaService {
 	
 	public Turma getTurma() {
 		return turma;
+	}
+
+	public Funcionario getProfessorSelecionado() {
+		return professorSelecionado;
+	}
+
+	public void setProfessorSelecionado(Funcionario professorSelecionado) {
+		this.professorSelecionado = professorSelecionado;
 	}
 
 	public Turma getExibeTurmaInfo() {
@@ -145,6 +154,12 @@ public class TurmaControl implements TurmaService {
 	}
 
 	/*** AÇÕES DA PÁGINA ***/
+	public void selecionaProfessor() {
+		this.turma.setProfessor(professorSelecionado);
+		System.out.println("PROFESSOR SELECIONADO: " + professorSelecionado.getNomePessoa() + 
+				"PROFESSOR NOME:" + this.turma.getProfessor().getNomePessoa());
+	}
+	
 	public void cadastrarTurma() {
 		try {
 			validarTurma(this.turma);

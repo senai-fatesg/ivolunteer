@@ -31,12 +31,14 @@ import br.com.ambientinformatica.ivolunteer.persistencia.QuestaoDao;
 public class AvaliacaoControl {
 
 	private Avaliacao avaliacao = new Avaliacao();
+	private Avaliacao avaliacaoInfo = new Avaliacao();
 	private Questao questao = new Questao();
 	private Objetiva objetiva = new Objetiva();
 	private Discursiva discursiva = new Discursiva();
 	private EnumQuestao tipoQuestao = EnumQuestao.D;
 	private Alternativa alternativa = new Alternativa();
 	private Avaliacao filtro = new Avaliacao();
+	private String statusFiltro;
 
 	private List<Avaliacao> listaAvaliacoesCompleto = new ArrayList<Avaliacao>();
 	private List<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
@@ -55,6 +57,10 @@ public class AvaliacaoControl {
 	@PostConstruct
 	public void init(){
 		listarTodasAvaliacoes();
+	}
+	
+	public void exibeInformacoesAvaliacao(Avaliacao av) {
+		this.avaliacaoInfo = avaliacaoDao.consultarAvalicaoCompleta(av);
 	}
 	
 	public void listarTodasAvaliacoesCompleto(){
@@ -93,11 +99,7 @@ public class AvaliacaoControl {
 	// Obtem Registro para Alteração
 	public void carregaAvaliacao(Avaliacao avaliacao) {
 		this.avaliacao = this.avaliacaoDao.consultarAvalicaoCompleta(avaliacao);
-		if(this.avaliacao.getQuestoes().size() == 0) {
-			this.questao.setOrdem(this.avaliacao.getQuestoes().size());
-		} else {
-			this.questao.setOrdem(this.avaliacao.getQuestoes().size() + 1);
-		}
+		this.questao.setOrdem(this.avaliacao.getQuestoes().size());
 	}
 
 	// Remove Questao em Avaliacao
@@ -183,6 +185,7 @@ public class AvaliacaoControl {
 			UtilFaces.addMensagemFaces("Questão adicionada.");
 			this.avaliacao.addQuestao(this.questao);
 			this.questao = new Questao();
+			this.questao.setOrdem(this.avaliacao.getQuestoes().size());
 		}
 	}
 	
@@ -251,9 +254,8 @@ public class AvaliacaoControl {
 	public void cadastrarAvaliacao(){
 		try {
 			if(avaliacaoValida()) {
-				System.out.println("ANTES DE CADASTRAR | QTD AVALIACAO: " + this.avaliacao.getQuestoes().size());
+				
 				avaliacaoDao.incluir(this.avaliacao);
-				System.out.println("DEPOIS DE CADASTRAR | QTD AVALIACAO: " + this.avaliacao.getQuestoes().size());
 				this.avaliacao = new Avaliacao();
 				this.questao = new Questao();
 				UtilFaces.addMensagemFaces("Avaliação cadastrada com sucesso!");
@@ -278,8 +280,8 @@ public class AvaliacaoControl {
 		try {
 			if(avaliacaoValida()) {
 				this.avaliacaoDao.alterar(this.avaliacao);	
-				//this.questaoDao.alterar(this.avaliacao.getQuestoes());
 				this.avaliacao = new Avaliacao();
+				this.questao = new Questao();
 				UtilFaces.addMensagemFaces("Avaliação atualizada com sucesso!");
 			}
 		} catch (Exception e) {
@@ -290,11 +292,19 @@ public class AvaliacaoControl {
 	// Aplica Filtro
 	public void aplicarFiltro(ActionEvent evt) {
 		try {
-			if (this.filtro.getTitulo().isEmpty()) {
-				this.avaliacoes = this.avaliacaoDao.listarAvaliacoesAtivas();
-			} else {
-				this.avaliacoes = this.avaliacaoDao.listarAvaliacoesPorTitulo(this.filtro);
+			System.out.println("TÍTULO: " + this.filtro.getTitulo() );
+			System.out.println("STATUS FILTRO NULO? " + this.statusFiltro);
+			
+			if (this.filtro.getTitulo().isEmpty() && this.statusFiltro.isEmpty()) {
+				this.avaliacoes = this.avaliacaoDao.listar();
+			} else if(!this.filtro.getTitulo().isEmpty() && this.statusFiltro.isEmpty()) {
+				this.avaliacoes = this.avaliacaoDao.listarAvaliacoesPorTitulo(this.filtro.getTitulo());
+			} else if(this.filtro.getTitulo().isEmpty() && !this.statusFiltro.isEmpty()) {
+				this.avaliacoes = this.avaliacaoDao.listarAvaliacoesPorStatus(statusFiltro);
+			} else if(!this.filtro.getTitulo().isEmpty() && !this.statusFiltro.isEmpty()) {
+				this.avaliacoes = this.avaliacaoDao.listarAvaliacoesPorTituloStatus(this.filtro.getTitulo(), statusFiltro);
 			}
+			
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -308,6 +318,22 @@ public class AvaliacaoControl {
 					new FacesMessage(
 							"Titulo deve conter no minimo 2 caracteres"));
 		}
+	}
+
+	public String getStatusFiltro() {
+		return statusFiltro;
+	}
+
+	public void setStatusFiltro(String statusFiltro) {
+		this.statusFiltro = statusFiltro;
+	}
+
+	public Avaliacao getAvaliacaoInfo() {
+		return avaliacaoInfo;
+	}
+
+	public void setAvaliacaoInfo(Avaliacao avaliacaoInfo) {
+		this.avaliacaoInfo = avaliacaoInfo;
 	}
 
 	public List<Avaliacao> getListaAvaliacoesCompleto() {

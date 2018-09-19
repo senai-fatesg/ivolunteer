@@ -19,45 +19,197 @@
 
 			<p:growl autoUpdate="true" />
 
-			<p:commandButton id="consultar" action="#{AvaliacaoControl.listarTodasAvaliacoes}" update="listaAvaliacoes"
-			value="Consultar" icon="ui-icon-search" onclick="PF('consultaAvaliacoes').show();"   />
+			<p:commandButton id="consultar"
+				action="#{AvaliacaoControl.listarTodasAvaliacoes}"
+				update="listaAvaliacoes" value="Consultar" icon="ui-icon-search"
+				onclick="PF('consultaAvaliacoes').show();" />
 
 			<p:dialog id="modalPesquisa" header="Consultar"
 				widgetVar="consultaAvaliacoes" modal="true" maximizable="false"
-				minimizable="false" width="70%" resizable="false" position="center" >
-				<a:field label="Título">
+				minimizable="false" width="70%" resizable="false" position="center">
+				<a:field label="Título:">
 					<p:inputText id="filtro" value="#{AvaliacaoControl.filtro.titulo}" />
 				</a:field>
+				
+				<a:field label="Status:" spaceLeft="15px">
+					<p:selectOneMenu id="filtroStatusTurma"
+						value="#{AvaliacaoControl.statusFiltro}">
+						<f:selectItem itemLabel="TODOS" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItem itemLabel="ATIVO" itemValue="t" />
+						<f:selectItem itemLabel="INATIVO" itemValue="f" />
+					</p:selectOneMenu>
+				</a:field>
 
-				<p:commandButton style="margin-top: 23px; margin-left: 15px;" 
-					id="filtrar" icon="ui-icon-search"
+				<p:commandButton style="margin-top: 23px; margin-left: 15px;"
+					id="filtrar" icon="ui-icon-search" process="filtro filtroStatusTurma filtrar"
 					actionListener="#{AvaliacaoControl.aplicarFiltro}"
-					update="listaAvaliacoes" />
+					update="listaAvaliacoes listaTodasAvaliacoes" />
 
 				<a:newLine />
 				<a:newLine />
 
-				<p:dataTable id="listaAvaliacoes" var="itemAvaliacoes" paginator="true" 
-					rowsPerPageLabel="5,10,15,20" rowsPerPageTemplate="5,10,15,20"
-					style="width:100%" value="#{AvaliacaoControl.avaliacoes}"
-					widgetVar="avaliacoesTable" emptyMessage="Sem Registros a exibir">
-					<p:column headerText="Título" width="30%">#{itemAvaliacoes.titulo}</p:column>
-					<p:column headerText="Descricao">#{itemAvaliacoes.descricao}</p:column>
-					<p:column headerText="Ações" width="11%">
-						<p:commandButton id="botaoEditaAvaliacao" icon="ui-icon-pencil"
-							action="#{AvaliacaoControl.carregaAvaliacao(itemAvaliacoes)}"
-							update=":formCorpo:cadastroAvaliacao" >
-							<p:tooltip for="botaoEditaAvaliacao" position="top" value="Editar avaliação" />
+				<!-- Tabela renderizada para usuários que são da secretaria ou admin -->
+				<p:dataTable rendered="#{securityScope.userInRole['SECRETARIA'] or securityScope.userInRole['ADMIN']}" 
+					id="listaTodasAvaliacoes" var="itemAvaliacoes"
+					paginator="true" rowsPerPageLabel="5,10,15,20"
+					rowsPerPageTemplate="5,10,15,20" style="width:100%"
+					value="#{AvaliacaoControl.avaliacoes}" widgetVar="avaliacoesTable"
+					emptyMessage="Sem Registros a exibir">
+					
+					<p:columnGroup type="header">
+						<p:row>
+							<p:column headerText="Título" sortBy="#{itemAvaliacoes.titulo}" />
+							<p:column headerText="Descrição" sortBy="#{itemAvaliacoes.descricao}" />
+							<p:column headerText="Status" sortBy="#{itemAvaliacoes.ativo}" />
+							<p:column headerText="Ações" width="13%" />
+						</p:row>
+					</p:columnGroup>
+					
+					<p:column>
+						<h:outputText value="#{itemAvaliacoes.titulo}" />
+					</p:column>
+					
+					<p:column>
+						<h:outputText value="#{itemAvaliacoes.descricao}" />
+					</p:column>
+					
+					<p:column>
+						<h:outputText rendered="#{itemAvaliacoes.ativo == true}" value="ATIVO" />
+						<h:outputText rendered="#{itemAvaliacoes.ativo == false}" value="INATIVO" />
+					</p:column>
+					
+					<p:column >
+
+						<p:commandButton 
+							id="botaoExibeAvaliacao" icon="ui-icon-search"
+							action="#{AvaliacaoControl.exibeInformacoesAvaliacao(itemAvaliacoes)}"
+							update=":formCorpo:informacoesAvaliacao"
+							oncomplete="PF('infoAvaliacao').show();">
+							<p:tooltip for="botaoExibeAvaliacao" position="top"
+								value="Exibir informações da avaliação" />
 						</p:commandButton>
-							
-						<p:commandButton id="botaoDesativaAvaliacao" icon="ui-icon-trash" action="#{AvaliacaoControl.desativar(itemAvaliacoes)}" update="listaAvaliacoes" >
-							<p:confirm icon="ui-icon-alert" message="Tem certeza que deseja inativar esta avaliação?" 
-							header="Desativação de avaliação!" />
-							<p:tooltip for="botaoDesativaAvaliacao" position="top" value="Desativar avaliação" />
+
+						<p:commandButton 
+							id="botaoEditaAvaliacao" icon="ui-icon-pencil"
+							action="#{AvaliacaoControl.carregaAvaliacao(itemAvaliacoes)}"
+							update=":formCorpo:cadastroAvaliacao">
+							<p:tooltip for="botaoEditaAvaliacao" position="top"
+								value="Editar avaliação" />
+						</p:commandButton>
+
+						<p:commandButton rendered="#{itemAvaliacoes.ativo == true}"
+							id="botaoDesativaAvaliacao" icon="ui-icon-trash"
+							action="#{AvaliacaoControl.desativar(itemAvaliacoes)}"
+							update="listaTodasAvaliacoes">
+							<p:confirm icon="ui-icon-alert"
+								message="Tem certeza que deseja inativar esta avaliação?"
+								header="Desativação de avaliação!" />
+							<p:tooltip for="botaoDesativaAvaliacao" position="top"
+								value="Desativar avaliação" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+				<!-- Tabela renderizada para usuários que não são da secretaria ou admin -->
+				<p:dataTable rendered="#{!securityScope.userInRole['SECRETARIA'] and !securityScope.userInRole['ADMIN']}"
+					id="listaAvaliacoes" var="itemAvaliacoes"
+					paginator="true" rowsPerPageLabel="5,10,15,20"
+					rowsPerPageTemplate="5,10,15,20" style="width:100%"
+					value="#{AvaliacaoControl.avaliacoes}" widgetVar="avaliacoesTable"
+					emptyMessage="Sem Registros a exibir">
+					
+					<p:columnGroup type="header">
+						<p:row>
+							<p:column headerText="Título" sortBy="#{itemAvaliacoes.titulo}" />
+							<p:column headerText="Descrição" sortBy="#{itemAvaliacoes.descricao}" />
+							<p:column headerText="Status" sortBy="#{itemAvaliacoes.ativo}" />
+							<p:column headerText="Ações" width="13%" />
+						</p:row>
+					</p:columnGroup>
+					
+					<p:column rendered="#{itemAvaliacoes.ativo == true}" >
+						<h:outputText value="#{itemAvaliacoes.titulo}" />
+					</p:column>
+					<p:column rendered="#{itemAvaliacoes.ativo == true}" >
+						<h:outputText value="#{itemAvaliacoes.descricao}" />
+					</p:column>
+					
+					<p:column rendered="#{itemAvaliacoes.ativo == true}" >
+						<h:outputText value="ATIVO" />
+					</p:column>
+					
+					<p:column rendered="#{itemAvaliacoes.ativo == true}" >
+
+						<p:commandButton 
+							id="botaoExibeAvaliacao" icon="ui-icon-search"
+							action="#{AvaliacaoControl.exibeInformacoesAvaliacao(itemAvaliacoes)}"
+							update=":formCorpo:informacoesAvaliacao"
+							oncomplete="PF('infoAvaliacao').show();">
+							<p:tooltip for="botaoExibeAvaliacao" position="top"
+								value="Exibir informações da avaliação" />
+						</p:commandButton>
+
+						<p:commandButton 
+							id="botaoEditaAvaliacao" icon="ui-icon-pencil"
+							action="#{AvaliacaoControl.carregaAvaliacao(itemAvaliacoes)}"
+							update=":formCorpo:cadastroAvaliacao">
+							<p:tooltip for="botaoEditaAvaliacao" position="top"
+								value="Editar avaliação" />
+						</p:commandButton>
+
+						<p:commandButton 
+							id="botaoDesativaAvaliacao" icon="ui-icon-trash"
+							action="#{AvaliacaoControl.desativar(itemAvaliacoes)}"
+							update="listaAvaliacoes">
+							<p:confirm icon="ui-icon-alert"
+								message="Tem certeza que deseja inativar esta avaliação?"
+								header="Desativação de avaliação!" />
+							<p:tooltip for="botaoDesativaAvaliacao" position="top"
+								value="Desativar avaliação" />
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>
 			</p:dialog>
+			
+			<p:dialog id="informacoesAvaliacao" widgetVar="infoAvaliacao"
+					modal="true" header="Informações da Avaliação" width="60%">
+					
+					<p:panelGrid columns="4" layout="grid">
+						<h:outputLabel value="Título: " />
+						<h:outputText value="#{AvaliacaoControl.avaliacaoInfo.titulo}" />
+
+						<h:outputLabel value="Descrição: " />
+						<h:outputText value="#{AvaliacaoControl.avaliacaoInfo.descricao}" />
+						
+						<h:outputLabel value="Status: " />
+						<h:outputText rendered="#{AvaliacaoControl.avaliacaoInfo.ativo == true}" value="ATIVO" />
+						<h:outputText rendered="#{AvaliacaoControl.avaliacaoInfo.ativo == false}" value="INATIVO" />
+					</p:panelGrid>
+					
+					<a:newLine/>
+					<a:newLine/>
+
+					<p:dataTable id="questoesAvaliacao" paginator="true" rows="5"
+						rowsPerPageTemplate="5,10,15,20"
+						emptyMessage="Sem questões adicionadas" 
+						value="#{AvaliacaoControl.avaliacaoInfo.questoes}" var="questaoItem">
+						<f:facet name="header">
+										        	Lista de questões da avaliação
+						</f:facet>
+						<p:column sortBy="#{questaoItem.ordem}" headerText="Ordem"
+							width="20%">
+							<h:outputText value="#{questaoItem.ordem}" />
+						</p:column>
+						<p:column sortBy="#{questaoItem.tipoQuestao}" headerText="Tipo" width="30%">
+							<h:outputText value="#{questaoItem.tipoQuestao.descricao}" />
+						</p:column>
+						<p:column headerText="Questão" width="190%">
+							<h:outputText value="#{questaoItem.pergunta}" />
+						</p:column>
+						
+					</p:dataTable>
+				</p:dialog>
 
 			<a:newLine />
 			<a:newLine />
@@ -73,15 +225,15 @@
 			<a:newLine />
 
 			<a:field label="Descrição da avaliação:" width="100%">
-				<p:inputTextarea disabled="#{AvalicaoControl.desabilitaTipoQuestao}" value="#{AvaliacaoControl.avaliacao.descricao}"
-					style="width:100%;" />
+				<p:inputTextarea disabled="#{AvalicaoControl.desabilitaTipoQuestao}"
+					value="#{AvaliacaoControl.avaliacao.descricao}" style="width:100%;" />
 			</a:field>
 
 			<a:newLine />
 
 			<a:field label="Ordem da questão:" width="100%">
 				<p:spinner max="999" min="0" id="ordem"
-					value="#{AvaliacaoControl.questao.ordem}" >
+					value="#{AvaliacaoControl.questao.ordem}">
 					<p:ajax event="change" process="@this" />
 				</p:spinner>
 			</a:field>
@@ -92,24 +244,26 @@
 			</a:field>
 			<a:newLine />
 			<a:newLine />
-			
-			<a:field label="Tipo de questão:" >
-				<p:selectOneMenu disabled="#{AvaliacaoControl.desabilitaTipoQuestao}" id="tipoQuestao" value="#{AvaliacaoControl.tipoQuestao}" >
+
+			<a:field label="Tipo de questão:">
+				<p:selectOneMenu
+					disabled="#{AvaliacaoControl.desabilitaTipoQuestao}"
+					id="tipoQuestao" value="#{AvaliacaoControl.tipoQuestao}">
 					<f:selectItems value="#{AvaliacaoControl.completeEnumQuestao}" />
 					<p:ajax event="change" update="tabQuestoes" />
 				</p:selectOneMenu>
 			</a:field>
-			
+
 			<a:newLine />
 			<a:newLine />
-			
+
 			<p:tabView id="tabQuestoes">
 
 				<!--  
 				<p:ajax event="tabChange" listener="#{AvaliacaoControl.alteraTab}" />
 				-->
-				<p:tab rendered="#{AvaliacaoControl.tipoQuestao == 'D'}" 
-				title="Discursiva" id="tabDiscursiva">
+				<p:tab rendered="#{AvaliacaoControl.tipoQuestao == 'D'}"
+					title="Discursiva" id="tabDiscursiva">
 					<a:field label="Número de Linhas:">
 						<p:spinner id="numeroLinhas" min="1" max="99" size="30"
 							value="#{AvaliacaoControl.discursiva.numeroLinhas}" />
@@ -117,8 +271,8 @@
 					<a:newLine />
 				</p:tab>
 
-				<p:tab rendered="#{AvaliacaoControl.tipoQuestao == 'O'}" 
-				title="Objetiva" id="tabOjbetiva">
+				<p:tab rendered="#{AvaliacaoControl.tipoQuestao == 'O'}"
+					title="Objetiva" id="tabOjbetiva">
 
 					<a:field label="Descrição da alternativa:" width="400px">
 						<p:inputText id="alternativa" style="width:400px"
@@ -136,16 +290,19 @@
 					<p:dataTable id="alternativas" style="width:100%"
 						emptyMessage="Sem Registros"
 						value="#{AvaliacaoControl.objetiva.alternativas}" var="item">
-						
+
 						<p:column headerText="Alternativa">
 							<h:outputText value="#{item.descricao}"></h:outputText>
 						</p:column>
 						<p:column headerText="Ações" width="10%">
-							<p:commandButton id="botaoRemoveAlternativa" icon="ui-icon-closethick"
+							<p:commandButton id="botaoRemoveAlternativa"
+								icon="ui-icon-closethick"
 								action="#{AvaliacaoControl.remAlternativa(item)}"
-								update="alternativas" >
-								<p:tooltip for="botaoRemoveAlternativa" value="Remover alternativa" position="top" />
-								<p:confirm header="Remover alternativa!" icon="ui-icon-alert" message="Tem certeza que deseja remover esta alternativa?" />
+								update="alternativas">
+								<p:tooltip for="botaoRemoveAlternativa"
+									value="Remover alternativa" position="top" />
+								<p:confirm header="Remover alternativa!" icon="ui-icon-alert"
+									message="Tem certeza que deseja remover esta alternativa?" />
 							</p:commandButton>
 						</p:column>
 					</p:dataTable>
@@ -157,49 +314,63 @@
 
 			<a:newLine />
 
-			<p:commandButton rendered="#{AvaliacaoControl.questao.id == null}" value="Adicionar Questão" icon="ui-icon-plusthick"
+			<p:commandButton rendered="#{AvaliacaoControl.questao.id == null}"
+				value="Adicionar Questão" icon="ui-icon-plusthick"
 				actionListener="#{AvaliacaoControl.addQuestao}"
 				update="titulo ordem tabQuestoes pergunta questoesTable" ajax="true" />
 
-			<p:commandButton rendered="#{AvaliacaoControl.questao.id != null}" value="Atualizar Questão" icon="ui-icon-refresh"
+			<p:commandButton rendered="#{AvaliacaoControl.questao.id != null}"
+				value="Atualizar Questão" icon="ui-icon-refresh"
 				actionListener="#{AvaliacaoControl.attQuestao}"
-				update="titulo ordem tabQuestoes pergunta questoesTable tipoQuestao" ajax="true" />
-			
-			
+				update="titulo ordem tabQuestoes pergunta questoesTable tipoQuestao"
+				ajax="true" />
+
+
 			<a:newLine />
 			<a:newLine />
 
-			<p:dataTable id="questoesTable" paginator="true" rows="5" rowsPerPageTemplate="5,10,15,20"
+			<p:dataTable id="questoesTable" paginator="true" rows="5"
+				rowsPerPageTemplate="5,10,15,20"
 				emptyMessage="Sem questões adicionadas" style="width:100%"
 				value="#{AvaliacaoControl.avaliacao.questoes}" var="questaoItem">
 				<f:facet name="header">
 										        	Lista de questões da avaliação
 				</f:facet>
-				<p:column sortBy="#{questaoItem.ordem}" headerText="Ordem" width="20%">
-					<h:outputText rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}" 
+				<p:column sortBy="#{questaoItem.ordem}" headerText="Ordem"
+					width="20%">
+					<h:outputText
+						rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}"
 						value="#{questaoItem.ordem}" />
 				</p:column>
 				<p:column headerText="Tipo" width="20%">
-					<h:outputText rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}" 
+					<h:outputText
+						rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}"
 						value="#{questaoItem.tipoQuestao.descricao}" />
 				</p:column>
 				<p:column headerText="Questão" width="190%">
-					<h:outputText rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}" 
+					<h:outputText
+						rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}"
 						value="#{questaoItem.pergunta}" />
 				</p:column>
-				<p:column width="20%" headerText="Ações" >
-					<p:commandButton rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}" 
+				<p:column width="20%" headerText="Ações">
+					<p:commandButton
+						rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}"
 						id="botaoEditarQuestao" icon="ui-icon-pencil"
 						action="#{AvaliacaoControl.editarQuestao(questaoItem)}"
-						update="formCorpo:cadastroAvaliacao formCorpo:tipoQuestao" ajax="true" >
-						<p:tooltip for="botaoEditarQuestao" position="top" value="Editar questão" />
+						update="formCorpo:cadastroAvaliacao formCorpo:tipoQuestao"
+						ajax="true">
+						<p:tooltip for="botaoEditarQuestao" position="top"
+							value="Editar questão" />
 					</p:commandButton>
-					<p:commandButton rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}" 
+					<p:commandButton
+						rendered="#{AvaliacaoControl.questao.id != questaoItem.id or questaoItem.id == null}"
 						id="botaoRemoverQuestao" icon="ui-icon-closethick"
 						action="#{AvaliacaoControl.remQuestao(questaoItem)}"
-						update="formCorpo:cadastroAvaliacao" >
-						<p:tooltip for="botaoRemoverQuestao" position="top" value="Remover questão" />
-						<p:confirm header="Remover questão!" icon="ui-icon-alert" message="Tem certeza de que deseja remover esta questão?" />
+						update="formCorpo:cadastroAvaliacao">
+						<p:tooltip for="botaoRemoverQuestao" position="top"
+							value="Remover questão" />
+						<p:confirm header="Remover questão!" icon="ui-icon-alert"
+							message="Tem certeza de que deseja remover esta questão?" />
 					</p:commandButton>
 				</p:column>
 			</p:dataTable>
@@ -208,14 +379,16 @@
 
 			<p:commandButton rendered="#{AvaliacaoControl.avaliacao.id == null}"
 				id="botaoCadastrarAvaliacao" value="Cadastrar" icon="ui-icon-disk"
-				actionListener="#{AvaliacaoControl.listarTodasAvaliacoes}" update="formCorpo:cadastroAvaliacao" 
+				actionListener="#{AvaliacaoControl.listarTodasAvaliacoes}"
+				update="formCorpo:cadastroAvaliacao"
 				action="#{AvaliacaoControl.cadastrarAvaliacao}" />
 			<p:tooltip for="botaoCadastrarAvaliacao" value="Cadastrar avaliação"
 				position="right" />
 
 			<p:commandButton rendered="#{AvaliacaoControl.avaliacao.id != null}"
 				id="botaoSalvarAvaliacao" value="Atualizar" icon="ui-icon-disk"
-				actionListener="#{AvaliacaoControl.listarTodasAvaliacoes}" update="formCorpo:cadastroAvaliacao" 
+				actionListener="#{AvaliacaoControl.listarTodasAvaliacoes}"
+				update="formCorpo:cadastroAvaliacao"
 				action="#{AvaliacaoControl.salvarAvaliacao}" />
 			<p:tooltip for="botaoSalvarAvaliacao" value="Salvar avaliação"
 				position="right" />

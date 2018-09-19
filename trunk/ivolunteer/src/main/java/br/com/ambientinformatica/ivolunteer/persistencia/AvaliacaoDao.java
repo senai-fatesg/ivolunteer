@@ -10,5 +10,7 @@ public interface AvaliacaoDao extends Persistencia<Avaliacao> {
 	public Avaliacao consultarAvalicaoCompleta(Avaliacao avaliacao);
 	public void removerAvaliacaoCompleta(Avaliacao avaliacao);	
 	public List<Avaliacao> listarAvaliacoesAtivas();
-	public List<Avaliacao> listarAvaliacoesPorTitulo(Avaliacao filtro);
+	public List<Avaliacao> listarAvaliacoesPorTitulo(String titulo);
+	public List<Avaliacao> listarAvaliacoesPorStatus(String statusFiltro);
+	public List<Avaliacao> listarAvaliacoesPorTituloStatus(String titulo, String statusFiltro);
 }

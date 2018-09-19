@@ -119,7 +119,7 @@
 					</p:column>
 				</p:dataTable>
 
-				<!-- Tabela renderizada para usuários que não são da secretaria -->
+				<!-- Tabela renderizada para usuários que não são da secretaria e nem admin -->
 				<p:dataTable
 					rendered="#{!securityScope.userInRole['SECRETARIA'] and !securityScope.userInRole['ADMIN']}"
 					paginator="true" rows="10" rowsPerPageTemplate="5,10,15,20,25"
@@ -320,6 +320,12 @@
 				</a:field>
 
 				<a:newLine />
+				
+				<!--  
+				<p:autoComplete id="selecionaProfessor" minQueryLength="3" completeMethod="#{TurmaContro.buscaProfessor()}" 
+					value="#{TurmaControl.turma.professor}" itemLabel="#{TurmaControl.turma.professor.nome}" />
+				-->
+				
 
 				<a:field label="Professor:">
 					<p:inputText id="professorSelecionado" disabled="true"
@@ -349,6 +355,7 @@
 						value="Selecionar professor" />
 				</p:commandButton>
 
+				
 
 				<a:newLine />
 				<a:newLine />

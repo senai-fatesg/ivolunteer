@@ -24,18 +24,18 @@ public class Avaliacao {
 
 	private String descricao;
 	
-	private Boolean isAtivo = true;
+	private Boolean ativo = true;
 
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="avaliacao_id")
 	private List<Questao> questoes = new ArrayList<Questao>();
 
-	public Boolean getIsAtivo() {
-		return isAtivo;
+	public Boolean getAtivo() {
+		return ativo;
 	}
 
-	public void setIsAtivo(Boolean isAtivo) {
-		this.isAtivo = isAtivo;
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 
 	public Integer getId() {
@@ -110,6 +110,6 @@ public class Avaliacao {
 	}
 
 	public void desativa(){
-		this.setIsAtivo(false);
+		this.setAtivo(false);
 	}
 }

@@ -154,10 +154,12 @@ public class TurmaControl implements TurmaService {
 	}
 
 	/*** AÇÕES DA PÁGINA ***/
+	public void buscaProfessor() {
+		//this.funcionarioDao.buscaProfessorPorNome();
+	}
+	
 	public void selecionaProfessor() {
 		this.turma.setProfessor(professorSelecionado);
-		System.out.println("PROFESSOR SELECIONADO: " + professorSelecionado.getNomePessoa() + 
-				"PROFESSOR NOME:" + this.turma.getProfessor().getNomePessoa());
 	}
 	
 	public void cadastrarTurma() {
@@ -213,12 +215,8 @@ public class TurmaControl implements TurmaService {
 	
 	public void desativar(Turma turma) {
 		try {
-			//turmaDao.excluirPorId(turma.getId());
-			System.out.println("TURMA NULL? " + (turma == null));
 			Turma tm = turmaDao.consultar(turma.getId());
-			System.out.println("TURMA ATIVA? " + (tm.getAtivo()));
 			tm.inativar();
-			System.out.println("TURMA ATIVA? " + (tm.getAtivo()));
 			turmaDao.alterar(tm);
 			listar();
 			UtilFaces.addMensagemFaces("Turma inativada com sucesso!");
@@ -235,8 +233,9 @@ public class TurmaControl implements TurmaService {
 		try {
 			List<Funcionario> itens = funcionarioDao.listar();
 			for (Funcionario funcionario : itens) {
-				if (funcionario.getCargo() == EnumCargo.EDUCADOR)
+				if (funcionario.getCargo() == EnumCargo.EDUCADOR && funcionario.getIsAtivo() == true) {
 					professores.add(funcionario);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -245,17 +244,11 @@ public class TurmaControl implements TurmaService {
 	
 	public void carregaTurmaAlteracao(Turma turma) {
 		this.turma = turmaDao.consultar(turma.getId());
-		System.out.println("PROFESSOR DA TURMA CONSULTADA: " + this.turma.getProfessor().getNomePessoa());
-		System.out.println("PROFESSOR É NULO? " + (this.turma.getProfessor() == null));
-		System.out.println("TURMA ATIVA? " + (this.turma.getAtivo()));
 	}
 
 	public void aplicarFiltro(ActionEvent evt) {
 		try {
-			System.out.println("NOME EMPTY? " + (turmaConsulta.getNome().isEmpty()));
-			System.out.println("STATUS TURMA? " + (statusFiltro.isEmpty()));
-			System.out.println("TURMA NULL? " + (turmaConsulta == null));
-			
+
 			if (turmaConsulta != null && !turmaConsulta.getNome().isEmpty() && statusFiltro.isEmpty()) {
 				turmasConsulta = turmaDao.listarPorNome(turmaConsulta.getNome());
 			} else if(turmaConsulta != null && turmaConsulta.getNome().isEmpty() && !statusFiltro.isEmpty()) {

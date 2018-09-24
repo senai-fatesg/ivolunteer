@@ -106,7 +106,7 @@ public class AtividadeDiariaControl {
 	}
 
 	public List<Funcionario> consultarFuncionario(String query) {
-		this.listFuncionario = funcionarioDao.listarPorNomeAtivo(query);
+		this.listFuncionario = funcionarioDao.listarPorNome(query);
 		return listFuncionario;
 	}
 	

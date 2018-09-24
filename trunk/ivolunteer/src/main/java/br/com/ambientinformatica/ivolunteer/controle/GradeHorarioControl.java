@@ -81,7 +81,7 @@ public class GradeHorarioControl {
 	}
 	
 	public List<Funcionario> consultarFuncionario(String query) {
-		return funcionarioDao.listarPorNomeAtivo(query);
+		return funcionarioDao.listarPorNome(query);
 	}
 
 	public void listar(ActionEvent evt) {

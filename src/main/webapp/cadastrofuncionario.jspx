@@ -21,7 +21,7 @@
 			<p:commandButton type="button" id="consultar" value="Consultar"
 				icon="ui-icon-search" onclick="PF('consultar').show();"
 				action="#{FuncionarioControl.listarTodosFuncionarios}"
-				styleClass="marginbottom" process="@this" update="listaFuncionarios">
+				styleClass="marginbottom" process="@this" update="listaFuncionariosAtivos listaFuncionariosTodos">
 				<p:tooltip for="consultar" position="top"
 					value="Consultar Colaborador" />
 			</p:commandButton>
@@ -49,19 +49,98 @@
 					</p:selectOneMenu>
 				</a:field>
 
+				<a:field label="Status:" spaceLeft="15px">
+					<p:selectOneMenu id="filtroPorStatus"
+						value="#{FuncionarioControl.statusFiltro}">
+						<f:selectItem itemLabel="TODOS" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItem itemLabel="ATIVO" itemValue="t" />
+						<f:selectItem itemLabel="INATIVO" itemValue="f" />
+					</p:selectOneMenu>
+				</a:field>
+
 				<p:commandButton id="filtrar" icon="ui-icon-search"
 					actionListener="#{FuncionarioControl.aplicarFiltro}"
-					process="filtrar filtroPorNome filtroPorTipo"
-					update="listaFuncionarios" oncomplete="PF('consultar').show();"
+					process="filtrar filtroPorNome filtroPorTipo filtroPorStatus"
+					update="listaFuncionariosAtivos listaFuncionariosTodos" oncomplete="PF('consultar').show();"
 					ajax="true" style="margin-top: 24px; margin-left: 10px;" />
 
 				<a:newLine />
 				<a:newLine />
 
-				<p:dataTable id="listaFuncionarios" var="itemFuncionario"
-					paginator="true" rows="10" rowsPerPageLabel="5,10,20"
-					rowsPerPageTemplate="5,10,20" style="width:100%"
-					value="#{FuncionarioControl.funcionarios}"
+				<!-- Data Table para mostrar colaboradores ativos -->
+				<p:dataTable
+					rendered="#{!securityScope.userInRole['SECRETARIA'] and !securityScope.userInRole['ADMIN']}"
+					id="listaFuncionariosAtivos" var="itemFuncionario" paginator="true"
+					rows="10" rowsPerPageLabel="5,10,20" rowsPerPageTemplate="5,10,20"
+					style="width:100%" value="#{FuncionarioControl.funcionarios}"
+					widgetVar="funcionariosTable" emptyMessage="Sem Registros a Exibir">
+					<p:columnGroup type="header">
+						<p:row>
+							<p:column headerText="Nome"
+								sortBy="#{itemFuncionario.nomePessoa}" />
+							<p:column headerText="E-mail"
+								sortBy="#{itemFuncionario.emailDoFuncionario}" />
+							<p:column headerText="Tipo Colaborador"
+								sortBy="#{itemFuncionario.tipoFuncionario}" />
+							<p:column headerText="Status"
+								sortBy="#{itemFuncionario.tipoFuncionario.ativo}" />
+						</p:row>
+					</p:columnGroup>
+					<p:column rendered="#{itemFuncionario.ativo == true}" width="20%" style="text-align: center">
+						#{itemFuncionario.nomePessoa}
+					</p:column>
+
+					<p:column rendered="#{itemFuncionario.ativo == true}" width="20%" style="text-align: center">
+						#{itemFuncionario.emailDoFuncionario}
+					</p:column>
+
+					<p:column rendered="#{itemFuncionario.ativo == true}" width="20%" style="text-align: center">
+						#{itemFuncionario.tipoFuncionario}
+					</p:column>
+					
+					<p:column rendered="#{itemFuncionario.ativo == true}" width="20%" style="text-align: center">
+						#{itemFuncionario.tipoFuncionario.ativo}
+					</p:column>
+
+					<p:column rendered="#{itemFuncionario.ativo == true}" width="10%" style="text-align: center">
+						<p:commandButton id="consultarColaborador" icon="ui-icon-search"
+							style="margin-right: 10px"
+							action="#{FuncionarioControl.exibiInformacoesFuncionario(itemFuncionario)}"
+							update="formCorpo:info-colaborador"
+							oncomplete="PF('informacoes-colaborador').show();">
+							<p:tooltip for="consultarColaborador" position="top"
+								value="Consultar Colaborador" hideEvent="mouseleave click" />
+						</p:commandButton>
+
+						<p:commandButton id="editarColaborador" icon="ui-icon-pencil"
+							style="margin-right: 10px"
+							action="#{FuncionarioControl.carregaFuncionarioAlteracao(itemFuncionario)}"
+							oncomplete="PF('consultar').hide();"
+							update=":formCorpo:panelFuncionario" process="@this">
+							<p:tooltip for="editarColaborador" position="top"
+								value="Editar Colaborador" hideEvent="mouseleave click" />
+						</p:commandButton>
+
+						<p:commandButton id="desativarColaborador" icon="ui-icon-trash"
+							actionListener="#{FuncionarioControl.excluir(itemFuncionario)}"
+							update="listaFuncionariosAtivos formCorpo:panelFuncionario"
+							process="@this">
+							<p:confirm header="Confirmar desativação!"
+								message="Tem certeza que deseja desativar o colaborador #{itemFuncionario.nomePessoa} ?"
+								icon="ui-icon-alert" />
+							<p:tooltip for="desativarColaborador" position="top"
+								value="Desativar Colaborador" hideEvent="mouseleave click" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+				<!-- Data Table para mostrar todos os colaboradores -->
+				<p:dataTable
+					rendered="#{securityScope.userInRole['SECRETARIA'] or securityScope.userInRole['ADMIN']}"
+					id="listaFuncionariosTodos" var="itemFuncionario" paginator="true"
+					rows="10" rowsPerPageLabel="5,10,20" rowsPerPageTemplate="5,10,20"
+					style="width:100%" value="#{FuncionarioControl.funcionarios}"
 					widgetVar="funcionariosTable" emptyMessage="Sem Registros a Exibir">
 					<p:column headerText="Nome" width="20%" style="text-align: center">
 						#{itemFuncionario.nomePessoa}
@@ -76,8 +155,27 @@
 						style="text-align: center">
 						#{itemFuncionario.tipoFuncionario}
 					</p:column>
+					
+					<p:column headerText="Status" width="10%"
+						style="text-align: center">
+						<h:outputText rendered="#{itemFuncionario.isAtivo == true}" 
+							value="ATIVO">
+						</h:outputText>
+						<h:outputText rendered="#{itemFuncionario.isAtivo == false}" 
+							value="INATIVO">
+						</h:outputText>
+					</p:column>
 
-					<p:column width="8%" style="text-align: center">
+					<p:column width="15%" style="text-align: center">
+						<p:commandButton id="consultarColaborador" icon="ui-icon-search"
+							style="margin-right: 10px"
+							action="#{FuncionarioControl.exibiInformacoesFuncionario(itemFuncionario)}"
+							update="formCorpo:info-colaborador"
+							oncomplete="PF('informacoes-colaborador').show();">
+							<p:tooltip for="consultarColaborador" position="top"
+								value="Consultar Colaborador" hideEvent="mouseleave click" />
+						</p:commandButton>
+
 						<p:commandButton id="editarColaborador" icon="ui-icon-pencil"
 							style="margin-right: 10px"
 							action="#{FuncionarioControl.carregaFuncionarioAlteracao(itemFuncionario)}"
@@ -86,9 +184,10 @@
 							<p:tooltip for="editarColaborador" position="top"
 								value="Editar Colaborador" hideEvent="mouseleave click" />
 						</p:commandButton>
+
 						<p:commandButton id="desativarColaborador" icon="ui-icon-trash"
 							actionListener="#{FuncionarioControl.excluir(itemFuncionario)}"
-							update="listaFuncionarios formCorpo:panelFuncionario"
+							update="listaFuncionariosTodos formCorpo:panelFuncionario"
 							process="@this">
 							<p:confirm header="Confirmar desativação!"
 								message="Tem certeza que deseja desativar o colaborador #{itemFuncionario.nomePessoa} ?"
@@ -100,6 +199,83 @@
 				</p:dataTable>
 			</p:dialog>
 
+			<p:dialog id="info-colaborador" widgetVar="informacoes-colaborador"
+				modal="true" header="Informações do Colaborador" width="900px">
+				<p:panelGrid columns="4" layout="grid">
+					<a:field label="Nome:" />
+					<h:outputText
+						value="#{FuncionarioControl.infoFuncionario.nomePessoa}" />
+
+					<a:field label="CPF:" />
+					<h:outputText value="#{FuncionarioControl.infoFuncionario.cpf}" />
+
+					<a:field label="RG:" />
+					<h:outputText value="#{FuncionarioControl.infoFuncionario.rg}" />
+
+					<a:field label="Orgão Expedidor:" />
+					<h:outputText
+						value="#{FuncionarioControl.infoFuncionario.orgaoExpeditor}" />
+
+					<a:field label="Data Nascimento:" />
+					<h:outputText
+						value="#{FuncionarioControl.infoFuncionario.dataNascimento}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+
+					<a:field label="Naturalidade:" />
+					<h:outputText
+						value="#{FuncionarioControl.infoFuncionario.naturalidade}" />
+
+					<a:field label="Estado Civil:" />
+					<h:outputText
+						value="#{FuncionarioControl.infoFuncionario.enumEstadoCivil}" />
+
+					<a:field label="Gênero:" />
+					<h:outputText
+						value="#{FuncionarioControl.infoFuncionario.enumSexo}" />
+
+					<a:field label="Etnia:" />
+					<h:outputText value="#{FuncionarioControl.infoFuncionario.etnia}" />
+					
+					<a:field label="Nome da Mãe:" />
+					<h:outputText value="#{FuncionarioControl.infoFuncionario.nomeMae}" />
+					
+					<a:field label="Nome do Pai:" />
+					<h:outputText value="#{FuncionarioControl.infoFuncionario.nomePai}" />
+
+					<a:field label="Email:" />
+					<h:outputText
+						value="#{FuncionarioControl.infoFuncionario.emailDoFuncionario}" />
+
+					<a:field label="Endereço:" />
+					<h:outputText
+						value="#{FuncionarioControl.infoFuncionario.listaEndereco[0].ruaOuAvenida}" />
+
+					<a:field label="Bairro:" />
+					<h:outputText
+						value="#{FuncionarioControl.infoFuncionario.listaEndereco[0].bairro}" />
+
+					<a:field label="Cidade:" />
+					<h:outputText
+						value="#{FuncionarioControl.infoFuncionario.listaEndereco[0].cidade.nomeCidade}" />
+
+					<a:field label="Estado:" />
+					<h:outputText
+						value="#{FuncionarioControl.infoFuncionario.listaEndereco[0].cidade.enumEstado}" />
+
+					<a:field label="CEP:" />
+					<h:outputText
+						value="#{FuncionarioControl.infoFuncionario.listaEndereco[0].cep}" />
+
+					<a:field label="Numero:" />
+					<h:outputText
+						value="#{FuncionarioControl.infoFuncionario.listaEndereco[0].numero}" />
+
+					<a:field label="Complemento:" />
+					<h:outputText
+						value="#{FuncionarioControl.infoFuncionario.listaEndereco[0].complemento}" />
+				</p:panelGrid>
+			</p:dialog>
 
 			<p:tabView id="tabCadastro" cache="false">
 				<p:growl id="msg" sticky="false" life="5000" />
@@ -171,7 +347,7 @@
 							</p:selectOneMenu>
 						</a:field>
 
-						<a:field label="Etnia:" spaceLeft="10px">
+						<a:field label="Etnia" spaceLeft="10px">
 							<p:selectOneMenu id="etnia"
 								value="#{FuncionarioControl.funcionario.etnia}"
 								style="width:160px;">
@@ -195,7 +371,7 @@
 								style="width:265px;" />
 						</a:field>
 
-						<a:field label="Email:" spaceLeft="10px">
+						<a:field label="Email" spaceLeft="10px">
 							<p:inputText
 								value="#{FuncionarioControl.funcionario.emailDoFuncionario}"
 								validator="#{FuncionarioControl.validaEmail}"
@@ -268,7 +444,7 @@
 									style="width:160px;">
 									<p:ajax event="change" update="panelDadosProfissionais"
 										listener="#{FuncionarioControl.limpaCamposFuncionario}" />
-									   <f:selectItem itemLabel="Selecione uma opção"
+									<f:selectItem itemLabel="Selecione uma opção"
 										itemValue="#{null}" noSelectionOption="true"></f:selectItem>
 									<f:selectItems
 										value="#{FuncionarioControl.completeEnumTipoFuncionario}"></f:selectItems>
@@ -335,20 +511,20 @@
 
 							<a:field
 								rendered="#{FuncionarioControl.funcionario.tipoFuncionario == 'CONTRATADO'}"
-								label="CTPS:" styleClassLabel="contratado-fields-input"
+								label="PIS:" styleClassLabel="contratado-fields-input"
 								spaceLeft="10px">
-								<p:inputMask id="inputCTPS" mask="9999999"
-									value="#{FuncionarioControl.funcionario.carteiraDeTrabalho}"
+								<p:inputMask id="inputPIS" mask="999.99999.99-9"
+									value="#{FuncionarioControl.funcionario.pis}"
 									style="width:160px" />
 								<div class="contratado-fields-div" />
 							</a:field>
 
 							<a:field
 								rendered="#{FuncionarioControl.funcionario.tipoFuncionario == 'CONTRATADO'}"
-								label="PIS:" styleClassLabel="contratado-fields-input"
+								label="CTPS:" styleClassLabel="contratado-fields-input"
 								spaceLeft="10px">
-								<p:inputMask id="inputPIS" mask="999.99999.99-9"
-									value="#{FuncionarioControl.funcionario.pis}"
+								<p:inputMask id="inputCTPS" mask="9999999"
+									value="#{FuncionarioControl.funcionario.carteiraDeTrabalho}"
 									style="width:160px" />
 								<div class="contratado-fields-div" />
 							</a:field>
@@ -369,10 +545,10 @@
 								<p:selectOneMenu id="tipoTelefoneFuncionario"
 									value="#{FuncionarioControl.telefoneFuncionario.enumTipoTelefone}"
 									style="width:160px!important;">
-									
+
 									<f:selectItem itemLabel="Selecione uma opção"
 										itemValue="#{null}" noSelectionOption="true"></f:selectItem>
-										
+
 									<f:selectItems id="selecionaEnum"
 										value="#{FuncionarioControl.completeEnumTipoTelefone}"
 										var="tipoTelefone" itemValue="#{tipoTelefone}"
@@ -382,7 +558,7 @@
 
 							<a:field label="Telefone:" spaceLeft="10px">
 								<p:inputMask id="inputTelefoneFuncionario" mask="(99)9999-9999"
-									value="#{FuncionarioControl.telefoneFuncionario.numeroTelefone}" 
+									value="#{FuncionarioControl.telefoneFuncionario.numeroTelefone}"
 									style="width:160px" />
 							</a:field>
 
@@ -498,19 +674,19 @@
 
 								<a:field label="CNPJ:">
 									<p:inputMask id="inputCNPJ" mask="99.999.999/9999-99"
-										value="#{FuncionarioControl.funcionario.cnpj}" 
+										value="#{FuncionarioControl.funcionario.cnpj}"
 										style="width:160px" />
 								</a:field>
 
 								<a:field label="Empresa:" spaceLeft="10px">
 									<p:inputText id="inputNomeEmpresa"
-										value="#{FuncionarioControl.funcionario.nomeEmpresa}" 
+										value="#{FuncionarioControl.funcionario.nomeEmpresa}"
 										style="width:160px" />
 								</a:field>
 
 								<a:field label="Segmento:" spaceLeft="10px">
 									<p:inputText id="inputSegmento"
-										value="#{FuncionarioControl.funcionario.segmento}" 
+										value="#{FuncionarioControl.funcionario.segmento}"
 										style="width:160px" />
 								</a:field>
 

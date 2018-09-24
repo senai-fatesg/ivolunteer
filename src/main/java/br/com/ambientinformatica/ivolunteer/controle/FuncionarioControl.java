@@ -46,10 +46,12 @@ import br.com.ambientinformatica.util.UtilLog;
 public class FuncionarioControl {
 
 	private Funcionario funcionario = new Funcionario();
+	private Funcionario infoFuncionario = new Funcionario();
 	private Endereco endereco = new Endereco();
 	private Cidade cidade = new Cidade();
 	private Telefone telefoneEmpresa = new Telefone();
 	private String nomeFuncionarioPesquisa;
+	private String statusFiltro;
 	private EnumTipoFuncionario tipoFuncionarioPesquisa;
 	private Frequencia frequencia = new Frequencia();
 
@@ -210,10 +212,14 @@ public class FuncionarioControl {
 			UtilFaces.addMensagemFaces("CPF é obrigatório!");
 		}
 	}
+	
+	public void exibiInformacoesFuncionario(Funcionario funcionario) {
+		this.infoFuncionario = funcionarioDao.carregarFuncionarioComEnderecoTelefone(funcionario);
+	}
 
 	public void listarTodosFuncionarios(ActionEvent evt) {
 		try {
-			this.funcionarios = funcionarioDao.listarFuncionariosAtivos();
+			this.funcionarios = funcionarioDao.listar();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -360,18 +366,23 @@ public class FuncionarioControl {
 	// Aplica Filtro
 	public void aplicarFiltro(ActionEvent evt) {
 		try {
-			if (this.validarFiltroPorNome() && this.tipoFuncionarioPesquisa == null) {
-				this.funcionarios = this.funcionarioDao.listarPorNomeAtivo(this.nomeFuncionarioPesquisa);
-			}
-			else if (this.validarFiltroPorTipo() && this.nomeFuncionarioPesquisa.isEmpty()) {
-				this.funcionarios = this.funcionarioDao.listarPorTipoAtivo(this.tipoFuncionarioPesquisa);	
-			}
-			else if (this.validarFiltroPorNome() && this.validarFiltroPorTipo()) {
-				this.funcionarios = this.funcionarioDao.listarPorNomeETipoAtivo(
-						this.nomeFuncionarioPesquisa, this.tipoFuncionarioPesquisa);
-			}
-			else {
-				this.funcionarios = this.funcionarioDao.listarFuncionariosAtivos();
+			if (this.validarFiltroPorNome()) {
+				this.funcionarios = this.funcionarioDao.listarPorNome(this.nomeFuncionarioPesquisa);
+			} else if (this.validarFiltroPorTipo()) {
+				this.funcionarios = this.funcionarioDao.listarPorTipo(this.tipoFuncionarioPesquisa);	
+			} else if (this.validarFiltroPorStatus()) {
+				this.funcionarios = this.funcionarioDao.listarPorStatus(this.statusFiltro);
+			} else if (this.validarFiltroPorNomeETipo()) {
+				this.funcionarios = this.funcionarioDao.listarPorNomeETipo(this.nomeFuncionarioPesquisa, 
+						this.tipoFuncionarioPesquisa);
+			} else if (this.validarFiltroPorNomeEStatus()) {
+				this.funcionarios = this.funcionarioDao.listarPorNomeEStatus(this.nomeFuncionarioPesquisa,
+						this.statusFiltro);
+			} else if (this.validarFiltroPorTipoEStatus()) {
+				this.funcionarios = this.funcionarioDao.listarPorTipoEStatus(this.tipoFuncionarioPesquisa, 
+						this.statusFiltro);
+			} else {
+				this.funcionarios = this.funcionarioDao.listar();
 			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
@@ -381,7 +392,8 @@ public class FuncionarioControl {
 	}
 	
 	public boolean validarFiltroPorNome() {
-		if (this.nomeFuncionarioPesquisa != null || !this.nomeFuncionarioPesquisa.isEmpty()) {
+		if ((!this.nomeFuncionarioPesquisa.isEmpty()) && this.tipoFuncionarioPesquisa == null 
+				&& this.statusFiltro.isEmpty()) {
 			return true;
 		} else {
 			return false;
@@ -389,7 +401,44 @@ public class FuncionarioControl {
 	}
 	
 	public boolean validarFiltroPorTipo() {
-		if (this.tipoFuncionarioPesquisa != null) {
+		if (this.tipoFuncionarioPesquisa != null && this.nomeFuncionarioPesquisa.isEmpty() 
+				&& this.statusFiltro.isEmpty()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean validarFiltroPorStatus() {
+		if (!this.statusFiltro.isEmpty() && 
+				(this.nomeFuncionarioPesquisa.isEmpty() && this.tipoFuncionarioPesquisa == null)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean validarFiltroPorNomeETipo() {
+		if ((!this.nomeFuncionarioPesquisa.isEmpty() && this.tipoFuncionarioPesquisa != null) 
+				&& this.statusFiltro.isEmpty()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean validarFiltroPorNomeEStatus() {
+		if ((!this.nomeFuncionarioPesquisa.isEmpty() && !this.statusFiltro.isEmpty()) 
+				&& this.tipoFuncionarioPesquisa == null) {
+			return true;
+		} else {			
+			return false;
+		}
+	}
+	
+	public boolean validarFiltroPorTipoEStatus() {
+		if ((this.tipoFuncionarioPesquisa != null && !this.statusFiltro.isEmpty()) 
+				&& this.nomeFuncionarioPesquisa.isEmpty()) {
 			return true;
 		} else {
 			return false;
@@ -414,6 +463,14 @@ public class FuncionarioControl {
 
 	public void setFuncionario(Funcionario funcionario) {
 		this.funcionario = funcionario;
+	}
+
+	public Funcionario getInfoFuncionario() {
+		return infoFuncionario;
+	}
+
+	public void setInfoFuncionario(Funcionario infoFuncionario) {
+		this.infoFuncionario = infoFuncionario;
 	}
 
 	public List<Funcionario> getFuncionarios() {
@@ -469,6 +526,14 @@ public class FuncionarioControl {
 		this.nomeFuncionarioPesquisa = nomeFuncionarioPesquisa;
 	}
 
+	public String getStatusFiltro() {
+		return statusFiltro;
+	}
+
+	public void setStatusFiltro(String statusFiltro) {
+		this.statusFiltro = statusFiltro;
+	}
+
 	public EnumTipoFuncionario getTipoFuncionarioPesquisa() {
 		return tipoFuncionarioPesquisa;
 	}
@@ -482,7 +547,7 @@ public class FuncionarioControl {
 	}
 
 	public List<Funcionario> consultarFuncionario(String query) {
-		List<Funcionario> func = funcionarioDao.listarPorNomeAtivo(query);
+		List<Funcionario> func = funcionarioDao.listarPorNome(query);
 		return func;
 	}
 

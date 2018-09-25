@@ -12,6 +12,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.Candidato;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoPessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.SelecaoCandidato;
+import br.com.ambientinformatica.ivolunteer.entidade.Turma;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 import br.com.ambientinformatica.jpa.exception.ValidacaoException;
 import br.com.ambientinformatica.jpa.persistencia.PersistenciaJpa;
@@ -88,10 +89,49 @@ public class CandidatoDaoJpa extends PersistenciaJpa<Candidato> implements Candi
 	@Override
 	public List<Candidato> listaCandidatosComResponsavel() {
 		Query candidatos = em.createQuery(
-				"SELECT c FROM Candidato c LEFT JOIN FETCH c.listaResponsavel listaResp WHERE c.isAtivo = :true");
-		candidatos.setParameter("true", true);
+				"SELECT c FROM Candidato c LEFT JOIN FETCH c.listaResponsavel listaResp");
+		//candidatos.setParameter("true", true);
 		
 		return (List<Candidato>) candidatos.getResultList();
+	}
+
+	@Override
+	public List<Candidato> listaPorStatus(String statusFiltro) {
+		try {
+			boolean st;
+			if(statusFiltro.contains("t")) {
+				st = true;
+			} else {
+				st = false;
+			}
+			Query query = em.createQuery("SELECT c FROM Candidato c LEFT JOIN FETCH c.listaResponsavel listaResp "
+					+ " WHERE c.isAtivo = :status");
+			query.setParameter("status", st);
+			List<Candidato> candidatos = query.getResultList();
+			return candidatos;
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public List<Candidato> listarPorNomeStatus(String candidatoConsulta, String statusFiltro) {
+		try {
+			boolean st;
+			if(statusFiltro.contains("t")) {
+				st = true;
+			} else {
+				st = false;
+			}
+			Query query = em.createQuery("SELECT c FROM Candidato c LEFT JOIN FETCH c.listaResponsavel listaResp "
+					+ " WHERE UPPER(c.nomePessoa) LIKE :nomeCandidato AND c.isAtivo = :status");
+			query.setParameter("nomeCandidato", "%" + candidatoConsulta.toUpperCase() + "%");
+			query.setParameter("status", st);
+			List<Candidato> candidatos = query.getResultList();
+			return candidatos;
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 
 }

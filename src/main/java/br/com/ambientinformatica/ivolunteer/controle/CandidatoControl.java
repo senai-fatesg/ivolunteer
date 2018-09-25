@@ -68,6 +68,7 @@ public class CandidatoControl {
 
 	// instancia de candidato carregada para realização de consulta
 	private String candidatoConsulta;
+	private String statusFiltro;
 
 	// lista utilizada na consulta do candidato
 	private List<Candidato> listaCandidato = new ArrayList<Candidato>();
@@ -89,6 +90,9 @@ public class CandidatoControl {
 
 	// Flags para indicar se existe alguma alteração em andamento no formulario
 	private boolean editando;
+	
+	private boolean renderizaObservacao = false;
+	private boolean renderizaPeriodoConclusao = false;
 
 	@Autowired
 	private CandidatoDao candidatoDao;
@@ -101,6 +105,7 @@ public class CandidatoControl {
 
 	@Autowired
 	private TelefoneDao telefoneDao;
+	private Candidato exibeCandInfo;
 
 	@PostConstruct
 	public void init() {
@@ -160,6 +165,10 @@ public class CandidatoControl {
 		} else {
 			UtilFaces.addMensagemFaces("Candidato inválido!");
 		}
+	}
+	
+	public void exibeInformacoesCandidato(Candidato cand) {
+		this.exibeCandInfo = candidatoDao.consultarCandidatoCompleto(cand);
 	}
 
 	private void atualizaTelefonesCandidato() {
@@ -294,6 +303,40 @@ public class CandidatoControl {
 		}
 	}
 
+	public void verificaIdade(Candidato cand) {
+
+		if (cand.getDataNascimento() != null) {
+			Calendar dataDeHoje = Calendar.getInstance();
+			dataDeHoje.setTime(new Date(System.currentTimeMillis()));
+			Date dataNasc = cand.getDataNascimento();
+			Calendar DataNascCand = Calendar.getInstance();
+			DataNascCand.setTime(dataNasc);
+			long datn = dataNasc.getTime();
+			long diferencaEmDias = ((System.currentTimeMillis() - datn) / (1000 * 60 * 60 * 24));
+			long anosDeIdade = diferencaEmDias / 365;
+			if (anosDeIdade <= 17) {
+				this.maiorDeIdade = false;
+				return;
+			}
+			if (anosDeIdade >= 19) {
+				this.maiorDeIdade = true;
+				return;
+			}
+			if (anosDeIdade == 18) {
+				DataNascCand.set(Calendar.YEAR, dataDeHoje.get(Calendar.YEAR));
+				if (DataNascCand.before(dataDeHoje)) {
+					this.maiorDeIdade = true;
+					return;
+				} else {
+					this.maiorDeIdade = false;
+				}
+			}
+		} else {
+			this.maiorDeIdade = false;
+		}
+		
+	}
+	
 	public void calculaIdadeCandidato(SelectEvent event) {
 
 		Calendar dataDeHoje = Calendar.getInstance();
@@ -464,7 +507,6 @@ public class CandidatoControl {
 		try {
 			if (listaCandidato.contains(candidato)) {
 				Candidato cand = candidatoDao.consultarCandidatoCompleto(candidato);
-				System.out.println("QTD DE ENDEREÇOS: " + cand.getListaEndereco().size());
 				if (cand.getListaEndereco().size() > 0) {
 					for (Endereco end : cand.getListaEndereco()) {
 						end.inativaEndereco();
@@ -479,7 +521,6 @@ public class CandidatoControl {
 				}
 				candidato.desativa();
 				candidatoDao.alterar(candidato);
-				System.out.println("QTD DE RESPONSÁVEIS: " + cand.getListaResponsavel().size());
 				UtilFaces.addMensagemFaces("Candidato desativado com sucesso!");
 				listarTodosCandidatos();
 			}
@@ -510,11 +551,7 @@ public class CandidatoControl {
 	public void carregaCandidatoAlteracao(Candidato candidato) throws PersistenciaException {
 		this.responsavel = new Responsavel();
 		this.candidato = candidatoDao.consultarCandidatoCompleto(candidato);
-		// this.telefoneCelularCandidato =
-		// this.candidato.getListaTelefone().get(0);
-		// this.telefoneResidencialCandidato =
-		// this.candidato.getListaTelefone().get(1);
-		// this.telefoneEmergencia = this.candidato.getListaTelefone().get(2);
+		verificaIdade(this.candidato);
 	}
 
 	public void carregaEnderecoAlteracao(Endereco end, String tipoPessoa) {
@@ -539,15 +576,69 @@ public class CandidatoControl {
 	// Aplica Filtro
 	public void aplicarFiltro() {
 		try {
-			if (candidatoConsulta == null || candidatoConsulta.isEmpty()) {
-				listaCandidato = candidatoDao.listarCandidatosAtivos();
-			} else {
-				listaCandidato = candidatoDao.listarCandidatosAtivosPorNome(this.candidatoConsulta);
+			if (this.statusFiltro.isEmpty() && this.candidatoConsulta.isEmpty()) {
+				listaCandidato = candidatoDao.listar();
+			} else if(!this.candidatoConsulta.isEmpty() && this.statusFiltro.isEmpty()) {
+				listaCandidato = candidatoDao.listaCandidatoPorNome(this.candidatoConsulta);
+			} else if(this.candidatoConsulta.isEmpty() && !this.statusFiltro.isEmpty()) {
+				listaCandidato = candidatoDao.listaPorStatus(this.statusFiltro);
+			} else if(!this.candidatoConsulta.isEmpty() && !this.statusFiltro.isEmpty()) {
+				listaCandidato = candidatoDao.listarPorNomeStatus(this.candidatoConsulta, this.statusFiltro);
 			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
 
+	}
+	
+	public void habilitaCampoObservacao() {
+		if(this.candidato.getTemPrioridade() == true) {
+			this.renderizaObservacao = true;
+		} else {
+			this.renderizaObservacao = false;
+		}
+		
+	}
+
+	public void renderizaCampoPeriodoConclusao() {
+		System.out.println("STATUS: " + (this.candidato.getEnumStatusConcluiu()));
+		if(this.candidato.getEnumStatusConcluiu().equals(EnumStatusConcluiu.CONCLUIU)) {
+			this.renderizaPeriodoConclusao = true;
+		} else {
+			this.renderizaPeriodoConclusao = false;
+		}
+	}
+	
+	public boolean isRenderizaPeriodoConclusao() {
+		return renderizaPeriodoConclusao;
+	}
+
+	public void setRenderizaPeriodoConclusao(boolean renderizaPeriodoConclusao) {
+		this.renderizaPeriodoConclusao = renderizaPeriodoConclusao;
+	}
+
+	public boolean isRenderizaObservacao() {
+		return renderizaObservacao;
+	}
+
+	public void setRenderizaObservacao(boolean renderizaObservacao) {
+		this.renderizaObservacao = renderizaObservacao;
+	}
+
+	public String getStatusFiltro() {
+		return statusFiltro;
+	}
+
+	public void setStatusFiltro(String statusFiltro) {
+		this.statusFiltro = statusFiltro;
+	}
+
+	public Candidato getExibeCandInfo() {
+		return exibeCandInfo;
+	}
+
+	public void setExibeCandInfo(Candidato exibeCandInfo) {
+		this.exibeCandInfo = exibeCandInfo;
 	}
 
 	public Telefone getTelefoneResponsavel() {
@@ -726,6 +817,7 @@ public class CandidatoControl {
 			this.candidato.setEnumStatusDesistiu(EnumStatusDesistiu.EM_BRANCO);
 			this.candidato.setAnoDeDesistencia(null);
 		} else {
+			this.renderizaPeriodoConclusao = false;
 			this.candidato.setEnumStatusConcluiu(EnumStatusConcluiu.EM_BRANCO);
 			this.candidato.setAnoDeConclusao(null);
 		}

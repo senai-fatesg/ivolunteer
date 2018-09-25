@@ -32,6 +32,7 @@ public class Candidato extends Pessoa implements java.io.Serializable {
 	private String nomedaavoPaterno;
 	private String nomedoavoMaterno;
 	private String nomedaavoMaterno;
+	private String observacao;
 	
 	private String telefoneCelular;
 	private String telefoneResidencial;
@@ -63,6 +64,8 @@ public class Candidato extends Pessoa implements java.io.Serializable {
 	@Enumerated(EnumType.STRING)
 	private EnumParticipacaoEconomicaFamilia enumParticipacaoEconomicaFamilia;
 	
+	private String anoEscolaridade;
+	
 	@Enumerated(EnumType.STRING)
 	private EnumPNE enumPNE;
 	
@@ -87,6 +90,18 @@ public class Candidato extends Pessoa implements java.io.Serializable {
 	private String parentescoPNE;
 	private String necessidadePNE;
 	
+	public String getAnoEscolaridade() {
+		return anoEscolaridade;
+	}
+	public void setAnoEscolaridade(String anoEscolaridade) {
+		this.anoEscolaridade = anoEscolaridade;
+	}
+	public String getObservacao() {
+		return observacao;
+	}
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
+	}
 	public EnumStatusDesistiu getEnumStatusDesistiu() {
 		return enumStatusDesistiu;
 	}

@@ -23,27 +23,89 @@
 					<p:inputText id="filtro"
 						value="#{CandidatoControl.candidatoConsulta}" />
 				</a:field>
+				
+				<a:field label="Status:" spaceLeft="15px">
+					<p:selectOneMenu id="filtroStatusTurma"
+						value="#{CandidatoControl.statusFiltro}">
+						<f:selectItem itemLabel="TODOS" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItem itemLabel="ATIVO" itemValue="t" />
+						<f:selectItem itemLabel="INATIVO" itemValue="f" />
+					</p:selectOneMenu>
+				</a:field>
 
 				<p:commandButton id="filtrar" icon="ui-icon-search"
-					action="#{CandidatoControl.aplicarFiltro}" process="filtrar filtro"
+					action="#{CandidatoControl.aplicarFiltro}" process="filtrar filtro filtroStatusTurma"
 					update="listaCandidato" ajax="true"
 					style="margin-left: 10px; margin-top: 24px;" />
 
 				<a:newLine />
 				<a:newLine />
 
-				<p:dataTable id="listaCandidato" var="itemCandidato"
+				<!-- Tabela para usuários ADMINS e SECRETARIA -->
+				<p:dataTable rendered="#{securityScope.userInRole['SECRETARIA'] or securityScope.userInRole['ADMIN']}"
+					id="listaTodosCandidato" var="itemCandidato"
 					paginator="true" rows="10" rowsPerPageLabel="5,10,15,20"
 					rowsPerPageTemplate="5,10,15,20" style="width:100%"
 					value="#{CandidatoControl.listaCandidato}"
 					widgetVar="funcionariosTable" emptyMessage="Sem Registros a Exibir">
-
-					<p:column headerText="Nome" width="25%">#{itemCandidato.nomePessoa}</p:column>
-					<p:column headerText="CPF" width="12%">#{itemCandidato.cpf}</p:column>
-					<p:column headerText="Responsável" width="12%">#{itemCandidato.listaResponsavel[0].nomePessoa}</p:column>
-					<p:column headerText="Vínculo" width="5%">#{itemCandidato.listaResponsavel[0].enumFiliacao}</p:column>
 					
+					<p:columnGroup type="header">
+						<p:row>
+							<p:column headerText="Nome" sortBy="#{itemCandidato.nomePessoa}" />
+							<p:column headerText="CPF" sortBy="#{itemCandidato.cpf}" width="11%" />
+							<p:column headerText="Possui prioridade" sortBy="#{itemCandidato.temPrioridade}" width="13%" />
+							<p:column headerText="Responsável" />
+							<p:column headerText="Vínculo" />
+							<p:column headerText="Status" sortBy="#{itemCandidato.isAtivo}" />
+							<p:column headerText="Ações" width="10%" />
+						</p:row>
+					</p:columnGroup>
+					
+					<p:column>
+						<h:outputText value="#{itemCandidato.nomePessoa}" />
+					</p:column>
+					
+					<p:column>
+						<h:outputText value="#{itemCandidato.cpf}" />
+					</p:column>
+					
+					<p:column>
+						<h:outputText rendered="#{itemCandidato.temPrioridade == true}" value="Sim" />
+						<h:outputText rendered="#{itemCandidato.temPrioridade == false}" value="Não" />
+					</p:column>
+					
+					<p:column>
+						<h:outputText
+							rendered="#{itemCandidato.listaResponsavel[0].size == null}"
+							value="Não possui" />
+						<h:outputText
+							rendered="#{itemCandidato.listaResponsavel[0].size != null}"
+							value="#{itemCandidato.listaResponsavel[0].nomePessoa}" />
+					</p:column>
+					
+					<p:column>
+						<h:outputText
+							rendered="#{itemCandidato.listaResponsavel[0].size == null}"
+							value="Não possui" />
+						<h:outputText
+							rendered="#{itemCandidato.listaResponsavel[0].size != null}"
+							value="#{itemCandidato.listaResponsavel[0].enumFiliacao}" />
+					</p:column>
+
+					<p:column>
+						<h:outputText rendered="#{itemCandidato.isAtivo == true}" value="ATIVO" />
+						<h:outputText rendered="#{itemCandidato.isAtivo == false}" value="INATIVO" />
+					</p:column>
+
 					<p:column width="8%">
+						<p:commandButton id="exibirInfoCandidato" icon="ui-icon-search"
+							action="#{CandidatoControl.exibeInformacoesCandidato(itemCandidato)}"
+							update=":formCorpo:infoCandidatoJanela"
+							oncomplete="PF('infoCandidato').show();" />
+						<p:tooltip for="exibirInfoCandidato" position="top"
+							value="Exibir informações do candidato." />
+
 						<p:commandButton id="editarCandidato" icon="ui-icon-pencil"
 							action="#{CandidatoControl.carregaCandidatoAlteracao(itemCandidato)}"
 							oncomplete="PF('consultar').hide();" update=":formCorpo:panel"
@@ -51,7 +113,92 @@
 						<p:tooltip for="editarCandidato" position="top"
 							value="Editar candidato." />
 
-						<p:commandButton id="inativaUsuario" icon="ui-icon-closethick"
+						<p:commandButton rendered="#{itemCandidato.isAtivo == true}" 
+							id="inativaUsuario" icon="ui-icon-closethick"
+							action="#{CandidatoControl.desativarCandidato(itemCandidato)}"
+							update="listaTodosCandidato" process="@this">
+							<p:confirm header="Confirmar desativação!"
+								message="Tem certeza que deseja desativar o candidato #{itemCandidato.nomePessoa} ?"
+								icon="ui-icon-alert" />
+							<p:tooltip for="inativaUsuario" position="top"
+								value="Desativar candidato." />
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+				
+				<!-- Tabela para usuários que não são ADMINS e SECRETARIA -->
+				<p:dataTable rendered="#{!securityScope.userInRole['SECRETARIA'] and !securityScope.userInRole['ADMIN']}"
+					id="listaCandidato" var="itemCandidato"
+					paginator="true" rows="10" rowsPerPageLabel="5,10,15,20"
+					rowsPerPageTemplate="5,10,15,20" style="width:100%"
+					value="#{CandidatoControl.listaCandidato}"
+					widgetVar="funcionariosTable" emptyMessage="Sem Registros a Exibir">
+					
+					<p:columnGroup type="header">
+						<p:row>
+							<p:column headerText="Nome" sortBy="#{itemCandidato.nomePessoa}" />
+							<p:column headerText="CPF" sortBy="#{itemCandidato.cpf}" width="11%" />
+							<p:column headerText="Possui prioridade" sortBy="#{itemCandidato.temPrioridade}" width="13%" />
+							<p:column headerText="Responsável" />
+							<p:column headerText="Vínculo" />
+							<p:column headerText="Status" sortBy="#{itemCandidato.isAtivo}" />
+							<p:column headerText="Ações" width="10%" />
+						</p:row>
+					</p:columnGroup>
+					
+					<p:column rendered="#{itemCandidato.isAtivo == true}" >
+						<h:outputText value="#{itemCandidato.nomePessoa}" />
+					</p:column>
+					
+					<p:column rendered="#{itemCandidato.isAtivo == true}" >
+						<h:outputText value="#{itemCandidato.cpf}" />
+					</p:column>
+					
+					<p:column rendered="#{itemCandidato.isAtivo == true}" >
+						<h:outputText rendered="#{itemCandidato.temPrioridade == true}" value="Sim" />
+						<h:outputText rendered="#{itemCandidato.temPrioridade == false}" value="Não" />
+					</p:column>
+					
+					<p:column rendered="#{itemCandidato.isAtivo == true}" >
+						<h:outputText
+							rendered="#{itemCandidato.listaResponsavel[0].size == null}"
+							value="Não possui" />
+						<h:outputText
+							rendered="#{itemCandidato.listaResponsavel[0].size != null}"
+							value="#{itemCandidato.listaResponsavel[0].nomePessoa}" />
+					</p:column>
+					
+					<p:column rendered="#{itemCandidato.isAtivo == true}" >
+						<h:outputText
+							rendered="#{itemCandidato.listaResponsavel[0].size == null}"
+							value="Não possui" />
+						<h:outputText
+							rendered="#{itemCandidato.listaResponsavel[0].size != null}"
+							value="#{itemCandidato.listaResponsavel[0].enumFiliacao}" />
+					</p:column>
+
+					<p:column rendered="#{itemCandidato.isAtivo == true}" >
+						<h:outputText rendered="#{itemCandidato.isAtivo == true}" value="ATIVO" />
+					</p:column>
+
+					<p:column width="8%" rendered="#{itemCandidato.isAtivo == true}" >
+						<p:commandButton id="exibirInfoCandidato" icon="ui-icon-search"
+							action="#{CandidatoControl.exibeInformacoesCandidato(itemCandidato)}"
+							update=":formCorpo:infoCandidatoJanela"
+							oncomplete="PF('infoCandidato').show();" />
+						<p:tooltip for="exibirInfoCandidato" position="top"
+							value="Exibir informações do candidato." />
+
+						<p:commandButton id="editarCandidato" icon="ui-icon-pencil"
+							action="#{CandidatoControl.carregaCandidatoAlteracao(itemCandidato)}"
+							oncomplete="PF('consultar').hide();" update=":formCorpo:panel"
+							process="@this" />
+						<p:tooltip for="editarCandidato" position="top"
+							value="Editar candidato." />
+
+						<p:commandButton 
+							id="inativaUsuario" icon="ui-icon-closethick"
 							action="#{CandidatoControl.desativarCandidato(itemCandidato)}"
 							update="listaCandidato" process="@this">
 							<p:confirm header="Confirmar desativação!"
@@ -64,6 +211,113 @@
 					</p:column>
 				</p:dataTable>
 
+			</p:dialog>
+
+			<p:dialog id="infoCandidatoJanela" widgetVar="infoCandidato"
+				modal="true" header="Informações do Candidato" width="60%">
+				<p:panelGrid columns="4" layout="grid">
+
+					<h:outputLabel value="Nome:" />
+					<h:outputText value="#{CandidatoControl.exibeCandInfo.nomePessoa}" />
+
+					<h:outputLabel value="Data Nasc.:" />
+					<h:outputText
+						value="#{CandidatoControl.exibeCandInfo.dataNascimento}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+
+					<h:outputLabel value="CPF:" />
+					<h:outputText value="#{CandidatoControl.exibeCandInfo.cpf}" />
+
+					<h:outputLabel value="RG:" />
+					<h:outputText value="#{CandidatoControl.exibeCandInfo.rg}" />
+
+					<h:outputLabel value="Órgão emissor:" />
+					<h:outputText
+						value="#{CandidatoControl.exibeCandInfo.orgaoExpeditor}" />
+
+					<h:outputLabel value="Etnia:" />
+					<h:outputText value="#{CandidatoControl.exibeCandInfo.etnia}" />
+
+					<h:outputLabel value="Data de Expedição:" />
+					<h:outputText
+						value="#{CandidatoControl.exibeCandInfo.dataExpedicao}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+
+					<h:outputLabel value="Naturalidade:" />
+					<h:outputText
+						value="#{CandidatoControl.exibeCandInfo.naturalidade}" />
+
+					<h:outputLabel value="Estado civil:" />
+					<h:outputText
+						value="#{CandidatoControl.exibeCandInfo.enumEstadoCivil}" />
+
+					<h:outputLabel value="Gênero:" />
+					<h:outputText
+						rendered="#{CandidatoControl.exibeCandInfo.enumSexo == 'M'}"
+						value="Masculino" />
+					<h:outputText
+						rendered="#{CandidatoControl.exibeCandInfo.enumSexo == 'F'}"
+						value="Feminino" />
+						
+					<h:outputLabel value="Tem prioridade:" />
+					<h:outputText rendered="#{CandidatoControl.exibeCandInfo.temPrioridade == true}" value="Sim" />
+					<h:outputText rendered="#{CandidatoControl.exibeCandInfo.temPrioridade == false}" value="Não" />
+					
+					<h:outputLabel rendered="#{CandidatoControl.exibeCandInfo.listaResponsavel[0].size == null}" 
+						value="Possui responsáveis:" />
+					<h:outputText rendered="#{CandidatoControl.exibeCandInfo.listaResponsavel[0].size == null}" 
+						value="Não" />
+
+					<h:outputLabel value="Observação:" />
+					<h:outputText value="#{CandidatoControl.exibeCandInfo.observacao}" />
+					
+					<h:outputLabel value="Nível de escolaridade:" />
+					<h:outputText value="#{CandidatoControl.exibeCandInfo.enumEscolaridade}" />
+					
+
+				</p:panelGrid>
+				
+				<a:newLine/>
+
+				<p:dataTable
+					rendered="#{itemCandidato.listaResponsavel[0].size != null and (!securityScope.userInRole['SECRETARIA'] and !securityScope.userInRole['ADMIN'])}"
+					id="listaResponsavelInfo" paginator="true" rowsPerPageLabel="5"
+					rowsPerPageTemplate="5"
+					value="#{CandidatoControl.exibeCandInfo.listaResponsavel}"
+					var="pessoaResponsavel" width="100%" emptyMessage="Sem registros">
+
+					<f:facet name="header">
+								Lista de Responsavéis
+							</f:facet>
+
+					<p:columnGroup type="header">
+						<p:row>
+							<p:column headerText="Nome" />
+							<p:column headerText="CPF" />
+							<p:column headerText="Vínculo" />
+							<p:column headerText="Ações" width="8%" />
+						</p:row>
+					</p:columnGroup>
+
+					<p:column sortBy="#{pessoaResponsavel.nomePessoa}"
+						rendered="#{pessoaResponsavel.isAtivo}">
+						<h:outputText value="#{pessoaResponsavel.nomePessoa}" />
+					</p:column>
+
+					<p:column sortBy="#{pessoaResponsavel.cpf}"
+						rendered="#{pessoaResponsavel.isAtivo}">
+						<h:outputText value="#{pessoaResponsavel.cpf}" />
+					</p:column>
+
+					<p:column sortBy="#{pessoaResponsavel.enumFiliacao}"
+						rendered="#{pessoaResponsavel.isAtivo}">
+
+						<h:outputText value="#{pessoaResponsavel.enumFiliacao}" />
+					</p:column>
+
+				</p:dataTable>
 			</p:dialog>
 
 			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -102,7 +356,7 @@
 											locale="de" navigator="true" pattern="dd-MM-yyyy">
 											<p:ajax event="dateSelect"
 												listener="#{CandidatoControl.calculaIdadeCandidato}"
-												update=":formCorpo:tabCadastro" process="@form"/>
+												update=":formCorpo:tabCadastro" process="@form" />
 										</p:calendar>
 									</a:field>
 
@@ -128,7 +382,7 @@
 									<a:field label="Data da expedição:" spaceLeft="15px">
 										<p:calendar id="expedicao"
 											value="#{CandidatoControl.candidato.dataExpedicao}"
-											locale="de" navigator="true" pattern="dd-MM-yyyy" />
+											locale="de" navigator="true" yearRange="c-100:c0" pattern="dd-MM-yyyy" />
 									</a:field>
 
 									<a:field label="Etnia:" spaceLeft="15px">
@@ -164,14 +418,16 @@
 
 									<a:newLine />
 
-									<!--a data de vencimento se refere a validade que o documento tera-->
+									<!--a data de vencimento se refere a validade que o documento tera
 									<a:field label="Data de vencimento:">
 										<p:calendar id="dataVencimento"
 											value="#{CandidatoControl.candidato.dataVencimento}"
 											locale="de" navigator="true" pattern="dd-MM-yyyy" />
 									</a:field>
+									
+									-->
 
-									<a:field label="Telefone Residencial:" spaceLeft="15px">
+									<a:field label="Telefone Residencial:">
 										<p:inputMask id="telefCandResidencia"
 											value="#{CandidatoControl.candidato.telefoneResidencial}"
 											mask="(99)9999-9999">
@@ -191,7 +447,22 @@
 									<p:outputLabel value="Tem prioridade?" />
 									<p:selectBooleanCheckbox id="temPrioridade"
 										style="margin-left: 10px;"
-										value="#{CandidatoControl.candidato.temPrioridade}" />
+										value="#{CandidatoControl.candidato.temPrioridade}" >
+									
+										<p:ajax  event="change" listener="#{CandidatoControl.habilitaCampoObservacao}" 
+											update="formCorpo:tabCadastro" process="temPrioridade" />
+									
+									</p:selectBooleanCheckbox>
+
+									<a:newLine />
+
+									<a:field label="Observação:" rendered="#{CandidatoControl.renderizaObservacao or 
+									(CandidatoControl.candidato.id != null and CandidatoControl.candidato.temPrioridade)}" >
+										<p:inputTextarea id="observacaoCandidato" 
+											value="#{CandidatoControl.candidato.observacao}" />
+									</a:field>
+									
+									
 
 									<a:newLine />
 									<a:newLine />
@@ -303,8 +574,7 @@
 											rows="10" rowsPerPageLabel="5,10,15,20"
 											rowsPerPageTemplate="5,10,15,20"
 											value="#{CandidatoControl.candidato.listaEndereco }"
-											var="end"
-											width="100%" emptyMessage="Sem registros">
+											var="end" width="100%" emptyMessage="Sem registros">
 											<f:facet name="header">
 										        	Lista de endereços
 										    </f:facet>
@@ -380,24 +650,15 @@
 										<h4>Formação e Profissão</h4>
 
 										<a:field label="Escolaridade:">
-											<p:selectOneMenu
+											<p:selectOneMenu id="enumEscolaridade"
 												value="#{CandidatoControl.candidato.enumEscolaridade}">
 												<f:selectItems
 													value="#{CandidatoControl.completeEnumEscolaridade}" />
 												<p:ajax event="change"
-													process="@this instituicao nomeDoCurso turno"
+													process="enumEscolaridade instituicao nomeDoCurso turno"
 													update="painelFormacao"
 													listener="#{CandidatoControl.validaDesistiuConcluiu}" />
 											</p:selectOneMenu>
-										</a:field>
-
-										<a:field label="Ano de desistência/trancamento:"
-											spaceLeft="15px"
-											rendered="#{(CandidatoControl.candidato.enumEscolaridade == 'FUNDAMENTAL_INCOMPLETO') or (CandidatoControl.candidato.enumEscolaridade == 'MEDIO_INCOMPLETO') or (CandidatoControl.candidato.enumEscolaridade == 'SUPERIOR_INCOMPLETO')}">
-											<p:calendar id="anoDesistencia" style="width:900px;"
-												value="#{CandidatoControl.candidato.anoDeDesistencia}"
-												pattern="yyyy" navigator="true" yearRange="c-100:c0"
-												locale="de" />
 										</a:field>
 
 										<a:field label="Status:" spaceLeft="15px"
@@ -408,13 +669,20 @@
 													value="#{CandidatoControl.completeEnumStatusDesistiu}" />
 											</p:selectOneMenu>
 										</a:field>
-
-										<a:field label="Ano/Período de conclusão:" spaceLeft="15px"
-											rendered="#{(CandidatoControl.candidato.enumEscolaridade == null) or (CandidatoControl.candidato.enumEscolaridade == 'FUNDAMENTAL') or (CandidatoControl.candidato.enumEscolaridade == 'MEDIO') or (CandidatoControl.candidato.enumEscolaridade == 'SUPERIOR')}">
-											<p:calendar id="anoDeConclusao"
-												value="#{CandidatoControl.candidato.anoDeConclusao}"
+										
+										<a:field label="Ano de desistência/trancamento:"
+											spaceLeft="15px"
+											rendered="#{(CandidatoControl.candidato.enumEscolaridade == 'FUNDAMENTAL_INCOMPLETO') or (CandidatoControl.candidato.enumEscolaridade == 'MEDIO_INCOMPLETO') or (CandidatoControl.candidato.enumEscolaridade == 'SUPERIOR_INCOMPLETO')}">
+											<p:calendar id="anoDesistencia" style="width:900px;"
+												value="#{CandidatoControl.candidato.anoDeDesistencia}"
 												pattern="yyyy" navigator="true" yearRange="c-100:c0"
 												locale="de" />
+										</a:field>
+										
+										<a:field label="Ano de escolaridade:" spaceLeft="15px" 
+											rendered="#{(CandidatoControl.candidato.enumEscolaridade == 'FUNDAMENTAL') or (CandidatoControl.candidato.enumEscolaridade == 'MEDIO') or (CandidatoControl.candidato.enumEscolaridade == 'SUPERIOR')}">
+											<p:inputText id="anoEscolaridade"
+												value="#{CandidatoControl.candidato.anoEscolaridade}" />
 										</a:field>
 
 										<a:field label="Status:" spaceLeft="15px"
@@ -423,7 +691,19 @@
 												value="#{CandidatoControl.candidato.enumStatusConcluiu}">
 												<f:selectItems
 													value="#{CandidatoControl.completeEnumStatusConcluiu}" />
+												<p:ajax event="change"  
+													listener="#{CandidatoControl.renderizaCampoPeriodoConclusao}" 
+													process="enumEscolaridade instituicao nomeDoCurso turno statusConclusao anoEscolaridade" 
+													update="painelFormacao"	/>
 											</p:selectOneMenu>
+										</a:field>
+										
+										<a:field label="Período de conclusão:" spaceLeft="15px"
+											rendered="#{(CandidatoControl.renderizaPeriodoConclusao)}">
+											<p:calendar id="anoDeConclusao"
+												value="#{CandidatoControl.candidato.anoDeConclusao}"
+												pattern="dd/MM/yyyy" navigator="true" yearRange="c-100:c+100"
+												locale="de" />
 										</a:field>
 
 										<a:newLine />
@@ -814,8 +1094,7 @@
 
 								<a:newLine />
 
-								<p:dataTable id="listaEnderecoResponsavel"
-									paginator="true"
+								<p:dataTable id="listaEnderecoResponsavel" paginator="true"
 									rows="10" rowsPerPageLabel="5,10,15,20"
 									rowsPerPageTemplate="5,10,15,20"
 									value="#{CandidatoControl.responsavel.listaEndereco }"
@@ -1057,10 +1336,8 @@
 						<a:newLine />
 						<a:newLine />
 
-						<p:dataTable id="listaResponsavel"
-							paginator="true"
-							rows="10" rowsPerPageLabel="5,10,15,20"
-							rowsPerPageTemplate="5,10,15,20"
+						<p:dataTable id="listaResponsavel" paginator="true" rows="10"
+							rowsPerPageLabel="5,10,15,20" rowsPerPageTemplate="5,10,15,20"
 							value="#{CandidatoControl.candidato.listaResponsavel }"
 							var="pessoaResponsavel" width="100%" emptyMessage="Sem registros">
 

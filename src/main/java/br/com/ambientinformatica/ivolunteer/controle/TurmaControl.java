@@ -19,12 +19,15 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
+import br.com.ambientinformatica.ivolunteer.entidade.Curso;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumCargo;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumFiliacao;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoCurso;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTurno;
 import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.Turma;
+import br.com.ambientinformatica.ivolunteer.persistencia.CursoDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.FuncionarioDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.TurmaDao;
 import br.com.ambientinformatica.ivolunteer.service.TurmaService;
@@ -36,6 +39,9 @@ public class TurmaControl implements TurmaService {
 
 	/*** ATRIBUTOS DA PÁGINA ***/
 	private Turma turma = new Turma();
+	private Curso curso = new Curso();
+	private Curso cursoCadastro = new Curso();
+	private Curso cursoSelecionado;
 	private Turma exibeTurmaInfo = new Turma();
 
 	private String statusFiltro;
@@ -44,6 +50,8 @@ public class TurmaControl implements TurmaService {
 	private Funcionario professorSelecionado;
 
 	@Autowired
+	private CursoDao cursoDao;
+	@Autowired
 	private TurmaDao turmaDao;
 	@Autowired
 	private FuncionarioDao funcionarioDao;
@@ -51,18 +59,61 @@ public class TurmaControl implements TurmaService {
 	private TurmaService turmaService;
 	private List<Turma> turmas = new ArrayList<>();
 	private List<Funcionario> professores = new ArrayList<>();
+	private List<Curso> carregaTodosCursos;
 
 	/*** INICIALIZADOR ***/
 	@PostConstruct
 	public void init() {
+		carregaCursos();
 		listar();
 		carregaProfessores();
 	}
 
 	/*** GETTERS E SETTERS ***/
 	
+	private void carregaCursos() {
+		this.carregaTodosCursos = cursoDao.listar();
+		
+	}
+	
+	public List<Curso> getCarregaTodosCursos() {
+		return carregaTodosCursos;
+	}
+
+	public void setCarregaTodosCursos(List<Curso> carregaTodosCursos) {
+		this.carregaTodosCursos = carregaTodosCursos;
+	}
+
+	public List<SelectItem> getCompleteEnumTipoCurso() {
+		return UtilFaces.getListEnum(EnumTipoCurso.values());
+	}
+
+	public Curso getCursoSelecionado() {
+		return cursoSelecionado;
+	}
+
+	public void setCursoSelecionado(Curso cursoSelecionado) {
+		this.cursoSelecionado = cursoSelecionado;
+	}
+
+	public Curso getCursoCadastro() {
+		return cursoCadastro;
+	}
+
+	public void setCursoCadastro(Curso cursoCadastro) {
+		this.cursoCadastro = cursoCadastro;
+	}
+
 	public Turma getTurma() {
 		return turma;
+	}
+
+	public Curso getCurso() {
+		return curso;
+	}
+
+	public void setCurso(Curso curso) {
+		this.curso = curso;
 	}
 
 	public Funcionario getProfessorSelecionado() {
@@ -154,19 +205,38 @@ public class TurmaControl implements TurmaService {
 	}
 
 	/*** AÇÕES DA PÁGINA ***/
-	public void buscaProfessor() {
-		//this.funcionarioDao.buscaProfessorPorNome();
+	
+	public void selecionaCurso(){
+		curso = cursoDao.buscaCursoPorId(this.cursoSelecionado);
+		this.turma.AdicionarCurso(curso);
+	}
+	
+	public List<Curso> buscaCursosPorNome(String nome) {
+		return this.cursoDao.buscaCursoPorNome(nome);
+	}
+	
+	public List<Funcionario> buscaProfessoresPorNome(String nome) {
+		return this.funcionarioDao.buscaEducadorPorNome(nome);
 	}
 	
 	public void selecionaProfessor() {
 		this.turma.setProfessor(professorSelecionado);
 	}
 	
+	public void cadastraCurso() {
+		cursoDao.incluir(this.cursoCadastro);
+		this.curso = new Curso();
+		UtilFaces.addMensagemFaces("Curso cadastrado com sucesso!");
+	}
+	
 	public void cadastrarTurma() {
 		try {
+			this.curso.adicionarTurma(this.turma);
+			this.cursoDao.alterar(this.curso);
 			validarTurma(this.turma);
 			turmaDao.incluir(this.turma);
 			listar();
+			this.curso = new Curso();
 			this.turma = new Turma();
 			UtilFaces.addMensagemFaces("Turma cadastrada com sucesso!");
 		} catch (Exception e) {
@@ -179,6 +249,7 @@ public class TurmaControl implements TurmaService {
 			validarTurma(this.turma);
 			turmaDao.alterar(this.turma);
 			listar();
+			this.curso = new Curso();
 			this.turma = new Turma();
 			UtilFaces.addMensagemFaces("Turma alterada com sucesso!");
 		} catch (Exception e) {
@@ -187,9 +258,7 @@ public class TurmaControl implements TurmaService {
 	}
 	
 	private void validarTurma(Turma turma) throws Exception {
-		if (turma.getNome().isEmpty()) {
-			throw new Exception("É obrigatório informar o Nome");
-		} else if (turma.getCodigo().isEmpty()) {
+		if (turma.getCodigo().isEmpty()) {
 			throw new Exception("É obrigatório informar o Código");
 		} else if (turma.getTurno() == null) {
 			throw new Exception("É obrigatório informar o Turno");
@@ -213,10 +282,10 @@ public class TurmaControl implements TurmaService {
 		}
 	}
 	
-	public void desativar(Turma turma) {
+	public void concluirTurma(Turma turma) {
 		try {
 			Turma tm = turmaDao.consultar(turma.getId());
-			tm.inativar();
+			tm.concluirTurma();
 			turmaDao.alterar(tm);
 			listar();
 			UtilFaces.addMensagemFaces("Turma inativada com sucesso!");
@@ -248,15 +317,26 @@ public class TurmaControl implements TurmaService {
 
 	public void aplicarFiltro(ActionEvent evt) {
 		try {
-
-			if (turmaConsulta != null && !turmaConsulta.getNome().isEmpty() && statusFiltro.isEmpty()) {
-				turmasConsulta = turmaDao.listarPorNome(turmaConsulta.getNome());
-			} else if(turmaConsulta != null && turmaConsulta.getNome().isEmpty() && !statusFiltro.isEmpty()) {
-				turmasConsulta = turmaDao.listarPorStatus(statusFiltro);
-			} else if (!turmaConsulta.getNome().isEmpty() && !statusFiltro.isEmpty()) {
-				turmasConsulta = turmaDao.consultaPorNomeStatus(turmaConsulta, statusFiltro);
-			} else if(turmaConsulta.getNome().isEmpty() && statusFiltro.isEmpty()) {
+			System.out.println("VALOR ID: " + (this.turmaConsulta.getId()));
+			System.out.println("ID É 0? " + (this.turmaConsulta.getId().equals(0)));
+			if (!statusFiltro.isEmpty() && this.turmaConsulta.getId().equals(0)) {
+				turmasConsulta = turmaDao.listarPorStatus(this.statusFiltro);
+			} else if(statusFiltro.isEmpty() && this.turmaConsulta.getId().equals(0)) {
 				turmasConsulta = turmaDao.listar();
+			} else if(statusFiltro.isEmpty() && !this.turmaConsulta.getId().equals(0)) {
+				Turma resultado = turmaDao.consultarPorId(turmaConsulta); 
+				turmasConsulta.clear();
+				turmasConsulta.add(resultado);
+			} else if(!statusFiltro.isEmpty() && !this.turmaConsulta.getId().equals(0)) {
+				Turma resultado = turmaDao.consultarPorIdStatus(turmaConsulta, statusFiltro); 
+				System.out.println("RESULTADO NULO? " + (resultado.equals(null)));
+				if(resultado.getId().equals(0)) {
+					turmasConsulta.clear();
+					return;
+				} else {
+					turmasConsulta.clear();
+					turmasConsulta.add(resultado);
+				}
 			}
 			
 		} catch (Exception e) {

@@ -7,6 +7,7 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
+import br.com.ambientinformatica.ivolunteer.entidade.EnumCargo;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoFuncionario;
 import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.ivolunteer.entidade.Turma;
@@ -134,6 +135,16 @@ public class FuncionarioDaoJpa extends PersistenciaJpa<Funcionario> implements F
 				"SELECT f FROM Funcionario f WHERE f.tipoFuncionario = :tipo AND f.isAtivo = :status");
 		query.setParameter("tipo", tipo);
 		query.setParameter("status", st);
+		return (List<Funcionario>) query.getResultList();
+	}
+
+	@Override
+	public List<Funcionario> buscaEducadorPorNome(String nome) {
+		Query query = em.createQuery("SELECT f FROM Funcionario f WHERE f.isAtivo = true AND "
+				+ " f.cargo = :tipoFuncionario AND "
+				+ " UPPER(f.nomePessoa) LIKE :nome");
+		query.setParameter("tipoFuncionario", EnumCargo.EDUCADOR);
+		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
 		return (List<Funcionario>) query.getResultList();
 	}
 

@@ -26,5 +26,7 @@ public interface FuncionarioDao extends Persistencia<Funcionario> {
 	public List<Funcionario> listarPorNomeEStatus(String nome, String status);
 	
 	public List<Funcionario> listarPorTipoEStatus(EnumTipoFuncionario tipo, String status);
+
+	public List<Funcionario> buscaEducadorPorNome(String nome);
 	
 }

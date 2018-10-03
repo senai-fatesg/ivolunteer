@@ -65,7 +65,7 @@ public class TurmaDaoJpa extends PersistenciaJpa<Turma> implements TurmaDao {
 			} else {
 				st = false;
 			}
-			Query query = em.createQuery("SELECT t FROM Turma t WHERE isAtivo = :status");
+			Query query = em.createQuery("SELECT t FROM Turma t WHERE isConcluido = :status");
 			query.setParameter("status", st);
 			List<Turma> turmas = query.getResultList();
 			return turmas;
@@ -76,6 +76,7 @@ public class TurmaDaoJpa extends PersistenciaJpa<Turma> implements TurmaDao {
 
 	@Override
 	public List<Turma> consultaPorNomeStatus(Turma turmaConsulta,String status) {
+		/*
 		try {
 			boolean st;
 			if(status.contains("t")) {
@@ -91,6 +92,34 @@ public class TurmaDaoJpa extends PersistenciaJpa<Turma> implements TurmaDao {
 			return turmas;
 		} catch (NoResultException e) {
 			return null;
+		}
+		*/
+		return null;
+	}
+
+	@Override
+	public Turma consultarPorId(Turma turmaConsulta) {
+		Turma resultado = em.find(Turma.class, turmaConsulta.getId());
+		return resultado;
+	}
+
+	@Override
+	public Turma consultarPorIdStatus(Turma turmaConsulta, String statusFiltro) {
+		try {
+			boolean st;
+			if(statusFiltro.contains("t")) {
+				st = true;
+			} else {
+				st = false;
+			}
+			Query query = em.createQuery("SELECT t FROM Turma t WHERE t.id = :id AND t.isConcluido = :status");
+			query.setParameter("id", turmaConsulta.getId());
+			query.setParameter("status", st);
+			return (Turma) query.getSingleResult();
+		} catch (NoResultException e) {
+			Turma turma = new Turma();
+			turma.setId(0);
+			return turma;
 		}
 	}
 }

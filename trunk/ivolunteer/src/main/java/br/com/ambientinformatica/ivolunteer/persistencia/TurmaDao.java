@@ -18,4 +18,8 @@ public interface TurmaDao extends Persistencia<Turma> {
 	List<Turma> listarPorStatus(String status);
 
 	List<Turma> consultaPorNomeStatus(Turma turmaConsulta, String status);
+
+	Turma consultarPorId(Turma turmaConsulta);
+
+	Turma consultarPorIdStatus(Turma turmaConsulta, String statusFiltro);
 }

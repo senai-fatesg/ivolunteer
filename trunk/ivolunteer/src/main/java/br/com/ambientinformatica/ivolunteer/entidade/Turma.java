@@ -3,6 +3,7 @@ package br.com.ambientinformatica.ivolunteer.entidade;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,11 +24,12 @@ public class Turma {
 	@SequenceGenerator(name = "turma_seq", sequenceName = "turma_seq", allocationSize = 1, initialValue = 1)
 	private Integer id;
 
-	private String nome;
-
 	private String codigo;
 
 	private EnumTurno turno;
+	
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Curso curso;
 	
 	@Temporal(TemporalType.DATE)
 	private Date dataInicio;
@@ -34,8 +37,6 @@ public class Turma {
 	@Temporal(TemporalType.DATE)
 	private Date dataTermino;
 	
-	private String cargaHoraria;
-
 	@Temporal(TemporalType.TIME)
 	private Date horarioInicio;
 
@@ -44,10 +45,18 @@ public class Turma {
 
 	private Integer quantidadeVagas;
 
-	private Boolean isAtivo;
+	private Boolean isConcluido;
 
 	@ManyToOne(fetch=FetchType.EAGER)
 	private Funcionario professor;
+
+	public Curso getCurso() {
+		return curso;
+	}
+
+	public void setCurso(Curso curso) {
+		this.curso = curso;
+	}
 
 	public Integer getId() {
 		return id;
@@ -71,22 +80,6 @@ public class Turma {
 
 	public void setDataTermino(Date dataTermino) {
 		this.dataTermino = dataTermino;
-	}
-
-	public String getCargaHoraria() {
-		return cargaHoraria;
-	}
-
-	public void setCargaHoraria(String cargaHoraria) {
-		this.cargaHoraria = cargaHoraria;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
 	}
 
 	public String getCodigo() {
@@ -129,12 +122,12 @@ public class Turma {
 		this.quantidadeVagas = quantidadeVagas;
 	}
 
-	public Boolean getAtivo() {
-		return isAtivo;
+	public Boolean getIsConcluido() {
+		return isConcluido;
 	}
 
-	public void setAtivo(Boolean ativo) {
-		this.isAtivo = ativo;
+	public void setIsConcluido(Boolean isConcluido) {
+		this.isConcluido = isConcluido;
 	}
 
 	public Funcionario getProfessor() {
@@ -145,7 +138,11 @@ public class Turma {
 		this.professor = professor;
 	}
 
-	public void inativar() {
-		setAtivo(false);
+	public void concluirTurma() {
+		setIsConcluido(true);
+	}
+	
+	public void AdicionarCurso(Curso curso) {
+		this.setCurso(curso);
 	}
 }

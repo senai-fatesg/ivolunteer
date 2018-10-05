@@ -52,4 +52,16 @@ public class CursoDaoJpa extends PersistenciaJpa<Curso> implements CursoDao {
 		}
 	}
 
+	@Override
+	public List<Curso> listarCursosAtivos() {
+		try {
+			Query query = em.createQuery("SELECT c FROM Curso c WHERE c.isAtivo = :status");
+			query.setParameter("status", true);
+			return (List<Curso>) query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 }

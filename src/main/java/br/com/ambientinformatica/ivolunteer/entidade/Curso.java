@@ -100,4 +100,8 @@ public class Curso implements Serializable {
 		this.getListaTurma().add(turma);
 	}
 	
+	public void inativarCurso() {
+		setIsAtivo(false);
+	}
+	
 }

@@ -60,6 +60,8 @@ public class TurmaControl implements TurmaService {
 	private List<Turma> turmas = new ArrayList<>();
 	private List<Funcionario> professores = new ArrayList<>();
 	private List<Curso> carregaTodosCursos;
+	private List<Curso> listaCursos = new ArrayList<Curso>();
+	private Curso exibeCursoInfo = new Curso();
 
 	/*** INICIALIZADOR ***/
 	@PostConstruct
@@ -67,15 +69,27 @@ public class TurmaControl implements TurmaService {
 		carregaCursos();
 		listar();
 		carregaProfessores();
+		listaCursosAtivos();
 	}
-
+	
 	/*** GETTERS E SETTERS ***/
+	
+	public void listaCursosAtivos() {
+		this.listaCursos = cursoDao.listarCursosAtivos();
+	}
 	
 	private void carregaCursos() {
 		this.carregaTodosCursos = cursoDao.listar();
-		
 	}
 	
+	public List<Curso> getListaCursos() {
+		return listaCursos;
+	}
+
+	public void setListaCursos(List<Curso> listaCursos) {
+		this.listaCursos = listaCursos;
+	}
+
 	public List<Curso> getCarregaTodosCursos() {
 		return carregaTodosCursos;
 	}
@@ -102,6 +116,14 @@ public class TurmaControl implements TurmaService {
 
 	public void setCursoCadastro(Curso cursoCadastro) {
 		this.cursoCadastro = cursoCadastro;
+	}
+
+	public Curso getExibeCursoInfo() {
+		return exibeCursoInfo;
+	}
+
+	public void setExibeCursoInfo(Curso exibeCursoInfo) {
+		this.exibeCursoInfo = exibeCursoInfo;
 	}
 
 	public Turma getTurma() {
@@ -205,6 +227,20 @@ public class TurmaControl implements TurmaService {
 	}
 
 	/*** AÇÕES DA PÁGINA ***/
+	public void inativarCurso(Curso curso) {
+		Curso c = cursoDao.consultar(curso.getId());
+		c.inativarCurso();
+		cursoDao.alterar(c);
+		this.listaCursos = cursoDao.listarCursosAtivos();
+	}
+	
+	public void editaCurso(Curso curso) {
+		this.cursoCadastro = cursoDao.consultar(curso.getId());
+	}
+	
+	public void exibeInfoDoCurso(Curso curso) {
+		this.exibeCursoInfo = curso;
+	}
 	
 	public void selecionaCurso(){
 		curso = cursoDao.buscaCursoPorId(this.cursoSelecionado);
@@ -225,8 +261,15 @@ public class TurmaControl implements TurmaService {
 	
 	public void cadastraCurso() {
 		cursoDao.incluir(this.cursoCadastro);
-		this.curso = new Curso();
+		this.cursoCadastro = new Curso();
 		UtilFaces.addMensagemFaces("Curso cadastrado com sucesso!");
+	}
+	
+	public void atualizaCurso() {
+		cursoDao.alterar(this.cursoCadastro);
+		this.listaCursos = cursoDao.listarCursosAtivos();
+		this.cursoCadastro = new Curso();
+		UtilFaces.addMensagemFaces("Curso alterado com sucesso!");
 	}
 	
 	public void cadastrarTurma() {

@@ -7,6 +7,7 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
+import br.com.ambientinformatica.ivolunteer.entidade.Curso;
 import br.com.ambientinformatica.ivolunteer.entidade.Turma;
 import br.com.ambientinformatica.jpa.persistencia.PersistenciaJpa;
 
@@ -121,5 +122,14 @@ public class TurmaDaoJpa extends PersistenciaJpa<Turma> implements TurmaDao {
 			turma.setId(0);
 			return turma;
 		}
+	}
+
+	@Override
+	public List<Turma> buscaTurmasAtivas(Curso curso) {
+		Query turmasAtivasDoCurso = em.createQuery("SELECT t FROM Turma t WHERE t.isConcluido = :status "
+				+ " AND t.curso.id = :idDoCurso");
+		turmasAtivasDoCurso.setParameter("status", false);
+		turmasAtivasDoCurso.setParameter("idDoCurso", curso.getId());
+		return (List<Turma>) turmasAtivasDoCurso.getResultList();
 	}
 }

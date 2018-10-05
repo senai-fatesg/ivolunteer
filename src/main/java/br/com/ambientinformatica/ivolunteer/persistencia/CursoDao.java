@@ -11,4 +11,6 @@ public interface CursoDao extends Persistencia<Curso> {
 
 	public Curso buscaCursoPorId(Curso curso);
 
+	public Curso buscaCursoComListaDeTurmasAtivas(Curso curso);
+
 }

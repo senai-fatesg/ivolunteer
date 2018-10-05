@@ -4,7 +4,7 @@ import br.com.ambientinformatica.util.IEnum;
 
 public enum EnumTipoCurso implements IEnum {
 	DURACAO_DETERMINADA("DETERMINADA"),
-	DURACAO_INTEDERMINADA("INDETERMINADA");
+	DURACAO_INDETERMINADA("INDETERMINADA");
 	
 	private String descricao;
 	

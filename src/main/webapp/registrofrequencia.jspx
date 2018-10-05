@@ -8,120 +8,154 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:define name="corpo">
-		<p:panel id="panel" header="Frequencia">
+		<p:panel id="panel" header="Registro de Frequência">
 
-			<p:tabView dynamic="true" id="tabviewFuncionario">
-				<p:tab title="Funcionário" id="tabFuncionario">
-					<p:panel id="buscaFuncionario" rendered="true">					
-						<a:field label="Mês/Ano" spaceLeft="15px">
-							<p:inputMask id="competencia" value="#{FrequenciaControl.data}"
-								mask="99/9999" />
-						</a:field>						
-						<p:remoteCommand update="tbFuncionarios"
-							id="atualizaTbFuncionarios"></p:remoteCommand>
-						<a:field label="Nome" spaceLeft="15px">
-							<p:autoComplete id="acMinLength" minQueryLength="3" maxResults="2"
-								value="#{FrequenciaControl.funcionario}"
-								completeMethod="#{FrequenciaControl.consultarFuncionario}"
-								var="func" itemLabel="#{func.nomePessoa}" itemValue="#{func}"
-								converter="objectConverter" forceSelection="true"
-								effect="fade"
-								style="height:15px;  width:150px">								
-							</p:autoComplete>
-						</a:field>
-						<a:newLine/>
-						<a:field style="height:auto" spaceLeft="15px">
-							<p:commandButton value="Pesquisar"
-								icon="ui-icon-refresh" update="tbFuncionarios"
-								action="#{FrequenciaControl.carregarFrequenciaMesFuncionario}" />
-						</a:field>
-						<a:newLine/>
-					</p:panel>
-					
-				<p:dataTable id="tbFuncionarios" 
-						emptyMessage="Sem Registros"
-						value="#{FrequenciaControl.funcionario}" rendered="true" >
-						<f:facet name="header">#{FrequenciaControl.funcionario.nomePessoa}</f:facet>						
+			<p:tabView dynamic="true" id="tabPrincipal">
+				<p:tab id="tabFrequenciaAluno" title="Frequência de alunos">
+					<p:dataTable id="listaCursos" var="curso"
+						emptyMessage="Sem registros"
+						value="#{FrequenciaControl.listaCursos}" paginator="true"
+						rowsPerPageLabel="5,10,15,20,25"
+						rowsPerPageTemplate="5,10,15,20,25">
+						<f:facet name="header">
+										        	Lista de cursos
+						</f:facet>
+						<p:columnGroup type="header">
+							<p:row>
+								<p:column headerText="Nome" />
+								<p:column headerText="Duração" width="15%" />
+								<p:column headerText="Carga horária" width="20%" />
+								<p:column headerText="Ações" width="7%" />
+							</p:row>
+						</p:columnGroup>
 
-						<p:columns value="#{FrequenciaControl.frequenciasF}" var="coluna"
-							columnIndexVar="colIndex" width="1200px">
-							<f:facet name="header" style="width:5%">#{coluna.data.date}</f:facet>
-							<p:selectBooleanCheckbox value="#{coluna.presente}">
-
-							</p:selectBooleanCheckbox>
-						</p:columns>
-						<a:newLine/>
+						<p:column style="text-align:center;">
+							<h:outputText value="#{curso.nome}" />
+						</p:column>
+						<p:column style="text-align:center;">
+							<h:outputText
+								rendered="#{curso.duracao == 'DURACAO_DETERMINADA'}"
+								value="DETERMINADA" />
+							<h:outputText
+								rendered="#{curso.duracao == 'DURACAO_INDETERMINADA'}"
+								value="INDETERMINADA" />
+						</p:column>
+						<p:column style="text-align:center;">
+							<h:outputText rendered="#{curso.cargaHoraria != null}"
+								value="#{curso.cargaHoraria} hrs" />
+						</p:column>
+						<p:column style="text-align:center;">
+							<p:commandButton id="botaoExibeTurmasDoCurso"
+								icon="ui-icon-search"
+								action="#{FrequenciaControl.exibeInfoDoCurso(curso)}" process="botaoExibeTurmasDoCurso"
+								oncomplete="PF('JanelaExibeTurmasDoCurso').show();"
+								update="formCorpo:tabPrincipal:turmasDoCurso" />
+							<p:tooltip for="botaoExibeTurmasDoCurso"
+								value="Consultar turmas do curso" position="top" />
+						</p:column>
 					</p:dataTable>
-					
-					<a:newLine/>
-					
-					  <a:field>
-						<p:commandButton
-							actionListener="#{FrequenciaControl.manterFrequenciaFuncionario}" update="tabFuncionario"
-							icon="ui-icon-plusthick" value="Confirmar"></p:commandButton>
-					</a:field>
-					 
-					<a:newLine/>
-				</p:tab>
 
-				<p:tab title="Aluno" id="tabAluno">
-				<p:panel id="buscaAluno" rendered="true">					
-					 	<a:field label="Mês/Ano" spaceLeft="15px">
-							<p:inputMask id="competencia2" value="#{FrequenciaControl.dataAluno}"
-								mask="99/9999" />
-						</a:field>
-						<p:remoteCommand update="tabAluno"
-							id="atualizaTbAlunos"></p:remoteCommand>
+					<p:dialog id="turmasDoCurso" widgetVar="JanelaExibeTurmasDoCurso"
+						width="80%" header="Informações do curso" modal="true">
+						<p:panelGrid columns="4" layout="grid">
 
-						<a:field label="Nome" spaceLeft="15px">
-							<p:autoComplete id="acMinLength2" minQueryLength="3"
-								value="#{FrequenciaControl.aluno}"
-								completeMethod="#{FrequenciaControl.consultarAluno}"
-								var="alun" itemLabel="#{alun.nomePessoa}" itemValue="#{alun}"
-								converter="objectConverter" forceSelection="true"
-								effect="fade"
-								style="height:15px;  width:150px"></p:autoComplete>
+							<h:outputLabel value="Nome do curso: " />
+							<h:outputText value="#{FrequenciaControl.exibeCursoInfo.nome}" />
+
+							<h:outputLabel value="Duração: " />
+							<h:outputText
+								rendered="#{FrequenciaControl.exibeCursoInfo.duracao == 'DURACAO_DETERMINADA'}"
+								value="DETERMINADA" />
+							<h:outputText
+								rendered="#{FrequenciaControl.exibeCursoInfo.duracao == 'DURACAO_INDETERMINADA'}"
+								value="INDETERMINADA" />
+
+							<h:outputLabel value="Carga horária: " />
+							<h:outputText
+								rendered="#{FrequenciaControl.exibeCursoInfo.cargaHoraria != null}"
+								value="#{FrequenciaControl.exibeCursoInfo.cargaHoraria} hrs" />
+							<h:outputText
+								rendered="#{FrequenciaControl.exibeCursoInfo.cargaHoraria == null}"
+								value="#{FrequenciaControl.exibeCursoInfo.cargaHoraria}" />
+
+							<h:outputLabel value="Conteúdo programático: " />
+							<h:outputText
+								value="#{FrequenciaControl.exibeCursoInfo.conteudoProgramatico}" />
+
+						</p:panelGrid>
+
+						<p:panel id="panelListaDeTurma">
+							<p:dataTable id="listaDeTurma" var="turma"
+								value="#{FrequenciaControl.turmasAtivasDoCurso}"
+								paginator="true" rowsPerPageLabel="5,10,15,20"
+								rowsPerPageTemplate="5,10,15,20" emptyMessage="Sem registros">
+								<f:facet name="header">Lista de turmas do curso de #{FrequenciaControl.exibeCursoInfo.nome}</f:facet>
+								<p:columnGroup type="header">
+									<p:row>
+										<p:column headerText="Código" sortBy="#{turma.id}" width="10%" />
+										<p:column headerText="Curso" sortBy="#{turma.curso.nome}"
+											width="20%" />
+										<p:column headerText="Turno" sortBy="#{turma.turno}"
+											width="10%" />
+										<p:column headerText="Qtd vagas"
+											sortBy="#{turma.quantidadeVagas}" />
+										<p:column headerText="Professor" sortBy="#{turma.professor}"
+											width="20%" />
+										<p:column headerText="Status" sortBy="#{turma.ativo}" />
+										<p:column headerText="Ações" width="7%" />
+									</p:row>
+								</p:columnGroup>
+
+								<p:column style="text-align:center;"
+									rendered="#{turma.isConcluido == false}">
+									<h:outputText value="#{turma.id}" />
+								</p:column>
+
+								<p:column style="text-align:center;"
+									rendered="#{turma.isConcluido == false}">
+									<h:outputText value="#{turma.curso.nome}" />
+								</p:column>
+
+								<p:column style="text-align:center;"
+									rendered="#{turma.isConcluido == false}">
+									<h:outputText value="#{turma.turno}" />
+								</p:column>
+
+								<p:column style="text-align:center;"
+									rendered="#{turma.isConcluido == false}">
+									<h:outputText value="#{turma.quantidadeVagas}" />
+								</p:column>
+
+								<p:column style="text-align:center;"
+									rendered="#{turma.isConcluido == false}">
+									<h:outputText value="#{turma.professor.nomePessoa}" />
+								</p:column>
+
+								<p:column style="text-align:center;"
+									rendered="#{turma.isConcluido == false}">
+									<h:outputText value="EM ANDAMENTO" />
+								</p:column>
 								
-						</a:field>
-						<a:newLine/>
-						<a:field style="height:auto" spaceLeft="15px">
-							<p:commandButton value="Pesquisar"
-								icon="ui-icon-refresh" update="tabAluno"
-								action="#{FrequenciaControl.carregarFrequenciaMesAluno}" />
-						</a:field>
-						<a:newLine/> 
-					</p:panel>
-					
-						<p:dataTable id="tbAlunos" var="alun"
-						emptyMessage="Sem Registros"
-						value="#{FrequenciaControl.alunos}" rendered="true">
-						<f:facet name="header">#{FrequenciaControl.aluno.nomePessoa}</f:facet>
+								<p:column style="text-align:center;" >
+									<p:commandButton id="botaoFrequenciaTurma" icon="ui-icon-person" />
+									<p:tooltip for="botaoFrequenciaTurma" 
+										value="Controle de frequência da turma" position="top" />
+								</p:column>
 
-						<p:columns value="#{FrequenciaControl.frequenciasA}" var="colunaAluno"
-							columnIndexVar="colIndex" width="1200px">
-							<f:facet name="header" style="width:5%">#{colunaAluno.data.date}</f:facet>
-							<p:selectBooleanCheckbox value="#{colunaAluno.presente}">
+							</p:dataTable>
+						</p:panel>
 
-							</p:selectBooleanCheckbox>
-						</p:columns>
-						<a:newLine/>
-					</p:dataTable>
-					
-					<a:newLine/>
-					
-					  <a:field>
-						<p:commandButton
-							actionListener="#{FrequenciaControl.manterFrequenciaAluno}" update="tabAluno"
-							icon="ui-icon-plusthick" value="Confirmar"></p:commandButton>
-					</a:field>
-					 
-					<a:newLine/>
+					</p:dialog>
 				</p:tab>
-				
+
+				<p:tab id="tabFrequenciaColaborador"
+					title="Frequência de colaboradores">
+
+				</p:tab>
 			</p:tabView>
-			
+
 		</p:panel>
 
 	</ui:define>
-	
+
 </ui:composition>

@@ -36,4 +36,20 @@ public class CursoDaoJpa extends PersistenciaJpa<Curso> implements CursoDao {
 		return null;
 	}
 
+	@Override
+	public Curso buscaCursoComListaDeTurmasAtivas(Curso curso) {
+		try {
+			Curso resultado = em.find(Curso.class, curso.getId());
+			Query buscaTurmasAtivas = em.createQuery("SELECT c FROM Curso c LEFT JOIN FETCH c.listaTurma listaTurma "
+					+ " WHERE c.id = :id");
+			buscaTurmasAtivas.setParameter("id", resultado.getId());
+			//buscaTurmasAtivas.setParameter("status", false);
+			resultado = (Curso) buscaTurmasAtivas.getSingleResult();
+			
+			return resultado;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
 }

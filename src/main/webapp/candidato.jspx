@@ -77,19 +77,19 @@
 					
 					<p:column>
 						<h:outputText
-							rendered="#{itemCandidato.listaResponsavel[0].size == null}"
+							rendered="#{itemCandidato.listaResponsavel == null}"
 							value="Não possui" />
 						<h:outputText
-							rendered="#{itemCandidato.listaResponsavel[0].size != null}"
+							rendered="#{itemCandidato.listaResponsavel != null}"
 							value="#{itemCandidato.listaResponsavel[0].nomePessoa}" />
 					</p:column>
 					
 					<p:column>
 						<h:outputText
-							rendered="#{itemCandidato.listaResponsavel[0].size == null}"
+							rendered="#{itemCandidato.listaResponsavel == null}"
 							value="Não possui" />
 						<h:outputText
-							rendered="#{itemCandidato.listaResponsavel[0].size != null}"
+							rendered="#{itemCandidato.listaResponsavel != null}"
 							value="#{itemCandidato.listaResponsavel[0].enumFiliacao}" />
 					</p:column>
 

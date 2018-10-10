@@ -20,7 +20,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @PrimaryKeyJoinColumn(name="id")
-public class Aluno extends Pessoa{
+public class Aluno extends Pessoa {
 
 
 	@Temporal(TemporalType.DATE)

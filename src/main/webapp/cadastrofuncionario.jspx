@@ -21,7 +21,8 @@
 			<p:commandButton type="button" id="consultar" value="Consultar"
 				icon="ui-icon-search" onclick="PF('consultar').show();"
 				action="#{FuncionarioControl.listarTodosFuncionarios}"
-				styleClass="marginbottom" process="@this" update="listaFuncionariosAtivos listaFuncionariosTodos">
+				styleClass="marginbottom" process="@this"
+				update="listaFuncionariosAtivos listaFuncionariosTodos">
 				<p:tooltip for="consultar" position="top"
 					value="Consultar Colaborador" />
 			</p:commandButton>
@@ -62,8 +63,9 @@
 				<p:commandButton id="filtrar" icon="ui-icon-search"
 					actionListener="#{FuncionarioControl.aplicarFiltro}"
 					process="filtrar filtroPorNome filtroPorTipo filtroPorStatus"
-					update="listaFuncionariosAtivos listaFuncionariosTodos" oncomplete="PF('consultar').show();"
-					ajax="true" style="margin-top: 24px; margin-left: 10px;" />
+					update="listaFuncionariosAtivos listaFuncionariosTodos"
+					oncomplete="PF('consultar').show();" ajax="true"
+					style="margin-top: 23px; margin-left: 10px;" />
 
 				<a:newLine />
 				<a:newLine />
@@ -87,30 +89,35 @@
 								sortBy="#{itemFuncionario.tipoFuncionario.ativo}" />
 						</p:row>
 					</p:columnGroup>
-					<p:column rendered="#{itemFuncionario.ativo == true}" width="20%" style="text-align: center">
+					<p:column rendered="#{itemFuncionario.ativo == true}" width="20%"
+						style="text-align: center">
 						#{itemFuncionario.nomePessoa}
 					</p:column>
 
-					<p:column rendered="#{itemFuncionario.ativo == true}" width="20%" style="text-align: center">
+					<p:column rendered="#{itemFuncionario.ativo == true}" width="20%"
+						style="text-align: center">
 						#{itemFuncionario.emailDoFuncionario}
 					</p:column>
 
-					<p:column rendered="#{itemFuncionario.ativo == true}" width="20%" style="text-align: center">
+					<p:column rendered="#{itemFuncionario.ativo == true}" width="20%"
+						style="text-align: center">
 						#{itemFuncionario.tipoFuncionario}
 					</p:column>
-					
-					<p:column rendered="#{itemFuncionario.ativo == true}" width="20%" style="text-align: center">
+
+					<p:column rendered="#{itemFuncionario.ativo == true}" width="20%"
+						style="text-align: center">
 						#{itemFuncionario.tipoFuncionario.ativo}
 					</p:column>
 
-					<p:column rendered="#{itemFuncionario.ativo == true}" width="10%" style="text-align: center">
-						<p:commandButton id="consultarColaborador" icon="ui-icon-search"
+					<p:column rendered="#{itemFuncionario.ativo == true}" width="10%"
+						style="text-align: center">
+						<p:commandButton id="consultarColaborador" icon="ui-icon-info"
 							style="margin-right: 10px"
 							action="#{FuncionarioControl.exibiInformacoesFuncionario(itemFuncionario)}"
 							update="formCorpo:info-colaborador"
 							oncomplete="PF('informacoes-colaborador').show();">
 							<p:tooltip for="consultarColaborador" position="top"
-								value="Consultar Colaborador" hideEvent="mouseleave click" />
+								value="Informações Colaborador" hideEvent="mouseleave click" />
 						</p:commandButton>
 
 						<p:commandButton id="editarColaborador" icon="ui-icon-pencil"
@@ -155,25 +162,25 @@
 						style="text-align: center">
 						#{itemFuncionario.tipoFuncionario}
 					</p:column>
-					
+
 					<p:column headerText="Status" width="10%"
 						style="text-align: center">
-						<h:outputText rendered="#{itemFuncionario.isAtivo == true}" 
+						<h:outputText rendered="#{itemFuncionario.isAtivo == true}"
 							value="ATIVO">
 						</h:outputText>
-						<h:outputText rendered="#{itemFuncionario.isAtivo == false}" 
+						<h:outputText rendered="#{itemFuncionario.isAtivo == false}"
 							value="INATIVO">
 						</h:outputText>
 					</p:column>
 
 					<p:column width="15%" style="text-align: center">
-						<p:commandButton id="consultarColaborador" icon="ui-icon-search"
+						<p:commandButton id="consultarColaborador" icon="ui-icon-info"
 							style="margin-right: 10px"
 							action="#{FuncionarioControl.exibiInformacoesFuncionario(itemFuncionario)}"
 							update="formCorpo:info-colaborador"
 							oncomplete="PF('informacoes-colaborador').show();">
 							<p:tooltip for="consultarColaborador" position="top"
-								value="Consultar Colaborador" hideEvent="mouseleave click" />
+								value="Informações Colaborador" hideEvent="mouseleave click" />
 						</p:commandButton>
 
 						<p:commandButton id="editarColaborador" icon="ui-icon-pencil"
@@ -236,10 +243,10 @@
 
 					<a:field label="Etnia:" />
 					<h:outputText value="#{FuncionarioControl.infoFuncionario.etnia}" />
-					
+
 					<a:field label="Nome da Mãe:" />
 					<h:outputText value="#{FuncionarioControl.infoFuncionario.nomeMae}" />
-					
+
 					<a:field label="Nome do Pai:" />
 					<h:outputText value="#{FuncionarioControl.infoFuncionario.nomePai}" />
 
@@ -288,7 +295,9 @@
 
 						<a:field label="Nome">
 							<p:inputText value="#{FuncionarioControl.funcionario.nomePessoa}"
-								style="width:435px;" />
+								style="width:435px;">
+								<p:keyFilter regEx="/[a-z_\s]/i" />
+							</p:inputText>
 						</a:field>
 
 						<a:field label="CPF" spaceLeft="10px">
@@ -307,7 +316,9 @@
 						<a:field label="Orgão Expedidor" spaceLeft="10px">
 							<p:inputText id="OrgaoExpeditor"
 								value="#{FuncionarioControl.funcionario.orgaoExpeditor}"
-								style="width:120px!important; text-transform: uppercase;" />
+								style="width:120px!important; text-transform: uppercase;">
+								<p:keyFilter regEx="/[a-z_]/i" />
+							</p:inputText>
 						</a:field>
 
 						<a:newLine />
@@ -323,7 +334,9 @@
 						<a:field label="Naturalidade" spaceLeft="10px">
 							<p:inputText
 								value="#{FuncionarioControl.funcionario.naturalidade}"
-								style="width:160px!important" />
+								style="width:160px!important">
+								<p:keyFilter regEx="/[a-z_]/i" />
+							</p:inputText>
 						</a:field>
 
 						<a:field label="Estado Civil" spaceLeft="10px">
@@ -363,12 +376,16 @@
 
 						<a:field label="Nome da Mãe">
 							<p:inputText value="#{FuncionarioControl.funcionario.nomeMae}"
-								style="width:265px;" />
+								style="width:265px;">
+								<p:keyFilter regEx="/[a-z_\s]/i" />
+							</p:inputText>
 						</a:field>
 
 						<a:field label="Nome do Pai" spaceLeft="10px">
 							<p:inputText value="#{FuncionarioControl.funcionario.nomePai}"
-								style="width:265px;" />
+								style="width:265px;">
+								<p:keyFilter regEx="/[a-z_\s]/i" />
+							</p:inputText>
 						</a:field>
 
 						<a:field label="Email" spaceLeft="10px">
@@ -397,7 +414,9 @@
 						<a:field label="Cidade">
 							<p:inputText
 								value="#{FuncionarioControl.endereco.cidade.nomeCidade}"
-								style="width:240px" />
+								style="width:240px">
+								<p:keyFilter regEx="/[a-z_\s]/i" />
+							</p:inputText>
 						</a:field>
 
 						<a:field label="Estado:" spaceLeft="10px">
@@ -501,42 +520,42 @@
 
 							<a:field
 								rendered="#{FuncionarioControl.funcionario.tipoFuncionario == 'CONTRATADO'}"
-								label="Salário:" styleClassLabel="contratado-fields-input">
+								label="Salário:" styleClassLabel="fields-input">
 								<p:inputNumber id="inputSalario" styleClass="teste"
 									value="#{FuncionarioControl.funcionario.valorInicial}"
 									style="width:160px" symbol="R$ " minValue="0"
 									maxValue="1000000" thousandSeparator="." decimalSeparator="," />
-								<div class="contratado-fields-div" />
+								<div class="fields-div" />
 							</a:field>
 
 							<a:field
 								rendered="#{FuncionarioControl.funcionario.tipoFuncionario == 'CONTRATADO'}"
-								label="PIS:" styleClassLabel="contratado-fields-input"
+								label="PIS:" styleClassLabel="fields-input"
 								spaceLeft="10px">
 								<p:inputMask id="inputPIS" mask="999.99999.99-9"
 									value="#{FuncionarioControl.funcionario.pis}"
 									style="width:160px" />
-								<div class="contratado-fields-div" />
+								<div class="fields-div" />
 							</a:field>
 
 							<a:field
 								rendered="#{FuncionarioControl.funcionario.tipoFuncionario == 'CONTRATADO'}"
-								label="CTPS:" styleClassLabel="contratado-fields-input"
+								label="CTPS:" styleClassLabel="fields-input"
 								spaceLeft="10px">
 								<p:inputMask id="inputCTPS" mask="9999999"
 									value="#{FuncionarioControl.funcionario.carteiraDeTrabalho}"
 									style="width:160px" />
-								<div class="contratado-fields-div" />
+								<div class="fields-div" />
 							</a:field>
 
 							<a:field
 								rendered="#{FuncionarioControl.funcionario.tipoFuncionario == 'CONTRATADO'}"
-								label="Serie:" styleClassLabel="contratado-fields-input"
+								label="Serie:" styleClassLabel="fields-input"
 								spaceLeft="10px">
 								<p:inputMask id="inputSerie" mask="9999"
 									value="#{FuncionarioControl.funcionario.serieCarteiraDeTrabalho}"
 									style="width:160px" />
-								<div class="contratado-fields-div" />
+								<div class="fields-div" />
 							</a:field>
 
 							<a:newLine />

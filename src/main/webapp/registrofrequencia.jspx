@@ -11,7 +11,7 @@
 		<p:panel id="panel" header="Registro de Frequência">
 
 			<p:tabView dynamic="true" id="tabPrincipal">
-				<p:tab id="tabFrequenciaAluno" title="Frequência de alunos">
+				<p:tab id="tabFrequenciaAluno" title="Frequência de turmas" rendered="#{securityScope.userInRole['SECRETARIA'] or securityScope.userInRole['ADMIN'] or securityScope.userInRole['EDUCADOR']}" >
 					<p:dataTable id="listaCursos" var="curso"
 						emptyMessage="Sem registros"
 						value="#{FrequenciaControl.listaCursos}" paginator="true"
@@ -47,7 +47,8 @@
 						<p:column style="text-align:center;">
 							<p:commandButton id="botaoExibeTurmasDoCurso"
 								icon="ui-icon-search"
-								action="#{FrequenciaControl.exibeInfoDoCurso(curso)}" process="botaoExibeTurmasDoCurso"
+								action="#{FrequenciaControl.exibeInfoDoCurso(curso)}"
+								process="botaoExibeTurmasDoCurso"
 								oncomplete="PF('JanelaExibeTurmasDoCurso').show();"
 								update="formCorpo:tabPrincipal:turmasDoCurso" />
 							<p:tooltip for="botaoExibeTurmasDoCurso"
@@ -135,10 +136,11 @@
 									rendered="#{turma.isConcluido == false}">
 									<h:outputText value="EM ANDAMENTO" />
 								</p:column>
-								
-								<p:column style="text-align:center;" >
-									<p:commandButton id="botaoFrequenciaTurma" icon="ui-icon-person" />
-									<p:tooltip for="botaoFrequenciaTurma" 
+
+								<p:column style="text-align:center;">
+									<p:commandButton id="botaoFrequenciaTurma"
+										icon="ui-icon-person" />
+									<p:tooltip for="botaoFrequenciaTurma"
 										value="Controle de frequência da turma" position="top" />
 								</p:column>
 
@@ -149,7 +151,128 @@
 				</p:tab>
 
 				<p:tab id="tabFrequenciaColaborador"
-					title="Frequência de colaboradores">
+					title="Frequência de colaboradores"  rendered="#{securityScope.userInRole['SECRETARIA'] or securityScope.userInRole['ADMIN']}">
+
+					<p:dataTable id="listaEducadores"
+						value="#{FrequenciaControl.educadores}" var="educador"
+						rowsPerPageLabel="5,10,15,20,25"
+						rowsPerPageTemplate="5,10,15,20,25" paginator="true"
+						emptyMessage="Nenhum registro.">
+
+						<f:facet name="header">Lista de educadores</f:facet>
+						<p:columnGroup type="header">
+							<p:row>
+								<p:column headerText="Nome" sortBy="#{educador.nomePessoa}" />
+								<p:column headerText="Cargo" />
+								<p:column headerText="CPF" sortBy="#{educador.cpf}" />
+								<p:column headerText="Ações" width="10%" />
+							</p:row>
+						</p:columnGroup>
+
+						<p:column style="text-align:center;">
+							<h:outputText value="#{educador.nomePessoa}" />
+						</p:column>
+
+						<p:column style="text-align:center;">
+							<h:outputText rendered="#{educador.cargo == 'EDUCADOR'}"
+								value="EDUCADOR" />
+						</p:column>
+
+						<p:column style="text-align:center;">
+							<h:outputText value="#{educador.cpf}" />
+						</p:column>
+
+						<p:column style="text-align:center;">
+							<p:commandButton id="botaoFrequenciaEducador" icon="ui-icon-search"
+								action="#{FrequenciaControl.exibeInfoFrequenciaEducador(educador)}"
+								oncomplete="PF('frequenciaEducador').show();" update="formCorpo:tabPrincipal:janelaFrequenciaEducador" />
+							<p:tooltip for="botaoFrequenciaEducador"
+								value="Exibir informações do educador" position="top" />
+						</p:column>
+
+					</p:dataTable>
+
+					<p:dialog id="janelaFrequenciaEducador"
+						widgetVar="frequenciaEducador" modal="true" width="70%" >
+						<p:panelGrid columns="4" layout="grid">
+
+							<a:field label="Nome:" />
+							<h:outputText
+								value="#{FrequenciaControl.funcionario.nomePessoa}" />
+
+							<a:field label="CPF:" />
+							<h:outputText value="#{FrequenciaControl.funcionario.cpf}" />
+
+							<a:field label="RG:" />
+							<h:outputText value="#{FrequenciaControl.funcionario.rg}" />
+
+							<a:field label="Orgão Expedidor:" />
+							<h:outputText
+								value="#{FrequenciaControl.funcionario.orgaoExpeditor}" />
+
+							<a:field label="Data Nascimento:" />
+							<h:outputText
+								value="#{FrequenciaControl.funcionario.dataNascimento}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+
+							<a:field label="Naturalidade:" />
+							<h:outputText
+								value="#{FrequenciaControl.funcionario.naturalidade}" />
+
+							<a:field label="Estado Civil:" />
+							<h:outputText
+								value="#{FrequenciaControl.funcionario.enumEstadoCivil}" />
+
+							<a:field label="Gênero:" />
+							<h:outputText
+								value="#{FrequenciaControl.funcionario.enumSexo}" />
+
+							<a:field label="Etnia:" />
+							<h:outputText value="#{FrequenciaControl.funcionario.etnia}" />
+
+							<a:field label="Nome da Mãe:" />
+							<h:outputText
+								value="#{FrequenciaControl.funcionario.nomeMae}" />
+
+							<a:field label="Nome do Pai:" />
+							<h:outputText
+								value="#{FrequenciaControl.funcionario.nomePai}" />
+
+							<a:field label="Email:" />
+							<h:outputText
+								value="#{FrequenciaControl.funcionario.emailDoFuncionario}" />
+
+							<a:field label="Endereço:" />
+							<h:outputText
+								value="#{FrequenciaControl.funcionario.listaEndereco[0].ruaOuAvenida}" />
+
+							<a:field label="Bairro:" />
+							<h:outputText
+								value="#{FrequenciaControl.funcionario.listaEndereco[0].bairro}" />
+
+							<a:field label="Cidade:" />
+							<h:outputText
+								value="#{FrequenciaControl.funcionario.listaEndereco[0].cidade.nomeCidade}" />
+
+							<a:field label="Estado:" />
+							<h:outputText
+								value="#{FrequenciaControl.funcionario.listaEndereco[0].cidade.enumEstado}" />
+
+							<a:field label="CEP:" />
+							<h:outputText
+								value="#{FrequenciaControl.funcionario.listaEndereco[0].cep}" />
+
+							<a:field label="Numero:" />
+							<h:outputText
+								value="#{FrequenciaControl.funcionario.listaEndereco[0].numero}" />
+
+							<a:field label="Complemento:" />
+							<h:outputText
+								value="#{FrequenciaControl.funcionario.listaEndereco[0].complemento}" />
+
+						</p:panelGrid>
+					</p:dialog>
 
 				</p:tab>
 			</p:tabView>

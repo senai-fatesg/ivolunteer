@@ -17,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.Aluno;
 import br.com.ambientinformatica.ivolunteer.entidade.Curso;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumCargo;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoFuncionario;
 import br.com.ambientinformatica.ivolunteer.entidade.Frequencia;
 import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.ivolunteer.entidade.Turma;
@@ -54,14 +56,15 @@ public class FrequenciaControl {
 	private List<Curso> listaCursos = new ArrayList<Curso>();
 	private List<Frequencia> frequenciasF = new ArrayList<Frequencia>();
 	private List<Frequencia> frequenciasA = new ArrayList<Frequencia>();
-	private List<Funcionario> funcionarios = new ArrayList<Funcionario>();
+	private List<Funcionario> educadores = new ArrayList<Funcionario>();
 	private List<Aluno> alunos = new ArrayList<Aluno>();
 	private Curso exibeCursoInfo;
 	private List<Turma> turmasAtivasDoCurso = new ArrayList<Turma>();
 	
 	@PostConstruct
 	public void init() {
-		listaCursos = cursoDao.listar();
+		listarCursos();
+		listarEducadores();
 	}
 	
 	public void exibeInfoDoCurso(Curso curso) {
@@ -69,12 +72,23 @@ public class FrequenciaControl {
 		this.turmasAtivasDoCurso  = turmaDao.buscaTurmasAtivas(curso);
 	}
 	
-    
+	public void listarEducadores() {
+		this.educadores = funcionarioDao.listarEducadoresAtivos(EnumCargo.EDUCADOR);
+	}
+	
+	public void listarCursos() {
+		listaCursos = cursoDao.listar();
+	}
+	
+	public void exibeInfoFrequenciaEducador(Funcionario educador) {
+		this.funcionario = funcionarioDao.carregarFuncionarioComEnderecoTelefone(educador);
+	}
+	
 	@SuppressWarnings("deprecation")
 	public void carregarFrequenciaMesFuncionario() {		
 		
-		funcionarios = new ArrayList<Funcionario>();
-		funcionarios.add(funcionario);
+		educadores = new ArrayList<Funcionario>();
+		educadores.add(funcionario);
 		frequenciasF = new ArrayList<Frequencia>();
 
 		GregorianCalendar calendar = new GregorianCalendar();
@@ -225,9 +239,9 @@ public class FrequenciaControl {
 	
 	
 	public List<Funcionario> consultarFuncionario(String query) {		
-		 this.funcionarios = funcionarioDao.listarPorNome(query);
+		 this.educadores = funcionarioDao.listarPorNome(query);
 	
-		return funcionarios;
+		return educadores;
 	}
 
 	
@@ -250,7 +264,7 @@ public class FrequenciaControl {
 		frequenciasA = new ArrayList<Frequencia>();
 		data = new String();
 		funcionario = new Funcionario();
-		funcionarios = new ArrayList<Funcionario>();
+		educadores = new ArrayList<Funcionario>();
 		aluno = new Aluno();
 		alunos = new ArrayList<Aluno>();
 		dataAluno = new String();
@@ -332,11 +346,11 @@ public class FrequenciaControl {
 	public void setFrequenciasA(List<Frequencia> frequenciasA) {
 		this.frequenciasA = frequenciasA;
 	}
-	public List<Funcionario> getFuncionarios() {
-		return funcionarios;
+	public List<Funcionario> getEducadores() {
+		return educadores;
 	}
-	public void setFuncionarios(List<Funcionario> funcionarios) {
-		this.funcionarios = funcionarios;
+	public void setEducadores(List<Funcionario> funcionarios) {
+		this.educadores = funcionarios;
 	}
 	public List<Aluno> getAlunos() {
 		return alunos;

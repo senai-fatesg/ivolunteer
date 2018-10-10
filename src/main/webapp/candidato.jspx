@@ -99,7 +99,7 @@
 					</p:column>
 
 					<p:column width="8%">
-						<p:commandButton id="exibirInfoCandidato" icon="ui-icon-search"
+						<p:commandButton id="exibirInfoCandidato" icon="ui-icon-info"
 							action="#{CandidatoControl.exibeInformacoesCandidato(itemCandidato)}"
 							update=":formCorpo:infoCandidatoJanela"
 							oncomplete="PF('infoCandidato').show();" />
@@ -183,7 +183,7 @@
 					</p:column>
 
 					<p:column width="8%" rendered="#{itemCandidato.isAtivo == true}" >
-						<p:commandButton id="exibirInfoCandidato" icon="ui-icon-search"
+						<p:commandButton id="exibirInfoCandidato" icon="ui-icon-info"
 							action="#{CandidatoControl.exibeInformacoesCandidato(itemCandidato)}"
 							update=":formCorpo:infoCandidatoJanela"
 							oncomplete="PF('infoCandidato').show();" />

@@ -1,10 +1,12 @@
 package br.com.ambientinformatica.ivolunteer.controle;
 
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
@@ -53,6 +55,8 @@ public class FrequenciaControl {
 	@Autowired
 	private AlunoDao alunoDao;
 
+	private Date dataFiltro = new Date();
+	private Frequencia dataFrequenciaEducador = new Frequencia();
 	private List<Curso> listaCursos = new ArrayList<Curso>();
 	private List<Frequencia> frequenciasF = new ArrayList<Frequencia>();
 	private List<Frequencia> frequenciasA = new ArrayList<Frequencia>();
@@ -82,6 +86,25 @@ public class FrequenciaControl {
 	
 	public void exibeInfoFrequenciaEducador(Funcionario educador) {
 		this.funcionario = funcionarioDao.carregarFuncionarioComEnderecoTelefone(educador);
+	}
+	
+	public void exibeDiasDoMes() {
+		//Calendar filtro = this.frequenciaFiltro.getData();
+		Calendar auxiliar = Calendar.getInstance();
+		auxiliar.setTime(this.dataFiltro);
+		
+		YearMonth AnoMes = YearMonth.of(auxiliar.get(Calendar.YEAR), (auxiliar.get(Calendar.MONTH) + 1));
+		
+		for (int i = 1; i < AnoMes.lengthOfMonth(); i++) {
+			Frequencia nova = new Frequencia();
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(dataFiltro);
+			cal.set(Calendar.DAY_OF_MONTH, i);
+			if(cal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && cal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+				nova.setData(cal.getTime());
+				this.frequenciasF.add(nova);
+			}		
+		}
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -270,6 +293,22 @@ public class FrequenciaControl {
 		dataAluno = new String();
 	}
 	
+	public Frequencia getDataFrequenciaEducador() {
+		return dataFrequenciaEducador;
+	}
+
+	public void setDataFrequenciaEducador(Frequencia dataFrequenciaEducador) {
+		this.dataFrequenciaEducador = dataFrequenciaEducador;
+	}
+
+	public Date getDataFiltro() {
+		return dataFiltro;
+	}
+
+	public void setDataFiltro(Date dataFiltro) {
+		this.dataFiltro = dataFiltro;
+	}
+
 	public List<Turma> getTurmasAtivasDoCurso() {
 		return turmasAtivasDoCurso;
 	}

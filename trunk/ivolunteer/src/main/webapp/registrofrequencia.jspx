@@ -11,7 +11,8 @@
 		<p:panel id="panel" header="Registro de Frequência">
 
 			<p:tabView dynamic="true" id="tabPrincipal">
-				<p:tab id="tabFrequenciaAluno" title="Frequência de turmas" rendered="#{securityScope.userInRole['SECRETARIA'] or securityScope.userInRole['ADMIN'] or securityScope.userInRole['EDUCADOR']}" >
+				<p:tab id="tabFrequenciaAluno" title="Frequência de turmas"
+					rendered="#{securityScope.userInRole['SECRETARIA'] or securityScope.userInRole['ADMIN'] or securityScope.userInRole['EDUCADOR']}">
 					<p:dataTable id="listaCursos" var="curso"
 						emptyMessage="Sem registros"
 						value="#{FrequenciaControl.listaCursos}" paginator="true"
@@ -151,7 +152,8 @@
 				</p:tab>
 
 				<p:tab id="tabFrequenciaColaborador"
-					title="Frequência de colaboradores"  rendered="#{securityScope.userInRole['SECRETARIA'] or securityScope.userInRole['ADMIN']}">
+					title="Frequência de colaboradores"
+					rendered="#{securityScope.userInRole['SECRETARIA'] or securityScope.userInRole['ADMIN']}">
 
 					<p:dataTable id="listaEducadores"
 						value="#{FrequenciaControl.educadores}" var="educador"
@@ -183,9 +185,11 @@
 						</p:column>
 
 						<p:column style="text-align:center;">
-							<p:commandButton id="botaoFrequenciaEducador" icon="ui-icon-search"
+							<p:commandButton id="botaoFrequenciaEducador"
+								icon="ui-icon-search"
 								action="#{FrequenciaControl.exibeInfoFrequenciaEducador(educador)}"
-								oncomplete="PF('frequenciaEducador').show();" update="formCorpo:tabPrincipal:janelaFrequenciaEducador" />
+								oncomplete="PF('frequenciaEducador').show();"
+								update="formCorpo:tabPrincipal:janelaFrequenciaEducador" />
 							<p:tooltip for="botaoFrequenciaEducador"
 								value="Exibir informações do educador" position="top" />
 						</p:column>
@@ -193,12 +197,11 @@
 					</p:dataTable>
 
 					<p:dialog id="janelaFrequenciaEducador"
-						widgetVar="frequenciaEducador" modal="true" width="70%" >
+						widgetVar="frequenciaEducador" modal="true" width="90%">
 						<p:panelGrid columns="4" layout="grid">
 
 							<a:field label="Nome:" />
-							<h:outputText
-								value="#{FrequenciaControl.funcionario.nomePessoa}" />
+							<h:outputText value="#{FrequenciaControl.funcionario.nomePessoa}" />
 
 							<a:field label="CPF:" />
 							<h:outputText value="#{FrequenciaControl.funcionario.cpf}" />
@@ -225,19 +228,16 @@
 								value="#{FrequenciaControl.funcionario.enumEstadoCivil}" />
 
 							<a:field label="Gênero:" />
-							<h:outputText
-								value="#{FrequenciaControl.funcionario.enumSexo}" />
+							<h:outputText value="#{FrequenciaControl.funcionario.enumSexo}" />
 
 							<a:field label="Etnia:" />
 							<h:outputText value="#{FrequenciaControl.funcionario.etnia}" />
 
 							<a:field label="Nome da Mãe:" />
-							<h:outputText
-								value="#{FrequenciaControl.funcionario.nomeMae}" />
+							<h:outputText value="#{FrequenciaControl.funcionario.nomeMae}" />
 
 							<a:field label="Nome do Pai:" />
-							<h:outputText
-								value="#{FrequenciaControl.funcionario.nomePai}" />
+							<h:outputText value="#{FrequenciaControl.funcionario.nomePai}" />
 
 							<a:field label="Email:" />
 							<h:outputText
@@ -272,6 +272,37 @@
 								value="#{FrequenciaControl.funcionario.listaEndereco[0].complemento}" />
 
 						</p:panelGrid>
+
+						<a:newLine />
+
+						<a:field label="Mês/Ano:">
+							<p:calendar id="mesAnoFrequencia"
+								value="#{FrequenciaControl.dataFiltro}" locale="de"
+								yearRange="c-20:c" navigator="true" pattern="MM/yyyy">
+								<p:ajax event="dateSelect" process="mesAnoFrequencia" />
+							</p:calendar>
+						</a:field>
+
+						<p:commandButton style="margin-left: 15px; margin-top: 23px;"
+							id="botaoCarregaDiasDoMes"
+							process="mesAnoFrequencia botaoCarregaDiasDoMes"
+							action="#{FrequenciaControl.exibeDiasDoMes}"
+							icon="ui-icon-search" update="listaDatasPresenca" />
+
+						<a:newLine />
+						<a:newLine />
+
+						<p:dataTable id="listaDatasPresenca" value="#{FrequenciaControl.funcionario}" >
+							<f:facet name="header">Controle de frequência de #{FrequenciaControl.funcionario.nomePessoa}</f:facet>
+							<p:columns value="#{FrequenciaControl.frequenciasF}" var="data">
+								<h:outputText value="#{data.data}">
+									<f:convertDateTime pattern="dd/MM" locale="de" type="date" />
+								</h:outputText>
+								<p:selectBooleanCheckbox value="#{data.presente}" />
+							</p:columns>
+							
+						</p:dataTable>
+
 					</p:dialog>
 
 				</p:tab>

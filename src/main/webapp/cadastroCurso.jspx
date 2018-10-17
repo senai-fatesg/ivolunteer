@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="corpo">
+
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<p:commandButton value="Sim" type="button"
+				styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			<p:commandButton value="Não" type="button"
+				styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		</p:confirmDialog>
+
+		<p:growl autoUpdate="true" />
+		<p:panel header="Cadastro de Cursos" id="painelPrincipal">
+
+			<p:commandButton id="consultar"
+				onclick="PF('consultaCursos').show();"
+				action="#{CursoControl.listar}" icon="ui-icon-search"
+				value="consultar" />
+			
+			<a:newLine />
+			
+			<p:dialog id="consultarCursos" widgetVar="consultaCursos"
+				modal="true" header="Consultar Cursos" width="70%">
+				
+				<a:field label="Nome do Curso:">
+					<p:inputText id="filtroNomeCurso" value="#{CursoControl.nomeFiltro}" />
+				</a:field>
+				
+				<a:field label="Status:" spaceLeft="15px">
+					<p:selectOneMenu id="statusCurso" value="#{CursoControl.statusFiltro}" >
+						<f:selectItem itemLabel="TODOS" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItem itemLabel="ATIVO" itemValue="t" />
+						<f:selectItem itemLabel="INATIVO" itemValue="f" />
+					</p:selectOneMenu>
+				</a:field>
+				
+				<p:commandButton style="margin-left: 10px; margin-top: 23px;" 
+					process="filtroNomeCurso statusCurso botaoAplicarFiltro" update="consultarCursos listaCursos"
+					oncomplete="PF('consultaCursos').show();"
+					id="botaoAplicarFiltro" icon="ui-icon-search" action="#{CursoControl.aplicarFiltro}" />
+
+				<a:newLine/>
+				<a:newLine/>
+
+				<p:dataTable id="listaCursos" paginator="true" rows="5"
+					rowsPerPageLabel="5,10,15,20" rowsPerPageTemplate="5,10,15,20"
+					value="#{CursoControl.listaCursos}" var="curso"
+					emptyMessage="Nenhum registro">
+
+					<f:facet name="header">Lista de cursos</f:facet>
+					<p:columnGroup type="header">
+						<p:row>
+							<p:column headerText="Nome" sortBy="#{curso.nome}" />
+							<p:column headerText="Duração" width="15%" sortBy="#{curso.duracao}" />
+							<p:column headerText="Carga horária" width="20%" />
+							<p:column headerText="Status" width="10%" />
+							<p:column headerText="Ações" width="10%" />
+						</p:row>
+					</p:columnGroup>
+
+					<p:column style="text-align:center;">
+						<h:outputText value="#{curso.nome}" />
+					</p:column>
+					<p:column style="text-align:center;">
+						<h:outputText rendered="#{curso.duracao == 'DURACAO_DETERMINADA'}"
+							value="DETERMINADA" />
+						<h:outputText
+							rendered="#{curso.duracao == 'DURACAO_INDETERMINADA'}"
+							value="INDETERMINADA" />
+					</p:column>
+					<p:column style="text-align:center;">
+						<h:outputText rendered="#{curso.cargaHoraria != null}"
+							value="#{curso.cargaHoraria} hrs" />
+					</p:column>
+					<p:column style="text-align:center;">
+						<h:outputText rendered="#{curso.isAtivo == true}"
+							value="ATIVO" />
+							<h:outputText rendered="#{curso.isAtivo == false}"
+							value="INATIVO" />
+					</p:column>
+					
+					<p:column style="text-align:center;">
+						<p:commandButton id="botaoEditaCurso" icon="ui-icon-pencil"
+							action="#{CursoControl.editaCurso(curso)}"
+							process="botaoEditaCurso"
+							oncomplete="PF('consultaCursos').hide();"
+							update="formCorpo:painelPrincipal" />
+						<p:tooltip for="botaoEditaCurso" value="Editar curso"
+							position="top" />
+						
+						<p:commandButton id="botaoExibeInfoCurso" icon="ui-icon-info"
+							action="#{CursoControl.exibeInfoDoCurso(curso)}"
+							process="botaoExibeInfoCurso"
+							oncomplete="PF('janelaInfoCurso').show();"
+							update="formCorpo:infoCurso" />
+						<p:tooltip for="botaoExibeInfoCurso" value="Informações do curso"
+							position="top" />
+					</p:column>
+
+				</p:dataTable>
+
+			</p:dialog>
+
+			<p:dialog id="infoCurso" widgetVar="janelaInfoCurso" width="80%"
+				header="Informações do curso" modal="true">
+				<p:panelGrid columns="4" layout="grid">
+
+					<h:outputLabel value="Nome do curso: " />
+					<h:outputText value="#{CursoControl.exibeCursoInfo.nome}" />
+
+					<h:outputLabel value="Duração: " />
+					<h:outputText
+						rendered="#{CursoControl.exibeCursoInfo.duracao == 'DURACAO_DETERMINADA'}"
+						value="DETERMINADA" />
+					<h:outputText
+						rendered="#{CursoControl.exibeCursoInfo.duracao == 'DURACAO_INDETERMINADA'}"
+						value="INDETERMINADA" />
+
+					<h:outputLabel value="Carga horária: " />
+					<h:outputText
+						rendered="#{CursoControl.exibeCursoInfo.cargaHoraria != null}"
+						value="#{CursoControl.exibeCursoInfo.cargaHoraria} hrs" />
+					<h:outputText
+						rendered="#{CursoControl.exibeCursoInfo.cargaHoraria == null}"
+						value="#{CursoControl.exibeCursoInfo.cargaHoraria}" />
+
+					<h:outputLabel value="Conteúdo programático: " />
+					<h:outputText
+						value="#{CursoControl.exibeCursoInfo.conteudoProgramatico}" />
+
+				</p:panelGrid>
+
+			</p:dialog>
+
+			<a:newLine />
+			<a:field label="Nome do curso:">
+				<p:inputText id="nomeCurso" value="#{CursoControl.curso.nome}" />
+			</a:field>
+
+			<a:field label="Duração:" spaceLeft="15px">
+				<p:selectOneMenu id="tipoDuracaoCurso"
+					value="#{CursoControl.curso.duracao}">
+					<f:selectItems value="#{CursoControl.completeEnumTipoCurso}" />
+				</p:selectOneMenu>
+			</a:field>
+
+			<a:field label="Carga horária:" spaceLeft="15px">
+				<p:inputText id="cargaHorariaCurso"
+					value="#{CursoControl.curso.cargaHoraria}" />
+			</a:field>
+
+			<a:field label="Conteúdo programático:">
+				<p:editor id="conteudoProgramatico"
+					value="#{CursoControl.curso.conteudoProgramatico}" />
+			</a:field>
+
+			<a:newLine />
+			<a:newLine />
+
+			<p:commandButton id="botaoCadastrarCurso" icon="ui-icon-disk"
+				rendered="#{CursoControl.curso.id == null}" value="Cadastrar"
+				update="painelPrincipal formCorpo:consultarCursos"
+				actionListener="#{CursoControl.cadastrarCurso}" />
+			<p:tooltip for="botaoCadastrarCurso" value="Cadastrar curso"
+				position="top" />
+
+			<p:commandButton id="botaoSalvarCurso" icon="ui-icon-refresh"
+				rendered="#{CursoControl.curso.id != null}" value="Salvar"
+				update="painelPrincipal formCorpo:consultarCursos"
+				actionListener="#{CursoControl.salvarAlteracoesCurso}" />
+			<p:tooltip for="botaoSalvarCurso" value="Salvar alterações"
+				position="top" />
+		</p:panel>
+
+	</ui:define>
+</ui:composition>

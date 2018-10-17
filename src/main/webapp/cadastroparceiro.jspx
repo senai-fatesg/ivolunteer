@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="corpo">
+
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<p:commandButton value="Sim" type="button"
+				styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			<p:commandButton value="Não" type="button"
+				styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		</p:confirmDialog>
+
+		<p:growl autoUpdate="true" />
+		<p:panel header="Cadastro de Parceiros" id="painelPrincipal">
+
+			<p:commandButton id="consultar"
+				onclick="PF('consultaParceiros').show();"
+				action="#{ParceiroControl.listar}" icon="ui-icon-search"
+				value="consultar" />
+			
+			<a:newLine />
+			
+			<p:dialog id="consultarParceiros" widgetVar="consultaParceiros"
+				modal="true" header="Consultar parceiros" width="70%">
+				
+				<a:field label="Nome:">
+					<p:inputText id="filtroNomeParceiro" value="#{ParceiroControl.nomeFiltro}" />
+				</a:field>
+				
+				<a:field label="Status:" spaceLeft="15px">
+					<p:selectOneMenu id="statusParceiro" value="#{ParceiroControl.statusFiltro}" >
+						<f:selectItem itemLabel="TODOS" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItem itemLabel="ATIVO" itemValue="t" />
+						<f:selectItem itemLabel="INATIVO" itemValue="f" />
+					</p:selectOneMenu>
+				</a:field>
+				
+				<p:commandButton style="margin-left: 10px; margin-top: 23px;" 
+					process="filtroNomeParceiro statusParceiro botaoAplicarFiltro" 
+					update="consultarParceiros listaParceiros listaParceirosAtivos"
+					oncomplete="PF('consultaParceiros').show();"
+					id="botaoAplicarFiltro" icon="ui-icon-search" action="#{ParceiroControl.aplicarFiltro}" />
+
+				<a:newLine/>
+				<a:newLine/>
+
+				<!-- Tabela renderizada apenas para SECRETARIA ou ADMIN -->
+				<p:dataTable rendered="#{securityScope.userInRole['SECRETARIA'] or securityScope.userInRole['ADMIN']}" 
+					id="listaParceiros" paginator="true" rows="5"
+					rowsPerPageLabel="5,10,15,20" rowsPerPageTemplate="5,10,15,20"
+					value="#{ParceiroControl.listaParceiros}" var="parceiro"
+					emptyMessage="Nenhum registro">
+
+					<f:facet name="header">Lista de parceiros</f:facet>
+					<p:columnGroup type="header">
+						<p:row>
+							<p:column headerText="Nome" sortBy="#{parceiro.nome}" />
+							<p:column headerText="CNPJ" width="20%" sortBy="#{parceiro.duracao}" />
+							<p:column headerText="Email" width="25%" />
+							<p:column headerText="Telefone" width="15%" />
+							<p:column headerText="Status" width="9%" />
+							<p:column headerText="Ações" width="10%" />
+						</p:row>
+					</p:columnGroup>
+
+					<p:column style="text-align:center;">
+						<h:outputText value="#{parceiro.nome}" />
+					</p:column>
+					<p:column style="text-align:center;">
+						<h:outputText value="#{parceiro.cnpj}" />
+					</p:column>
+					<p:column style="text-align:center;">
+						<h:outputText value="#{parceiro.email}" />
+					</p:column>
+					<p:column style="text-align:center;">
+						<h:outputText value="#{parceiro.telefone}" />
+					</p:column>
+					<p:column style="text-align:center;">
+						<h:outputText rendered="#{parceiro.isAtivo == true}"
+							value="ATIVO" />
+							<h:outputText rendered="#{parceiro.isAtivo == false}"
+							value="INATIVO" />
+					</p:column>
+					
+					<p:column style="text-align:center;">
+						<p:commandButton id="botaoEditaParceiro" icon="ui-icon-pencil"
+							action="#{ParceiroControl.editaParceiro(parceiro)}"
+							process="botaoEditaParceiro"
+							oncomplete="PF('consultaParceiros').hide();"
+							update="formCorpo:painelPrincipal" />
+						<p:tooltip for="botaoEditaParceiro" value="Editar parceiro"
+							position="top" />
+						
+						<p:commandButton id="botaoExibeInfoParceiro" icon="ui-icon-info"
+							action="#{ParceiroControl.exibeInfoDoParceiro(parceiro)}" ajax="false"
+							process="botaoExibeInfoParceiro"
+							oncomplete="PF('janelaInfoParceiro').show();"
+							update="formCorpo:infoParceiro" />
+						<p:tooltip for="botaoExibeInfoParceiro" value="Informações do parceiro"
+							position="top" />
+					</p:column>
+
+				</p:dataTable>
+				
+				<!-- Tabela renderizada apenas para outros usuarios -->
+				<p:dataTable rendered="#{!securityScope.userInRole['SECRETARIA'] and !securityScope.userInRole['ADMIN']}" 
+					id="listaParceirosAtivos" paginator="true" rows="5"
+					rowsPerPageLabel="5,10,15,20" rowsPerPageTemplate="5,10,15,20"
+					value="#{ParceiroControl.listaParceiros}" var="parceiro"
+					emptyMessage="Nenhum registro">
+
+					<f:facet name="header">Lista de parceiros</f:facet>
+					<p:columnGroup type="header">
+						<p:row>
+							<p:column headerText="Nome" sortBy="#{parceiro.nome}" />
+							<p:column headerText="CNPJ" width="15%" sortBy="#{parceiro.duracao}" />
+							<p:column headerText="Email" width="20%" />
+							<p:column headerText="Telefone" width="10%" />
+							<p:column headerText="Status" width="10%" />
+							<p:column headerText="Ações" width="10%" />
+						</p:row>
+					</p:columnGroup>
+
+					<p:column rendered="#{parceiro.isAtivo == true}" style="text-align:center;">
+						<h:outputText value="#{parceiro.nome}" />
+					</p:column>
+					<p:column rendered="#{parceiro.isAtivo == true}" style="text-align:center;">
+						<h:outputText	value="#{parceiro.cnpj}" />
+					</p:column>
+					<p:column rendered="#{parceiro.isAtivo == true}" style="text-align:center;">
+						<h:outputText value="#{parceiro.email}" />
+					</p:column>
+					<p:column rendered="#{parceiro.isAtivo == true}" style="text-align:center;">
+						<h:outputText value="#{parceiro.telefone}" />
+					</p:column>
+					<p:column rendered="#{parceiro.isAtivo == true}" style="text-align:center;">
+						<h:outputText rendered="#{parceiro.isAtivo == true}"
+							value="ATIVO" />
+					</p:column>
+					
+					<p:column rendered="#{parceiro.isAtivo == true}" style="text-align:center;">
+						<p:commandButton id="botaoEditaParceiro" icon="ui-icon-pencil"
+							action="#{ParceiroControl.editaParceiro(parceiro)}"
+							process="botaoEditaParceiro"
+							oncomplete="PF('consultaParceiros').hide();"
+							update="formCorpo:painelPrincipal" />
+						<p:tooltip for="botaoEditaParceiro" value="Editar parceiro"
+							position="top" />
+						
+						<p:commandButton id="botaoExibeInfoParceiro" icon="ui-icon-info"
+							action="#{ParceiroControl.exibeInfoDoParceiro(parceiro)}"
+							process="botaoExibeInfoParceiro"
+							oncomplete="PF('janelaInfoParceiro').show();"
+							update="formCorpo:infoParceiro" />
+						<p:tooltip for="botaoExibeInfoParceiro" value="Informações do parceiro"
+							position="top" />
+					</p:column>
+
+				</p:dataTable>
+				
+				
+			</p:dialog>
+
+			<p:dialog id="infoParceiro" widgetVar="janelaInfoParceiro" width="80%"
+				header="Informações do parceiro" modal="true">
+				<p:panelGrid columns="4" layout="grid">
+
+					<h:outputLabel value="Nome: " />
+					<h:outputText value="#{ParceiroControl.exibeParceiroInfo.nome}" />
+
+					<h:outputLabel value="CNPJ: " />
+					<h:outputText value="#{ParceiroControl.exibeParceiroInfo.cnpj}" />
+						
+					<h:outputLabel value="Email: " />
+					<h:outputText value="#{ParceiroControl.exibeParceiroInfo.email}" />
+					
+					<h:outputLabel value="Telefone: " />
+					<h:outputText value="#{ParceiroControl.exibeParceiroInfo.telefone}" />
+
+				</p:panelGrid>
+
+			</p:dialog>
+
+			<a:newLine />
+			<a:field label="Nome:">
+				<p:inputText id="nome" value="#{ParceiroControl.parceiro.nome}" />
+			</a:field>
+
+			<a:field label="CNPJ:" spaceLeft="15px">
+				<p:inputMask id="cnpj" mask="99.999.999/9999-99" value="#{ParceiroControl.parceiro.cnpj}" />
+			</a:field>
+
+			<a:field label="Email:" spaceLeft="15px">
+				<p:inputText id="email" validator="#{ParceiroControl.validaEmail}"
+					value="#{ParceiroControl.parceiro.email}" />
+			</a:field>
+
+			<a:field label="Telefone:" spaceLeft="15px">
+				<p:inputMask id="telefone" mask="(99)9999-9999"
+					value="#{ParceiroControl.parceiro.telefone}" />
+			</a:field>
+
+			<a:newLine />
+			<a:newLine />
+
+			<p:commandButton id="botaoCadastrarParceiro" icon="ui-icon-disk"
+				rendered="#{ParceiroControl.parceiro.id == null}" value="Cadastrar"
+				update="painelPrincipal formCorpo:consultarParceiros"
+				actionListener="#{ParceiroControl.cadastrarParceiro}" />
+			<p:tooltip for="botaoCadastrarParceiro" value="Cadastrar parceiro"
+				position="top" />
+
+			<p:commandButton id="botaoSalvarParceiro" icon="ui-icon-refresh"
+				rendered="#{ParceiroControl.parceiro.id != null}" value="Salvar"
+				update="painelPrincipal formCorpo:consultarParceiros" 
+				actionListener="#{ParceiroControl.salvarAlteracoesParceiro}" />
+			<p:tooltip for="botaoSalvarParceiro" value="Salvar alterações"
+				position="top" />
+		</p:panel>
+
+	</ui:define>
+</ui:composition>

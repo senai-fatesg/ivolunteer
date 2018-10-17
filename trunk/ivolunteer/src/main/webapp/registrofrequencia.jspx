@@ -15,7 +15,7 @@
 					rendered="#{securityScope.userInRole['SECRETARIA'] or securityScope.userInRole['ADMIN'] or securityScope.userInRole['EDUCADOR']}">
 					<p:dataTable id="listaCursos" var="curso"
 						emptyMessage="Sem registros"
-						value="#{FrequenciaControl.listaCursos}" paginator="true"
+						value="#{FrequenciaControl.listaCursos}" paginator="true" rows="5"
 						rowsPerPageLabel="5,10,15,20,25"
 						rowsPerPageTemplate="5,10,15,20,25">
 						<f:facet name="header">

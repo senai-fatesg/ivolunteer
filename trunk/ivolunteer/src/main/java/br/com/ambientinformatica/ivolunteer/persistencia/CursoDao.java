@@ -15,4 +15,8 @@ public interface CursoDao extends Persistencia<Curso> {
 
 	public List<Curso> listarCursosAtivos();
 
+	public List<Curso> buscaCursoPorStatus(String statusFiltro);
+
+	public List<Curso> buscaCursoPorStatusNome(String statusFiltro, String nomeFiltro);
+
 }

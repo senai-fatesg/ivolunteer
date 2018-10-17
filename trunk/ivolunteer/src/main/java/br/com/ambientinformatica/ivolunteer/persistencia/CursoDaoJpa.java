@@ -7,6 +7,7 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
+import br.com.ambientinformatica.ivolunteer.entidade.Avaliacao;
 import br.com.ambientinformatica.ivolunteer.entidade.Curso;
 import br.com.ambientinformatica.jpa.persistencia.PersistenciaJpa;
 
@@ -58,6 +59,45 @@ public class CursoDaoJpa extends PersistenciaJpa<Curso> implements CursoDao {
 			Query query = em.createQuery("SELECT c FROM Curso c WHERE c.isAtivo = :status");
 			query.setParameter("status", true);
 			return (List<Curso>) query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public List<Curso> buscaCursoPorStatus(String statusFiltro) {
+		try {
+			boolean st;
+			if(statusFiltro.contains("t")) {
+				st = true;
+			} else {
+				st = false;
+			}
+			Query query = em.createQuery("SELECT c FROM Curso c WHERE c.isAtivo = :status");
+			query.setParameter("status", st);
+			List<Curso> cursos= query.getResultList();
+			return cursos;
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public List<Curso> buscaCursoPorStatusNome(String statusFiltro, String nomeFiltro) {
+		try {
+			boolean st;
+			if(statusFiltro.contains("t")) {
+				st = true;
+			} else {
+				st = false;
+			}
+			Query query = em.createQuery("SELECT c FROM Curso c WHERE UPPER(c.nome) LIKE :nome "
+					+ " AND c.isAtivo = :status");
+			query.setParameter("nome", "%" + nomeFiltro.toUpperCase() + "%");
+			query.setParameter("status", st);
+			return query.getResultList();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

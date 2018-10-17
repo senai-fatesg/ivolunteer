@@ -32,8 +32,6 @@ public class CursoControl {
 	@Autowired
 	private CursoDao cursoDao;
 
-	private List<AgrupamentoTurma> agrupamentoTurmas = new ArrayList<AgrupamentoTurma>();
-
 	@PostConstruct
 	public void init() {
 		listar();
@@ -143,14 +141,6 @@ public class CursoControl {
 
 	public void setCursoDao(CursoDao cursoDao) {
 		this.cursoDao = cursoDao;
-	}
-
-	public List<AgrupamentoTurma> getAgrupamentoTurmas() {
-		return agrupamentoTurmas;
-	}
-
-	public void setAgrupamentoTurmas(List<AgrupamentoTurma> agrupamentoTurmas) {
-		this.agrupamentoTurmas = agrupamentoTurmas;
 	}
 
 	public Curso getExibeCursoInfo() {

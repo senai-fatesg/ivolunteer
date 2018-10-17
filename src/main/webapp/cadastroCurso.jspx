@@ -42,14 +42,17 @@
 				</a:field>
 				
 				<p:commandButton style="margin-left: 10px; margin-top: 23px;" 
-					process="filtroNomeCurso statusCurso botaoAplicarFiltro" update="consultarCursos listaCursos"
+					process="filtroNomeCurso statusCurso botaoAplicarFiltro" 
+					update="consultarCursos listaCursos listaCursosAtivos"
 					oncomplete="PF('consultaCursos').show();"
 					id="botaoAplicarFiltro" icon="ui-icon-search" action="#{CursoControl.aplicarFiltro}" />
 
 				<a:newLine/>
 				<a:newLine/>
 
-				<p:dataTable id="listaCursos" paginator="true" rows="5"
+				<!-- Tabela renderizada apenas para SECRETARIA ou ADMIN -->
+				<p:dataTable rendered="#{securityScope.userInRole['SECRETARIA'] or securityScope.userInRole['ADMIN']}" 
+					id="listaCursos" paginator="true" rows="5"
 					rowsPerPageLabel="5,10,15,20" rowsPerPageTemplate="5,10,15,20"
 					value="#{CursoControl.listaCursos}" var="curso"
 					emptyMessage="Nenhum registro">
@@ -105,7 +108,65 @@
 					</p:column>
 
 				</p:dataTable>
+				
+				<!-- Tabela renderizada apenas para outros usuarios -->
+				<p:dataTable rendered="#{!securityScope.userInRole['SECRETARIA'] and !securityScope.userInRole['ADMIN']}" 
+					id="listaCursosAtivos" paginator="true" rows="5"
+					rowsPerPageLabel="5,10,15,20" rowsPerPageTemplate="5,10,15,20"
+					value="#{CursoControl.listaCursos}" var="curso"
+					emptyMessage="Nenhum registro">
 
+					<f:facet name="header">Lista de cursos</f:facet>
+					<p:columnGroup type="header">
+						<p:row>
+							<p:column headerText="Nome" sortBy="#{curso.nome}" />
+							<p:column headerText="Duração" width="15%" sortBy="#{curso.duracao}" />
+							<p:column headerText="Carga horária" width="20%" />
+							<p:column headerText="Status" width="10%" />
+							<p:column headerText="Ações" width="10%" />
+						</p:row>
+					</p:columnGroup>
+
+					<p:column rendered="#{curso.isAtivo == true}" style="text-align:center;">
+						<h:outputText value="#{curso.nome}" />
+					</p:column>
+					<p:column rendered="#{curso.isAtivo == true}" style="text-align:center;">
+						<h:outputText rendered="#{curso.duracao == 'DURACAO_DETERMINADA'}"
+							value="DETERMINADA" />
+						<h:outputText
+							rendered="#{curso.duracao == 'DURACAO_INDETERMINADA'}"
+							value="INDETERMINADA" />
+					</p:column>
+					<p:column rendered="#{curso.isAtivo == true}" style="text-align:center;">
+						<h:outputText rendered="#{curso.cargaHoraria != null}"
+							value="#{curso.cargaHoraria} hrs" />
+					</p:column>
+					<p:column rendered="#{curso.isAtivo == true}" style="text-align:center;">
+						<h:outputText rendered="#{curso.isAtivo == true}"
+							value="ATIVO" />
+					</p:column>
+					
+					<p:column rendered="#{curso.isAtivo == true}" style="text-align:center;">
+						<p:commandButton id="botaoEditaCurso" icon="ui-icon-pencil"
+							action="#{CursoControl.editaCurso(curso)}"
+							process="botaoEditaCurso"
+							oncomplete="PF('consultaCursos').hide();"
+							update="formCorpo:painelPrincipal" />
+						<p:tooltip for="botaoEditaCurso" value="Editar curso"
+							position="top" />
+						
+						<p:commandButton id="botaoExibeInfoCurso" icon="ui-icon-info"
+							action="#{CursoControl.exibeInfoDoCurso(curso)}"
+							process="botaoExibeInfoCurso"
+							oncomplete="PF('janelaInfoCurso').show();"
+							update="formCorpo:infoCurso" />
+						<p:tooltip for="botaoExibeInfoCurso" value="Informações do curso"
+							position="top" />
+					</p:column>
+
+				</p:dataTable>
+				
+				
 			</p:dialog>
 
 			<p:dialog id="infoCurso" widgetVar="janelaInfoCurso" width="80%"

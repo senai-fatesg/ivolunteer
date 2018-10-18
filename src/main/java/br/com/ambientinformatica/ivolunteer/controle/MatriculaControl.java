@@ -20,10 +20,14 @@ import br.com.ambientinformatica.ivolunteer.entidade.Candidato;
 import br.com.ambientinformatica.ivolunteer.entidade.Cidade;
 import br.com.ambientinformatica.ivolunteer.entidade.Endereco;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumFiliacao;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumSexo;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoEtnia;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoPessoa;
+import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
 import br.com.ambientinformatica.ivolunteer.entidade.Matricula;
 import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
+import br.com.ambientinformatica.ivolunteer.entidade.Responsavel;
 import br.com.ambientinformatica.ivolunteer.persistencia.AlunoDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.CandidatoDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.MatriculaDao;
@@ -36,12 +40,14 @@ public class MatriculaControl {
 
 	private Aluno aluno = new Aluno();
 	private Candidato candidato = new Candidato();
+	private Candidato infoCandidato = new Candidato();
 	private Cidade cidade = new Cidade();
 	private Endereco endereco = new Endereco();
+	private Responsavel responsavel = new Responsavel();
 	private String dataReal;
 	private Matricula matricula = new Matricula();
-	private String certidaoNascimento; 
-	private String pesquisaNomeCandidato;
+	private String filtroNome;
+	private String filtroStatus;
 
 	@Autowired
 	private AlunoDao alunoDao;
@@ -53,6 +59,8 @@ public class MatriculaControl {
 	private List<Matricula> matriculas = new ArrayList<Matricula>();
 	private List<Aluno> alunos = new ArrayList<Aluno>();
 	private List<Candidato> candidatos = new ArrayList<Candidato>();
+	
+	private List<String> images;
 
 	public Aluno getAluno() {
 		return aluno;
@@ -70,6 +78,14 @@ public class MatriculaControl {
 		this.candidato = candidato;
 	}
 
+	public Candidato getInfoCandidato() {
+		return infoCandidato;
+	}
+
+	public void setInfoCandidato(Candidato infoCandidato) {
+		this.infoCandidato = infoCandidato;
+	}
+
 	public Cidade getCidade() {
 		return cidade;
 	}
@@ -84,6 +100,14 @@ public class MatriculaControl {
 
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
+	}
+
+	public Responsavel getResponsavel() {
+		return responsavel;
+	}
+
+	public void setResponsavel(Responsavel responsavel) {
+		this.responsavel = responsavel;
 	}
 
 	public String getDataReal() {
@@ -125,12 +149,13 @@ public class MatriculaControl {
 	@PostConstruct
 	public void init() {
 //		listarAlunos(null);
-		aplicarFiltro(null);
+		aplicarFiltroAluno(null);
+		aplicarFiltroCandidato(null);
 		listarCandidatos();
+		addImage();
 	}
 	
 	public List<Aluno> getAlunos() {
-		this.certidaoNascimento = "";
 		this.alunos = alunoDao.listar();
 //		listarAlunos(null);
 		return alunos;
@@ -148,9 +173,14 @@ public class MatriculaControl {
 		this.candidatos = candidatos;
 	}
 
+	public List<String> getImages() {
+		return images;
+	}
+
 	public void incluir(ActionEvent evt) {
 		try {
 			if(this.matricula.getId() == null) {
+				this.aluno.addResponsavel(this.getResponsavel());
 				matriculaDao.incluir(this.matricula);
 				aluno.setMatricula(this.matricula);
 				alunoDao.alterar(this.aluno);
@@ -162,6 +192,7 @@ public class MatriculaControl {
 			this.aluno = new Aluno();
 			this.endereco = new Endereco();
 			this.matricula = new Matricula();
+			this.responsavel = new Responsavel();
 			UtilFaces.addMensagemFaces("Aluno salvo com sucesso!");
 		} catch (PersistenciaException e) {
 			UtilFaces.addMensagemFaces(e);
@@ -194,10 +225,18 @@ public class MatriculaControl {
 		this.aluno.setNomePessoa(this.candidato.getNomePessoa());
 		this.aluno.setDataNascimento(this.candidato.getDataNascimento());
 		this.aluno.setEnumSexo(this.candidato.getEnumSexo());
+		this.aluno.setEtnia(this.candidato.getEtnia());
 		this.aluno.setNaturalidade(this.candidato.getNaturalidade());
 		this.aluno.setCpf(this.candidato.getCpf());
 		this.aluno.setRg(this.candidato.getRg());
 		this.aluno.setOrgaoExpeditor(this.candidato.getOrgaoExpeditor());
+		
+		if (this.candidato.getListaResponsavel().isEmpty()) {
+			return;
+		} else {			
+			this.setResponsavel(this.candidato.getListaResponsavel().get(0));
+		}
+		
 		this.aluno.getListaEndereco().addAll(this.candidato.getListaEndereco());
 		
 		this.calculaIdadeReal(null);
@@ -246,15 +285,58 @@ public class MatriculaControl {
 		}
 	}
 	
-	public void aplicarFiltro(ActionEvent evt) {
+	public void aplicarFiltroAluno(ActionEvent evt) {
 		try {
-			if(certidaoNascimento.equals("")){
-				this.alunos = this.alunoDao.listar();
+			if (this.validarFiltroPorNome()) {
+				//this.matriculas
+			} else if (this.validarFiltroPorStatus()) {
+
 			} else {
-				this.alunos = this.alunoDao.listarPorCertidao(certidaoNascimento);					
+				
 			}
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
+		}
+	}
+	
+	public void aplicarFiltroCandidato(ActionEvent evt) {
+		try {
+			System.out.println("Valor filtro status: " + this.filtroStatus);
+			if (this.validarFiltroPorNome()) {
+				this.candidatos = this.candidatoDao.listaCandidatoPorNome(this.filtroNome);
+			} else if (this.validarFiltroPorStatus()) {
+				this.candidatos = this.candidatoDao.listaPorStatus(filtroStatus);
+			} else if (this.validarFiltroPorNomeEStatus()) {
+				this.candidatos = this.candidatoDao.listarPorNomeStatus(this.filtroNome, this.filtroStatus);
+			} else {
+				this.candidatos = this.candidatoDao.listar();
+			}
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
+	
+	public boolean validarFiltroPorNome() {
+		if (!this.filtroNome.isEmpty() && this.filtroStatus.isEmpty()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean validarFiltroPorStatus() {
+		if (!this.filtroStatus.isEmpty() && this.filtroNome.isEmpty()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean validarFiltroPorNomeEStatus() {
+		if (!this.filtroNome.isEmpty() && !this.filtroStatus.isEmpty()) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -281,20 +363,29 @@ public class MatriculaControl {
 	public List<SelectItem> getCompleteEnumEstado() {
 		return UtilFaces.getListEnum(EnumEstado.values());
 	}
-
-	public String getCertidaoNascimento() {
-		return certidaoNascimento;
+	
+	public List<SelectItem> getCompleteEnumFiliacao() {
+		return UtilFaces.getListEnum(EnumFiliacao.values());
+	}
+	
+	public List<SelectItem> getCompleteEnumTipoEtnia() {
+		return UtilFaces.getListEnum(EnumTipoEtnia.values());
+	}
+	
+	public String getFiltroNome() {
+		return filtroNome;
 	}
 
-	public void setCertidaoNascimento(String certidaoNascimento) {
-		this.certidaoNascimento = certidaoNascimento;
-	}
-	public String getPesquisaNomeCandidato() {
-		return pesquisaNomeCandidato;
+	public void setFiltroNome(String nomeDoCandidato) {
+		this.filtroNome = nomeDoCandidato;
 	}
 
-	public void setPesquisaNomeCandidato(String nomeDoCandidato) {
-		this.pesquisaNomeCandidato = nomeDoCandidato;
+	public String getFiltroStatus() {
+		return filtroStatus;
+	}
+
+	public void setFiltroStatus(String filtroStatus) {
+		this.filtroStatus = filtroStatus;
 	}
 
 	public void calculaIdadeReal(SelectEvent event){
@@ -308,6 +399,14 @@ public class MatriculaControl {
 		this.candidatos = candidatoDao.listaCandidatosComResponsavel();
 	}
 	
+	public void exibiInformacoesCandidato(Candidato candidato) {
+		this.infoCandidato = candidatoDao.consultarCandidatoCompleto(candidato);
+	}
+	
+	public void addImage() {
+		this.images = new ArrayList<String>();
+		this.images.add("default-user.png");
+	}
+	
 }
 	
-

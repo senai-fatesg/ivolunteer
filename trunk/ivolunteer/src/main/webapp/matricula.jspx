@@ -11,7 +11,7 @@
 		<p:panel header="Matricula" id="panelAluno">
 			<!-- <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />  -->
 
-			<p:commandButton id="matricular" value="Matricular"
+			<p:commandButton id="matricular" value="Matricular Candidatos"
 				icon="ui-icon-plus"
 				actionListener="#{MatriculaControl.listarCandidatos}"
 				resetValues="true" update="listaCandidatos"
@@ -23,20 +23,32 @@
 				height="100%" resizable="true">
 
 				<a:field label="Nome">
-					<p:inputText id="nome"
-						value="#{MatriculaControl.pesquisaNomeCandidato}" />
+					<p:inputText id="filtroNome" value="#{MatriculaControl.filtroNome}" />
 				</a:field>
 
-				<p:commandButton id="filtrarPorNome" icon="ui-icon-search"
-					actionListener="#{MatriculaControl.aplicarFiltro}"
+				<a:field label="Status:" spaceLeft="15px">
+					<p:selectOneMenu id="filtroStatus"
+						value="#{MatriculaControl.filtroStatus}">
+						<f:selectItem itemLabel="TODOS" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItem itemLabel="ATIVO" itemValue="t" />
+						<f:selectItem itemLabel="INATIVO" itemValue="f" />
+					</p:selectOneMenu>
+				</a:field>
+
+				<p:commandButton id="aplicarFiltro" icon="ui-icon-search"
+					actionListener="#{MatriculaControl.aplicarFiltroCandidato}"
+					process="aplicarFiltro filtroNome filtroStatus"
 					update="formCorpo:listaCandidatos"
-					style="margin-left: 10px; margin-top: 23px;" ajax="true" />
+					oncomplete="PF('matricular').show();" ajax="true"
+					style="margin-top: 23px; margin-left: 10px;" />
 
 				<a:newLine />
 				<a:newLine />
 
-				<p:dataTable id="listaCandidatos" var="itemAluno" style="width:100%"
-					value="#{MatriculaControl.candidatos}"
+				<p:dataTable id="listaCandidatos" var="itemAluno" paginator="true"
+					rows="10" rowsPerPageLabel="5,10,20" rowsPerPageTemplate="5,10,20"
+					style="width:100%" value="#{MatriculaControl.candidatos}"
 					widgetVar="funcionariosTable" emptyMessage="Sem Registros a Exibir">
 					<p:columnGroup type="header">
 						<p:row>
@@ -69,20 +81,16 @@
 					</p:column>
 
 					<p:column>
-						<h:outputText
-							rendered="#{itemAluno.listaResponsavel == null}"
+						<h:outputText rendered="#{itemAluno.listaResponsavel == null}"
 							value="Não possui" />
-						<h:outputText
-							rendered="#{itemAluno.listaResponsavel != null}"
+						<h:outputText rendered="#{itemAluno.listaResponsavel != null}"
 							value="#{itemAluno.listaResponsavel[0].nomePessoa}" />
 					</p:column>
 
 					<p:column>
-						<h:outputText
-							rendered="#{itemAluno.listaResponsavel == null}"
+						<h:outputText rendered="#{itemAluno.listaResponsavel == null}"
 							value="Não possui" />
-						<h:outputText
-							rendered="#{itemAluno.listaResponsavel != null}"
+						<h:outputText rendered="#{itemAluno.listaResponsavel != null}"
 							value="#{itemAluno.listaResponsavel[0].enumFiliacao}" />
 					</p:column>
 
@@ -94,22 +102,88 @@
 					</p:column>
 
 					<p:column width="10%">
-						<p:commandButton id="exibirInfoCandidato" icon="ui-icon-search"
-							action="#{MatriculaControl.carregaCandidatoParaAlunoMatriculado(itemAluno)}"
-							oncomplete="PF('infoCandidato').show();" />
+						<p:commandButton id="exibirInfoCandidato" icon="ui-icon-info"
+							action="#{MatriculaControl.exibiInformacoesCandidato(itemAluno)}"
+							oncomplete="PF('informacoes-candidato').show();"
+							update="formCorpo:info-candidato" process="@this"
+							style="margin-left:10px;" />
 						<p:tooltip for="exibirInfoCandidato" position="top"
 							value="Exibir informações do candidato." />
 
 						<p:commandButton id="matricularCandidato" icon="ui-icon-check"
 							action="#{MatriculaControl.carregaCandidatoParaAlunoMatriculado(itemAluno)}"
 							oncomplete="PF('matricular').hide();"
-							update="formCorpo:tabCadastroMatricula"
-							process="@this" />
+							update="formCorpo:tabCadastroMatricula" process="@this"
+							style="margin-left:10px;" />
 						<p:tooltip for="matricularCandidato" position="top"
 							value="Matricular candidato." />
-
 					</p:column>
+
 				</p:dataTable>
+			</p:dialog>
+
+			<p:dialog id="info-candidato" widgetVar="informacoes-candidato"
+				modal="true" header="Informações do Candidato" width="900px">
+				<p:panelGrid columns="4" layout="grid">
+					<h:outputLabel value="Nome:" />
+					<h:outputText value="#{MatriculaControl.infoCandidato.nomePessoa}" />
+
+					<h:outputLabel value="Data Nascimento:" />
+					<h:outputText
+						value="#{MatriculaControl.infoCandidato.dataNascimento}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+
+					<h:outputLabel value="CPF:" />
+					<h:outputText value="#{MatriculaControl.infoCandidato.cpf}" />
+
+					<h:outputLabel value="RG:" />
+					<h:outputText value="#{MatriculaControl.infoCandidato.rg}" />
+
+					<h:outputLabel value="Órgão emissor:" />
+					<h:outputText
+						value="#{MatriculaControl.infoCandidato.orgaoExpeditor}" />
+
+					<h:outputLabel value="Etnia:" />
+					<h:outputText value="#{MatriculaControl.infoCandidato.etnia}" />
+
+					<h:outputLabel value="Data de Expedição:" />
+					<h:outputText
+						value="#{MatriculaControl.infoCandidato.dataExpedicao}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+
+					<h:outputLabel value="Naturalidade:" />
+					<h:outputText
+						value="#{MatriculaControl.infoCandidato.naturalidade}" />
+
+					<h:outputLabel value="Estado civil:" />
+					<h:outputText
+						value="#{MatriculaControl.infoCandidato.enumEstadoCivil}" />
+
+					<h:outputLabel value="Gênero:" />
+					<h:outputText
+						rendered="#{MatriculaControl.infoCandidato.enumSexo == 'M'}"
+						value="Masculino" />
+					<h:outputText
+						rendered="#{MatriculaControl.infoCandidato.enumSexo == 'F'}"
+						value="Feminino" />
+
+					<h:outputLabel value="Tem prioridade:" />
+					<h:outputText
+						rendered="#{MatriculaControl.infoCandidato.temPrioridade == true}"
+						value="Sim" />
+					<h:outputText
+						rendered="#{MatriculaControl.infoCandidato.temPrioridade == false}"
+						value="Não" />
+
+					<h:outputLabel value="Observação:" />
+					<h:outputText value="#{MatriculaControl.infoCandidato.observacao}" />
+
+					<h:outputLabel value="Nível de escolaridade:" />
+					<h:outputText
+						value="#{MatriculaControl.infoCandidato.enumEscolaridade}" />
+				</p:panelGrid>
 			</p:dialog>
 
 			<p:commandButton id="consultar" value="Consultar"
@@ -123,8 +197,7 @@
 				minimizable="false" width="90%" height="100%" resizable="true">
 
 				<a:field label="Matricula">
-					<p:inputText id="filtro"
-						value="#{MatriculaControl.certidaoNascimento}" />
+					<p:inputText id="filtro" />
 				</a:field>
 				<a:field spaceLeft="15px">
 					<p:commandButton id="filtrar" icon="ui-icon-search"
@@ -134,9 +207,10 @@
 
 				<a:newLine />
 
-				<p:dataTable id="listaAlunos" var="itemAluno" style="width:100%"
-					value="#{MatriculaControl.alunos}" widgetVar="funcionariosTable"
-					emptyMessage="Sem Registros a Exibir">
+				<p:dataTable id="listaAlunos" var="itemAluno" paginator="true"
+					rows="10" rowsPerPageLabel="5,10,20" rowsPerPageTemplate="5,10,20"
+					style="width:100%" value="#{MatriculaControl.alunos}"
+					widgetVar="funcionariosTable" emptyMessage="Sem Registros a Exibir">
 					<p:column headerText="Matricula">#{itemAluno.id}</p:column>
 					<p:column headerText="Nome" width="30%">#{itemAluno.nomePessoa}</p:column>
 					<p:column headerText="Certidão de Nascimento">#{itemAluno.certidaoNascimento}</p:column>
@@ -169,7 +243,7 @@
 
 						<!-- INICIO DO TAB DADOS DO CANDIDATO -->
 
-						<p:tab title="Dados do Aluno" id="dadosCandidato">
+						<p:tab title="Cadastro de Matrícula" id="dadosCandidato">
 							<p:panel id="painelAlunoDet"
 								style="width: 100% !important; position:relative !important; 
 								float:left !important; padding: 15px !important;">
@@ -181,25 +255,27 @@
 								<a:field label="Matricula">
 									<p:inputText readonly="true" style="width: 100%;" />
 								</a:field>
+								
+								<p:graphicImage name="/main/webapp/resources/images/default-user.png" 
+										style="position: relative; float: right; width: 27.5%;"/>
 
-								<p:panel id="painelFoto"
-									style="position:relative;  padding:50px; float:right; 
-									widht:10%; height:10%; margin-left:0px;">
+								<!-- <p:panel id="painelFoto"
+									style="position: relative; padding: 90px; float: right;">
 									<h1>
 										<strong>Foto</strong>
 									</h1>
 
 									<p:imageSwitch effect="fade" id="fadeEffect">
-										<ui:repeat id="fadeEffectImages" value="#{ImagesView.images}"
-											var="image">
-											<p:graphicImage name="/main/webapp/img/#{image}" id="image" />
+										<ui:repeat id="fadeEffectImages" var="image"
+											value="#{MatriculaControl.images}">
+											<p:graphicImage name="/main/webapp/imagens/#{image}" id="image" />
 										</ui:repeat>
 									</p:imageSwitch>
-								</p:panel>
+								</p:panel> -->
 
 								<a:field label="Nome do Aluno" spaceLeft="10px">
 									<p:inputText value="#{MatriculaControl.aluno.nomePessoa}"
-										style="width: 414px;">
+										style="width: 433px;">
 										<p:keyFilter regEx="/[a-z_\s]/i" />
 									</p:inputText>
 								</a:field>
@@ -218,13 +294,13 @@
 									spaceLeft="10px">
 									<p:inputText id="idadeReal"
 										value="#{MatriculaControl.dataReal}" disabled="true"
-										style="width: 202px;" />
+										style="width: 211px;" />
 								</a:field>
 
-								<a:field label="Sexo" styleClassLabel="fields-input"
+								<a:field label="Gênero" styleClassLabel="fields-input"
 									spaceLeft="10px">
 									<p:selectOneMenu id="enumSexo" dropdown="true"
-										style="width: 201px;"
+										style="width: 211px;"
 										value="#{MatriculaControl.aluno.enumSexo}">
 										<f:selectItem itemLabel="Selecione uma opção"
 											itemValue="#{null}" noSelectionOption="true" />
@@ -232,10 +308,21 @@
 									</p:selectOneMenu>
 								</a:field>
 
+								<a:field label="Etnia" styleClassLabel="fields-input"
+									spaceLeft="10px">
+									<p:selectOneMenu id="etnia"
+										value="#{MatriculaControl.aluno.etnia}" style="width: 200px;">
+										<f:selectItem itemLabel="Selecione uma opção"
+											itemValue="#{null}" noSelectionOption="true"></f:selectItem>
+										<f:selectItems
+											value="#{MatriculaControl.completeEnumTipoEtnia}"></f:selectItems>
+									</p:selectOneMenu>
+								</a:field>
+
 								<a:field label="Naturalidade" styleClassLabel="fields-input"
 									spaceLeft="10px">
 									<p:inputText value="#{MatriculaControl.aluno.naturalidade}"
-										style="width: 130px;">
+										style="width: 175px;">
 										<p:keyFilter regEx="/[a-z_]/i" />
 									</p:inputText>
 								</a:field>
@@ -243,122 +330,85 @@
 								<a:field label="Nacionalidade" styleClassLabel="fields-input"
 									spaceLeft="10px">
 									<p:inputText value="#{MatriculaControl.aluno.nascionalidade}"
-										style="width:130px">
+										style="width: 175px">
 										<p:keyFilter regEx="/[a-z_]/i" />
 									</p:inputText>
 								</a:field>
 
-								<a:field label="Certidão de Nascimento"
-									styleClassLabel="fields-input" spaceLeft="10px">
-									<p:inputMask id="certidaoNascimento"
-										mask="999999.99.99.9999.9.99999.999.9999999.99"
-										value="#{MatriculaControl.certidaoNascimento}"
-										style="width:290px;" />
-								</a:field>
-
 								<a:field label="CPF" styleClassLabel="fields-input">
-									<p:inputMask id="cpf" mask="999.999.999-99" style="width:115px" />
+									<p:inputMask id="cpf" mask="999.999.999-99"
+										value="#{MatriculaControl.aluno.cpf}" style="width:220px" />
 								</a:field>
 
 								<a:field label="RG" styleClassLabel="fields-input"
 									spaceLeft="10px">
-									<p:inputMask id="rg" mask="9999999" style="width:75px" />
+									<p:inputMask id="rg" mask="9999999"
+										value="#{MatriculaControl.aluno.rg}" style="width:220px" />
 								</a:field>
 
 								<a:field label="Órgão Emissor" styleClassLabel="fields-input"
 									spaceLeft="10px">
-									<p:inputText id="orgaoEmissor" maxlength="10" style="width:100px;">
+									<p:inputText id="orgaoEmissor" maxlength="10"
+										value="#{MatriculaControl.aluno.orgaoExpeditor}"
+										style="width:108px;">
 										<p:keyFilter regEx="/[a-z_\s]/i" />
 									</p:inputText>
 								</a:field>
 
-								<a:field label="Cert. Nasc. Antiga"
-									styleClassLabel="fields-input" spaceLeft="10px">
-									<p:inputText style="width:120px;" />
-								</a:field>
+								<a:newLine />
 
-								<a:field label="Cert. Nasc. Nova" styleClassLabel="fields-input"
-									spaceLeft="10px">
-									<p:inputText
+								<a:field label="Certidão de Nascimento"
+									styleClassLabel="fields-input">
+									<p:inputMask id="certidaoNascimentoNova"
+										mask="999999.99.99.9999.9.99999.999.9999999.99"
 										value="#{MatriculaControl.matricula.certidaoNascimentoNova}"
-										style="width:120px;" />
+										style="width:405px;" />
 								</a:field>
 
-								<a:newLine />
-								<a:newLine />
-
-								<a:field label="Livro">
-									<p:inputText
+								<a:field label="Cert. Nasc. Antiga Livro"
+									styleClassLabel="fields-input" spaceLeft="10px">
+									<p:inputMask id="certidaoNascimentoAntigaLivro"
+										mask="999999.99.99.9999.9.99999.999.9999999.99"
 										value="#{MatriculaControl.matricula.certidaoNascimentoAntigaLivro}"
-										style="width: 120px;" />
+										style="width:405px;" />
 								</a:field>
 
-								<a:field label="Folha" spaceLeft="10px">
-									<p:inputText
+								<a:field label="Cert. Nasc. Antiga Folha"
+									styleClassLabel="fields-input">
+									<p:inputMask id="certidaoNascimentoAntigaFolha"
+										mask="999999.99.99.9999.9.99999.999.9999999.99"
 										value="#{MatriculaControl.matricula.certidaoNascimentoAntigaFolha}"
-										style="width: 120px;" />
+										style="width:405px;" />
 								</a:field>
 
-								<a:field label="Cartório" spaceLeft="10px">
-									<p:inputText
+								<a:field label="Cert. Nasc. Antiga Cartório"
+									styleClassLabel="fields-input" spaceLeft="10px">
+									<p:inputMask id="certidaoNascimentoAntigaCartorio"
+										mask="999999.99.99.9999.9.99999.999.9999999.99"
 										value="#{MatriculaControl.matricula.certidaoNascimentoAntigaCartorio}"
-										style="width:120px;" />
+										style="width:405px;" />
 								</a:field>
-
-								<a:field label="NIS" spaceLeft="10px">
-									<p:inputText value="#{MatriculaControl.matricula.nIS}"
-										style="width: 120px;" />
-								</a:field>
-
-								<a:field label="ID INEP" spaceLeft="15px">
-									<p:inputText value="#{MatriculaControl.matricula.idINEP}"
-										style="width: 120px;" />
-								</a:field>
-
-								<a:field label="Bolsa Família" spaceLeft="15px">
-									<p:inputText value="#{MatriculaControl.matricula.bolsaFamilia}"
-										style="width: 120px;" />
-								</a:field>
-							</p:panel>
-
-							<a:newLine />
-							<a:newLine />
-
-							<!-- PANEL DADOS DO CURSO -->
-
-							<p:panel id="painelCurso" style=" padding: 15px; height: 150px;">
-
-								<h4>Dados do Curso</h4>
 
 								<a:newLine />
+								<a:newLine />
 
-								<a:field label="Curso">
-									<p:inputText id="curso" maxlength="100" style="width:200px">
-										<p:keyFilter regEx="/[a-z_\s]/i" />
-									</p:inputText>
+								<a:field label="NIS">
+									<p:inputText value="#{MatriculaControl.matricula.nIS}"
+										style="width: 265px;" />
 								</a:field>
 
-								<a:field label="Mês/Ano" spaceLeft="10px">
-									<p:calendar value="#{MatriculaControl.matricula.ano}"
-										locale="de" navigator="true" pattern="MM/yyyy"
-										style="width: 100%;" />
+								<a:field label="ID INEP" spaceLeft="10px">
+									<p:inputText value="#{MatriculaControl.matricula.idINEP}"
+										style="width: 270px;" />
 								</a:field>
 
-								<a:field label="Data Matricula" spaceLeft="10px">
-									<p:calendar yearRange="c-100:c0" locale="de" navigator="true"
-										pattern="dd/MM/yyyy" style="width: 100%;">
-										<p:ajax event="dateSelect" global="false" update="@form" />
-									</p:calendar>
-								</a:field>
-
-								<a:field label="Data Validade Mat." spaceLeft="10px">
-									<p:calendar yearRange="c-100:c0" locale="de" navigator="true"
-										pattern="dd/MM/yyyy" style="width: 100%;">
-										<p:ajax event="dateSelect" global="false" update="@form" />
-									</p:calendar>
+								<a:field label="Bolsa Família" spaceLeft="10px">
+									<p:inputText value="#{MatriculaControl.matricula.bolsaFamilia}"
+										style="width: 265px;" />
 								</a:field>
 							</p:panel>
 
+							<a:newLine />
 							<a:newLine />
 
 							<!-- PANEL DADOS DO RESPONSAVEL -->
@@ -372,16 +422,22 @@
 
 								<a:field label="Nome do Reponsável">
 									<p:inputText id="nomeresponsavel" maxlength="20"
+										value="#{MatriculaControl.responsavel.nomePessoa}"
 										style="width:250px">
 										<p:keyFilter regEx="/[a-z_\s]/i" />
 									</p:inputText>
 								</a:field>
 
 								<a:field label="Grau de Parentesco" spaceLeft="10px">
-									<p:inputText id="grauparentesco" maxlength="150"
-										style="width:150px">
-										<p:keyFilter regEx="/[a-z_\s]/i" />
-									</p:inputText>
+									<p:selectOneMenu id="grauparentesco"
+										value="#{MatriculaControl.responsavel.enumFiliacao}"
+										style="width:200px">
+										<f:selectItem itemLabel="Selecione uma opção"
+											itemValue="#{null}" noSelectionOption="true" />
+										<f:selectItems
+											value="#{MatriculaControl.completeEnumFiliacao}">
+										</f:selectItems>
+									</p:selectOneMenu>
 								</a:field>
 
 								<a:field label="Telefone" spaceLeft="10px">
@@ -476,38 +532,89 @@
 								<p:dataTable id="enderecos" style="width:100%"
 									emptyMessage="Sem Registros"
 									value="#{MatriculaControl.aluno.listaEndereco}" var="endereco">
-									<p:column headerText="AV/Rua" style="width: 18% !important">
+									<p:column headerText="AV/Rua" style="width: 25% !important">
 										<h:outputText value="#{endereco.ruaOuAvenida}"></h:outputText>
 									</p:column>
-									<p:column headerText="Quadra" style="width: 6.5% !important">
+
+									<!-- 
+									
+									<p:column headerText="Quadra" style="width: 6% !important">
 										<h:outputText value="#{endereco.quadra}"></h:outputText>
 									</p:column>
-									<p:column headerText="Lote" style="width: 6.5% !important">
+									
+									<p:column headerText="Lote" style="width: 6% !important">
 										<h:outputText value="#{endereco.lote}"></h:outputText>
 									</p:column>
-									<p:column headerText="Numero" style="width: 6.5% !important">
+									
+									<p:column headerText="Numero" style="width: 6% !important">
 										<h:outputText value="#{endereco.numero}"></h:outputText>
-									</p:column>
+									</p:column> 	
+									
 									<p:column headerText="Complemento"
 										style="width: 12.5% !important">
 										<h:outputText value="#{endereco.complemento}"></h:outputText>
-									</p:column>
-									<p:column headerText="Bairro" style="width: 15% !important">
+									</p:column> 
+									
+									-->
+
+									<p:column headerText="Bairro" style="width: 25% !important">
 										<h:outputText value="#{endereco.bairro}"></h:outputText>
 									</p:column>
-									<p:column headerText="Cidade" style="width: 12.5% !important">
+
+									<p:column headerText="Cidade" style="width: 25% !important">
 										<h:outputText value="#{endereco.cidade.nomeCidade}"></h:outputText>
 									</p:column>
-									<p:column headerText="Uf" style="width: 12.5% !important">
+
+									<p:column headerText="Uf" style="width: 15% !important">
 										<h:outputText value="#{endereco.cidade.enumEstado.descricao}"></h:outputText>
 									</p:column>
-									<p:column style="width: 6% !important">
+
+									<p:column headerText="Ações" style="width: 10% !important">
 										<p:commandButton icon="ui-icon-closethick"
 											action="#{MatriculaControl.removerEndereco(endereco)}"
 											update="enderecos" ajax="true" />
 									</p:column>
+
 								</p:dataTable>
 							</p:panel>
+
+							<a:newLine />
+
+							<!-- PANEL DADOS DO CURSO -->
+
+							<p:panel id="painelCurso" style=" padding: 15px; height: 150px;">
+
+								<h4>Dados do Curso</h4>
+
+								<a:newLine />
+
+								<a:field label="Curso">
+									<p:inputText id="curso" maxlength="100" style="width:200px">
+										<p:keyFilter regEx="/[a-z_\s]/i" />
+									</p:inputText>
+								</a:field>
+
+								<a:field label="Mês/Ano" spaceLeft="10px">
+									<p:calendar value="#{MatriculaControl.matricula.ano}"
+										locale="de" navigator="true" pattern="MM/yyyy"
+										style="width: 100%;" />
+								</a:field>
+
+								<a:field label="Data Matricula" spaceLeft="10px">
+									<p:calendar yearRange="c-100:c0" locale="de" navigator="true"
+										pattern="dd/MM/yyyy" style="width: 100%;">
+										<p:ajax event="dateSelect" global="false" update="@form" />
+									</p:calendar>
+								</a:field>
+
+								<a:field label="Data Validade Mat." spaceLeft="10px">
+									<p:calendar yearRange="c-100:c0" locale="de" navigator="true"
+										pattern="dd/MM/yyyy" style="width: 100%;">
+										<p:ajax event="dateSelect" global="false" update="@form" />
+									</p:calendar>
+								</a:field>
+							</p:panel>
+
 						</p:tab>
 					</p:tabView>
 				</p:panel>
@@ -515,7 +622,7 @@
 
 			<a:newLine />
 
-			<p:commandButton value="Salvar" icon="ui-icon-disk"
+			<p:commandButton value="Efetuar Matricula" icon="ui-icon-disk"
 				actionListener="#{MatriculaControl.incluir}" update="@form"
 				oncomplete="#{MatriculaControl.alunos}" />
 

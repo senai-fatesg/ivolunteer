@@ -28,7 +28,6 @@ public class Matricula implements Serializable {
 
 	private String certidaoNascimentoNova;
 	
-
 	private String nIS;
 
 	private String idINEP;

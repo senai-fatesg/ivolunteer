@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -40,8 +42,7 @@ public class Aluno extends Pessoa {
 
 	@OneToOne(fetch=FetchType.EAGER)
 	private Matricula matricula;
-	
-	
+
 	public String CalcularIdadeReal(String dataNascimento) {
 		DateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -63,18 +64,20 @@ public class Aluno extends Pessoa {
 
 		// Obtendo a idade baseado no ano
 
-		Integer idade = today.get(Calendar.YEAR) - dateOfBirth.get(Calendar.YEAR);
+		Integer idade = today.get(Calendar.YEAR) - dateOfBirth.get(Calendar.YEAR);	
 		Integer meses = today.get(Calendar.MONTH) - dateOfBirth.get(Calendar.MONTH);
 		
-		if(meses < 0)
-			meses = meses * -1;
+		if(meses < 0) {
+			meses = meses * -1;			
+		}
 
 		dateOfBirth.add(Calendar.YEAR, idade);
 		dateOfBirth.add(Calendar.MONTH, meses);
 
 		if (today.before(dateOfBirth)) {
-			idade--;
+			meses--;
 		}
+		
 		return String.format("%d anos e %d meses", idade, meses);
 	}
 
@@ -111,7 +114,6 @@ public class Aluno extends Pessoa {
 	public void setMatricula(Matricula matricula) {
 		this.matricula = matricula;
 	}
-	
 	
 	public List<Frequencia> getFrequencias() {
 		return frequencias;

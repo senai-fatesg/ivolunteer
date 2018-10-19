@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
@@ -30,7 +31,7 @@ public class Parceiro implements Serializable{
 	private Boolean isAtivo = true;
 	
 	@OneToOne(fetch=FetchType.LAZY, cascade= CascadeType.ALL)
-	private Endereco endereco;
+	private Endereco endereco = new Endereco();
 
 	public Integer getId() {
 		return id;
@@ -88,7 +89,11 @@ public class Parceiro implements Serializable{
 		this.endereco = endereco;
 	}
 	
-	public void inativa(boolean status) {
+	public void inativaParceiro() {
 		this.setIsAtivo(false);
+	}
+	
+	public void addEndereco(Endereco end) {
+		this.setEndereco(end);
 	}
 }

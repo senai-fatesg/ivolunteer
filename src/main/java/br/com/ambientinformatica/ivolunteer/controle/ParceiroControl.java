@@ -16,6 +16,8 @@ import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.AgrupamentoTurma;
+import br.com.ambientinformatica.ivolunteer.entidade.Endereco;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
 import br.com.ambientinformatica.ivolunteer.entidade.Parceiro;
 import br.com.ambientinformatica.ivolunteer.entidade.Parceiro;
 import br.com.ambientinformatica.ivolunteer.persistencia.AgrupamentoTurmaDao;
@@ -29,6 +31,7 @@ public class ParceiroControl {
 	
 	private String nomeFiltro;
 	private String statusFiltro;
+	private Endereco endereco = new Endereco();
 	private Parceiro exibeParceiroInfo = new Parceiro();
 	private Parceiro parceiro = new Parceiro();
 	private List<Parceiro> listaParceiros = new ArrayList<Parceiro>();
@@ -50,8 +53,6 @@ public class ParceiroControl {
 	}
 	
 	public void aplicarFiltro() {
-		System.out.println("NOME ISEMPTY? " + this.nomeFiltro);
-		System.out.println("NOME ISEMPTY? " + this.statusFiltro);
 		
 		if(!this.nomeFiltro.isEmpty() && this.statusFiltro.isEmpty()) {
 			this.listaParceiros = parceiroDao.buscaParceiroPorNome(nomeFiltro);
@@ -67,24 +68,39 @@ public class ParceiroControl {
 	
 	public void cadastrarParceiro() {
 		if(validaParceiro()) {
+			this.parceiro.addEndereco(this.endereco);
 			parceiroDao.incluir(this.parceiro);
 			UtilFaces.addMensagemFaces("Parceiro cadastrado com sucesso!");
 			this.parceiro = new Parceiro();
+			this.endereco = new Endereco();
 			listar();
 		}
 	}
 	
 	public void editaParceiro(Parceiro parceiro) {
-		this.parceiro = parceiroDao.consultar(parceiro.getId());
+		this.endereco = new Endereco();
+		this.parceiro = parceiroDao.buscaParceiroComEndereco(parceiro);
+		if(this.parceiro.getEndereco() != null) {
+			this.endereco = this.parceiro.getEndereco();
+		}
 	}
 	
 	public void salvarAlteracoesParceiro() {
 		if(validaParceiro()) {
+			this.parceiro.addEndereco(this.endereco);
 			parceiroDao.alterar(this.parceiro);
 			UtilFaces.addMensagemFaces("Parceiro atualizado com sucesso!");
 			this.parceiro = new Parceiro();
+			this.endereco = new Endereco();
 			listar();
 		}
+	}
+	
+	public void inativaParceiro(Parceiro parceiro) {
+		Parceiro p = parceiroDao.consultar(parceiro.getId());
+		p.inativaParceiro();
+		parceiroDao.alterar(p);
+		listar();
 	}
 	
 	public void exibeInfoDoParceiro(Parceiro parceiro) {
@@ -112,6 +128,18 @@ public class ParceiroControl {
 		}
 		*/
 		return true;
+	}
+	
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
+	public List<SelectItem> getCompleteEnumEstado() {
+		return UtilFaces.getListEnum(EnumEstado.values());
 	}
 
 	public String getNomeFiltro() {

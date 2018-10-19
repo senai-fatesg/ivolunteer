@@ -13,4 +13,6 @@ public interface ParceiroDao extends Persistencia<Parceiro> {
 
 	public List<Parceiro> buscaParceiroPorStatusNome(String statusFiltro, String nomeFiltro);
 
+	public Parceiro buscaParceiroComEndereco(Parceiro parceiro);
+
 }

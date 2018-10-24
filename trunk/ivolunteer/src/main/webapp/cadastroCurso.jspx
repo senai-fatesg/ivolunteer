@@ -90,6 +90,14 @@
 					</p:column>
 					
 					<p:column style="text-align:center;">
+						<p:commandButton id="botaoExibeInfoCurso" icon="ui-icon-info"
+							action="#{CursoControl.exibeInfoDoCurso(curso)}"
+							process="botaoExibeInfoCurso"
+							oncomplete="PF('janelaInfoCurso').show();"
+							update="formCorpo:infoCurso" />
+						<p:tooltip for="botaoExibeInfoCurso" value="Informações do curso"
+							position="top" />
+						
 						<p:commandButton id="botaoEditaCurso" icon="ui-icon-pencil"
 							action="#{CursoControl.editaCurso(curso)}"
 							process="botaoEditaCurso"
@@ -98,13 +106,6 @@
 						<p:tooltip for="botaoEditaCurso" value="Editar curso"
 							position="top" />
 						
-						<p:commandButton id="botaoExibeInfoCurso" icon="ui-icon-info"
-							action="#{CursoControl.exibeInfoDoCurso(curso)}"
-							process="botaoExibeInfoCurso"
-							oncomplete="PF('janelaInfoCurso').show();"
-							update="formCorpo:infoCurso" />
-						<p:tooltip for="botaoExibeInfoCurso" value="Informações do curso"
-							position="top" />
 					</p:column>
 
 				</p:dataTable>
@@ -147,6 +148,14 @@
 					</p:column>
 					
 					<p:column rendered="#{curso.isAtivo == true}" style="text-align:center;">
+						<p:commandButton id="botaoExibeInfoCurso" icon="ui-icon-info"
+							action="#{CursoControl.exibeInfoDoCurso(curso)}"
+							process="botaoExibeInfoCurso"
+							oncomplete="PF('janelaInfoCurso').show();"
+							update="formCorpo:infoCurso" />
+						<p:tooltip for="botaoExibeInfoCurso" value="Informações do curso"
+							position="top" />
+						
 						<p:commandButton id="botaoEditaCurso" icon="ui-icon-pencil"
 							action="#{CursoControl.editaCurso(curso)}"
 							process="botaoEditaCurso"
@@ -155,13 +164,7 @@
 						<p:tooltip for="botaoEditaCurso" value="Editar curso"
 							position="top" />
 						
-						<p:commandButton id="botaoExibeInfoCurso" icon="ui-icon-info"
-							action="#{CursoControl.exibeInfoDoCurso(curso)}"
-							process="botaoExibeInfoCurso"
-							oncomplete="PF('janelaInfoCurso').show();"
-							update="formCorpo:infoCurso" />
-						<p:tooltip for="botaoExibeInfoCurso" value="Informações do curso"
-							position="top" />
+						
 					</p:column>
 
 				</p:dataTable>
@@ -192,10 +195,16 @@
 						rendered="#{CursoControl.exibeCursoInfo.cargaHoraria == null}"
 						value="#{CursoControl.exibeCursoInfo.cargaHoraria}" />
 
+					<h:outputLabel value="Parceiro: " />
+					<h:outputText rendered="#{CursoControl.exibeCursoInfo.parceiro != null}"
+						value="#{CursoControl.exibeCursoInfo.parceiro.nome}" />
+					<h:outputText rendered="#{CursoControl.exibeCursoInfo.parceiro == null}"
+						value="Não possui" />
+
 					<h:outputLabel value="Conteúdo programático: " />
 					<h:outputText
 						value="#{CursoControl.exibeCursoInfo.conteudoProgramatico}" />
-
+					
 				</p:panelGrid>
 
 			</p:dialog>
@@ -216,6 +225,26 @@
 				<p:inputText id="cargaHorariaCurso"
 					value="#{CursoControl.curso.cargaHoraria}" />
 			</a:field>
+
+			<a:field label="Parceiro:" spaceLeft="15px">
+				<p:inputText disabled="true" id="parceiro" value="#{CursoControl.curso.parceiro.nome}" />
+			</a:field>
+			
+			<a:field label="Selecione um parceiro:" spaceLeft="15px">
+				<p:autoComplete id="selecionaParceiro" minQueryLength="2" value="#{CursoControl.parceiro}"
+					var="par" itemLabel="${par.nome}" itemValue="#{par.id}" converter="parceiroConverter"
+					completeMethod="#{CursoControl.buscaParceiro}" >
+					<p:ajax event="select"  
+						update="selecionaParceiro parceiro" process="selecionaParceiro"/>
+				</p:autoComplete>
+			</a:field>
+			
+			<p:commandButton style="margin-top: 23px; margin-left: 13px;" 
+				id="botaoSelecionaParceiro" icon="ui-icon-check"
+				update="selecionaParceiro parceiro"
+				actionListener="#{CursoControl.escolheParceiro}" />
+			<p:tooltip for="botaoSelecionaParceiro" value="Vincular parceiro"
+				position="top" />
 
 			<a:field label="Conteúdo programático:">
 				<p:editor id="conteudoProgramatico"

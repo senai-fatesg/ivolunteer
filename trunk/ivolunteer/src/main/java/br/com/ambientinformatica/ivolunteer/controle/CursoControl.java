@@ -15,8 +15,10 @@ import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.AgrupamentoTurma;
 import br.com.ambientinformatica.ivolunteer.entidade.Curso;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoCurso;
+import br.com.ambientinformatica.ivolunteer.entidade.Parceiro;
 import br.com.ambientinformatica.ivolunteer.persistencia.AgrupamentoTurmaDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.CursoDao;
+import br.com.ambientinformatica.ivolunteer.persistencia.ParceiroDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 
 @Controller("CursoControl")
@@ -25,12 +27,16 @@ public class CursoControl {
 	
 	private String nomeFiltro;
 	private String statusFiltro;
+	private Parceiro parceiro = new Parceiro();
 	private Curso exibeCursoInfo = new Curso();
 	private Curso curso = new Curso();
 	private List<Curso> listaCursos = new ArrayList<Curso>();
 
 	@Autowired
 	private CursoDao cursoDao;
+	
+	@Autowired
+	private ParceiroDao parceiroDao;
 
 	@PostConstruct
 	public void init() {
@@ -46,9 +52,7 @@ public class CursoControl {
 	}
 	
 	public void aplicarFiltro() {
-		System.out.println("NOME ISEMPTY? " + this.nomeFiltro);
-		System.out.println("NOME ISEMPTY? " + this.statusFiltro);
-		
+
 		if(!this.nomeFiltro.isEmpty() && this.statusFiltro.isEmpty()) {
 			this.listaCursos = cursoDao.buscaCursoPorNome(nomeFiltro);
 		} else if(this.nomeFiltro.isEmpty() && !this.statusFiltro.isEmpty()) {
@@ -82,26 +86,26 @@ public class CursoControl {
 	public void exibeInfoDoCurso(Curso curso) {
 		this.exibeCursoInfo = cursoDao.consultar(curso.getId());
 	}
-
-	// Aplica Filtro por identificador
-	/*
-		public void aplicarFiltro(ActionEvent evt) {
-			try {
-				if (this.agrupamentoTurma.getIdentificador().isEmpty()) {
-					this.agrupamentoTurmas = this.agrupamentoTurmaDao.listar();
-				} else {
-					this.agrupamentoTurmas = this.agrupamentoTurmaDao.listarIdentificador(this.agrupamentoTurma);
-				}
-			} catch (Exception e) {
-				UtilFaces.addMensagemFaces(e);
-			}
-
-		}
-		*/
+	
+	public List<Parceiro> buscaParceiro(String nome) {
+		return parceiroDao.buscaParceiroPorNome(nome);
+	}
 	
 	public List<SelectItem> getCompleteEnumTipoCurso() {
 		return UtilFaces.getListEnum(EnumTipoCurso.values());
 	}
+	
+	public void escolheParceiro() {
+		this.curso.setParceiro(parceiroDao.buscaParceiroPorID(this.parceiro.getId()));
+	}
+	
+	public Parceiro getParceiro() {
+		return parceiro;
+	}
+
+	public void setParceiro(Parceiro parceiro) {
+		this.parceiro = parceiro;
+	}	
 	
 	public String getNomeFiltro() {
 		return nomeFiltro;

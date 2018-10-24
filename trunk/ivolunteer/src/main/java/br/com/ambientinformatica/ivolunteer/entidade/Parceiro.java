@@ -1,6 +1,7 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
@@ -29,6 +31,9 @@ public class Parceiro implements Serializable{
 	private String telefone;
 	
 	private Boolean isAtivo = true;
+	
+	@OneToMany(fetch=FetchType.LAZY , cascade = CascadeType.ALL)
+	private List<Curso> listaCursos;
 	
 	@OneToOne(fetch=FetchType.LAZY, cascade= CascadeType.ALL)
 	private Endereco endereco = new Endereco();

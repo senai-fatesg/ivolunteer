@@ -77,4 +77,12 @@ public class ParceiroDaoJpa extends PersistenciaJpa<Parceiro> implements Parceir
 		}
 	}
 
+	@Override
+	public Parceiro buscaParceiroPorID(Integer id) {
+		Parceiro p = new Parceiro();
+		p.setId(id);
+		p = em.find(Parceiro.class, p.getId());
+		return p;
+	}
+
 }

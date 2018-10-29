@@ -14,62 +14,86 @@
 			<p:tabView dynamic="true" id="tabViewConsultaAluno">
 				<!-- ABA DE ALUNOS  -->
 				<p:tab title="Aluno" id="tabAluno">
-					<p:panel id="consultaAlunos" rendered="true">
+					
 
-						<a:field label="Certidão de Nascimento" spaceLeft="15px">
-							<p:inputText id="certidaoAluno"
-								value="#{MatriculaControl.aluno.certidaoNascimento}" />
-
-						</a:field>
-
-						<a:field spaceLeft="15px">
-							<p:commandButton icon="ui-icon-search" id="filtraAluno" actionListener="#{MatriculaControl.aplicarFiltro}" update="listaAlunos" />
-						</a:field>
-
-						<a:newLine />
-						<a:newLine />
-
-						<p:dataTable id="listaAlunos" var="itemAluno" style="width:100%" value="#{MatriculaControl.alunos}" emptyMessage="Sem Registros">
-						
-							<p:column headerText="Cod. Aluno">#{itemAluno.id}</p:column>
-							<p:column headerText="Nome" width="30%">#{itemAluno.nomePessoa}</p:column>
-							<p:column headerText="Certidão de Nascimento">#{itemAluno.certidaoNascimento}</p:column>
-							<p:column headerText="Naturalidade">#{itemAluno.naturalidade}</p:column>
-							<p:column headerText="Nacionalidade">#{itemAluno.nascionalidade}</p:column>
+						<p:dataTable id="listaAlunos" var="aluno" style="width:100%"
+							value="#{MatriculaControl.alunos}" emptyMessage="Sem Registros"
+							paginator="true" rows="5" rowsPerPageLabel="5,10,15,20"
+							rowsPerPageTemplate="5,10,15,20">
+							<f:facet name="header">Lista de alunos</f:facet>
+							<p:columnGroup type="header">
+								<p:row>
+									<p:column headerText="Cod. Aluno" />
+									<p:column headerText="Nome" width="25%" 
+										filterBy="#{aluno.nomePessoa}" filterMatchMode="startsWith" />
+									<p:column headerText="Certidão de Nascimento" />
+									<p:column headerText="Naturalidade" />
+									<p:column headerText="Nacionalidade" />
+								</p:row>
+							</p:columnGroup>
+							
+							<p:column>
+								<h:outputText value="#{aluno.id}" />
+							</p:column>
+							<p:column>
+								<h:outputText value="#{aluno.nomePessoa}" />
+							</p:column>
+							<p:column>
+								<h:outputText value="#{aluno.certidaoNascimento}" />
+							</p:column>
+							<p:column>
+								<h:outputText value="#{aluno.naturalidade}" />
+							</p:column>
+							<p:column>
+								<h:outputText value="#{aluno.nascionalidade}" />
+							</p:column>
 
 						</p:dataTable>
 
-					</p:panel>
 				</p:tab>
-				
+
 				<!-- TAB CANDIDATO -->
 				<p:tab title="Candidato" id="tabCandidato">
-					<p:panel id="consultaCandidatos" redered="true">
-
-						<a:field label="Nome do Candidato" spaceLeft="15px">
-							<p:inputText id="nomeCandidato" value="#{CandidatoControl.candidatoConsulta.nomePessoa}"/>
-						</a:field>
-
-						<a:field spaceLeft="15px">
-							<p:commandButton icon="ui-icon-search" id="filtraCandidato"	actionListener="#{CandidatoControl.aplicarFiltro}" update="listaCandidato"/>
-						</a:field>
-
-						<a:newLine />
-						<a:newLine />
-
-						<p:dataTable id="listaCandidato" var="itemCandi" emptyMessage="Sem Registros" style="width=100%" value="#{CandidatoControl.listaCandidato}">
 
 
-							<p:column headerText="Nome">#{itemCandi.nomePessoa}</p:column>
-							<p:column headerText="CPF">#{itemCandi.cpf}</p:column>
-							<p:column headerText="RG">#{itemCandi.rg}</p:column>
-							<p:column headerText="Nacionalidade">#{itemCandi.nascionalidade}</p:column>
-							<p:column headerText="Naturalidade">#{itemCandi.naturalidade}</p:column>
-							<p:column headerText="Profissão">#{itemCandi.profissao}</p:column>
+						<p:dataTable id="listaCandidato" var="itemCandi"
+							emptyMessage="Sem Registros" style="width=100%"
+							value="#{CandidatoControl.listaCandidato}" paginator="true"
+							rows="5" rowsPerPageLabel="5,10,15,20"
+							rowsPerPageTemplate="5,10,15,20">
+							<f:facet name="header">Lista de Candidatos</f:facet>
+							<p:columnGroup type="header">
+								<p:row>
+									<p:column headerText="Nome" filterBy="#{itemCandi.nomePessoa}"
+										filterMatchMode="startsWith" />
+									<p:column headerText="CPF" />
+									<p:column headerText="RG" />
+									<p:column headerText="Nacionalidade" />
+									<p:column headerText="Naturalidade" />
+									<p:column headerText="Profissão" />
+								</p:row>
+							</p:columnGroup>
+
+							<p:column>
+								<h:outputText value="#{itemCandi.nomePessoa}" />
+							</p:column>
+							<p:column>
+								<h:outputText value="#{itemCandi.cpf}" />
+							</p:column>
+							<p:column>
+								<h:outputText value="#{itemCandi.rg}" />
+							</p:column>
+							<p:column>
+								<h:outputText value="#{itemCandi.nascionalidade}" />
+							</p:column>
+							<p:column>
+								<h:outputText value="#{itemCandi.naturalidade}" />
+							</p:column>
+							<p:column>
+								<h:outputText value="#{itemCandi.profissao}" />
+							</p:column>
 
 						</p:dataTable>
-
-					</p:panel>
 
 				</p:tab>
 			</p:tabView>

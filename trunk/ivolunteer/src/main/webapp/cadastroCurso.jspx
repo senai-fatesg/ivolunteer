@@ -232,7 +232,7 @@
 			
 			<a:field label="Selecione um parceiro:" spaceLeft="15px">
 				<p:autoComplete id="selecionaParceiro" minQueryLength="2" value="#{CursoControl.parceiro}"
-					var="par" itemLabel="${par.nome}" itemValue="#{par.id}" converter="parceiroConverter"
+					var="par" itemLabel="${par.nome}" itemValue="#{par}" converter="objectConverter"
 					completeMethod="#{CursoControl.buscaParceiro}" >
 					<p:ajax event="select"  
 						update="selecionaParceiro parceiro" process="selecionaParceiro"/>
@@ -242,7 +242,7 @@
 			<p:commandButton style="margin-top: 23px; margin-left: 13px;" 
 				id="botaoSelecionaParceiro" icon="ui-icon-check"
 				update="selecionaParceiro parceiro"
-				actionListener="#{CursoControl.escolheParceiro}" />
+				actionListener="#{CursoControl.escolheParceiro}" process="selecionaParceiro botaoSelecionaParceiro" />
 			<p:tooltip for="botaoSelecionaParceiro" value="Vincular parceiro"
 				position="top" />
 

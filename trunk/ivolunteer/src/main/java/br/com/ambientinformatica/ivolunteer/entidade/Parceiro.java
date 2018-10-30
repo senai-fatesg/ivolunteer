@@ -32,11 +32,19 @@ public class Parceiro implements Serializable{
 	
 	private Boolean isAtivo = true;
 	
-	@OneToMany(fetch=FetchType.LAZY , cascade = CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY , cascade = CascadeType.ALL, mappedBy = "parceiro")
 	private List<Curso> listaCursos;
 	
 	@OneToOne(fetch=FetchType.LAZY, cascade= CascadeType.ALL)
 	private Endereco endereco = new Endereco();
+
+	public List<Curso> getListaCursos() {
+		return listaCursos;
+	}
+
+	public void setListaCursos(List<Curso> listaCursos) {
+		this.listaCursos = listaCursos;
+	}
 
 	public Integer getId() {
 		return id;
@@ -100,5 +108,13 @@ public class Parceiro implements Serializable{
 	
 	public void addEndereco(Endereco end) {
 		this.setEndereco(end);
+	}
+	
+	public void addCurso(Curso curso) {
+		this.listaCursos.add(curso);
+	}
+	
+	public void addCursos(List<Curso> cursos) {
+		this.listaCursos.addAll(cursos);
 	}
 }

@@ -62,6 +62,7 @@ public class TurmaControl implements TurmaService {
 	private List<Curso> carregaTodosCursos;
 	private List<Curso> listaCursos = new ArrayList<Curso>();
 	private Curso exibeCursoInfo = new Curso();
+	private boolean renderizaDatas = true;
 
 	/*** INICIALIZADOR ***/
 	@PostConstruct
@@ -78,6 +79,14 @@ public class TurmaControl implements TurmaService {
 		this.listaCursos = cursoDao.listarCursosAtivos();
 	}
 	
+	public boolean isRenderizaDatas() {
+		return renderizaDatas;
+	}
+
+	public void setRenderizaDatas(boolean renderizaDatas) {
+		this.renderizaDatas = renderizaDatas;
+	}
+
 	private void carregaCursos() {
 		this.carregaTodosCursos = cursoDao.listar();
 	}
@@ -245,6 +254,11 @@ public class TurmaControl implements TurmaService {
 	public void selecionaCurso(){
 		curso = cursoDao.buscaCursoPorId(this.cursoSelecionado);
 		this.turma.AdicionarCurso(curso);
+		if (this.turma.getCurso().getDuracao().equals(EnumTipoCurso.DURACAO_INDETERMINADA)) {
+			this.renderizaDatas = false;
+		} else {
+			this.renderizaDatas = true;
+		}
 	}
 	
 	public List<Curso> buscaCursosPorNome(String nome) {
@@ -360,8 +374,6 @@ public class TurmaControl implements TurmaService {
 
 	public void aplicarFiltro(ActionEvent evt) {
 		try {
-			System.out.println("VALOR ID: " + (this.turmaConsulta.getId()));
-			System.out.println("ID É 0? " + (this.turmaConsulta.getId().equals(0)));
 			if (!statusFiltro.isEmpty() && this.turmaConsulta.getId().equals(0)) {
 				turmasConsulta = turmaDao.listarPorStatus(this.statusFiltro);
 			} else if(statusFiltro.isEmpty() && this.turmaConsulta.getId().equals(0)) {

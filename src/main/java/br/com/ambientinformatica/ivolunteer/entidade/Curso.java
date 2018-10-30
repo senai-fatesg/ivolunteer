@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -33,7 +34,7 @@ public class Curso implements Serializable {
 	
 	private Boolean isAtivo = true;
 	
-	@OneToOne(fetch=FetchType.LAZY , cascade = CascadeType.ALL)
+	@ManyToOne(fetch=FetchType.LAZY , cascade = CascadeType.ALL)
 	private Parceiro parceiro = new Parceiro();
 	
 	@Enumerated(EnumType.STRING)

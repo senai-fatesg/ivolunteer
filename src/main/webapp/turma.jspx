@@ -24,146 +24,6 @@
 				icon="ui-icon-search"
 				onclick="PF('consultar').show(); return false;" />
 
-			<p:commandButton id="botaoAbreJanelaCurso" style="margin-left:10px;"
-				value="Cadastrar novo curso" icon="ui-icon-plus" action="#{TurmaControl.listaCursosAtivos}"
-				onclick="PF('cadastraCursos').show();" />
-
-			<p:dialog id="modalCursos" widgetVar="cadastraCursos" header="Cursos" width="75%" position="top"
-				modal="true">
-				<a:field label="Nome do Curso:">
-					<p:inputText id="nomeCurso" value="#{TurmaControl.cursoCadastro.nome}" />
-				</a:field>
-
-				<a:field label="Duração do curso:" spaceLeft="15px">
-					<p:selectOneMenu id="tipoDuracaoCurso"
-						value="#{TurmaControl.cursoCadastro.duracao}">
-						<f:selectItems value="#{TurmaControl.completeEnumTipoCurso}" />
-					</p:selectOneMenu>
-				</a:field>
-				
-				<a:field label="Carga horária:" spaceLeft="15px">
-					<p:inputText id="cargaHorariaCurso" value="#{TurmaControl.cursoCadastro.cargaHoraria}" />
-				</a:field>
-				
-				<a:newLine />
-				
-				<a:field label="Conteúdo programático:" >
-					<p:editor height="180"
-						id="conteudoProgramatico" value="#{TurmaControl.cursoCadastro.conteudoProgramatico}" />
-				</a:field>				
-				
-				<p:commandButton style="margin-top: 19%;margin-left: 22px;"
-					rendered="#{TurmaControl.cursoCadastro.id == null}" 
-					id="botaoCadastraCurso" value="Cadastrar curso"
-					icon="ui-icon-disk" update="modalCursos listaCursos"
-					oncomplete="PF('cadastraCursos').show();"
-					action="#{TurmaControl.cadastraCurso}" />
-				
-				<p:commandButton style="margin-top: 19%;margin-left: 22px;" 
-					rendered="#{TurmaControl.cursoCadastro.id != null}" 
-					id="botaoAtualizaCurso" value="Atualizar curso"
-					icon="ui-icon-refresh" update="modalCursos listaCursos"
-					oncomplete="PF('cadastraCursos').show();"
-					action="#{TurmaControl.atualizaCurso}" />
-
-				<a:newLine />
-				<a:newLine />
-					
-				<p:dataTable id="listaCursos" var="curso" 
-						emptyMessage="Sem registros"
-						value="#{TurmaControl.listaCursos}" paginator="true"
-						rowsPerPageLabel="5,10,15,20,25"
-						rowsPerPageTemplate="5,10,15,20,25">
-						<f:facet name="header">
-										        	Lista de cursos
-						</f:facet>
-						<p:columnGroup type="header">
-							<p:row>
-								<p:column headerText="Nome" />
-								<p:column headerText="Duração" width="15%" />
-								<p:column headerText="Carga horária" width="20%" />
-								<p:column headerText="Ações" width="13%" />
-							</p:row>
-						</p:columnGroup>
-
-						<p:column rendered="#{curso.id != TurmaControl.cursoCadastro.id}" style="text-align:center;">
-							<h:outputText value="#{curso.nome}" />
-						</p:column>
-						<p:column rendered="#{curso.id != TurmaControl.cursoCadastro.id}" style="text-align:center;">
-							<h:outputText
-								rendered="#{curso.duracao == 'DURACAO_DETERMINADA'}"
-								value="DETERMINADA" />
-							<h:outputText
-								rendered="#{curso.duracao == 'DURACAO_INDETERMINADA'}"
-								value="INDETERMINADA" />
-						</p:column>
-						<p:column rendered="#{curso.id != TurmaControl.cursoCadastro.id}" style="text-align:center;">
-							<h:outputText rendered="#{curso.cargaHoraria != null}"
-								value="#{curso.cargaHoraria} hrs" />
-						</p:column>
-						<p:column rendered="#{curso.id != TurmaControl.cursoCadastro.id}" style="text-align:center;">
-							<p:commandButton id="botaoExibeInfoDoCurso"
-								icon="ui-icon-info"
-								action="#{TurmaControl.exibeInfoDoCurso(curso)}" process="botaoExibeInfoDoCurso"
-								oncomplete="PF('exibeInfoCurso').show();"
-								update="formCorpo:exibeInfoDoCurso" />
-							<p:tooltip for="botaoExibeInfoDoCurso"
-								value="Exibir informações do curso" position="top" />
-								
-							<p:commandButton id="botaoEditaCurso"
-								icon="ui-icon-pencil"
-								action="#{TurmaControl.editaCurso(curso)}" process="botaoEditaCurso"
-								oncomplete="PF('cadastraCursos').show();"
-								update=":formCorpo:modalCursos" />
-							<p:tooltip for="botaoEditaCurso"
-								value="Editar curso" position="top" />
-								
-							<p:commandButton id="botaoInativaCurso"
-								icon="ui-icon-trash"
-								action="#{TurmaControl.inativarCurso(curso)}" 
-								update="listaCursos" >
-								<p:confirm header="Confirmar inativação!" 
-									icon="ui-icon-alert" 
-									message="Tem certeza que deseja inativar este curso?" />
-								<p:tooltip for="botaoInativaCurso"
-								value="Inativar curso" position="top" />								
-							</p:commandButton>	
-							
-						</p:column>
-					</p:dataTable>
-					
-			</p:dialog>
-			
-			<p:dialog id="exibeInfoDoCurso" widgetVar="exibeInfoCurso" width="70%"
-				modal="true" header="Informações do curso" >
-				<p:panelGrid columns="4" layout="grid" >
-					
-					<h:outputLabel value="Nome do curso: " />
-							<h:outputText value="#{TurmaControl.exibeCursoInfo.nome}" />
-
-							<h:outputLabel value="Duração: " />
-							<h:outputText
-								rendered="#{TurmaControl.exibeCursoInfo.duracao == 'DURACAO_DETERMINADA'}"
-								value="DETERMINADA" />
-							<h:outputText
-								rendered="#{TurmaControl.exibeCursoInfo.duracao == 'DURACAO_INDETERMINADA'}"
-								value="INDETERMINADA" />
-
-							<h:outputLabel value="Carga horária: " />
-							<h:outputText
-								rendered="#{TurmaControl.exibeCursoInfo.cargaHoraria != null}"
-								value="#{TurmaControl.exibeCursoInfo.cargaHoraria} hrs" />
-							<h:outputText
-								rendered="#{TurmaControl.exibeCursoInfo.cargaHoraria == null}"
-								value="#{TurmaControl.exibeCursoInfo.cargaHoraria}" />
-
-							<h:outputLabel value="Conteúdo programático: " />
-							<h:outputText
-								value="#{TurmaControl.exibeCursoInfo.conteudoProgramatico}" />
-					
-				</p:panelGrid>
-			</p:dialog>
-
 			<p:dialog id="modalPesquisa" header="Consultar" widgetVar="consultar"
 				modal="true" maximizable="false" minimizable="false" width="70%"
 				height="70%" resizable="false" closeOnEscape="true">
@@ -408,7 +268,7 @@
 				</a:field>
 				
 				<p:commandButton id="selecionaCurso" icon="ui-icon-check" style="margin-top:23px; margin-left: 20px;"
-					update="exibeCursos cursoTurma" action="#{TurmaControl.selecionaCurso}" process="selecionaCurso exibeCursos cursoTurma" />
+					update="exibeCursos cursoTurma dataInicio dataTermino formCorpo:cadastro" action="#{TurmaControl.selecionaCurso}" process="selecionaCurso exibeCursos cursoTurma" />
 				<p:tooltip for="selecionaCurso" value="Selecionar curso" position="top" />
 				
 				<a:newLine/>
@@ -453,13 +313,13 @@
 					</p:selectOneMenu>
 				</a:field>
 
-				<a:field label="Data de início:" spaceLeft="15px" >
+				<a:field label="Data de início:" spaceLeft="15px" rendered="#{TurmaControl.renderizaDatas}" >
 					<p:calendar id="dataInicio"
 						value="#{TurmaControl.turma.dataInicio}" navigator="true"
 						yearRange="c-100:c0" pattern="dd-MM-yyyy" locale="de" />
 				</a:field>
 
-				<a:field label="Data de Término:" spaceLeft="15px" >
+				<a:field label="Data de Término:" spaceLeft="15px" rendered="#{TurmaControl.renderizaDatas}" >
 					<p:calendar id="dataTermino"
 						value="#{TurmaControl.turma.dataTermino}" navigator="true"
 						yearRange="c-100:c0" pattern="dd-MM-yyyy" locale="de" />

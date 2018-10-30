@@ -66,21 +66,40 @@ public class CursoControl {
 	}
 	
 	public void cadastrarCurso() {
-		cursoDao.incluir(this.curso);
-		UtilFaces.addMensagemFaces("Curso cadastrado com sucesso!");
-		this.curso = new Curso();
-		listar();
+		if(cursoValido()) {
+			cursoDao.alterar(this.curso);
+			UtilFaces.addMensagemFaces("Curso cadastrado com sucesso!");
+			this.curso = new Curso();
+			this.parceiro = new Parceiro();
+			listar();
+		}	
 	}
 	
+	private boolean cursoValido() {
+		if(this.curso.getNome().isEmpty()) {
+			UtilFaces.addMensagemFaces("Nome do curso é obrigatório");
+			return false;
+		} else if (this.curso.getDuracao().equals(null)) {
+			UtilFaces.addMensagemFaces("Duração do curso é obrigatório");
+			return false;
+		} else if (this.curso.getCargaHoraria().isEmpty()) {
+			UtilFaces.addMensagemFaces("Carga horária do curso é obrigatório");
+			return false;
+		}
+		return true;
+	}
+
 	public void editaCurso(Curso curso) {
 		this.curso = cursoDao.consultar(curso.getId());
 	}
 	
 	public void salvarAlteracoesCurso() {
-		cursoDao.alterar(this.curso);
-		UtilFaces.addMensagemFaces("Curso atualizado com sucesso!");
-		this.curso = new Curso();
-		listar();
+		if(cursoValido()) {
+			cursoDao.alterar(this.curso);
+			UtilFaces.addMensagemFaces("Curso atualizado com sucesso!");
+			this.curso = new Curso();
+			listar();
+		}
 	}
 	
 	public void exibeInfoDoCurso(Curso curso) {
@@ -97,6 +116,7 @@ public class CursoControl {
 	
 	public void escolheParceiro() {
 		this.curso.setParceiro(parceiroDao.buscaParceiroPorID(this.parceiro.getId()));
+		this.parceiro = new Parceiro();
 	}
 	
 	public Parceiro getParceiro() {

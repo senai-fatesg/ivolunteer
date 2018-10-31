@@ -56,6 +56,8 @@ public class TurmaControl implements TurmaService {
 	@Autowired
 	private FuncionarioDao funcionarioDao;
 
+	
+	private List<Curso> autocompleteCursos = new ArrayList<Curso>();
 	private TurmaService turmaService;
 	private List<Turma> turmas = new ArrayList<>();
 	private List<Funcionario> professores = new ArrayList<>();
@@ -63,6 +65,7 @@ public class TurmaControl implements TurmaService {
 	private List<Curso> listaCursos = new ArrayList<Curso>();
 	private Curso exibeCursoInfo = new Curso();
 	private boolean renderizaDatas = true;
+	private List<Funcionario> autocompleteProfessores = new ArrayList<Funcionario>();
 
 	/*** INICIALIZADOR ***/
 	@PostConstruct
@@ -79,6 +82,22 @@ public class TurmaControl implements TurmaService {
 		this.listaCursos = cursoDao.listarCursosAtivos();
 	}
 	
+	public List<Funcionario> getAutocompleteProfessores() {
+		return autocompleteProfessores;
+	}
+
+	public void setAutocompleteProfessores(List<Funcionario> autocompleteProfessores) {
+		this.autocompleteProfessores = autocompleteProfessores;
+	}
+
+	public List<Curso> getAutocompleteCursos() {
+		return autocompleteCursos;
+	}
+
+	public void setAutocompleteCursos(List<Curso> autocompleteCursos) {
+		this.autocompleteCursos = autocompleteCursos;
+	}
+
 	public boolean isRenderizaDatas() {
 		return renderizaDatas;
 	}
@@ -236,6 +255,17 @@ public class TurmaControl implements TurmaService {
 	}
 
 	/*** AÇÕES DA PÁGINA ***/
+	
+	public List<Curso> buscaCursos(String nome) {
+		this.autocompleteCursos = cursoDao.buscaCursoPorNome(nome);
+		return this.autocompleteCursos;
+	}
+	
+	public List<Funcionario> buscaProfessores(String nome) {
+		this.autocompleteProfessores = funcionarioDao.buscaEducadorPorNome(nome);
+		return this.autocompleteProfessores;
+	}
+	
 	public void inativarCurso(Curso curso) {
 		Curso c = cursoDao.consultar(curso.getId());
 		c.inativarCurso();

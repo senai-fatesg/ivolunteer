@@ -207,20 +207,22 @@
 					<h:outputText value="#{TurmaControl.exibeTurmaInfo.curso.nome}" />
 
 					<h:outputLabel value="Código: " />
-					<h:outputText value="#{TurmaControl.exibeTurmaInfo.codigo}" />
+					<h:outputText value="#{TurmaControl.exibeTurmaInfo.id}" />
 
 					<h:outputLabel value="Turno: " />
 					<h:outputText value="#{TurmaControl.exibeTurmaInfo.turno}" />
 
 					<h:outputLabel value="Data de início: " />
-					<h:outputText value="#{TurmaControl.exibeTurmaInfo.dataInicio}">
+					<h:outputText rendered="#{TurmaControl.exibeTurmaInfo.curso.duracao == 'DURACAO_DETERMINADA'}" value="#{TurmaControl.exibeTurmaInfo.dataInicio}">
 						<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
 					</h:outputText>
+					<h:outputText rendered="#{TurmaControl.exibeTurmaInfo.curso.duracao != 'DURACAO_DETERMINADA'}" value="NÃO POSSUI" />
 
 					<h:outputLabel value="Data de término: " />
-					<h:outputText value="#{TurmaControl.exibeTurmaInfo.dataTermino}">
+					<h:outputText rendered="#{TurmaControl.exibeTurmaInfo.curso.duracao == 'DURACAO_DETERMINADA'}" value="#{TurmaControl.exibeTurmaInfo.dataTermino}">
 						<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
 					</h:outputText>
+					<h:outputText rendered="#{TurmaControl.exibeTurmaInfo.curso.duracao != 'DURACAO_DETERMINADA'}" value="NÃO POSSUI" />
 
 					<h:outputLabel value="Horário de início: " />
 					<h:outputText value="#{TurmaControl.exibeTurmaInfo.horarioInicio}" />
@@ -261,7 +263,7 @@
 				
 				<a:field label="Selecione um curso:" spaceLeft="15px">
 					<p:selectOneMenu id="exibeCursos" value="#{TurmaControl.cursoSelecionado}" converter="objectConverter" >
-						<f:selectItem itemLabel=" " noSelectionOption="true" />
+						<f:selectItem itemLabel=" " itemValue="#{null}" noSelectionOption="true" />
 						<f:selectItems value="#{TurmaControl.carregaTodosCursos}" 
 							var="cursos" itemLabel="#{cursos.nome}" itemValue="#{cursos}" />
 					</p:selectOneMenu>
@@ -283,7 +285,7 @@
 					<p:selectOneMenu id="funcionario"
 						value="#{TurmaControl.professorSelecionado}"
 						converter="objectConverter" style="width:155px;" >
-						<f:selectItem itemLabel=" " noSelectionOption="true" />
+						<f:selectItem itemLabel=" " itemValue="#{null}" noSelectionOption="true" />
 						<f:selectItems value="#{TurmaControl.professores}" var="prof"
 							itemValue="#{prof}" itemLabel="#{prof.nomePessoa}" />
 
@@ -366,14 +368,14 @@
 				
 				<p:commandButton id="botaoCadastrarTurma" icon="ui-icon-disk"
 					rendered="#{TurmaControl.turma.id == null}" value="Cadastrar"
-					update="painel"
+					update="painel listaTurmasParaSecretaria listaTurmas"
 					actionListener="#{TurmaControl.cadastrarTurma}" />
 				<p:tooltip for="botaoCadastrarTurma" value="Cadastrar turma"
 					position="top" />
 
 				<p:commandButton id="botaoSalvarTurma" icon="ui-icon-refresh"
 					rendered="#{TurmaControl.turma.id != null}" value="Salvar"
-					update="painel"
+					update="painel listaTurmasParaSecretaria listaTurmas"
 					actionListener="#{TurmaControl.salvarAlteracoesTurma}" />
 				<p:tooltip for="botaoSalvarTurma" value="Salvar alterações"
 					position="top" />

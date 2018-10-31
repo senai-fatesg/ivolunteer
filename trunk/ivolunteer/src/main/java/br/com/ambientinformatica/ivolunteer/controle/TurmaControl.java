@@ -252,7 +252,7 @@ public class TurmaControl implements TurmaService {
 	}
 	
 	public void selecionaCurso(){
-		curso = cursoDao.buscaCursoPorId(this.cursoSelecionado);
+		curso = cursoDao.buscaCursoComListaDeTurmasAtivas(this.cursoSelecionado);
 		this.turma.AdicionarCurso(curso);
 		if (this.turma.getCurso().getDuracao().equals(EnumTipoCurso.DURACAO_INDETERMINADA)) {
 			this.renderizaDatas = false;
@@ -273,28 +273,17 @@ public class TurmaControl implements TurmaService {
 		this.turma.setProfessor(professorSelecionado);
 	}
 	
-	public void cadastraCurso() {
-		cursoDao.incluir(this.cursoCadastro);
-		this.cursoCadastro = new Curso();
-		UtilFaces.addMensagemFaces("Curso cadastrado com sucesso!");
-	}
-	
-	public void atualizaCurso() {
-		cursoDao.alterar(this.cursoCadastro);
-		this.listaCursos = cursoDao.listarCursosAtivos();
-		this.cursoCadastro = new Curso();
-		UtilFaces.addMensagemFaces("Curso alterado com sucesso!");
-	}
-	
 	public void cadastrarTurma() {
 		try {
 			this.curso.adicionarTurma(this.turma);
 			this.cursoDao.alterar(this.curso);
-			validarTurma(this.turma);
-			turmaDao.incluir(this.turma);
+			//validarTurma(this.turma);
+			//turmaDao.incluir(this.turma);
 			listar();
 			this.curso = new Curso();
 			this.turma = new Turma();
+			this.professorSelecionado = new Funcionario();
+			this.cursoSelecionado = new Curso();
 			UtilFaces.addMensagemFaces("Turma cadastrada com sucesso!");
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
@@ -303,11 +292,13 @@ public class TurmaControl implements TurmaService {
 
 	public void salvarAlteracoesTurma() {
 		try {
-			validarTurma(this.turma);
+			//validarTurma(this.turma);
 			turmaDao.alterar(this.turma);
 			listar();
 			this.curso = new Curso();
 			this.turma = new Turma();
+			this.professorSelecionado = new Funcionario();
+			this.cursoSelecionado = new Curso();
 			UtilFaces.addMensagemFaces("Turma alterada com sucesso!");
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);

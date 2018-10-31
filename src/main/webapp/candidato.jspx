@@ -680,7 +680,7 @@
 										</a:field>
 										
 										<a:field label="Ano de escolaridade:" spaceLeft="15px" 
-											rendered="#{(CandidatoControl.candidato.enumEscolaridade == 'FUNDAMENTAL') or (CandidatoControl.candidato.enumEscolaridade == 'MEDIO') or (CandidatoControl.candidato.enumEscolaridade == 'SUPERIOR')}">
+											rendered="#{CandidatoControl.renderizaAnoEscolaridade}">
 											<p:inputText id="anoEscolaridade"
 												value="#{CandidatoControl.candidato.anoEscolaridade}" />
 										</a:field>

@@ -93,6 +93,7 @@ public class CandidatoControl {
 	
 	private boolean renderizaObservacao = false;
 	private boolean renderizaPeriodoConclusao = false;
+	private boolean renderizaAnoEscolaridade = true;
 
 	@Autowired
 	private CandidatoDao candidatoDao;
@@ -624,6 +625,14 @@ public class CandidatoControl {
 	public void setRenderizaObservacao(boolean renderizaObservacao) {
 		this.renderizaObservacao = renderizaObservacao;
 	}
+	
+	public boolean isRenderizaAnoEscolaridade() {
+		return renderizaAnoEscolaridade;
+	}
+
+	public void setRenderizaAnoEscolaridade(boolean renderizaAnoEscolaridade) {
+		this.renderizaAnoEscolaridade = renderizaAnoEscolaridade;
+	}
 
 	public String getStatusFiltro() {
 		return statusFiltro;
@@ -816,7 +825,9 @@ public class CandidatoControl {
 		if(this.candidato.getEnumEscolaridade().equals(EnumEscolaridade.FUNDAMENTAL) || this.candidato.getEnumEscolaridade().equals(EnumEscolaridade.MEDIO) || this.candidato.getEnumEscolaridade().equals(EnumEscolaridade.SUPERIOR)) {
 			this.candidato.setEnumStatusDesistiu(EnumStatusDesistiu.EM_BRANCO);
 			this.candidato.setAnoDeDesistencia(null);
+			this.renderizaAnoEscolaridade = true;
 		} else {
+			this.renderizaAnoEscolaridade = false;
 			this.renderizaPeriodoConclusao = false;
 			this.candidato.setEnumStatusConcluiu(EnumStatusConcluiu.EM_BRANCO);
 			this.candidato.setAnoDeConclusao(null);

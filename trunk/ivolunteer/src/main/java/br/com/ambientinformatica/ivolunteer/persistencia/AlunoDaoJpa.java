@@ -7,8 +7,11 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
+import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.Aluno;
+import br.com.ambientinformatica.ivolunteer.entidade.Candidato;
 import br.com.ambientinformatica.jpa.persistencia.PersistenciaJpa;
+import br.com.ambientinformatica.util.UtilLog;
 
 @Repository("alunoDao")
 public class AlunoDaoJpa extends PersistenciaJpa<Aluno> implements AlunoDao {
@@ -68,6 +71,24 @@ public class AlunoDaoJpa extends PersistenciaJpa<Aluno> implements AlunoDao {
 		} catch (NoResultException nre) {
 			return null;
 		}
+	}
+
+	@Override
+	public Aluno consultarAlunoComResponsavel(Aluno aluno) {
+		Aluno alunoConsulta = consultar(aluno.getId());
+		
+		try {
+			Query carregaResponsaveis = em.createQuery(
+					"SELECT a FROM Aluno a LEFT JOIN FETCH a.listaResponsavel resp" + " WHERE a.id = :id");
+			carregaResponsaveis.setParameter("id", alunoConsulta.getId());
+			alunoConsulta = (Aluno) carregaResponsaveis.getSingleResult();
+
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces("Ocorreu um erro ao consultar candidato.");
+			UtilLog.getLog().error(e);
+		}
+		
+		return alunoConsulta;
 	}
 
 }

@@ -23,7 +23,8 @@ import javax.persistence.TemporalType;
 @Entity
 @PrimaryKeyJoinColumn(name="id")
 public class Aluno extends Pessoa {
-
+	
+	private Boolean isAtivo = true;
 
 	@Temporal(TemporalType.DATE)
 	private Date dataSaida;
@@ -42,6 +43,16 @@ public class Aluno extends Pessoa {
 
 	@OneToOne(fetch=FetchType.EAGER)
 	private Matricula matricula;
+
+	public Boolean getIsAtivo() {
+		return isAtivo;
+	}
+
+
+	public void setIsAtivo(Boolean isAtivo) {
+		this.isAtivo = isAtivo;
+	}
+
 
 	public String CalcularIdadeReal(String dataNascimento) {
 		DateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");
@@ -121,6 +132,10 @@ public class Aluno extends Pessoa {
 
 	public void setFrequencias(List<Frequencia> frequencias) {
 		this.frequencias = frequencias;
+	}
+	
+	public void desativa() {
+		setIsAtivo(false);
 	}
 
 }

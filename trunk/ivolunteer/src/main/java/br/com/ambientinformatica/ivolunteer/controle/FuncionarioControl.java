@@ -132,11 +132,10 @@ public class FuncionarioControl {
 			funcionario.desativa();
 			funcionarioDao.alterar(funcionario);
 			listarTodosFuncionarios(null);
-			UtilFaces.addMensagemFaces("Colaborador excluido com sucesso!");
+			UtilFaces.addMensagemFaces("Colaborador excluído com sucesso!");
 		} catch (PersistenciaException e) {
 			UtilFaces.addMensagemFaces(e);
 		}
-
 	}
 	
 	public Funcionario desativarFuncionarioCompleto(Funcionario funcionario) {

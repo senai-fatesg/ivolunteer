@@ -17,4 +17,6 @@ public interface AlunoDao extends Persistencia<Aluno> {
 	public List<Aluno> listarTodos();
 
 	Aluno getAluno(Integer idAluno);
+
+	public Aluno consultarAlunoComResponsavel(Aluno aluno);
 }

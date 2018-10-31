@@ -29,10 +29,11 @@
 				height="70%" resizable="false" closeOnEscape="true">
 
 				<a:field label="Código:">
-					<p:inputNumber id="filtroIdTurma" value="#{TurmaControl.turmaConsulta.id}" decimalPlaces="0" />
+					<p:inputNumber id="filtroIdTurma"
+						value="#{TurmaControl.turmaConsulta.id}" decimalPlaces="0" />
 				</a:field>
 
-				<a:field label="Status:" spaceLeft="15px" >
+				<a:field label="Status:" spaceLeft="15px">
 					<p:selectOneMenu id="filtroStatusTurma"
 						value="#{TurmaControl.statusFiltro}">
 						<f:selectItem itemLabel="TODOS" itemValue="#{null}"
@@ -60,39 +61,43 @@
 					<p:columnGroup type="header">
 						<p:row>
 							<p:column headerText="Código" sortBy="#{turma.id}" width="10%" />
-							<p:column headerText="Curso" sortBy="#{turma.curso.nome}" width="20%" />
+							<p:column headerText="Curso" sortBy="#{turma.curso.nome}"
+								width="20%" />
 							<p:column headerText="Turno" sortBy="#{turma.turno}" width="10%" />
 							<p:column headerText="Qtd vagas"
 								sortBy="#{turma.quantidadeVagas}" />
-							<p:column headerText="Professor" sortBy="#{turma.professor}" width="20%" />
+							<p:column headerText="Professor" sortBy="#{turma.professor}"
+								width="20%" />
 							<p:column headerText="Status" sortBy="#{turma.ativo}" />
 							<p:column headerText="Ações" width="13%" />
 						</p:row>
 					</p:columnGroup>
-					
-					<p:column style="text-align:center;" >
+
+					<p:column style="text-align:center;">
 						<h:outputText value="#{turma.id}" />
 					</p:column>
-					
-					<p:column style="text-align:center;" >
+
+					<p:column style="text-align:center;">
 						<h:outputText value="#{turma.curso.nome}" />
 					</p:column>
 
-					<p:column style="text-align:center;" >
+					<p:column style="text-align:center;">
 						<h:outputText value="#{turma.turno}" />
 					</p:column>
 
-					<p:column style="text-align:center;" >
+					<p:column style="text-align:center;">
 						<h:outputText value="#{turma.quantidadeVagas}" />
 					</p:column>
 
-					<p:column style="text-align:center;" >
+					<p:column style="text-align:center;">
 						<h:outputText value="#{turma.professor.nomePessoa}" />
 					</p:column>
 
 					<p:column width="8%" style="text-align:center;">
-						<h:outputText rendered="#{turma.isConcluido == false}" value="EM ANDAMENTO" />
-						<h:outputText rendered="#{turma.isConcluido == true}" value="CONCLUÍDO" />
+						<h:outputText rendered="#{turma.isConcluido == false}"
+							value="EM ANDAMENTO" />
+						<h:outputText rendered="#{turma.isConcluido == true}"
+							value="CONCLUÍDO" />
 					</p:column>
 
 					<p:column style="text-align:center;" width="10%">
@@ -133,41 +138,50 @@
 					<p:columnGroup type="header">
 						<p:row>
 							<p:column headerText="Código" sortBy="#{turma.id}" width="10%" />
-							<p:column headerText="Curso" sortBy="#{turma.curso.nome}" width="20%" />
-							<p:column headerText="Turno" sortBy="#{turma.turno}"  width="10%" />
+							<p:column headerText="Curso" sortBy="#{turma.curso.nome}"
+								width="20%" />
+							<p:column headerText="Turno" sortBy="#{turma.turno}" width="10%" />
 							<p:column headerText="Qtd vagas"
 								sortBy="#{turma.quantidadeVagas}" />
-							<p:column headerText="Professor" sortBy="#{turma.professor}" width="20%" />
+							<p:column headerText="Professor" sortBy="#{turma.professor}"
+								width="20%" />
 							<p:column headerText="Status" sortBy="#{turma.ativo}" />
 							<p:column headerText="Ações" width="7%" />
 						</p:row>
 					</p:columnGroup>
-					
-					<p:column style="text-align:center;" rendered="#{turma.isConcluido == false}">
+
+					<p:column style="text-align:center;"
+						rendered="#{turma.isConcluido == false}">
 						<h:outputText value="#{turma.id}" />
 					</p:column>
-					
-					<p:column style="text-align:center;" rendered="#{turma.isConcluido == false}">
+
+					<p:column style="text-align:center;"
+						rendered="#{turma.isConcluido == false}">
 						<h:outputText value="#{turma.curso.nome}" />
 					</p:column>
 
-					<p:column style="text-align:center;" rendered="#{turma.isConcluido == false}">
+					<p:column style="text-align:center;"
+						rendered="#{turma.isConcluido == false}">
 						<h:outputText value="#{turma.turno}" />
 					</p:column>
 
-					<p:column style="text-align:center;" rendered="#{turma.isConcluido == false}">
+					<p:column style="text-align:center;"
+						rendered="#{turma.isConcluido == false}">
 						<h:outputText value="#{turma.quantidadeVagas}" />
 					</p:column>
 
-					<p:column style="text-align:center;" rendered="#{turma.isConcluido == false}">
+					<p:column style="text-align:center;"
+						rendered="#{turma.isConcluido == false}">
 						<h:outputText value="#{turma.professor.nomePessoa}" />
 					</p:column>
 
-					<p:column style="text-align:center;" rendered="#{turma.isConcluido == false}">
+					<p:column style="text-align:center;"
+						rendered="#{turma.isConcluido == false}">
 						<h:outputText value="EM ANDAMENTO" />
 					</p:column>
 
-					<p:column style="text-align:center;" rendered="#{turma.isConcluido == false}">
+					<p:column style="text-align:center;"
+						rendered="#{turma.isConcluido == false}">
 						<p:commandButton id="botaoExibirTurma" icon="ui-icon-info"
 							action="#{TurmaControl.exibeInfoTurma(turma)}"
 							process="botaoExibirTurma" update="formCorpo:infoTurmaJanela"
@@ -175,7 +189,7 @@
 						<p:tooltip for="botaoExibirTurma"
 							value="Exibir informações desta turma" position="top" />
 
-						<p:commandButton id="botaoEditarTurma" 
+						<p:commandButton id="botaoEditarTurma"
 							rendered="#{securityScope.userInRole['SECRETARIA'] or securityScope.userInRole['ADMIN']}"
 							icon="ui-icon-pencil"
 							action="#{TurmaControl.carregaTurmaAlteracao(turma)}"
@@ -183,10 +197,11 @@
 						<p:tooltip for="botaoEditarTurma" value="Editar turma"
 							position="top" />
 
-						<p:commandButton id="botaoConcluirTurma" 
+						<p:commandButton id="botaoConcluirTurma"
 							rendered="#{securityScope.userInRole['SECRETARIA'] or securityScope.userInRole['ADMIN']}"
 							icon="ui-icon-check"
-							action="#{TurmaControl.concluirTurma(turma)}" update="listaTurmas">
+							action="#{TurmaControl.concluirTurma(turma)}"
+							update="listaTurmas">
 							<p:confirm header="Confirmar ação!"
 								message="Deseja realmente concluir esta turma?"
 								icon="ui-icon-alert" />
@@ -213,16 +228,24 @@
 					<h:outputText value="#{TurmaControl.exibeTurmaInfo.turno}" />
 
 					<h:outputLabel value="Data de início: " />
-					<h:outputText rendered="#{TurmaControl.exibeTurmaInfo.curso.duracao == 'DURACAO_DETERMINADA'}" value="#{TurmaControl.exibeTurmaInfo.dataInicio}">
+					<h:outputText
+						rendered="#{TurmaControl.exibeTurmaInfo.curso.duracao == 'DURACAO_DETERMINADA'}"
+						value="#{TurmaControl.exibeTurmaInfo.dataInicio}">
 						<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
 					</h:outputText>
-					<h:outputText rendered="#{TurmaControl.exibeTurmaInfo.curso.duracao != 'DURACAO_DETERMINADA'}" value="NÃO POSSUI" />
+					<h:outputText
+						rendered="#{TurmaControl.exibeTurmaInfo.curso.duracao != 'DURACAO_DETERMINADA'}"
+						value="NÃO POSSUI" />
 
 					<h:outputLabel value="Data de término: " />
-					<h:outputText rendered="#{TurmaControl.exibeTurmaInfo.curso.duracao == 'DURACAO_DETERMINADA'}" value="#{TurmaControl.exibeTurmaInfo.dataTermino}">
+					<h:outputText
+						rendered="#{TurmaControl.exibeTurmaInfo.curso.duracao == 'DURACAO_DETERMINADA'}"
+						value="#{TurmaControl.exibeTurmaInfo.dataTermino}">
 						<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
 					</h:outputText>
-					<h:outputText rendered="#{TurmaControl.exibeTurmaInfo.curso.duracao != 'DURACAO_DETERMINADA'}" value="NÃO POSSUI" />
+					<h:outputText
+						rendered="#{TurmaControl.exibeTurmaInfo.curso.duracao != 'DURACAO_DETERMINADA'}"
+						value="NÃO POSSUI" />
 
 					<h:outputLabel value="Horário de início: " />
 					<h:outputText value="#{TurmaControl.exibeTurmaInfo.horarioInicio}" />
@@ -257,54 +280,21 @@
 			<!-- FORMULÁRIO DE CADASTRO DE TURMAS -->
 			<p:panel rendered="true" id="cadastro">
 
-				<a:field label="Curso da turma:" >
-					<p:inputText id="cursoTurma" disabled="true" value="#{TurmaControl.turma.curso.nome}" />
+				<a:field label="Curso da turma:">
+					<p:autoComplete id="cursoTurma" dropdown="true" minQueryLength="2"
+					value="#{TurmaControl.turma.curso}" converter="objectConverter"
+					completeMethod="#{TurmaControl.buscaCursos}" var="curso" itemValue="#{curso}" itemLabel="#{curso.nome}" />
 				</a:field>
 				
-				<a:field label="Selecione um curso:" spaceLeft="15px">
-					<p:selectOneMenu id="exibeCursos" value="#{TurmaControl.cursoSelecionado}" converter="objectConverter" >
-						<f:selectItem itemLabel=" " itemValue="#{null}" noSelectionOption="true" />
-						<f:selectItems value="#{TurmaControl.carregaTodosCursos}" 
-							var="cursos" itemLabel="#{cursos.nome}" itemValue="#{cursos}" />
-					</p:selectOneMenu>
+				<a:field label="Professor da turma:" spaceLeft="15px">
+					<p:autoComplete id="dd" dropdown="true" minQueryLength="2"
+					value="#{TurmaControl.turma.professor}" converter="objectConverter"
+					completeMethod="#{TurmaControl.buscaProfessores}" var="prof" itemValue="#{prof}" itemLabel="#{prof.nomePessoa}" />
 				</a:field>
 				
-				<p:commandButton id="selecionaCurso" icon="ui-icon-check" style="margin-top:23px; margin-left: 20px;"
-					update="exibeCursos cursoTurma dataInicio dataTermino formCorpo:cadastro" action="#{TurmaControl.selecionaCurso}" process="selecionaCurso exibeCursos cursoTurma" />
-				<p:tooltip for="selecionaCurso" value="Selecionar curso" position="top" />
-				
-				<a:newLine/>
-				
-				<a:field label="Professor:">
-					<p:inputText id="professorSelecionado" disabled="true"
-						value="#{TurmaControl.turma.professor.nomePessoa}" />
-				</a:field>
+				<a:newLine />
 
-				<a:field label="Selecione um professor:" spaceLeft="15px">
-
-					<p:selectOneMenu id="funcionario"
-						value="#{TurmaControl.professorSelecionado}"
-						converter="objectConverter" style="width:155px;" >
-						<f:selectItem itemLabel=" " itemValue="#{null}" noSelectionOption="true" />
-						<f:selectItems value="#{TurmaControl.professores}" var="prof"
-							itemValue="#{prof}" itemLabel="#{prof.nomePessoa}" />
-
-					</p:selectOneMenu>
-
-				</a:field>
-				
-				<p:commandButton style="margin-top:23px; margin-left: 13px;" 
-					id="botaoSelecionaProfessor" icon="ui-icon-check"
-					update="professorSelecionado"
-					process="funcionario botaoSelecionaProfessor" ajax="true"
-					action="#{TurmaControl.selecionaProfessor}">
-					<p:tooltip for="botaoSelecionaProfessor"
-						value="Selecionar professor" />
-				</p:commandButton>
-				
-				<a:newLine/>
-
-				<a:field label="Turno:" >
+				<a:field label="Turno:">
 					<p:selectOneMenu id="turno" value="#{TurmaControl.turma.turno}"
 						style="width:170px;">
 						<p:ajax update="horarioInicio,horarioFinal"></p:ajax>
@@ -315,13 +305,15 @@
 					</p:selectOneMenu>
 				</a:field>
 
-				<a:field label="Data de início:" spaceLeft="15px" rendered="#{TurmaControl.renderizaDatas}" >
+				<a:field label="Data de início:" spaceLeft="15px"
+					rendered="#{TurmaControl.renderizaDatas}">
 					<p:calendar id="dataInicio"
 						value="#{TurmaControl.turma.dataInicio}" navigator="true"
 						yearRange="c-100:c0" pattern="dd-MM-yyyy" locale="de" />
 				</a:field>
 
-				<a:field label="Data de Término:" spaceLeft="15px" rendered="#{TurmaControl.renderizaDatas}" >
+				<a:field label="Data de Término:" spaceLeft="15px"
+					rendered="#{TurmaControl.renderizaDatas}">
 					<p:calendar id="dataTermino"
 						value="#{TurmaControl.turma.dataTermino}" navigator="true"
 						yearRange="c-100:c0" pattern="dd-MM-yyyy" locale="de" />
@@ -365,7 +357,7 @@
 
 				<a:newLine />
 				<a:newLine />
-				
+
 				<p:commandButton id="botaoCadastrarTurma" icon="ui-icon-disk"
 					rendered="#{TurmaControl.turma.id == null}" value="Cadastrar"
 					update="painel listaTurmasParaSecretaria listaTurmas"

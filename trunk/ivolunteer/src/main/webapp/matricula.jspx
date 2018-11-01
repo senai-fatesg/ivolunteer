@@ -107,6 +107,7 @@
 							value="Exibir informações do candidato." />
 
 						<p:commandButton id="matricularCandidato" icon="ui-icon-check"
+							rendered="#{itemAluno.isAtivo == true}"
 							action="#{MatriculaControl.carregaCandidatoParaAlunoMatriculado(itemAluno)}"
 							oncomplete="PF('matricular').hide();"
 							update="formCorpo:tabCadastroMatricula" process="@this"
@@ -188,9 +189,10 @@
 				update="listaAlunos" onclick="PF('consultar').show();"
 				style="margin-top:15px; margin-left:15px;" />
 
-			<p:dialog id="dialogMatricula" header="Tabela de Consulta de Matriculas"
-				widgetVar="consultar" modal="true" maximizable="false"
-				minimizable="false" width="90%" height="100%" resizable="true">
+			<p:dialog id="dialogMatricula"
+				header="Tabela de Consulta de Matriculas" widgetVar="consultar"
+				modal="true" maximizable="false" minimizable="false" width="90%"
+				height="100%" resizable="true">
 
 				<p:dataTable id="listaAlunos" var="itemAluno" paginator="true"
 					rows="10" rowsPerPageLabel="5,10,20" rowsPerPageTemplate="5,10,20"
@@ -267,42 +269,42 @@
 							value="Exibir informações do Aluno" />
 
 						<p:commandButton id="alterarAluno" icon="ui-icon-pencil"
+							rendered="#{itemAluno.isAtivo == true}"
 							action="#{MatriculaControl.carregaAlunoAlteracao(itemAluno)}"
 							oncomplete="PF('consultar').hide();"
-							update="formCorpo:tabCadastroMatricula" process="@this"
-							style="margin-left:10px;" />
-						<p:tooltip for="alterarAluno" position="top"
-							value="Alterar Aluno" />
-							
+							update="formCorpo:tabCadastroMatricula :formCorpo:panelAluno"
+							process="@this" style="margin-left:10px;" />
+						<p:tooltip for="alterarAluno" position="top" value="Alterar Aluno" />
+
 						<p:commandButton id="desativarAluno" icon="ui-icon-trash"
+							rendered="#{itemAluno.isAtivo == true}"
 							action="#{MatriculaControl.excluir(itemAluno)}"
 							update="formCorpo:listaAlunos" process="@this"
 							style="margin-left:10px;" />
 						<p:tooltip for="exibirInfoAluno" position="top"
 							value="Exibir informações do Aluno" />
 					</p:column>
-					
-				</p:dataTable>		
+
+				</p:dataTable>
 			</p:dialog>
-			
-			<p:dialog id="info-aluno" widgetVar="informacoes-aluno"
-				modal="true" header="Informações do Aluno" width="900px">
+
+			<p:dialog id="info-aluno" widgetVar="informacoes-aluno" modal="true"
+				header="Informações do Aluno" width="1250px">
 				<p:panelGrid columns="4" layout="grid">
 					<h:outputLabel value="Matrícula:" />
 					<h:outputText value="#{MatriculaControl.infoAluno.id}" />
-				
+
 					<h:outputLabel value="Nome:" />
 					<h:outputText value="#{MatriculaControl.infoAluno.nomePessoa}" />
 
 					<h:outputLabel value="Data Nascimento:" />
-					<h:outputText
-						value="#{MatriculaControl.infoAluno.dataNascimento}">
+					<h:outputText value="#{MatriculaControl.infoAluno.dataNascimento}">
 						<f:convertDateTime pattern="dd/MM/yyyy" />
 					</h:outputText>
-					
+
 					<h:outputLabel value="Idade:" />
 					<h:outputText value="#{MatriculaControl.dataReal}" />
-					
+
 					<h:outputLabel value="Gênero:" />
 					<h:outputText
 						rendered="#{MatriculaControl.infoAluno.enumSexo == 'M'}"
@@ -310,17 +312,15 @@
 					<h:outputText
 						rendered="#{MatriculaControl.infoAluno.enumSexo == 'F'}"
 						value="Feminino" />
-						
+
 					<h:outputLabel value="Etnia:" />
 					<h:outputText value="#{MatriculaControl.infoAluno.etnia}" />
-					
+
 					<h:outputLabel value="Naturalidade:" />
-					<h:outputText
-						value="#{MatriculaControl.infoAluno.naturalidade}" />
-						
+					<h:outputText value="#{MatriculaControl.infoAluno.naturalidade}" />
+
 					<h:outputLabel value="Nacionalidade:" />
-					<h:outputText
-						value="#{MatriculaControl.infoAluno.nascionalidade}" />
+					<h:outputText value="#{MatriculaControl.infoAluno.nascionalidade}" />
 
 					<h:outputLabel value="CPF:" />
 					<h:outputText value="#{MatriculaControl.infoAluno.cpf}" />
@@ -329,18 +329,20 @@
 					<h:outputText value="#{MatriculaControl.infoAluno.rg}" />
 
 					<h:outputLabel value="Órgão emissor:" />
-					<h:outputText
-						value="#{MatriculaControl.infoAluno.orgaoExpeditor}" />
-						
+					<h:outputText value="#{MatriculaControl.infoAluno.orgaoExpeditor}" />
+
 					<h:outputLabel value="Certidão de Nascimento:" />
-					<h:outputText value="#{MatriculaControl.infoAluno.matricula.certidaoNascimentoNova}" />
-					
+					<h:outputText
+						value="#{MatriculaControl.infoAluno.matricula.certidaoNascimentoNova}" />
+
 					<h:outputLabel value="Nome do Responsável:" />
-					<h:outputText value="#{MatriculaControl.infoAluno.listaResponsavel[0].nomePessoa}" />
-					
+					<h:outputText
+						value="#{MatriculaControl.infoAluno.listaResponsavel[0].nomePessoa}" />
+
 					<h:outputLabel value="Grau de Parentesco:" />
-					<h:outputText value="#{MatriculaControl.infoAluno.listaResponsavel[0].enumFiliacao}" />
-					
+					<h:outputText
+						value="#{MatriculaControl.infoAluno.listaResponsavel[0].enumFiliacao}" />
+
 				</p:panelGrid>
 			</p:dialog>
 
@@ -692,9 +694,28 @@
 								<a:newLine />
 
 								<a:field label="Curso">
-									<p:inputText id="curso" maxlength="100" style="width:200px">
-										<p:keyFilter regEx="/[a-z_\s]/i" />
-									</p:inputText>
+									<p:outputLabel for="mostraCursos" />
+									<p:autoComplete id="mostraCursos" dropdown="true"
+										value="#{MatriculaControl.curso}"
+										completeMethod="#{MatriculaControl.autoCompleteCursos}"
+										converter="objectConverter" minQueryLength="1" var="itemCurso"
+										itemLabel="#{itemCurso.nome}" itemValue="#{itemCurso}">
+										<p:ajax event="select"
+											listener="#{MatriculaControl.carregaTurmasPorCurso}"
+											update="mostraTurmas" process="mostraCursos" />
+									</p:autoComplete>
+								</a:field>
+
+								<a:field label="Turma" spaceLeft="10px">
+									<p:selectOneMenu id="mostraTurmas"
+										value="#{MatriculaControl.turma}" style="width:165px"
+										converter="objectConverter">
+										<f:selectItem itemLabel="Selecione uma opção"
+											itemValue="#{null}" noSelectionOption="true" />
+										<f:selectItems value="#{MatriculaControl.turmas}"
+											var="itemTurma" itemLabel="#{itemTurma.id}" 
+											itemValue="#{itemTurma}" />
+									</p:selectOneMenu>
 								</a:field>
 
 								<a:field label="Mês/Ano" spaceLeft="10px">
@@ -725,9 +746,25 @@
 
 			<a:newLine />
 
-			<p:commandButton value="Efetuar Matricula" icon="ui-icon-disk"
-				actionListener="#{MatriculaControl.incluir}" update="@form"
-				oncomplete="#{MatriculaControl.alunos}" />
+			<p:commandButton id="buttonSalvar" value="Cadastrar Matricula"
+				icon="ui-icon-disk"
+				rendered="#{MatriculaControl.matricula.id == null}"
+				actionListener="#{MatriculaControl.salvar}"
+				update=":formCorpo:panelAluno"
+				oncomplete="#{MatriculaControl.alunos}">
+				<p:tooltip for="buttonSalvar" position="top" value="Cadastrar Aluno"
+					hideEvent="mouseleave click" />
+			</p:commandButton>
+
+			<p:commandButton id="buttonAlterar" value="Alterar Matricula"
+				icon="ui-icon-disk"
+				rendered="#{MatriculaControl.matricula.id != null}"
+				actionListener="#{MatriculaControl.alterar}"
+				update=":formCorpo:panelAluno"
+				oncomplete="#{MatriculaControl.alunos}">
+				<p:tooltip for="buttonAlterar" position="top" value="Alterar Aluno"
+					hideEvent="mouseleave click" />
+			</p:commandButton>
 
 		</p:panel>
 	</ui:define>

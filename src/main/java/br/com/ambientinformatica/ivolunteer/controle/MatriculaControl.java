@@ -18,6 +18,7 @@ import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.Aluno;
 import br.com.ambientinformatica.ivolunteer.entidade.Candidato;
 import br.com.ambientinformatica.ivolunteer.entidade.Cidade;
+import br.com.ambientinformatica.ivolunteer.entidade.Curso;
 import br.com.ambientinformatica.ivolunteer.entidade.Endereco;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumFiliacao;
@@ -26,9 +27,12 @@ import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoEtnia;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoPessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.Matricula;
 import br.com.ambientinformatica.ivolunteer.entidade.Responsavel;
+import br.com.ambientinformatica.ivolunteer.entidade.Turma;
 import br.com.ambientinformatica.ivolunteer.persistencia.AlunoDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.CandidatoDao;
+import br.com.ambientinformatica.ivolunteer.persistencia.CursoDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.MatriculaDao;
+import br.com.ambientinformatica.ivolunteer.persistencia.TurmaDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 
 @Controller("MatriculaControl")
@@ -44,6 +48,8 @@ public class MatriculaControl {
 	private Responsavel responsavel = new Responsavel();
 	private String dataReal;
 	private Matricula matricula = new Matricula();
+	private Curso curso;
+	private Turma turma;
 	
 //	private String filtroNome;
 //	private String filtroStatus;
@@ -54,16 +60,32 @@ public class MatriculaControl {
 	private MatriculaDao matriculaDao;
 	@Autowired
 	private CandidatoDao candidatoDao;
+	@Autowired
+	private CursoDao cursoDao;
+	@Autowired
+	private TurmaDao turmaDao;
 
 	private List<Matricula> matriculas = new ArrayList<Matricula>();
 	private List<Aluno> alunos = new ArrayList<Aluno>();
 	private List<Candidato> candidatos = new ArrayList<Candidato>();
+	private List<Turma> turmas = new ArrayList<Turma>();
 
 	private List<String> images;
 	private List<String> tabelaFiltrada;
 
 	public List<String> getTabelaFiltrada() {
 		return tabelaFiltrada;
+	}
+	
+	public List<Curso> autoCompleteCursos(String textFormulario) {
+		List<Curso> cursos = new ArrayList<Curso>();
+		cursos = cursoDao.buscaCursoPorNome(textFormulario);
+		return cursos;
+	}
+	
+	public void carregaTurmasPorCurso() {
+		System.out.println("ENTREI POHA! TAUKEI?");
+		this.turmas = turmaDao.buscaTurmasAtivas(this.curso);
 	}
 	
 	public void setTabelaFiltrada(List<String> tabelaFiltrada) {
@@ -189,31 +211,58 @@ public class MatriculaControl {
 		this.candidatos = candidatos;
 	}
 
+	public List<Turma> getTurmas() {
+		return turmas;
+	}
+
+	public void setTurmas(List<Turma> turmas) {
+		this.turmas = turmas;
+	}
+
 	public List<String> getImages() {
 		return images;
 	}
+	
+	private boolean validarNome() {
+		if (this.aluno.getNomePessoa().isEmpty()) {
+			UtilFaces.addMensagemFaces("Nome do Aluno é obrigatório!");
+			return false;
+		} else {
+			return true;			
+		}
+	}
 
-	public void incluir(ActionEvent evt) {
+	public void salvar(ActionEvent evt) {
 		try {
-			if (this.matricula.getId() == null) {
-				this.aluno.addResponsavel(this.getResponsavel());
-				matriculaDao.incluir(this.matricula);
-				aluno.setMatricula(this.matricula);
-				alunoDao.alterar(this.aluno);
-			} else {
-				matriculaDao.alterar(this.matricula);
-				this.aluno.setMatricula(this.matricula);
-				alunoDao.alterar(this.aluno);
+			if (this.validarNome()) {				
+				if (this.matricula.getId() == null) {
+					this.aluno.addResponsavel(this.getResponsavel());
+					matriculaDao.incluir(this.matricula);
+					aluno.setMatricula(this.matricula);
+					alunoDao.alterar(this.aluno);
+				} 
+				this.limparFormulario();
+				UtilFaces.addMensagemFaces("Aluno salvo com sucesso!");
 			}
-			this.aluno = new Aluno();
-			this.endereco = new Endereco();
-			this.matricula = new Matricula();
-			this.responsavel = new Responsavel();
-			UtilFaces.addMensagemFaces("Aluno salvo com sucesso!");
 		} catch (PersistenciaException e) {
 			UtilFaces.addMensagemFaces(e);
 		}
-
+	}
+	
+	public void alterar(ActionEvent evt) {
+		try {
+			if (this.validarNome()) {
+				matriculaDao.alterar(this.matricula);
+				this.aluno.setMatricula(this.matricula);
+				alunoDao.alterar(this.aluno);	
+				this.limparFormulario();
+				UtilFaces.addMensagemFaces("Aluno alterado com sucesso!");
+//				listar(evt);
+//				matricula = new Matricula();
+			}
+		} catch (Exception e) {
+			UtilFaces.addMensagemFaces(e);
+		}
 	}
 
 	public void excluir(Aluno aluno) {
@@ -228,6 +277,14 @@ public class MatriculaControl {
 			UtilFaces.addMensagemFaces(e);
 		}
 
+	}
+	
+	public void limparFormulario() {
+		this.dataReal = "";
+		this.aluno = new Aluno();
+		this.responsavel = new Responsavel();
+		this.endereco = new Endereco();
+		this.matricula = new Matricula();
 	}
 
 	public void carregaAlunoAlteracao(Aluno aluno) {
@@ -276,16 +333,6 @@ public class MatriculaControl {
 		try {
 			this.aluno.addEndereco(endereco);
 			this.endereco = new Endereco();
-		} catch (Exception e) {
-			UtilFaces.addMensagemFaces(e);
-		}
-	}
-
-	public void confirmar(ActionEvent evt) {
-		try {
-			matriculaDao.alterar(matricula);
-			listar(evt);
-			matricula = new Matricula();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -369,6 +416,22 @@ public class MatriculaControl {
 		this.matricula = matricula;
 	}
 
+	public Curso getCurso() {
+		return curso;
+	}
+
+	public void setCurso(Curso curso) {
+		this.curso = curso;
+	}
+
+	public Turma getTurma() {
+		return turma;
+	}
+
+	public void setTurma(Turma turma) {
+		this.turma = turma;
+	}
+
 	public List<Matricula> getMatriculas() {
 		return matriculas;
 	}
@@ -426,6 +489,9 @@ public class MatriculaControl {
 	
 	public void exibiInformacoesAluno(Aluno aluno) {
 		this.infoAluno = alunoDao.consultar(aluno.getId());
+		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+		String dataFormatada = formato.format(aluno.getDataNascimento());
+		this.dataReal = this.aluno.CalcularIdadeReal(dataFormatada);
 	}
 
 //	public void addImage() {

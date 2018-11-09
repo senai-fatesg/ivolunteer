@@ -42,6 +42,10 @@ public class CursoControl {
 	public void init() {
 		listar();
 	}
+	
+	public List<Parceiro> buscaParceiros(String nomeParceiro) {
+		return parceiroDao.buscaParceiroPorNome(nomeParceiro);
+	}
 
 	public void listar() {
 		try {

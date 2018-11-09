@@ -282,8 +282,9 @@ public class TurmaControl implements TurmaService {
 	}
 	
 	public void selecionaCurso(){
-		curso = cursoDao.buscaCursoComListaDeTurmasAtivas(this.cursoSelecionado);
-		this.turma.AdicionarCurso(curso);
+		//curso = cursoDao.buscaCursoComListaDeTurmasAtivas(this.cursoSelecionado);
+		//this.turma.AdicionarCurso(curso);
+		System.out.println("ENTROU!!!!!");
 		if (this.turma.getCurso().getDuracao().equals(EnumTipoCurso.DURACAO_INDETERMINADA)) {
 			this.renderizaDatas = false;
 		} else {

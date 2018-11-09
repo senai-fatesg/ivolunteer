@@ -22,36 +22,39 @@
 				onclick="PF('consultaCursos').show();"
 				action="#{CursoControl.listar}" icon="ui-icon-search"
 				value="consultar" />
-			
+
 			<a:newLine />
-			
+
 			<p:dialog id="consultarCursos" widgetVar="consultaCursos"
 				modal="true" header="Consultar Cursos" width="70%">
-				
+
 				<a:field label="Nome do Curso:">
-					<p:inputText id="filtroNomeCurso" value="#{CursoControl.nomeFiltro}" />
+					<p:inputText id="filtroNomeCurso"
+						value="#{CursoControl.nomeFiltro}" />
 				</a:field>
-				
+
 				<a:field label="Status:" spaceLeft="15px">
-					<p:selectOneMenu id="statusCurso" value="#{CursoControl.statusFiltro}" >
+					<p:selectOneMenu id="statusCurso"
+						value="#{CursoControl.statusFiltro}">
 						<f:selectItem itemLabel="TODOS" itemValue="#{null}"
 							noSelectionOption="true" />
 						<f:selectItem itemLabel="ATIVO" itemValue="t" />
 						<f:selectItem itemLabel="INATIVO" itemValue="f" />
 					</p:selectOneMenu>
 				</a:field>
-				
-				<p:commandButton style="margin-left: 10px; margin-top: 23px;" 
-					process="filtroNomeCurso statusCurso botaoAplicarFiltro" 
-					update="consultarCursos listaCursos listaCursosAtivos"
-					oncomplete="PF('consultaCursos').show();"
-					id="botaoAplicarFiltro" icon="ui-icon-search" action="#{CursoControl.aplicarFiltro}" />
 
-				<a:newLine/>
-				<a:newLine/>
+				<p:commandButton style="margin-left: 10px; margin-top: 23px;"
+					process="filtroNomeCurso statusCurso botaoAplicarFiltro"
+					update="consultarCursos listaCursos listaCursosAtivos"
+					oncomplete="PF('consultaCursos').show();" id="botaoAplicarFiltro"
+					icon="ui-icon-search" action="#{CursoControl.aplicarFiltro}" />
+
+				<a:newLine />
+				<a:newLine />
 
 				<!-- Tabela renderizada apenas para SECRETARIA ou ADMIN -->
-				<p:dataTable rendered="#{securityScope.userInRole['SECRETARIA'] or securityScope.userInRole['ADMIN']}" 
+				<p:dataTable
+					rendered="#{securityScope.userInRole['SECRETARIA'] or securityScope.userInRole['ADMIN']}"
 					id="listaCursos" paginator="true" rows="5"
 					rowsPerPageLabel="5,10,15,20" rowsPerPageTemplate="5,10,15,20"
 					value="#{CursoControl.listaCursos}" var="curso"
@@ -61,7 +64,8 @@
 					<p:columnGroup type="header">
 						<p:row>
 							<p:column headerText="Nome" sortBy="#{curso.nome}" />
-							<p:column headerText="Duração" width="15%" sortBy="#{curso.duracao}" />
+							<p:column headerText="Duração" width="15%"
+								sortBy="#{curso.duracao}" />
 							<p:column headerText="Carga horária" width="20%" />
 							<p:column headerText="Status" width="10%" />
 							<p:column headerText="Ações" width="10%" />
@@ -83,12 +87,10 @@
 							value="#{curso.cargaHoraria} hrs" />
 					</p:column>
 					<p:column style="text-align:center;">
-						<h:outputText rendered="#{curso.isAtivo == true}"
-							value="ATIVO" />
-							<h:outputText rendered="#{curso.isAtivo == false}"
-							value="INATIVO" />
+						<h:outputText rendered="#{curso.isAtivo == true}" value="ATIVO" />
+						<h:outputText rendered="#{curso.isAtivo == false}" value="INATIVO" />
 					</p:column>
-					
+
 					<p:column style="text-align:center;">
 						<p:commandButton id="botaoExibeInfoCurso" icon="ui-icon-info"
 							action="#{CursoControl.exibeInfoDoCurso(curso)}"
@@ -97,7 +99,7 @@
 							update="formCorpo:infoCurso" />
 						<p:tooltip for="botaoExibeInfoCurso" value="Informações do curso"
 							position="top" />
-						
+
 						<p:commandButton id="botaoEditaCurso" icon="ui-icon-pencil"
 							action="#{CursoControl.editaCurso(curso)}"
 							process="botaoEditaCurso"
@@ -105,13 +107,14 @@
 							update="formCorpo:painelPrincipal" />
 						<p:tooltip for="botaoEditaCurso" value="Editar curso"
 							position="top" />
-						
+
 					</p:column>
 
 				</p:dataTable>
-				
+
 				<!-- Tabela renderizada apenas para outros usuarios -->
-				<p:dataTable rendered="#{!securityScope.userInRole['SECRETARIA'] and !securityScope.userInRole['ADMIN']}" 
+				<p:dataTable
+					rendered="#{!securityScope.userInRole['SECRETARIA'] and !securityScope.userInRole['ADMIN']}"
 					id="listaCursosAtivos" paginator="true" rows="5"
 					rowsPerPageLabel="5,10,15,20" rowsPerPageTemplate="5,10,15,20"
 					value="#{CursoControl.listaCursos}" var="curso"
@@ -121,33 +124,38 @@
 					<p:columnGroup type="header">
 						<p:row>
 							<p:column headerText="Nome" sortBy="#{curso.nome}" />
-							<p:column headerText="Duração" width="15%" sortBy="#{curso.duracao}" />
+							<p:column headerText="Duração" width="15%"
+								sortBy="#{curso.duracao}" />
 							<p:column headerText="Carga horária" width="20%" />
 							<p:column headerText="Status" width="10%" />
 							<p:column headerText="Ações" width="10%" />
 						</p:row>
 					</p:columnGroup>
 
-					<p:column rendered="#{curso.isAtivo == true}" style="text-align:center;">
+					<p:column rendered="#{curso.isAtivo == true}"
+						style="text-align:center;">
 						<h:outputText value="#{curso.nome}" />
 					</p:column>
-					<p:column rendered="#{curso.isAtivo == true}" style="text-align:center;">
+					<p:column rendered="#{curso.isAtivo == true}"
+						style="text-align:center;">
 						<h:outputText rendered="#{curso.duracao == 'DURACAO_DETERMINADA'}"
 							value="DETERMINADA" />
 						<h:outputText
 							rendered="#{curso.duracao == 'DURACAO_INDETERMINADA'}"
 							value="INDETERMINADA" />
 					</p:column>
-					<p:column rendered="#{curso.isAtivo == true}" style="text-align:center;">
+					<p:column rendered="#{curso.isAtivo == true}"
+						style="text-align:center;">
 						<h:outputText rendered="#{curso.cargaHoraria != null}"
 							value="#{curso.cargaHoraria} hrs" />
 					</p:column>
-					<p:column rendered="#{curso.isAtivo == true}" style="text-align:center;">
-						<h:outputText rendered="#{curso.isAtivo == true}"
-							value="ATIVO" />
+					<p:column rendered="#{curso.isAtivo == true}"
+						style="text-align:center;">
+						<h:outputText rendered="#{curso.isAtivo == true}" value="ATIVO" />
 					</p:column>
-					
-					<p:column rendered="#{curso.isAtivo == true}" style="text-align:center;">
+
+					<p:column rendered="#{curso.isAtivo == true}"
+						style="text-align:center;">
 						<p:commandButton id="botaoExibeInfoCurso" icon="ui-icon-info"
 							action="#{CursoControl.exibeInfoDoCurso(curso)}"
 							process="botaoExibeInfoCurso"
@@ -155,7 +163,7 @@
 							update="formCorpo:infoCurso" />
 						<p:tooltip for="botaoExibeInfoCurso" value="Informações do curso"
 							position="top" />
-						
+
 						<p:commandButton id="botaoEditaCurso" icon="ui-icon-pencil"
 							action="#{CursoControl.editaCurso(curso)}"
 							process="botaoEditaCurso"
@@ -163,13 +171,13 @@
 							update="formCorpo:painelPrincipal" />
 						<p:tooltip for="botaoEditaCurso" value="Editar curso"
 							position="top" />
-						
-						
+
+
 					</p:column>
 
 				</p:dataTable>
-				
-				
+
+
 			</p:dialog>
 
 			<p:dialog id="infoCurso" widgetVar="janelaInfoCurso" width="80%"
@@ -196,15 +204,17 @@
 						value="#{CursoControl.exibeCursoInfo.cargaHoraria}" />
 
 					<h:outputLabel value="Parceiro: " />
-					<h:outputText rendered="#{CursoControl.exibeCursoInfo.parceiro != null}"
+					<h:outputText
+						rendered="#{CursoControl.exibeCursoInfo.parceiro != null}"
 						value="#{CursoControl.exibeCursoInfo.parceiro.nome}" />
-					<h:outputText rendered="#{CursoControl.exibeCursoInfo.parceiro == null}"
+					<h:outputText
+						rendered="#{CursoControl.exibeCursoInfo.parceiro == null}"
 						value="Não possui" />
 
 					<h:outputLabel value="Conteúdo programático: " />
 					<h:outputText
 						value="#{CursoControl.exibeCursoInfo.conteudoProgramatico}" />
-					
+
 				</p:panelGrid>
 
 			</p:dialog>
@@ -227,24 +237,11 @@
 			</a:field>
 
 			<a:field label="Parceiro:" spaceLeft="15px">
-				<p:inputText disabled="true" id="parceiro" value="#{CursoControl.curso.parceiro.nome}" />
+				<p:autoComplete id="parceiro" dropdown="true" minQueryLength="2"
+					value="#{CursoControl.curso.parceiro}" converter="objectConverter"
+					completeMethod="#{CursoControl.buscaParceiros}" var="parceiro"
+					itemValue="#{parceiro}" itemLabel="#{parceiro.nome}" />
 			</a:field>
-			
-			<a:field label="Selecione um parceiro:" spaceLeft="15px">
-				<p:autoComplete id="selecionaParceiro" minQueryLength="2" value="#{CursoControl.parceiro}"
-					var="par" itemLabel="${par.nome}" itemValue="#{par}" converter="objectConverter"
-					completeMethod="#{CursoControl.buscaParceiro}" >
-					<p:ajax event="select"  
-						update="selecionaParceiro parceiro" process="selecionaParceiro"/>
-				</p:autoComplete>
-			</a:field>
-			
-			<p:commandButton style="margin-top: 23px; margin-left: 13px;" 
-				id="botaoSelecionaParceiro" icon="ui-icon-check"
-				update="selecionaParceiro parceiro"
-				actionListener="#{CursoControl.escolheParceiro}" process="selecionaParceiro botaoSelecionaParceiro" />
-			<p:tooltip for="botaoSelecionaParceiro" value="Vincular parceiro"
-				position="top" />
 
 			<a:field label="Conteúdo programático:">
 				<p:editor id="conteudoProgramatico"

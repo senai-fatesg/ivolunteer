@@ -282,8 +282,11 @@
 
 				<a:field label="Curso da turma:">
 					<p:autoComplete id="cursoTurma" dropdown="true" minQueryLength="2"
-					value="#{TurmaControl.turma.curso}" converter="objectConverter"
-					completeMethod="#{TurmaControl.buscaCursos}" var="curso" itemValue="#{curso}" itemLabel="#{curso.nome}" />
+					value="#{TurmaControl.turma.curso}" converter="objectConverter" 
+					completeMethod="#{TurmaControl.buscaCursos}" var="curso" itemValue="#{curso}" itemLabel="#{curso.nome}" >
+						<p:ajax event="itemSelect" listener="#{TurmaControl.selecionaCurso}" 
+							process="cursoTurma" update="formCorpo:cadastro" />
+					</p:autoComplete>
 				</a:field>
 				
 				<a:field label="Professor da turma:" spaceLeft="15px">

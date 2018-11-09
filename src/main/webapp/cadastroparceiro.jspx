@@ -207,6 +207,27 @@
 
 					<h:outputLabel value="Telefone: " />
 					<h:outputText value="#{ParceiroControl.exibeParceiroInfo.telefone}" />
+					
+					<h:outputLabel value="Endereço: " />
+					<h:outputText value="#{ParceiroControl.exibeParceiroInfo.endereco.ruaOuAvenida}" />
+					
+					<h:outputLabel value="Bairro: " />
+					<h:outputText value="#{ParceiroControl.exibeParceiroInfo.endereco.bairro}" />
+					
+					<h:outputLabel value="Cidade: " />
+					<h:outputText value="#{ParceiroControl.exibeParceiroInfo.endereco.cidade.nomeCidade}" />
+					
+					<h:outputLabel value="Estado: " />
+					<h:outputText value="#{ParceiroControl.exibeParceiroInfo.endereco.cidade.enumEstado}" />
+					
+					<h:outputLabel value="CEP: " />
+					<h:outputText value="#{ParceiroControl.exibeParceiroInfo.endereco.cep}" />
+					
+					<h:outputLabel value="Número: " />
+					<h:outputText value="#{ParceiroControl.exibeParceiroInfo.endereco.numero}" />
+					
+					<h:outputLabel value="Complemento: " />
+					<h:outputText value="#{ParceiroControl.exibeParceiroInfo.endereco.complemento}" />
 
 				</p:panelGrid>
 

@@ -28,47 +28,40 @@
 				modal="true" maximizable="false" minimizable="false" width="70%"
 				height="70%" resizable="false" closeOnEscape="true">
 
-				<a:field label="Código:">
-					<p:inputNumber id="filtroIdTurma"
-						value="#{TurmaControl.turmaConsulta.id}" decimalPlaces="0" />
-				</a:field>
-
-				<a:field label="Status:" spaceLeft="15px">
-					<p:selectOneMenu id="filtroStatusTurma"
-						value="#{TurmaControl.statusFiltro}">
-						<f:selectItem itemLabel="TODOS" itemValue="#{null}"
-							noSelectionOption="true" />
-						<f:selectItem itemLabel="CONCLUIDO" itemValue="t" />
-						<f:selectItem itemLabel="EM ANDAMENTO" itemValue="f" />
-					</p:selectOneMenu>
-				</a:field>
-
-				<p:commandButton style="margin-left: 10px; margin-top: 23px;"
-					id="filtrar" icon="ui-icon-search"
-					actionListener="#{TurmaControl.aplicarFiltro}"
-					update="listaTurmas listaTurmasParaSecretaria" />
-
-				<a:newLine />
-				<a:newLine />
-
 				<!-- Tabela renderizada para usuários da secretaria ou admin -->
 				<p:dataTable
 					rendered="#{securityScope.userInRole['SECRETARIA'] or securityScope.userInRole['ADMIN']}"
 					paginator="true" rows="10" rowsPerPageTemplate="5,10,15,20,25"
 					id="listaTurmasParaSecretaria" var="turma" style="width:100%"
-					value="#{TurmaControl.turmasConsulta}"
-					widgetVar="agrupamentosTable" emptyMessage="Sem Registros a Exibir">
+					value="#{TurmaControl.turmasConsulta}" filteredValue="#{TurmaControl.turmasFiltradas}"
+					widgetVar="turmasTable" emptyMessage="Sem Registros a Exibir">
 					<p:columnGroup type="header">
 						<p:row>
 							<p:column headerText="Código" sortBy="#{turma.id}" width="10%" />
-							<p:column headerText="Curso" sortBy="#{turma.curso.nome}"
-								width="20%" />
+							<p:column headerText="Curso" sortBy="#{turma.curso.nome}" filterBy="#{turma.curso.nome}"
+								filterMatchMode="startsWith" width="20%" >
+								<h:outputText value="#{turma.curso.nome}" />
+							</p:column>
 							<p:column headerText="Turno" sortBy="#{turma.turno}" width="10%" />
 							<p:column headerText="Qtd vagas"
 								sortBy="#{turma.quantidadeVagas}" />
-							<p:column headerText="Professor" sortBy="#{turma.professor}"
-								width="20%" />
-							<p:column headerText="Status" sortBy="#{turma.ativo}" />
+							<p:column headerText="Professor" sortBy="#{turma.professor.nomePessoa}" 
+								filterBy="#{turma.professor.nomePessoa}" filterMatchMode="startsWith"
+								width="20%" >
+								<h:outputText value="#{turma.professor.nomePessoa}" />
+							</p:column>
+							<p:column headerText="Status" width="17%" 
+								sortBy="#{turma.isConcluido}" filterBy="#{turma.isConcluido}" filterMatchMode="equals" >
+								<f:facet name="filter">
+									<p:selectOneMenu onchange="PF('turmasTable').filter()">
+										<f:converter converterId="javax.faces.Boolean" />
+										<f:selectItem itemLabel="TODOS" itemValue="" />
+										<f:selectItem itemLabel="EM ANDAMENTO" itemValue="false" />
+										<f:selectItem itemLabel="CONCLUIDO" itemValue="true" />
+									</p:selectOneMenu>
+								</f:facet>
+								<h:outputText value="#{turma.isConcluido ? 'true': 'false'}" />
+							</p:column>
 							<p:column headerText="Ações" width="13%" />
 						</p:row>
 					</p:columnGroup>
@@ -93,7 +86,7 @@
 						<h:outputText value="#{turma.professor.nomePessoa}" />
 					</p:column>
 
-					<p:column width="8%" style="text-align:center;">
+					<p:column style="text-align:center;">
 						<h:outputText rendered="#{turma.isConcluido == false}"
 							value="EM ANDAMENTO" />
 						<h:outputText rendered="#{turma.isConcluido == true}"
@@ -132,20 +125,22 @@
 				<p:dataTable
 					rendered="#{!securityScope.userInRole['SECRETARIA'] and !securityScope.userInRole['ADMIN']}"
 					paginator="true" rows="10" rowsPerPageTemplate="5,10,15,20,25"
-					id="listaTurmas" var="turma" style="width:100%"
+					id="listaTurmas" var="turma" style="width:100%" filteredValue="#{TurmaControl.turmasFiltradas}"
 					value="#{TurmaControl.turmasConsulta}"
-					widgetVar="agrupamentosTable" emptyMessage="Sem Registros a Exibir">
+					widgetVar="turmasTable" emptyMessage="Sem Registros a Exibir">
 					<p:columnGroup type="header">
 						<p:row>
 							<p:column headerText="Código" sortBy="#{turma.id}" width="10%" />
-							<p:column headerText="Curso" sortBy="#{turma.curso.nome}"
-								width="20%" />
+							<p:column headerText="Curso" width="20%" sortBy="#{turma.curso.nome}" 
+								filterBy="#{turma.curso.nome}" filterMatchMode="startsWith" >
+								<h:outputText value="#{turma.curso.nome}" />
+							</p:column>
 							<p:column headerText="Turno" sortBy="#{turma.turno}" width="10%" />
-							<p:column headerText="Qtd vagas"
-								sortBy="#{turma.quantidadeVagas}" />
-							<p:column headerText="Professor" sortBy="#{turma.professor}"
+							<p:column headerText="Qtd vagas" sortBy="#{turma.quantidadeVagas}" />
+							<p:column headerText="Professor" sortBy="#{turma.professor.nomePessoa}" 
+								filterBy="#{turma.professor.nomePessoa}" filterMatchMode="startsWith"
 								width="20%" />
-							<p:column headerText="Status" sortBy="#{turma.ativo}" />
+							<p:column headerText="Status" />
 							<p:column headerText="Ações" width="7%" />
 						</p:row>
 					</p:columnGroup>
@@ -294,12 +289,10 @@
 					value="#{TurmaControl.turma.professor}" converter="objectConverter"
 					completeMethod="#{TurmaControl.buscaProfessores}" var="prof" itemValue="#{prof}" itemLabel="#{prof.nomePessoa}" />
 				</a:field>
-				
-				<a:newLine />
 
-				<a:field label="Turno:">
+				<a:field label="Turno:" spaceLeft="15px">
 					<p:selectOneMenu id="turno" value="#{TurmaControl.turma.turno}"
-						style="width:170px;">
+						style="width:300px;">
 						<p:ajax update="horarioInicio,horarioFinal"></p:ajax>
 						<f:selectItem itemLabel="Selecione o Turno" itemValue=""
 							noSelectionOption="true" />
@@ -307,16 +300,15 @@
 							itemValue="#{turno}" itemLabel="#{turno.descricao}" />
 					</p:selectOneMenu>
 				</a:field>
+				
+				<a:newLine />
 
-				<a:field label="Data de início:" spaceLeft="15px"
-					rendered="#{TurmaControl.renderizaDatas}">
-					<p:calendar id="dataInicio"
-						value="#{TurmaControl.turma.dataInicio}" navigator="true"
+				<a:field label="Data de início:" rendered="#{TurmaControl.renderizaDatas}">
+					<p:calendar id="dataInicio" value="#{TurmaControl.turma.dataInicio}" navigator="true"
 						yearRange="c-100:c0" pattern="dd-MM-yyyy" locale="de" />
 				</a:field>
 
-				<a:field label="Data de Término:" spaceLeft="15px"
-					rendered="#{TurmaControl.renderizaDatas}">
+				<a:field label="Data de Término:" spaceLeft="15px" rendered="#{TurmaControl.renderizaDatas}">
 					<p:calendar id="dataTermino"
 						value="#{TurmaControl.turma.dataTermino}" navigator="true"
 						yearRange="c-100:c0" pattern="dd-MM-yyyy" locale="de" />
@@ -324,7 +316,7 @@
 
 				<a:field label="Horário de Início:" spaceLeft="15px">
 					<p:selectOneMenu id="horarioInicio"
-						value="#{TurmaControl.turma.horarioInicio}" style="width:155px;">
+						value="#{TurmaControl.turma.horarioInicio}" style="width:166px;">
 						<f:convertDateTime pattern="HH:mm" />
 						<f:selectItem itemLabel="Selecione o Horário" itemValue=""
 							noSelectionOption="true" />
@@ -336,7 +328,7 @@
 
 				<a:field label="Horário de Fim:" spaceLeft="15px">
 					<p:selectOneMenu id="horarioFinal"
-						value="#{TurmaControl.turma.horarioFinal}" style="width:155px;">
+						value="#{TurmaControl.turma.horarioFinal}" style="width:166px;">
 						<f:convertDateTime pattern="HH:mm" />
 						<f:selectItem itemLabel="Selecione o Horário" itemValue=""
 							noSelectionOption="true" />

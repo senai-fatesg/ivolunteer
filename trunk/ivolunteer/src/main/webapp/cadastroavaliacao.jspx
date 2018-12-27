@@ -82,7 +82,7 @@
 					<p:column >
 
 						<p:commandButton 
-							id="botaoExibeAvaliacao" icon="ui-icon-search"
+							id="botaoExibeAvaliacao" icon="ui-icon-info"
 							action="#{AvaliacaoControl.exibeInformacoesAvaliacao(itemAvaliacoes)}"
 							update=":formCorpo:informacoesAvaliacao"
 							oncomplete="PF('infoAvaliacao').show();">
@@ -142,7 +142,7 @@
 					<p:column rendered="#{itemAvaliacoes.ativo == true}" >
 
 						<p:commandButton 
-							id="botaoExibeAvaliacao" icon="ui-icon-search"
+							id="botaoExibeAvaliacao" icon="ui-icon-info"
 							action="#{AvaliacaoControl.exibeInformacoesAvaliacao(itemAvaliacoes)}"
 							update=":formCorpo:informacoesAvaliacao"
 							oncomplete="PF('infoAvaliacao').show();">
@@ -247,7 +247,7 @@
 
 			<a:field label="Tipo de questão:">
 				<p:selectOneMenu
-					disabled="#{AvaliacaoControl.desabilitaTipoQuestao}"
+					
 					id="tipoQuestao" value="#{AvaliacaoControl.tipoQuestao}">
 					<f:selectItems value="#{AvaliacaoControl.completeEnumQuestao}" />
 					<p:ajax event="change" update="tabQuestoes" />

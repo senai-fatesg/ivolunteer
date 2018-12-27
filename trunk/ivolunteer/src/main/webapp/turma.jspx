@@ -23,6 +23,9 @@
 			<p:commandButton id="consultar" value="Consultar"
 				icon="ui-icon-search"
 				onclick="PF('consultar').show(); return false;" />
+				
+			<p:commandButton id="btnGeraRelatorio" value="Imprimir relatório"
+				icon="ui-icon-pdf" ajax="false" action="#{TurmaControl.gerarRelatorio}" />
 
 			<p:dialog id="modalPesquisa" header="Consultar" widgetVar="consultar"
 				modal="true" maximizable="false" minimizable="false" width="70%"
@@ -95,15 +98,16 @@
 
 					<p:column style="text-align:center;" width="10%">
 						<p:commandButton id="botaoExibirTurma" icon="ui-icon-info"
-							update="formCorpo:infoTurmaJanela"
+							update=":formCorpo:panelGridInfoTurma" ajax="true"
 							action="#{TurmaControl.exibeInfoTurma(turma)}"
-							process="botaoExibirTurma" oncomplete="PF('infoTurma').show();" />
+							oncomplete="PF('infoTurma').show();" />
 						<p:tooltip for="botaoExibirTurma"
 							value="Exibir informações desta turma" position="top" />
 
 						<p:commandButton id="botaoEditarTurma" icon="ui-icon-pencil"
 							action="#{TurmaControl.carregaTurmaAlteracao(turma)}"
-							oncomplete="PF('consultar').hide();" update="formCorpo:cadastro" />
+							update=":formCorpo:panelGridInfoTurma"
+							oncomplete="PF('consultar').hide();" />
 						<p:tooltip for="botaoEditarTurma" value="Editar turma"
 							position="top" />
 
@@ -211,7 +215,7 @@
 
 			<p:dialog id="infoTurmaJanela" widgetVar="infoTurma" modal="true"
 				header="Informações da Turma" width="60%">
-				<p:panelGrid columns="4" layout="grid">
+				<p:panelGrid columns="4" layout="grid" id="panelGridInfoTurma">
 
 					<h:outputLabel value="Nome do curso: " />
 					<h:outputText value="#{TurmaControl.exibeTurmaInfo.curso.nome}" />

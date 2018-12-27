@@ -4,10 +4,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
+import br.com.ambientinformatica.ambientjsf.util.UtilFacesRelatorio;
 import br.com.ambientinformatica.ivolunteer.entidade.Curso;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumCargo;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoCurso;
@@ -68,7 +69,23 @@ public class TurmaControl implements TurmaService {
 		listaCursosAtivos();
 	}
 
-	/*** AÇÕES DA PÁGINA ***/
+	/***
+	 * AÇÕES DA PÁGINA
+	 * 
+	 * @throws Exception
+	 ***/
+
+	public void gerarRelatorio() throws Exception {
+		try {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			//System.out.println("" + UtilFacesRelatorio.getCaminhoContexto(""));
+			map.put("ivolunteerLogo", UtilFacesRelatorio.getCaminhoContexto("/imagens/ivolunteer.png"));
+			UtilFacesRelatorio.gerarRelatorioFaces("jasper/turmas.jasper", turmaDao.listar(), map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			UtilFaces.addMensagemFaces(e);
+		}
+	}
 
 	public List<Curso> buscaCursos(String nome) {
 		this.autocompleteCursos = cursoDao.buscaCursoPorNome(nome);
@@ -181,7 +198,7 @@ public class TurmaControl implements TurmaService {
 	}
 
 	public void exibeInfoTurma(Turma turma) {
-		this.exibeTurmaInfo = turma;
+		this.exibeTurmaInfo = turmaDao.consultar(turma.getId());
 	}
 
 	public void carregaProfessores() {

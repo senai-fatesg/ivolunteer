@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="turmas" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8d8f1ed5-ce5b-4889-a741-f752b207cc01">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="ivolunteerLogo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="horarioInicio" class="java.util.Date">
+		<fieldDescription><![CDATA[horarioInicio]]></fieldDescription>
+	</field>
+	<field name="codigo" class="java.lang.String">
+		<fieldDescription><![CDATA[codigo]]></fieldDescription>
+	</field>
+	<field name="professor" class="br.com.ambientinformatica.ivolunteer.entidade.Funcionario">
+		<fieldDescription><![CDATA[professor]]></fieldDescription>
+	</field>
+	<field name="horarioFinal" class="java.util.Date">
+		<fieldDescription><![CDATA[horarioFinal]]></fieldDescription>
+	</field>
+	<field name="curso" class="br.com.ambientinformatica.ivolunteer.entidade.Curso">
+		<fieldDescription><![CDATA[curso]]></fieldDescription>
+	</field>
+	<field name="dataTermino" class="java.util.Date">
+		<fieldDescription><![CDATA[dataTermino]]></fieldDescription>
+	</field>
+	<field name="dataInicio" class="java.util.Date">
+		<fieldDescription><![CDATA[dataInicio]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<variable name="TOTAL_PAGES" class="java.lang.Integer" incrementType="Page" calculation="Highest">
+		<variableExpression><![CDATA[$V{PAGE_COUNT}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<image hAlign="Center">
+				<reportElement mode="Transparent" x="0" y="0" width="555" height="79" forecolor="rgba(0, 0, 0, 0.0)" backcolor="rgba(255, 255, 255, 0.1764706)" uuid="8d530d65-b73f-4c2b-9827-82a737040c56"/>
+				<imageExpression><![CDATA[$P{ivolunteerLogo}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="45" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="45" uuid="14eb47cd-c82e-49b1-a828-56005f6e9f81"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Relatório de turmas iVolunteer]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="27" backcolor="#F5F2F2" uuid="e69da897-3071-4bff-9657-53a1aa7ace76"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="455" y="0" width="100" height="26" uuid="82e13437-a324-4eb8-887c-d5427552cfdc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Professor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="356" y="0" width="100" height="26" uuid="3ea8a6b7-187e-4891-a611-c6bc1fe02ee9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Curso]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="227" y="0" width="128" height="26" uuid="861ca4c2-27ad-4196-93f1-a1a0c3632734"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Horário fim]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="126" height="26" uuid="9402227a-ea1a-480f-b9a9-6d32f2712ce7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Horário início]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="26" uuid="291c263e-3880-47be-8579-ac7afc61f379"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="35" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="35" backcolor="#F5F2F2" uuid="e76b1b90-4cfb-44f5-b2a9-0a739492d0eb">
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT} / 2 != 0 ]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="0" width="100" height="30" uuid="fe581316-220a-45f9-9960-750bcc4bb907"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="126" height="30" uuid="57ed9b4b-6c93-48c7-89b3-8a9620bfef32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{horarioInicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="227" y="0" width="128" height="30" uuid="6609f483-c34b-4bc9-b9c0-6d8f4a6a12c0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{horarioFinal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="356" y="0" width="100" height="30" uuid="f96c27a8-a8d0-43b2-8f52-5bd787e2f6ed"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{curso}.getNome()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="456" y="0" width="99" height="30" uuid="ebb1a6ba-735b-4024-affa-971681c39122"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{professor}.getNomePessoa()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="55" splitType="Stretch">
+			<textField>
+				<reportElement positionType="FixRelativeToBottom" x="189" y="12" width="176" height="30" uuid="9d01b909-daff-4fe7-bc71-75fe712e747e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de " + $V{TOTAL_PAGES}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

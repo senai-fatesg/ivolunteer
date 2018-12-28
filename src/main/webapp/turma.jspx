@@ -23,9 +23,6 @@
 			<p:commandButton id="consultar" value="Consultar"
 				icon="ui-icon-search"
 				onclick="PF('consultar').show(); return false;" />
-				
-			<p:commandButton id="btnGeraRelatorio" value="Imprimir relatório"
-				icon="ui-icon-pdf" ajax="false" action="#{TurmaControl.gerarRelatorio}" />
 
 			<p:dialog id="modalPesquisa" header="Consultar" widgetVar="consultar"
 				modal="true" maximizable="false" minimizable="false" width="70%"

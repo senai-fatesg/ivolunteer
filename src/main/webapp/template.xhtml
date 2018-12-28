@@ -160,15 +160,26 @@ xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelet
 	                                <li>
 	                                	<p:commandLink value="Parceiro" actionListener="#{MenuControl.gerenciarSessao}" action="cadastroparceiro?faces-redirect=true" ajax="false" />
 	                                </li>
-	                                 <li>
-	                                	<p:commandLink value="Atividade" actionListener="#{MenuControl.gerenciarSessao}" action="atividadediaria?faces-redirect=true" ajax="false" />
-	                                </li>
-	                                 <li>
-	                                	<p:commandLink value="Agrupamento" actionListener="#{MenuControl.gerenciarSessao}" action="agrupamentoTurma?faces-redirect=true" ajax="false" />
-	                                </li>
+	                               
                                 </h:panelGroup>
                             </ul>
                             <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                        	<a href="#"><i class="fa fa-bar-chart fa-fw"></i>Relatórios<span class="fa arrow"></span></a>
+                        	<ul class="nav nav-second-level">
+                        		<h:panelGroup rendered="#{securityScope.userInRole['ADMIN'] or securityScope.userInRole['SECRETARIA']}" >
+                        			<li>
+                        				<p:commandLink value="Relatório de Turmas" actionListener="#{MenuControl.gerenciarSessao}" action="relatoriosTurma?faces-redirect=true" ajax="false" />
+                        			</li>
+                        			<li>
+                        				<p:commandLink value="Relatório de Parceiros" />
+                        			</li>
+                        			<li>
+                        				<p:commandLink value="Relatório de Cursos" />
+                        			</li>
+                        		</h:panelGroup>
+                        	</ul>
                         </li>
                         <li>
                            <a href="#"><i class="fa fa-bars fa-fw"></i>Módulos<span class="fa arrow"></span></a>

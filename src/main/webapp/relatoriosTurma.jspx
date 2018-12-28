@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="corpo">
+
+		<p:growl id="mensagens" sticky="true" />
+		
+		<p:panel id="panelRelatorios" header="Relatórios de Turmas" >
+			<a:field label="Selecione um relatório:">
+				<p:selectOneMenu id="relatorio"
+					value="#{RelatoriosTurmaControl.tipoRelatorio}">
+					<f:selectItem noSelectionOption="true"
+						itemLabel="Selecione um relatório" />
+					<f:selectItem itemLabel="Turmas cadastradas" itemValue="cadastros" />
+				</p:selectOneMenu>
+			</a:field>
+			
+			<a:newLine />
+			<a:newLine />
+
+			<p:commandButton id="btnGerarRelatorio" icon="ui-icon-document"
+				actionListener="#{RelatoriosTurmaControl.geraRelatorio}"
+				onstart="PF('modalCarregar').show();" onsuccess="PF('modalCarregar').hide();" ajax="false"
+				value="Imprimir" update="formCorpo:panelRelatorios" >
+					<p:ajax event="click" listener="#{RelatoriosTurmaControl.geraRelatorio}" />
+			</p:commandButton>
+			
+			<p:ajaxStatus onstart="PF('modalCarregar').show();" onsuccess="PF('modalCarregar').hide();" />
+		</p:panel>
+		
+		<p:dialog modal="true" width="70%" widgetVar="modalCarregar" 
+			closable="false" draggable="false" resizable="false" showHeader="false" >
+			<a:newLine/>
+			
+			<p style="text-align:center; font-size:20px;"><b>Aguarde...Estamos gerando o relatório para você!</b></p>
+			<p:graphicImage url="/imagens/loading-magic-dots.gif" />
+			
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>

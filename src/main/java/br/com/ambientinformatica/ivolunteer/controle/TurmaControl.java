@@ -75,18 +75,6 @@ public class TurmaControl implements TurmaService {
 	 * @throws Exception
 	 ***/
 
-	public void gerarRelatorio() throws Exception {
-		try {
-			HashMap<String, Object> map = new HashMap<String, Object>();
-			//System.out.println("" + UtilFacesRelatorio.getCaminhoContexto(""));
-			map.put("ivolunteerLogo", UtilFacesRelatorio.getCaminhoContexto("/imagens/ivolunteer.png"));
-			UtilFacesRelatorio.gerarRelatorioFaces("jasper/turmas.jasper", turmaDao.listar(), map);
-		} catch (Exception e) {
-			e.printStackTrace();
-			UtilFaces.addMensagemFaces(e);
-		}
-	}
-
 	public List<Curso> buscaCursos(String nome) {
 		this.autocompleteCursos = cursoDao.buscaCursoPorNome(nome);
 		return this.autocompleteCursos;

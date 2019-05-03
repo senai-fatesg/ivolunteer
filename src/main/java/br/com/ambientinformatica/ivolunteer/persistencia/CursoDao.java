@@ -3,6 +3,7 @@ package br.com.ambientinformatica.ivolunteer.persistencia;
 import java.util.List;
 
 import br.com.ambientinformatica.ivolunteer.entidade.Curso;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumStatus;
 import br.com.ambientinformatica.jpa.persistencia.Persistencia;
 
 public interface CursoDao extends Persistencia<Curso> {
@@ -17,6 +18,6 @@ public interface CursoDao extends Persistencia<Curso> {
 
 	public List<Curso> buscaCursoPorStatus(String statusFiltro);
 
-	public List<Curso> buscaCursoPorStatusNome(String statusFiltro, String nomeFiltro);
+	public List<Curso> listarPorNomeStatus(String nomeFiltro, EnumStatus statusFiltro) throws Exception;
 
 }

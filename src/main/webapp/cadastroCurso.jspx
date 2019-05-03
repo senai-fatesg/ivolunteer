@@ -8,7 +8,6 @@
 	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="corpo">
 
-
 		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
 			<p:commandButton value="Sim" type="button"
 				styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
@@ -39,8 +38,7 @@
 						value="#{CursoControl.statusFiltro}">
 						<f:selectItem itemLabel="TODOS" itemValue="#{null}"
 							noSelectionOption="true" />
-						<f:selectItem itemLabel="ATIVO" itemValue="t" />
-						<f:selectItem itemLabel="INATIVO" itemValue="f" />
+						<f:selectItems value="#{CursoControl.status}" var="status" itemLabel="#{status.descricao}" itemValue="#{status}" />
 					</p:selectOneMenu>
 				</a:field>
 
@@ -60,56 +58,35 @@
 					emptyMessage="Nenhum curso cadastrado">
 
 					<f:facet name="header">Lista de cursos</f:facet>
-					<p:columnGroup type="header">
-						<p:row>
-							<p:column headerText="Nome" sortBy="#{curso.nome}" />
-							<p:column headerText="Duração" width="15%"
-								sortBy="#{curso.duracao}" />
-							<p:column headerText="Carga horária" width="20%" />
-							<p:column headerText="Status" width="10%" />
-							<p:column headerText="Ações" width="10%" />
-						</p:row>
-					</p:columnGroup>
-
-					<p:column rendered="#{curso.isAtivo == true}"
-						style="text-align:center;">
+					<p:column headerText="Nome" 
+						style="text-align:center;" >
 						<h:outputText value="#{curso.nome}" />
 					</p:column>
-					<p:column rendered="#{curso.isAtivo == true}"
-						style="text-align:center;">
-						<h:outputText rendered="#{curso.duracao == 'DURACAO_DETERMINADA'}"
-							value="DETERMINADA" />
-						<h:outputText
-							rendered="#{curso.duracao == 'DURACAO_INDETERMINADA'}"
-							value="INDETERMINADA" />
+					<p:column headerText="Duração" 
+						style="text-align:center;" >
+						<h:outputText value="#{curso.duracao.descricao}" />
 					</p:column>
-					<p:column rendered="#{curso.isAtivo == true}"
-						style="text-align:center;">
-						<h:outputText rendered="#{curso.cargaHoraria != null}"
-							value="#{curso.cargaHoraria} hrs" />
+					<p:column headerText="Carga horária"
+						style="text-align:center;" >
+						<h:outputText value="#{curso.cargaHoraria} hrs" />
 					</p:column>
-					<p:column rendered="#{curso.isAtivo == true}"
-						style="text-align:center;">
-						<h:outputText rendered="#{curso.isAtivo == true}" value="ATIVO" />
+					<p:column headerText="Status"
+						style="text-align:center;" >
+						<h:outputText value="#{curso.status}" />
 					</p:column>
 
-					<p:column rendered="#{curso.isAtivo == true}"
-						style="text-align:center;">
-						<p:commandButton id="botaoExibeInfoCurso" icon="ui-icon-info"
+					<p:column headerText="Ações" style="text-align:center;">
+						<p:commandButton id="botaoExibeInfoCurso" icon="ui-icon-info" title="Informações do curso"
 							action="#{CursoControl.exibeInfoDoCurso(curso)}"
 							process="botaoExibeInfoCurso"
 							oncomplete="PF('janelaInfoCurso').show();"
 							update="formCorpo:infoCurso" />
-						<p:tooltip for="botaoExibeInfoCurso" value="Informações do curso"
-							position="top" />
-
-						<p:commandButton id="botaoEditaCurso" icon="ui-icon-pencil" rendered="#{!securityScope.userInRole['SECRETARIA'] or !securityScope.userInRole['ADMIN']}"
+						<p:commandButton id="botaoEditaCurso" icon="ui-icon-pencil" title="Editar curso" 
+							rendered="#{!securityScope.userInRole['SECRETARIA'] or !securityScope.userInRole['ADMIN']}"
 							action="#{CursoControl.editaCurso(curso)}"
 							process="botaoEditaCurso"
 							oncomplete="PF('consultaCursos').hide();"
 							update="formCorpo:painelPrincipal" />
-						<p:tooltip for="botaoEditaCurso" value="Editar curso"
-							position="top" />
 					</p:column>
 				</p:dataTable>
 			</p:dialog>
@@ -183,19 +160,10 @@
 			<a:newLine />
 			<a:newLine />
 
-			<p:commandButton id="botaoCadastrarCurso" icon="ui-icon-disk"
-				rendered="#{CursoControl.curso.id == null}" value="Cadastrar"
-				update="painelPrincipal formCorpo:consultarCursos"
-				actionListener="#{CursoControl.cadastrarCurso}" />
-			<p:tooltip for="botaoCadastrarCurso" value="Cadastrar curso"
-				position="top" />
-
 			<p:commandButton id="botaoSalvarCurso" icon="ui-icon-refresh"
-				rendered="#{CursoControl.curso.id != null}" value="Salvar"
+				value="#{CursoControl.curso.id == null ? 'Cadastrar' : 'Atualizar'}"
 				update="painelPrincipal formCorpo:consultarCursos"
-				actionListener="#{CursoControl.salvarAlteracoesCurso}" />
-			<p:tooltip for="botaoSalvarCurso" value="Salvar alterações"
-				position="top" />
+				actionListener="#{CursoControl.salvar}" />
 		</p:panel>
 
 	</ui:define>

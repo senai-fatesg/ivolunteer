@@ -87,7 +87,7 @@ public class TurmaControl implements TurmaService {
 
 	public void inativarCurso(Curso curso) {
 		Curso c = cursoDao.consultar(curso.getId());
-		c.inativarCurso();
+		//c.inativarCurso();
 		cursoDao.alterar(c);
 		this.listaCursos = cursoDao.listarCursosAtivos();
 	}

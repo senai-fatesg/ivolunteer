@@ -2,9 +2,11 @@ package br.com.ambientinformatica.ivolunteer.entidade;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -14,34 +16,56 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import br.com.ambientinformatica.util.AmbientValidator;
 
 @Entity
 public class Curso implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(generator = "curso_seq" , strategy = GenerationType.IDENTITY)
 	@SequenceGenerator(name = "curso_seq" , sequenceName = "curso_seq" , allocationSize = 1 , initialValue = 1)
 	private Integer id;
 	
+	@Column(length = 200)
+	@NotEmpty(message = "Informe o nome do curso")
 	private String nome;
 	
+	@NotEmpty(message = "Informe a carga horária do curso")
 	private String cargaHoraria;
 	
+	@Column(length = 500)
+	@NotEmpty(message = "Informe o conteúdo programático do curso")
 	private String conteudoProgramatico;
 	
-	private Boolean isAtivo = true;
-	
+	@Enumerated(EnumType.STRING)
+	private EnumStatus status;
+
 	@ManyToOne(fetch=FetchType.LAZY , cascade = CascadeType.ALL)
-	private Parceiro parceiro = new Parceiro();
+	private Parceiro parceiro;
 	
 	@Enumerated(EnumType.STRING)
 	private EnumTipoCurso duracao;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "curso")
 	private List<Turma> listaTurma = new ArrayList<Turma>();
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dataCadastro;
+	
+	@PrePersist
+	private void cargaInicial() {
+		this.status = EnumStatus.ATIVO;
+		this.dataCadastro = new Date();
+	}
 	
 	public Parceiro getParceiro() {
 		return parceiro;
@@ -67,14 +91,18 @@ public class Curso implements Serializable {
 		this.conteudoProgramatico = conteudoProgramatico;
 	}
 
-	public Boolean getIsAtivo() {
-		return isAtivo;
+	public EnumStatus getStatus() {
+		return status;
 	}
 
-	public void setIsAtivo(Boolean isAtivo) {
-		this.isAtivo = isAtivo;
+	public void inativar() {
+		this.status = EnumStatus.INATIVO;
 	}
-
+	
+	public void ativar() {
+		this.status = EnumStatus.ATIVO;
+	}
+	
 	public List<Turma> getListaTurma() {
 		return listaTurma;
 	}
@@ -109,10 +137,6 @@ public class Curso implements Serializable {
 
 	public void adicionarTurma(Turma turma) {
 		this.getListaTurma().add(turma);
-	}
-	
-	public void inativarCurso() {
-		setIsAtivo(false);
 	}
 	
 }

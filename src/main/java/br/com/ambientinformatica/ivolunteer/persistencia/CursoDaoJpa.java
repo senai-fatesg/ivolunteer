@@ -3,20 +3,22 @@ package br.com.ambientinformatica.ivolunteer.persistencia;
 import java.util.List;
 
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 
 import br.com.ambientinformatica.ivolunteer.entidade.Avaliacao;
 import br.com.ambientinformatica.ivolunteer.entidade.Curso;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumStatus;
+import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 import br.com.ambientinformatica.jpa.persistencia.PersistenciaJpa;
+import br.com.ambientinformatica.util.UtilLog;
 
 @Repository("cursoDao")
 public class CursoDaoJpa extends PersistenciaJpa<Curso> implements CursoDao {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -84,23 +86,27 @@ public class CursoDaoJpa extends PersistenciaJpa<Curso> implements CursoDao {
 	}
 
 	@Override
-	public List<Curso> buscaCursoPorStatusNome(String statusFiltro, String nomeFiltro) {
+	public List<Curso> listarPorNomeStatus(String nomeFiltro, EnumStatus statusFiltro) throws PersistenciaException {
 		try {
-			boolean st;
-			if(statusFiltro.contains("t")) {
-				st = true;
-			} else {
-				st = false;
+			String sql = "SELECT c FROM Curso c WHERE 1=1 ";
+			if (nomeFiltro != null && !nomeFiltro.isEmpty()) {
+				sql += "AND UPPER(c.nome) LIKE :nome";
 			}
-			Query query = em.createQuery("SELECT c FROM Curso c WHERE UPPER(c.nome) LIKE :nome "
-					+ " AND c.isAtivo = :status");
-			query.setParameter("nome", "%" + nomeFiltro.toUpperCase() + "%");
-			query.setParameter("status", st);
-			return query.getResultList();
+			if (statusFiltro != null) {
+				sql += "AND c.status IN :status";
+			}
 			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
+			TypedQuery<Curso> query = em.createQuery(sql, Curso.class);
+			if (nomeFiltro != null && !nomeFiltro.isEmpty()) {
+				query.setParameter("nome", "%" + nomeFiltro.toUpperCase() + "%");
+			}
+			if (statusFiltro != null) {
+				query.setParameter("status", statusFiltro);
+			}
+			return query.getResultList();
+		} catch (PersistenciaException e) {
+			UtilLog.getLog().error(e);
+			throw new PersistenceException("Erro ao listar cursos por nome e status");
 		}
 	}
 

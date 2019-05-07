@@ -36,29 +36,32 @@ public class Curso implements Serializable {
 	private Integer id;
 	
 	@Column(length = 200)
-	@NotEmpty(message = "Informe o nome do curso")
+	@NotEmpty(message = "Informe o nome do curso", groups = AmbientValidator.class)
 	private String nome;
 	
-	@NotEmpty(message = "Informe a carga horária do curso")
+	@NotEmpty(message = "Informe a carga horária do curso", groups = AmbientValidator.class)
 	private String cargaHoraria;
 	
 	@Column(length = 500)
-	@NotEmpty(message = "Informe o conteúdo programático do curso")
+	@NotEmpty(message = "Informe o conteúdo programático do curso", groups = AmbientValidator.class)
 	private String conteudoProgramatico;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
 	private EnumStatus status;
 
 	@ManyToOne(fetch=FetchType.LAZY , cascade = CascadeType.ALL)
 	private Parceiro parceiro;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
 	private EnumTipoCurso duracao;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "curso")
 	private List<Turma> listaTurma = new ArrayList<Turma>();
 
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable = false)
 	private Date dataCadastro;
 	
 	@PrePersist

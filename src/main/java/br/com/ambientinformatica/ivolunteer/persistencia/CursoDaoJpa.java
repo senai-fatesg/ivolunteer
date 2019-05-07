@@ -9,7 +9,6 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 
-import br.com.ambientinformatica.ivolunteer.entidade.Avaliacao;
 import br.com.ambientinformatica.ivolunteer.entidade.Curso;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumStatus;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;

@@ -79,7 +79,7 @@ public class MatriculaControl {
 	
 	public List<Curso> autoCompleteCursos(String textFormulario) {
 		List<Curso> cursos = new ArrayList<Curso>();
-		cursos = cursoDao.buscaCursoPorNome(textFormulario);
+		//cursos = cursoDao.buscaCursoPorNome(textFormulario);
 		return cursos;
 	}
 	

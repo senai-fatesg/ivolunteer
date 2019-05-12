@@ -74,7 +74,7 @@ public class TurmaControl implements TurmaService {
 	 ***/
 
 	public List<Curso> buscaCursos(String nome) {
-		this.autocompleteCursos = cursoDao.buscaCursoPorNome(nome);
+		//this.autocompleteCursos = cursoDao.buscaCursoPorNome(nome);
 		return this.autocompleteCursos;
 	}
 
@@ -103,7 +103,8 @@ public class TurmaControl implements TurmaService {
 	}
 
 	public List<Curso> buscaCursosPorNome(String nome) {
-		return this.cursoDao.buscaCursoPorNome(nome);
+		//return this.cursoDao.buscaCursoPorNome(nome);
+		return null;
 	}
 
 	public List<Funcionario> buscaProfessoresPorNome(String nome) {

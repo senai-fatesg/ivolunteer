@@ -4,20 +4,15 @@ import java.util.List;
 
 import br.com.ambientinformatica.ivolunteer.entidade.Curso;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumStatus;
+import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 import br.com.ambientinformatica.jpa.persistencia.Persistencia;
 
 public interface CursoDao extends Persistencia<Curso> {
 
-	public List<Curso> buscaCursoPorNome(String nome);
-
-	public Curso buscaCursoPorId(Curso curso);
-
 	public Curso buscaCursoComListaDeTurmasAtivas(Curso curso);
 
-	public List<Curso> listarCursosAtivos();
+	public List<Curso> listarCursosAtivos() throws PersistenciaException;
 
-	public List<Curso> buscaCursoPorStatus(String statusFiltro);
-
-	public List<Curso> listarPorNomeStatus(String nomeFiltro, EnumStatus statusFiltro) throws Exception;
+	public List<Curso> listarPorNomeStatus(String nomeFiltro, EnumStatus statusFiltro) throws PersistenciaException ;
 
 }

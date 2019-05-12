@@ -61,10 +61,9 @@
 				<p:column headerText="Ações" style="text-align:center;">
 					<p:commandButton id="botaoExibeInfoCurso" icon="ui-icon-info"
 						title="Informações do curso"
+						actionListener="#{CursoListControl.exibeInfo(curso)}"
 						oncomplete="PF('janelaInfoCurso').show();"
-						update="formCorpo:infoCurso" >
-						<f:setPropertyActionListener value="#{curso}" target="#{CursoListControl.cursoInfo}" />
-					</p:commandButton>
+						update="formCorpo:infoCurso" />
 
 					<p:commandButton id="botaoEditaCurso" icon="ui-icon-pencil"
 						title="Editar curso"

@@ -14,6 +14,7 @@ import br.com.ambientinformatica.ivolunteer.entidade.Curso;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumStatus;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoCurso;
 import br.com.ambientinformatica.ivolunteer.persistencia.CursoDao;
+import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 
 @Controller("CursoListControl")
 @Scope("conversation")
@@ -66,8 +67,12 @@ public class CursoListControl {
 		}
 	}
 	
-	public void exibeInfoDoCurso(Curso curso) {
-		this.cursoInfo = cursoDao.consultar(curso.getId());
+	public void exibeInfo(Curso curso) {
+		try {
+			this.cursoInfo = cursoDao.consultar(curso.getId());
+		} catch (PersistenciaException e) {
+			UtilFaces.addMensagemFaces(e);
+		}
 	}
 
 	public List<SelectItem> getStatus() {

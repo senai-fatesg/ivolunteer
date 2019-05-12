@@ -28,10 +28,11 @@
 			</a:field>
 
 			<a:field label="Parceiro:" spaceLeft="15px">
-				<p:autoComplete id="parceiro" dropdown="true" minQueryLength="2"
-					value="#{CursoControl.curso.parceiro}" converter="objectConverter"
-					completeMethod="#{CursoControl.buscaParceiros}" var="parceiro"
-					itemValue="#{parceiro}" itemLabel="#{parceiro.nome}" />
+				<p:selectOneMenu id="parceiro" converter="objectConverter" filter="true" filterMatchMode="startsWith" 
+					value="#{CursoControl.curso.parceiro}" >
+					<f:selectItem itemValue="#{null}" itemLabel="Selecione um parceiro" noSelectionOption="true" />
+					<f:selectItems value="#{CursoControl.parceiros}" var="parceiro" itemValue="#{parceiro}" itemLabel="#{parceiro.nome}"  />
+				</p:selectOneMenu>
 			</a:field>
 
 			<a:field label="Conteúdo programático:">

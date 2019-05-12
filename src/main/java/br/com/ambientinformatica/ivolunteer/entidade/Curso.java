@@ -1,9 +1,7 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,7 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
@@ -57,9 +54,6 @@ public class Curso implements Serializable {
 	@Column(nullable = false)
 	private EnumTipoCurso duracao;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "curso")
-	private List<Turma> listaTurma = new ArrayList<Turma>();
-
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
 	private Date dataCadastro;
@@ -106,14 +100,6 @@ public class Curso implements Serializable {
 		this.status = EnumStatus.ATIVO;
 	}
 	
-	public List<Turma> getListaTurma() {
-		return listaTurma;
-	}
-
-	public void setListaTurma(List<Turma> listaTurma) {
-		this.listaTurma = listaTurma;
-	}
-
 	public Integer getId() {
 		return id;
 	}
@@ -138,8 +124,4 @@ public class Curso implements Serializable {
 		this.duracao = duracao;
 	} 
 
-	public void adicionarTurma(Turma turma) {
-		this.getListaTurma().add(turma);
-	}
-	
 }

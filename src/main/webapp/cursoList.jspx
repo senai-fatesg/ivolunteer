@@ -33,7 +33,7 @@
 			<p:commandButton style="margin-left: 10px; margin-top: 23px;"
 				update="tblCursos"
 				icon="ui-icon-plus" value="Novo curso"
-				action="cadastroCurso?faces-redirect=true"
+				action="curso?faces-redirect=true"
 				actionListener="#{MenuControl.gerenciarSessao}" />
 
 			<a:newLine />
@@ -69,7 +69,7 @@
 					<p:commandButton id="botaoEditaCurso" icon="ui-icon-pencil"
 						title="Editar curso"
 						rendered="#{(!securityScope.userInRole['SECRETARIA'] or !securityScope.userInRole['ADMIN']) and (curso.status != 'INATIVO')}"
-						action="cadastroCurso?faces-redirect=true" actionListener="#{MenuControl.gerenciarSessao}" >
+						action="curso?faces-redirect=true" actionListener="#{MenuControl.gerenciarSessao}" >
 						<f:setPropertyActionListener value="#{curso}"
 							target="#{CursoControl.curso}" />
 					</p:commandButton>

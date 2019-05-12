@@ -1,9 +1,7 @@
 package br.com.ambientinformatica.ivolunteer.controle;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +10,6 @@ import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.Curso;
-import br.com.ambientinformatica.ivolunteer.entidade.EnumStatus;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoCurso;
 import br.com.ambientinformatica.ivolunteer.entidade.Parceiro;
 import br.com.ambientinformatica.ivolunteer.persistencia.CursoDao;
@@ -28,87 +25,24 @@ public class CursoControl {
 	@Autowired
 	private ParceiroDao parceiroDao;
 	
-	private String nomeFiltro;
-	private EnumStatus statusFiltro;
-	private Parceiro parceiro = new Parceiro();
 	private Curso curso = new Curso();
-	private List<Curso> listaCursos = new ArrayList<Curso>();
-
-	@PostConstruct
-	public void init() {
-		listarCursos();
-	}
-
-	public List<Parceiro> buscaParceiros(String nomeParceiro) {
-		return parceiroDao.buscaParceiroPorNome(nomeParceiro);
-	}
-
-	public void listarCursos() {
-		try {
-			this.listaCursos = cursoDao.listar();
-		} catch (Exception e) {
-			UtilFaces.addMensagemFaces(e);
-		}
-	}
-
-	public void aplicarFiltro() {
-		try {
-			this.listaCursos = cursoDao.listarPorNomeStatus(this.nomeFiltro, this.statusFiltro);
-		} catch (Exception e) {
-			UtilFaces.addMensagemFaces(e);
-		}
-	}
-
+	
 	public void salvar() {
 		try {
 			cursoDao.alterar(this.curso);
 			this.curso = new Curso();
-			listarCursos();
 			UtilFaces.addMensagemFaces("Curso atualizado com sucesso!");
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
 	
-	public List<Parceiro> buscaParceiro(String nome) {
-		return parceiroDao.buscaParceiroPorNome(nome);
-	}
-
-	public List<SelectItem> getStatus() {
-		return UtilFaces.getListEnum(EnumStatus.values());
+	public List<Parceiro> getParceiros() {
+		return parceiroDao.listar();
 	}
 
 	public List<SelectItem> getCompleteEnumTipoCurso() {
 		return UtilFaces.getListEnum(EnumTipoCurso.values());
-	}
-
-	public void escolheParceiro() {
-		this.curso.setParceiro(parceiroDao.buscaParceiroPorID(this.parceiro.getId()));
-		this.parceiro = new Parceiro();
-	}
-
-	public Parceiro getParceiro() {
-		return parceiro;
-	}
-
-	public void setParceiro(Parceiro parceiro) {
-		this.parceiro = parceiro;
-	}
-
-	public String getNomeFiltro() {
-		return nomeFiltro;
-	}
-
-	public void setNomeFiltro(String nomeFiltro) {
-		this.nomeFiltro = nomeFiltro;
-	}
-
-	public EnumStatus getStatusFiltro() {
-		return statusFiltro;
-	}
-
-	public void setStatusFiltro(EnumStatus statusFiltro) {
-		this.statusFiltro = statusFiltro;
 	}
 
 	public Curso getCurso() {
@@ -117,14 +51,6 @@ public class CursoControl {
 
 	public void setCurso(Curso curso) {
 		this.curso = curso;
-	}
-
-	public List<Curso> getListaCursos() {
-		return listaCursos;
-	}
-
-	public void setListaCursos(List<Curso> listaCursos) {
-		this.listaCursos = listaCursos;
 	}
 
 }

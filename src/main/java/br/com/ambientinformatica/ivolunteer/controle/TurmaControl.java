@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -15,7 +14,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
-import br.com.ambientinformatica.ambientjsf.util.UtilFacesRelatorio;
 import br.com.ambientinformatica.ivolunteer.entidade.Curso;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumCargo;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoCurso;
@@ -118,7 +116,7 @@ public class TurmaControl implements TurmaService {
 
 	public void cadastrarTurma() {
 		try {
-			this.curso.adicionarTurma(this.turma);
+			//this.curso.adicionarTurma(this.turma);
 			this.cursoDao.alterar(this.curso);
 			// validarTurma(this.turma);
 			// turmaDao.incluir(this.turma);

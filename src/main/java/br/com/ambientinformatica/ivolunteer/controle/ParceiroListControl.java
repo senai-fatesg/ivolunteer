@@ -18,13 +18,13 @@ import br.com.ambientinformatica.ivolunteer.persistencia.ParceiroDao;
 @Scope("conversation")
 public class ParceiroListControl {
 
+	@Autowired
+	private ParceiroDao parceiroDao;
+
 	private String nomeFiltro;
 	private String statusFiltro;
 	private Parceiro parceiro;
 	private List<Parceiro> parceiros = new ArrayList<>();
-
-	@Autowired
-	private ParceiroDao parceiroDao;
 
 	public void aplicarFiltro() {
 		try {

@@ -38,7 +38,7 @@
 			<a:field label="Estado:" spaceLeft="10px">
 				<p:selectOneMenu id="estado"
 					value="#{ParceiroControl.parceiro.endereco.cidade.enumEstado}"
-					style="width:160px;" filter="true" filterMatchMode="startsWith" >
+					style="width:160px;" filter="true" filterMatchMode="contains" >
 					<f:selectItem itemLabel="Selecione uma opção" itemValue="#{null}"
 						noSelectionOption="true" />
 					<f:selectItems value="#{ParceiroControl.completeEnumEstado}" var="estado" itemLabel="#{estado.descricao}" itemValue="#{estado}" />

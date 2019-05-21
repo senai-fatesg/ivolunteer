@@ -15,6 +15,8 @@ import javax.persistence.SequenceGenerator;
 @Entity
 public class Endereco implements Serializable{
 
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(generator = "endereco_seq", strategy = GenerationType.SEQUENCE)
 	@SequenceGenerator(name = "endereco_seq", sequenceName = "endereco_seq", allocationSize = 1, initialValue = 1)
@@ -37,20 +39,6 @@ public class Endereco implements Serializable{
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Cidade cidade = new Cidade();
 	
-	private Boolean isAtivo = true;
-	
-	public Boolean getIsAtivo() {
-		return isAtivo;
-	}
-
-	public void setIsAtivo(Boolean isAtivo) {
-		this.isAtivo = isAtivo;
-	}
-	
-	public void inativaEndereco() {
-		setIsAtivo(false);
-	}
-
 	public void setId(Integer id) {
 		this.id = id;
 	}

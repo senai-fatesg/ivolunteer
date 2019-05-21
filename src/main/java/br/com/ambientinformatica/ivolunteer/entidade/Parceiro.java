@@ -1,17 +1,26 @@
 package br.com.ambientinformatica.ivolunteer.entidade;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+import br.com.ambientinformatica.util.AmbientValidator;
 
 @Entity
 public class Parceiro implements Serializable{
@@ -23,28 +32,31 @@ public class Parceiro implements Serializable{
 	@SequenceGenerator(name = "parceiro_seq" , sequenceName = "parceiro_seq" , initialValue = 1 , allocationSize = 1)
 	private Integer id;
 	
+	@NotBlank(message = "Informe o nome", groups = AmbientValidator.class)
 	private String nome;
 	
+	@NotBlank(message = "Informe o cnpj", groups = AmbientValidator.class)
 	private String cnpj;
 	
 	private String email;
 	
 	private String telefone;
 	
-	private Boolean isAtivo = true;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private EnumStatus status;
 	
-	@OneToMany(fetch=FetchType.LAZY , cascade = CascadeType.ALL, mappedBy = "parceiro")
-	private List<Curso> listaCursos;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable = false)
+	private Date dataCadastro;
 	
-	@OneToOne(fetch=FetchType.LAZY, cascade= CascadeType.ALL)
+	@OneToOne(fetch=FetchType.LAZY, cascade= CascadeType.ALL, optional = true)
 	private Endereco endereco = new Endereco();
-
-	public List<Curso> getListaCursos() {
-		return listaCursos;
-	}
-
-	public void setListaCursos(List<Curso> listaCursos) {
-		this.listaCursos = listaCursos;
+	
+	@PrePersist
+	private void cargaInicial() {
+		this.status = EnumStatus.ATIVO;
+		this.dataCadastro = new Date();
 	}
 
 	public Integer getId() {
@@ -87,12 +99,16 @@ public class Parceiro implements Serializable{
 		this.telefone = telefone;
 	}
 
-	public Boolean getIsAtivo() {
-		return isAtivo;
+	public EnumStatus getStatus() {
+		return status;
+	}
+	
+	public boolean isAtivo() {
+		return status != null && status.equals(EnumStatus.ATIVO) ? true : false;
 	}
 
-	public void setIsAtivo(Boolean isAtivo) {
-		this.isAtivo = isAtivo;
+	public Date getDataCadastro() {
+		return dataCadastro;
 	}
 
 	public Endereco getEndereco() {
@@ -103,22 +119,18 @@ public class Parceiro implements Serializable{
 		this.endereco = endereco;
 	}
 	
-	public void inativaParceiro() {
-		this.setIsAtivo(false);
+	public void inativar() {
+		this.status = EnumStatus.INATIVO;
+	}
+	
+	public void ativar() {
+		this.status = EnumStatus.ATIVO;
 	}
 	
 	public void addEndereco(Endereco end) {
 		this.setEndereco(end);
 	}
 	
-	public void addCurso(Curso curso) {
-		this.listaCursos.add(curso);
-	}
-	
-	public void addCursos(List<Curso> cursos) {
-		this.listaCursos.addAll(cursos);
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;

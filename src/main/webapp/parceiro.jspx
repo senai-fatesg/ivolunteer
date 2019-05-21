@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="corpo">
+		<p:growl autoUpdate="true" />
+		<p:panel header="Cadastro de Parceiro" id="painelPrincipal">
+			<a:field label="Nome:">
+				<p:inputText id="nome" value="#{ParceiroControl.parceiro.nome}" />
+			</a:field>
+
+			<a:field label="CNPJ:" spaceLeft="15px">
+				<p:inputMask id="cnpj" mask="99.999.999/9999-99"
+					value="#{ParceiroControl.parceiro.cnpj}" />
+			</a:field>
+
+			<a:field label="Email:" spaceLeft="15px">
+				<p:inputText id="email"
+					value="#{ParceiroControl.parceiro.email}" />
+			</a:field>
+
+			<a:field label="Telefone:" spaceLeft="15px">
+				<p:inputMask id="telefone" mask="(99)9999-9999"
+					value="#{ParceiroControl.parceiro.telefone}" />
+			</a:field>
+
+			<a:newLine/>
+
+			<a:field label="Cidade:">
+				<p:inputText id="cidade" value="#{ParceiroControl.parceiro.endereco.cidade.nomeCidade}"
+					style="width:200px" />
+			</a:field>
+
+			<a:field label="Estado:" spaceLeft="10px">
+				<p:selectOneMenu id="estado"
+					value="#{ParceiroControl.parceiro.endereco.cidade.enumEstado}"
+					style="width:160px;" filter="true" filterMatchMode="startsWith" >
+					<f:selectItem itemLabel="Selecione uma opção" itemValue="#{null}"
+						noSelectionOption="true" />
+					<f:selectItems value="#{ParceiroControl.completeEnumEstado}" var="estado" itemLabel="#{estado.descricao}" itemValue="#{estado}" />
+				</p:selectOneMenu>
+			</a:field>
+
+			<a:field label="Endereço:" spaceLeft="10px" >
+				<p:inputText id="endereco" value="#{ParceiroControl.parceiro.endereco.ruaOuAvenida}"
+					style="width:325px" />
+			</a:field>
+			
+			<a:newLine/>
+
+			<a:field label="Bairro:" >
+				<p:inputText id="bairro" value="#{ParceiroControl.parceiro.endereco.bairro}"
+					style="width:275px" />
+			</a:field>
+
+			<a:field label="CEP" spaceLeft="10px">
+				<p:inputMask id="cep" style="width:85px;"
+					value="#{ParceiroControl.parceiro.endereco.cep}" mask="99.999-999">
+				</p:inputMask>
+			</a:field>
+
+			<a:field label="Número" spaceLeft="10px">
+				<p:inputText id="numero" value="#{ParceiroControl.parceiro.endereco.numero}"
+					style="width:55px" />
+			</a:field>
+
+			<a:field label="Complemento" spaceLeft="10px">
+				<p:inputText id="complemento" value="#{ParceiroControl.parceiro.endereco.complemento}"
+					style="width:260px;" />
+			</a:field>
+
+			<a:newLine />
+			<a:newLine />
+
+			<p:commandButton icon="ui-icon-disk"
+				value="#{ParceiroControl.parceiro.id == null ? 'Cadastrar' : 'Atualizar'}"
+				update="painelPrincipal"
+				actionListener="#{ParceiroControl.salvar}" 
+				title="Salvar"/>
+				
+			<p:commandButton style="margin-left:10px;" 
+				icon=" ui-icon-arrowreturn-1-w" value="Voltar" action="parceiroList?faces-redirect=true" />
+		</p:panel>
+	</ui:define>
+</ui:composition>

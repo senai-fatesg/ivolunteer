@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://www.ambientinformatica.com.br/jsf2"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="corpo">
+
+		<p:growl autoUpdate="true" />
+		<p:panel header="Parceiros cadastrados" id="painelPrincipal">
+
+			<a:field label="Nome:">
+				<p:inputText value="#{ParceiroListControl.nomeFiltro}" />
+			</a:field>
+
+			<a:field label="Status:" spaceLeft="15px">
+				<p:selectOneMenu value="#{ParceiroListControl.statusFiltro}">
+					<f:selectItem itemLabel="TODOS" itemValue="#{null}"
+						noSelectionOption="true" />
+					<f:selectItems value="#{ParceiroListControl.status}" 
+						var="status" itemLabel="#{status.descricao}" itemValue="#{status}" />
+				</p:selectOneMenu>
+			</a:field>
+
+			<p:commandButton style="margin-left: 10px; margin-top: 23px;"
+				icon="ui-icon-search" value="Pesquisar"
+				update="tblParceiros" actionListener="#{ParceiroListControl.aplicarFiltro}" />
+				
+			<p:commandButton style="margin-left: 10px; margin-top: 23px;" 
+				icon="ui-icon-plus" value="Novo Parceiro"
+				action="parceiro?faces-redirect=true"
+				actionListener="#{MenuControl.gerenciarSessao}" />
+
+			<a:newLine />
+			<a:newLine />
+
+			<p:dataTable id="tblParceiros" paginator="true" rows="5"
+				rowsPerPageLabel="5,10,15,20" rowsPerPageTemplate="5,10,15,20"
+				value="#{ParceiroListControl.parceiros}" var="parceiro"
+				emptyMessage="Nenhum registro">
+				<f:facet name="header">Lista de Parceiros</f:facet>
+				<p:column headerText="Nome" style="text-align:center;">
+					<h:outputText value="#{parceiro.nome}" />
+				</p:column>
+
+				<p:column headerText="Cnpj" style="text-align:center;">
+					<h:outputText value="#{parceiro.cnpj}" />
+				</p:column>
+
+				<p:column headerText="Status" style="text-align:center;">
+					<h:outputText value="#{parceiro.status}" />
+				</p:column>
+
+				<p:column headerText="Ações" style="text-align:center;">
+					<p:commandButton icon="ui-icon-info"
+						actionListener="#{ParceiroListControl.exibeInfo(parceiro)}"
+						oncomplete="PF('janelaInfoParceiro').show();"
+						update="formCorpo:infoParceiro" title="Informações do parceiro" />
+
+					<p:commandButton
+						rendered="#{parceiro.ativo}" 
+						icon="ui-icon-pencil"
+						action="parceiro?faces-redirect=true"
+						actionListener="#{MenuControl.gerenciarSessao}"
+						update="formCorpo:painelPrincipal" title="Editar" >
+						<f:setPropertyActionListener value="#{parceiro}" target="#{ParceiroControl.parceiro}" />
+					</p:commandButton>						
+
+					<p:commandButton rendered="#{parceiro.ativo}" 
+						icon="ui-icon-trash"
+						action="#{ParceiroListControl.inativar(parceiro)}"
+						update="tblParceiros" title="Inativar registro" />
+						
+					<p:commandButton rendered="#{!parceiro.ativo}" 
+						icon="ui-icon-refresh"
+						action="#{ParceiroListControl.ativar(parceiro)}"
+						update="tblParceiros" title="Reativar registro" />
+				</p:column>
+
+			</p:dataTable>
+		</p:panel>
+
+		<p:dialog id="infoParceiro" widgetVar="janelaInfoParceiro" width="70%"
+			header="Informações do parceiro" modal="true">
+			<p:panelGrid columns="4" layout="grid">
+
+				<h:outputLabel value="Nome: " />
+				<h:outputText value="#{ParceiroListControl.parceiro.nome}" />
+
+				<h:outputLabel value="CNPJ: " />
+				<h:outputText value="#{ParceiroListControl.parceiro.cnpj}" />
+
+				<h:outputLabel value="Email: " />
+				<h:outputText value="#{ParceiroListControl.parceiro.email}" />
+
+				<h:outputLabel value="Telefone: " />
+				<h:outputText
+					value="#{ParceiroListControl.parceiro.telefone}" />
+
+				<h:outputLabel value="Endereço: " />
+				<h:outputText
+					value="#{ParceiroListControl.parceiro.endereco.ruaOuAvenida}" />
+
+				<h:outputLabel value="Bairro: " />
+				<h:outputText
+					value="#{ParceiroListControl.parceiro.endereco.bairro}" />
+
+				<h:outputLabel value="Cidade: " />
+				<h:outputText
+					value="#{ParceiroListControl.parceiro.endereco.cidade.nomeCidade}" />
+
+				<h:outputLabel value="Estado: " />
+				<h:outputText
+					value="#{ParceiroListControl.parceiro.endereco.cidade.enumEstado}" />
+
+				<h:outputLabel value="CEP: " />
+				<h:outputText
+					value="#{ParceiroListControl.parceiro.endereco.cep}" />
+
+				<h:outputLabel value="Número: " />
+				<h:outputText
+					value="#{ParceiroListControl.parceiro.endereco.numero}" />
+
+				<h:outputLabel value="Complemento: " />
+				<h:outputText
+					value="#{ParceiroListControl.parceiro.endereco.complemento}" />
+			</p:panelGrid>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>

@@ -2,87 +2,40 @@ package br.com.ambientinformatica.ivolunteer.persistencia;
 
 import java.util.List;
 
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 
-import br.com.ambientinformatica.ivolunteer.entidade.Curso;
 import br.com.ambientinformatica.ivolunteer.entidade.Parceiro;
+import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 import br.com.ambientinformatica.jpa.persistencia.PersistenciaJpa;
 
 @Repository("parceiroDao")
 public class ParceiroDaoJpa extends PersistenciaJpa<Parceiro> implements ParceiroDao {
 
-	@Override
-	public List<Parceiro> buscaParceiroPorNome(String nomeFiltro) {
-		try {
-			Query query = em.createQuery("SELECT p FROM Parceiro p WHERE UPPER(p.nome) LIKE :nome");
-			query.setParameter("nome", "%" + nomeFiltro.toUpperCase() + "%");
-			return (List<Parceiro>)query.getResultList();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+	private static final long serialVersionUID = 1L;
 
 	@Override
-	public List<Parceiro> buscaParceiroPorStatus(String statusFiltro) {
+	public List<Parceiro> listarPorNomeStatus(String nomeFiltro, String statusFiltro) throws PersistenciaException {
 		try {
-			boolean st;
-			if(statusFiltro.contains("t")) {
-				st = true;
-			} else {
-				st = false;
+			String sql = "SELECT p FROM Parceiro p WHERE 1=1 ";
+			if (nomeFiltro != null && !nomeFiltro.isEmpty()) {
+				sql += "AND UPPER(p.nome) LIKE (:nome)";
 			}
-			Query query = em.createQuery("SELECT p FROM Parceiro p WHERE p.isAtivo = :status");
-			query.setParameter("status", st);
-			List<Parceiro> parceiros= query.getResultList();
-			return parceiros;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	@Override
-	public List<Parceiro> buscaParceiroPorStatusNome(String statusFiltro, String nomeFiltro) {
-		try {
-			boolean st;
-			if(statusFiltro.contains("t")) {
-				st = true;
-			} else {
-				st = false;
+			if (statusFiltro != null && !statusFiltro.isEmpty()) {
+				sql += "AND p.status = :status";
 			}
-			Query query = em.createQuery("SELECT p FROM Parceiro p WHERE UPPER(p.nome) LIKE :nome "
-					+ " AND c.isAtivo = :status");
-			query.setParameter("nome", "%" + nomeFiltro.toUpperCase() + "%");
-			query.setParameter("status", st);
+			TypedQuery<Parceiro> query = em.createQuery(sql, Parceiro.class);
+			if (nomeFiltro != null && !nomeFiltro.isEmpty()) {
+				query.setParameter("nome", "%" + nomeFiltro.toUpperCase() + "%");
+			}
+			if (statusFiltro != null && !statusFiltro.isEmpty()) {
+				query.setParameter("status", statusFiltro);
+			}
 			return query.getResultList();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
+		} catch (PersistenciaException e) {
+			throw new PersistenciaException("Erro ao listar parceiros");
 		}
-	}
-
-	@Override
-	public Parceiro buscaParceiroComEndereco(Parceiro parceiro) {
-		try {
-			Query query = em.createQuery("SELECT p FROM Parceiro p LEFT JOIN FETCH p.endereco endereco "
-					+ " WHERE p.id = :parceiroId");
-			query.setParameter("parceiroId", parceiro.getId());
-			return (Parceiro) query.getSingleResult();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	@Override
-	public Parceiro buscaParceiroPorID(Integer id) {
-		Parceiro p = new Parceiro();
-		p.setId(id);
-		p = em.find(Parceiro.class, p.getId());
-		return p;
 	}
 
 }

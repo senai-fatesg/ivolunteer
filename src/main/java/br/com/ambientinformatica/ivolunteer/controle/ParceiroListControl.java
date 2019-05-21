@@ -10,37 +10,50 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
-import br.com.ambientinformatica.ivolunteer.entidade.EnumEstado;
+import br.com.ambientinformatica.ivolunteer.entidade.EnumStatus;
 import br.com.ambientinformatica.ivolunteer.entidade.Parceiro;
 import br.com.ambientinformatica.ivolunteer.persistencia.ParceiroDao;
-import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 
-@Controller("ParceiroControl")
+@Controller("ParceiroListControl")
 @Scope("conversation")
-public class ParceiroControl {
+public class ParceiroListControl {
 
 	private String nomeFiltro;
 	private String statusFiltro;
-	private Parceiro parceiro = new Parceiro();
-	private List<Parceiro> listaParceiros = new ArrayList<Parceiro>();
+	private Parceiro parceiro;
+	private List<Parceiro> parceiros = new ArrayList<>();
 
 	@Autowired
 	private ParceiroDao parceiroDao;
 
-	public void salvar() {
+	public void aplicarFiltro() {
 		try {
-			parceiroDao.alterar(this.parceiro);
-			this.parceiro = new Parceiro();
-			UtilFaces.addMensagemFaces("Parceiro salvo com sucesso!");
-		} catch (PersistenciaException e) {
+			this.parceiros = parceiroDao.listarPorNomeStatus(nomeFiltro, statusFiltro);
+		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
 	}
 
-	public List<SelectItem> getCompleteEnumEstado() {
-		return UtilFaces.getListEnum(EnumEstado.values());
+	public void inativar(Parceiro parceiro) {
+		parceiro.inativar();
+		parceiroDao.alterar(parceiro);
+		UtilFaces.addMensagemFaces("Registro inativado!");
+	}
+	
+	public void ativar(Parceiro parceiro) {
+		parceiro.ativar();
+		parceiroDao.alterar(parceiro);
+		UtilFaces.addMensagemFaces("Registro reativado!");
 	}
 
+	public void exibeInfo(Parceiro parceiro) {
+		this.parceiro = parceiroDao.consultar(parceiro.getId());
+	}
+
+	public List<SelectItem> getStatus() {
+		return UtilFaces.getListEnum(EnumStatus.values());
+	}
+	
 	public String getNomeFiltro() {
 		return nomeFiltro;
 	}
@@ -57,28 +70,16 @@ public class ParceiroControl {
 		this.statusFiltro = statusFiltro;
 	}
 
+	public List<Parceiro> getParceiros() {
+		return parceiros;
+	}
+
 	public Parceiro getParceiro() {
 		return parceiro;
 	}
 
 	public void setParceiro(Parceiro parceiro) {
-		this.parceiro = parceiroDao.consultar(parceiro.getId());
+		this.parceiro = parceiro;
 	}
-
-	public List<Parceiro> getListaParceiros() {
-		return listaParceiros;
-	}
-
-	public void setListaParceiros(List<Parceiro> listaParceiros) {
-		this.listaParceiros = listaParceiros;
-	}
-
-	public ParceiroDao getParceiroDao() {
-		return parceiroDao;
-	}
-
-	public void setParceiroDao(ParceiroDao parceiroDao) {
-		this.parceiroDao = parceiroDao;
-	}
-
+	
 }

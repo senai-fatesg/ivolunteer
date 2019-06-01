@@ -30,12 +30,12 @@ import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoFuncionario;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoPessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoTelefone;
 import br.com.ambientinformatica.ivolunteer.entidade.Frequencia;
-import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
+import br.com.ambientinformatica.ivolunteer.entidade.Colaborador;
 import br.com.ambientinformatica.ivolunteer.entidade.GradeHorario;
 import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
 import br.com.ambientinformatica.ivolunteer.entidade.Telefone;
 import br.com.ambientinformatica.ivolunteer.persistencia.EnderecoDao;
-import br.com.ambientinformatica.ivolunteer.persistencia.FuncionarioDao;
+import br.com.ambientinformatica.ivolunteer.persistencia.ColaboradorDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.PessoaDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.TelefoneDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
@@ -45,8 +45,8 @@ import br.com.ambientinformatica.util.UtilLog;
 @Scope("conversation")
 public class FuncionarioControl {
 
-	private Funcionario funcionario = new Funcionario();
-	private Funcionario infoFuncionario = new Funcionario();
+	private Colaborador funcionario = new Colaborador();
+	private Colaborador infoFuncionario = new Colaborador();
 	private Endereco endereco = new Endereco();
 	private Cidade cidade = new Cidade();
 	private Telefone telefoneEmpresa = new Telefone();
@@ -64,9 +64,9 @@ public class FuncionarioControl {
 	@Autowired
 	private TelefoneDao telefoneDao;
 	@Autowired
-	private FuncionarioDao funcionarioDao;
+	private ColaboradorDao funcionarioDao;
 
-	private List<Funcionario> funcionarios = new ArrayList<Funcionario>();
+	private List<Colaborador> funcionarios = new ArrayList<Colaborador>();
 	private Telefone telefoneFuncionario = new Telefone();
 
 	@PostConstruct
@@ -87,7 +87,7 @@ public class FuncionarioControl {
 				}
 				listarTodosFuncionarios(null);
 				this.endereco = new Endereco();
-				this.funcionario = new Funcionario();
+				this.funcionario = new Colaborador();
 				this.telefoneEmpresa = new Telefone();
 				this.telefoneFuncionario = new Telefone();
 				UtilFaces.addMensagemFaces("Informações salvas com sucesso!");
@@ -106,7 +106,7 @@ public class FuncionarioControl {
 		}
 	}
 
-	public void carregaFuncionarioAlteracao(Funcionario funcionario) {
+	public void carregaFuncionarioAlteracao(Colaborador funcionario) {
 		try {
 			this.funcionario = funcionarioDao.carregarFuncionarioComEnderecoTelefone(funcionario);
 			this.endereco = this.funcionario.getListaEndereco().get(0);
@@ -118,7 +118,7 @@ public class FuncionarioControl {
 	public void incluir(ActionEvent evt) {
 		try {
 			funcionarioDao.alterar(funcionario);
-			this.funcionario = new Funcionario();
+			this.funcionario = new Colaborador();
 			UtilFaces.addMensagemFaces("Colaborador salvo com sucesso!");
 		} catch (PersistenciaException e) {
 			UtilFaces.addMensagemFaces(e);
@@ -126,7 +126,7 @@ public class FuncionarioControl {
 
 	}
 
-	public void excluir(Funcionario funcionario) {
+	public void excluir(Colaborador funcionario) {
 		try {
 			funcionario = this.desativarFuncionarioCompleto(funcionario);
 			funcionario.desativa();
@@ -138,8 +138,8 @@ public class FuncionarioControl {
 		}
 	}
 	
-	public Funcionario desativarFuncionarioCompleto(Funcionario funcionario) {
-		Funcionario func = funcionarioDao.carregarFuncionarioComEnderecoTelefone(funcionario);
+	public Colaborador desativarFuncionarioCompleto(Colaborador funcionario) {
+		Colaborador func = funcionarioDao.carregarFuncionarioComEnderecoTelefone(funcionario);
 		if (func.getListaEndereco().size() > 0) {
 			for (Endereco endereco : func.getListaEndereco()) {
 				endereco.inativaEndereco();
@@ -212,7 +212,7 @@ public class FuncionarioControl {
 		}
 	}
 	
-	public void exibiInformacoesFuncionario(Funcionario funcionario) {
+	public void exibiInformacoesFuncionario(Colaborador funcionario) {
 		this.infoFuncionario = funcionarioDao.carregarFuncionarioComEnderecoTelefone(funcionario);
 	}
 
@@ -444,35 +444,35 @@ public class FuncionarioControl {
 		}
 	}
 
-	public FuncionarioDao getFuncionarioDao() {
+	public ColaboradorDao getFuncionarioDao() {
 		return funcionarioDao;
 	}
 
-	public void setFuncionarioDao(FuncionarioDao funcionarioDao) {
+	public void setFuncionarioDao(ColaboradorDao funcionarioDao) {
 		this.funcionarioDao = funcionarioDao;
 	}
 
-	public void setFuncionarios(List<Funcionario> funcionarios) {
+	public void setFuncionarios(List<Colaborador> funcionarios) {
 		this.funcionarios = funcionarios;
 	}
 
-	public Funcionario getFuncionario() {
+	public Colaborador getFuncionario() {
 		return funcionario;
 	}
 
-	public void setFuncionario(Funcionario funcionario) {
+	public void setFuncionario(Colaborador funcionario) {
 		this.funcionario = funcionario;
 	}
 
-	public Funcionario getInfoFuncionario() {
+	public Colaborador getInfoFuncionario() {
 		return infoFuncionario;
 	}
 
-	public void setInfoFuncionario(Funcionario infoFuncionario) {
+	public void setInfoFuncionario(Colaborador infoFuncionario) {
 		this.infoFuncionario = infoFuncionario;
 	}
 
-	public List<Funcionario> getFuncionarios() {
+	public List<Colaborador> getFuncionarios() {
 		return funcionarios;
 	}
 
@@ -541,12 +541,12 @@ public class FuncionarioControl {
 		this.tipoFuncionarioPesquisa = tipoFuncionarioPesquisa;
 	}
 
-	public Funcionario carregarFuncionario(SelectEvent evt) {
+	public Colaborador carregarFuncionario(SelectEvent evt) {
 		return funcionarioDao.carregarFuncionario(funcionario);
 	}
 
-	public List<Funcionario> consultarFuncionario(String query) {
-		List<Funcionario> func = funcionarioDao.listarPorNome(query);
+	public List<Colaborador> consultarFuncionario(String query) {
+		List<Colaborador> func = funcionarioDao.listarPorNome(query);
 		return func;
 	}
 

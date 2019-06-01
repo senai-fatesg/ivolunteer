@@ -13,10 +13,10 @@ import org.springframework.stereotype.Controller;
 
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.AtividadeDiaria;
-import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
+import br.com.ambientinformatica.ivolunteer.entidade.Colaborador;
 import br.com.ambientinformatica.ivolunteer.entidade.Pessoa;
 import br.com.ambientinformatica.ivolunteer.persistencia.AtividadeDiariaDao;
-import br.com.ambientinformatica.ivolunteer.persistencia.FuncionarioDao;
+import br.com.ambientinformatica.ivolunteer.persistencia.ColaboradorDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 
 @Controller("AtividadeDiariaControl")
@@ -31,14 +31,14 @@ public class AtividadeDiariaControl {
 	private AtividadeDiaria atividadeDiaria = new AtividadeDiaria();
 
 	@Autowired
-	private FuncionarioDao funcionarioDao;
-	private Funcionario funcionario = new Funcionario();
+	private ColaboradorDao funcionarioDao;
+	private Colaborador funcionario = new Colaborador();
 
 	private List<AtividadeDiaria> atividadesDiarias = new ArrayList<AtividadeDiaria>();
 	
-	private List<Funcionario> listFuncionario = new ArrayList<Funcionario>();
+	private List<Colaborador> listFuncionario = new ArrayList<Colaborador>();
 
-	public Funcionario getFuncionario() {
+	public Colaborador getFuncionario() {
 		return funcionario;
 	}
 	@PostConstruct
@@ -52,7 +52,7 @@ public class AtividadeDiariaControl {
 			atividadeDiariaDao.alterar(atividadeDiaria);
 			listar(evt);
 			atividadeDiaria = new AtividadeDiaria();
-			funcionario = new Funcionario();
+			funcionario = new Colaborador();
 		} catch (Exception e) {
 			UtilFaces.addMensagemFaces(e);
 		}
@@ -105,26 +105,26 @@ public class AtividadeDiariaControl {
 		}
 	}
 
-	public List<Funcionario> consultarFuncionario(String query) {
+	public List<Colaborador> consultarFuncionario(String query) {
 		this.listFuncionario = funcionarioDao.listarPorNome(query);
 		return listFuncionario;
 	}
 	
 	
 	public void inicializar() {
-		this.funcionario = new Funcionario();
+		this.funcionario = new Colaborador();
 		this.atividadeDiaria = new AtividadeDiaria();
 	}
 
-	public void setFuncionario(Funcionario funcionario) {
+	public void setFuncionario(Colaborador funcionario) {
 		this.funcionario = funcionario;
 	}
 
-	public List<Funcionario> getListFuncionario() {
+	public List<Colaborador> getListFuncionario() {
 		return listFuncionario;
 	}
 
-	public void setListFuncionario(List<Funcionario> listFuncionario) {
+	public void setListFuncionario(List<Colaborador> listFuncionario) {
 		this.listFuncionario = listFuncionario;
 	}
 	public AtividadeDiariaDao getAtividadeDiariaDao() {
@@ -133,10 +133,10 @@ public class AtividadeDiariaControl {
 	public void setAtividadeDiariaDao(AtividadeDiariaDao atividadeDiariaDao) {
 		this.atividadeDiariaDao = atividadeDiariaDao;
 	}
-	public FuncionarioDao getFuncionarioDao() {
+	public ColaboradorDao getFuncionarioDao() {
 		return funcionarioDao;
 	}
-	public void setFuncionarioDao(FuncionarioDao funcionarioDao) {
+	public void setFuncionarioDao(ColaboradorDao funcionarioDao) {
 		this.funcionarioDao = funcionarioDao;
 	}
 	

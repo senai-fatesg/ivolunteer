@@ -26,7 +26,7 @@ public class Frequencia implements Serializable {
 	private Date data;
 	
 	@ManyToOne
-	private Funcionario funcionario ;
+	private Colaborador funcionario ;
 	
 	@ManyToOne
 	private Aluno aluno ;
@@ -84,11 +84,11 @@ public class Frequencia implements Serializable {
 		return true;
 	}
 
-	public Funcionario getFuncionario() {
+	public Colaborador getFuncionario() {
 		return funcionario;
 	}
 
-	public void setFuncionario(Funcionario funcionario) {
+	public void setFuncionario(Colaborador funcionario) {
 		this.funcionario = funcionario;
 	}
 

@@ -22,12 +22,12 @@ import br.com.ambientinformatica.ivolunteer.entidade.Curso;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumCargo;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoFuncionario;
 import br.com.ambientinformatica.ivolunteer.entidade.Frequencia;
-import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
+import br.com.ambientinformatica.ivolunteer.entidade.Colaborador;
 import br.com.ambientinformatica.ivolunteer.entidade.Turma;
 import br.com.ambientinformatica.ivolunteer.persistencia.AlunoDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.CursoDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.FrequenciaDao;
-import br.com.ambientinformatica.ivolunteer.persistencia.FuncionarioDao;
+import br.com.ambientinformatica.ivolunteer.persistencia.ColaboradorDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.TurmaDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 import br.com.ambientinformatica.util.UtilLog;
@@ -37,7 +37,7 @@ import br.com.ambientinformatica.util.UtilLog;
 public class FrequenciaControl {
 
 
-	private Funcionario funcionario ;
+	private Colaborador funcionario ;
 	private Turma turma = new Turma();
     private Aluno aluno ;
 	private String data = new String();
@@ -48,7 +48,7 @@ public class FrequenciaControl {
 	@Autowired
 	private TurmaDao turmaDao;
 	@Autowired
-	private FuncionarioDao funcionarioDao;
+	private ColaboradorDao funcionarioDao;
 	@Autowired
 	private FrequenciaDao frequenciaDao;
 	
@@ -60,7 +60,7 @@ public class FrequenciaControl {
 	private List<Curso> listaCursos = new ArrayList<Curso>();
 	private List<Frequencia> frequenciasF = new ArrayList<Frequencia>();
 	private List<Frequencia> frequenciasA = new ArrayList<Frequencia>();
-	private List<Funcionario> educadores = new ArrayList<Funcionario>();
+	private List<Colaborador> educadores = new ArrayList<Colaborador>();
 	private List<Aluno> alunos = new ArrayList<Aluno>();
 	private Curso exibeCursoInfo;
 	private List<Turma> turmasAtivasDoCurso = new ArrayList<Turma>();
@@ -84,7 +84,7 @@ public class FrequenciaControl {
 		listaCursos = cursoDao.listar();
 	}
 	
-	public void exibeInfoFrequenciaEducador(Funcionario educador) {
+	public void exibeInfoFrequenciaEducador(Colaborador educador) {
 		this.funcionario = funcionarioDao.carregarFuncionarioComEnderecoTelefone(educador);
 	}
 	
@@ -110,7 +110,7 @@ public class FrequenciaControl {
 	@SuppressWarnings("deprecation")
 	public void carregarFrequenciaMesFuncionario() {		
 		
-		educadores = new ArrayList<Funcionario>();
+		educadores = new ArrayList<Colaborador>();
 		educadores.add(funcionario);
 		frequenciasF = new ArrayList<Frequencia>();
 
@@ -261,7 +261,7 @@ public class FrequenciaControl {
 	
 	
 	
-	public List<Funcionario> consultarFuncionario(String query) {		
+	public List<Colaborador> consultarFuncionario(String query) {		
 		 this.educadores = funcionarioDao.listarPorNome(query);
 	
 		return educadores;
@@ -286,8 +286,8 @@ public class FrequenciaControl {
 		frequenciasF = new ArrayList<Frequencia>();
 		frequenciasA = new ArrayList<Frequencia>();
 		data = new String();
-		funcionario = new Funcionario();
-		educadores = new ArrayList<Funcionario>();
+		funcionario = new Colaborador();
+		educadores = new ArrayList<Colaborador>();
 		aluno = new Aluno();
 		alunos = new ArrayList<Aluno>();
 		dataAluno = new String();
@@ -343,10 +343,10 @@ public class FrequenciaControl {
 	public void setListaCursos(List<Curso> listaCursos) {
 		this.listaCursos = listaCursos;
 	}
-	public Funcionario getFuncionario() {
+	public Colaborador getFuncionario() {
 		return funcionario;
 	}
-	public void setFuncionario(Funcionario funcionario) {
+	public void setFuncionario(Colaborador funcionario) {
 		this.funcionario = funcionario;
 	}
 	public Turma getTurma() {
@@ -385,10 +385,10 @@ public class FrequenciaControl {
 	public void setFrequenciasA(List<Frequencia> frequenciasA) {
 		this.frequenciasA = frequenciasA;
 	}
-	public List<Funcionario> getEducadores() {
+	public List<Colaborador> getEducadores() {
 		return educadores;
 	}
-	public void setEducadores(List<Funcionario> funcionarios) {
+	public void setEducadores(List<Colaborador> funcionarios) {
 		this.educadores = funcionarios;
 	}
 	public List<Aluno> getAlunos() {

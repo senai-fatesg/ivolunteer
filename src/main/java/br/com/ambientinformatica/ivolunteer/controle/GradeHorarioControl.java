@@ -15,9 +15,9 @@ import org.springframework.stereotype.Controller;
 import br.com.ambientinformatica.ambientjsf.util.UtilFaces;
 import br.com.ambientinformatica.ivolunteer.entidade.AtividadeDiaria;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumDiaSemana;
-import br.com.ambientinformatica.ivolunteer.entidade.Funcionario;
+import br.com.ambientinformatica.ivolunteer.entidade.Colaborador;
 import br.com.ambientinformatica.ivolunteer.entidade.GradeHorario;
-import br.com.ambientinformatica.ivolunteer.persistencia.FuncionarioDao;
+import br.com.ambientinformatica.ivolunteer.persistencia.ColaboradorDao;
 import br.com.ambientinformatica.ivolunteer.persistencia.GradeHorarioDao;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 
@@ -26,13 +26,13 @@ import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 public class GradeHorarioControl {
 
 	private GradeHorario gradeHorario = new GradeHorario();
-	private Funcionario funcionario = new Funcionario();
+	private Colaborador funcionario = new Colaborador();
 
 	@Autowired
 	private GradeHorarioDao gradeHorarioDao;
 
 	@Autowired
-	private FuncionarioDao funcionarioDao;
+	private ColaboradorDao funcionarioDao;
 
 	private List<GradeHorario> gradeHorarios = new ArrayList<GradeHorario>();
 
@@ -80,7 +80,7 @@ public class GradeHorarioControl {
 		}
 	}
 	
-	public List<Funcionario> consultarFuncionario(String query) {
+	public List<Colaborador> consultarFuncionario(String query) {
 		return funcionarioDao.listarPorNome(query);
 	}
 
@@ -100,11 +100,11 @@ public class GradeHorarioControl {
 		return gradeHorario;
 	}
 
-	public Funcionario getFuncionario() {
+	public Colaborador getFuncionario() {
 		return funcionario;
 	}
 
-	public void setFuncionario(Funcionario funcionario) {
+	public void setFuncionario(Colaborador funcionario) {
 		this.funcionario = funcionario;
 	}
 

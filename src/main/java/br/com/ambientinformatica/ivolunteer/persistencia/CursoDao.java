@@ -11,7 +11,7 @@ public interface CursoDao extends Persistencia<Curso> {
 
 	public Curso buscaCursoComListaDeTurmasAtivas(Curso curso);
 
-	public List<Curso> listarCursosAtivos() throws PersistenciaException;
+	public List<Curso> listarAtivos() throws PersistenciaException;
 
 	public List<Curso> listarPorNomeStatus(String nomeFiltro, EnumStatus statusFiltro) throws PersistenciaException ;
 

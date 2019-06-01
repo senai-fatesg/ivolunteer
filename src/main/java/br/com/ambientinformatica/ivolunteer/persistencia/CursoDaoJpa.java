@@ -36,13 +36,12 @@ public class CursoDaoJpa extends PersistenciaJpa<Curso> implements CursoDao {
 	}
 
 	@Override
-	public List<Curso> listarCursosAtivos() throws PersistenciaException {
+	public List<Curso> listarAtivos() throws PersistenciaException {
 		try {
-			TypedQuery<Curso> query = em.createQuery("SELECT c FROM Curso c WHERE c.isAtivo = :status", Curso.class);
-			query.setParameter("status", true);
+			TypedQuery<Curso> query = em.createQuery("SELECT c FROM Curso c WHERE c.status = 'ATIVO'", Curso.class);
 			return (List<Curso>) query.getResultList();
-		} catch (PersistenciaException e) {
-			throw new PersistenceException("Erro ao listar cursos ativos");
+		} catch (Exception e) {
+			throw new PersistenciaException("Erro ao listar cursos ativos");
 		}
 	}
 

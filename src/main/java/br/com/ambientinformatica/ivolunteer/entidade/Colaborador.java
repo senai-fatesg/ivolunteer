@@ -11,18 +11,18 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
-public class Funcionario extends Pessoa implements java.io.Serializable {
+public class Colaborador extends Pessoa implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Boolean isAtivo = true;
+	private EnumStatus status;
 	
 	private String pis;
 
@@ -124,6 +124,11 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 	@JoinColumn(name = "funcionario_id")
 	private List<AtividadeDiaria> atividadesDiaria = new ArrayList<AtividadeDiaria>();
 
+	@PrePersist
+	private void cargaInicial() {
+		this.status = EnumStatus.ATIVO;
+	}
+	
 	public List<Telefone> getTelefonesEmpresa() {
 		return telefonesEmpresa;
 	}
@@ -132,12 +137,12 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 		this.telefonesEmpresa = telefonesEmpresa;
 	}
 
-	public Boolean getIsAtivo() {
-		return isAtivo;
+	public EnumStatus getStatus() {
+		return status;
 	}
 
-	public void setIsAtivo(Boolean isAtivo) {
-		this.isAtivo = isAtivo;
+	public void setStatus(EnumStatus status) {
+		this.status = status;
 	}
 
 	public String getPis() {
@@ -457,213 +462,7 @@ public class Funcionario extends Pessoa implements java.io.Serializable {
 				+ ", observacao=" + observacao + ", historico=" + historico + ", tipoFuncionario=" + tipoFuncionario
 				+ ", funcao=" + funcao + ", cargo=" + cargo + "]";
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((agencia == null) ? 0 : agencia.hashCode());
-		result = prime * result + ((atividadesDiaria == null) ? 0 : atividadesDiaria.hashCode());
-		result = prime * result + ((banco == null) ? 0 : banco.hashCode());
-		result = prime * result + ((cNH == null) ? 0 : cNH.hashCode());
-		result = prime * result + ((cargo == null) ? 0 : cargo.hashCode());
-		result = prime * result + ((carteiraDeTrabalho == null) ? 0 : carteiraDeTrabalho.hashCode());
-		result = prime * result + ((conta == null) ? 0 : conta.hashCode());
-		result = prime * result + ((dataAdmissao == null) ? 0 : dataAdmissao.hashCode());
-		result = prime * result + ((dataDemissao == null) ? 0 : dataDemissao.hashCode());
-		result = prime * result + ((dataExameAdmissional == null) ? 0 : dataExameAdmissional.hashCode());
-		result = prime * result + ((emailDaEmpresa == null) ? 0 : emailDaEmpresa.hashCode());
-		result = prime * result + ((emissaoCNH == null) ? 0 : emissaoCNH.hashCode());
-		result = prime * result + ((emissaoReservista == null) ? 0 : emissaoReservista.hashCode());
-		result = prime * result + ((exameAdmissional == null) ? 0 : exameAdmissional.hashCode());
-		result = prime * result + ((frequencias == null) ? 0 : frequencias.hashCode());
-		result = prime * result + ((funcao == null) ? 0 : funcao.hashCode());
-		result = prime * result + ((gradesHorario == null) ? 0 : gradesHorario.hashCode());
-		result = prime * result + ((historico == null) ? 0 : historico.hashCode());
-		result = prime * result + ((inicioExperiencia == null) ? 0 : inicioExperiencia.hashCode());
-		result = prime * result + ((nomeMae == null) ? 0 : nomeMae.hashCode());
-		result = prime * result + ((nomePai == null) ? 0 : nomePai.hashCode());
-		result = prime * result + ((observacao == null) ? 0 : observacao.hashCode());
-		result = prime * result + ((pis == null) ? 0 : pis.hashCode());
-		result = prime * result + ((reservista == null) ? 0 : reservista.hashCode());
-		result = prime * result + ((secao == null) ? 0 : secao.hashCode());
-		result = prime * result + ((serieCarteiraDeTrabalho == null) ? 0 : serieCarteiraDeTrabalho.hashCode());
-		result = prime * result + ((terminoExperiencia == null) ? 0 : terminoExperiencia.hashCode());
-		result = prime * result + ((tipoFuncionario == null) ? 0 : tipoFuncionario.hashCode());
-		result = prime * result + ((titulo == null) ? 0 : titulo.hashCode());
-		result = prime * result + ((validadeCNH == null) ? 0 : validadeCNH.hashCode());
-		result = prime * result + ((valorAcerto == null) ? 0 : valorAcerto.hashCode());
-		result = prime * result + ((zona == null) ? 0 : zona.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Funcionario other = (Funcionario) obj;
-		if (agencia == null) {
-			if (other.agencia != null)
-				return false;
-		} else if (!agencia.equals(other.agencia))
-			return false;
-		if (atividadesDiaria == null) {
-			if (other.atividadesDiaria != null)
-				return false;
-		} else if (!atividadesDiaria.equals(other.atividadesDiaria))
-			return false;
-		if (banco == null) {
-			if (other.banco != null)
-				return false;
-		} else if (!banco.equals(other.banco))
-			return false;
-		if (cNH == null) {
-			if (other.cNH != null)
-				return false;
-		} else if (!cNH.equals(other.cNH))
-			return false;
-		if (cargo != other.cargo)
-			return false;
-		if (carteiraDeTrabalho == null) {
-			if (other.carteiraDeTrabalho != null)
-				return false;
-		} else if (!carteiraDeTrabalho.equals(other.carteiraDeTrabalho))
-			return false;
-		if (conta == null) {
-			if (other.conta != null)
-				return false;
-		} else if (!conta.equals(other.conta))
-			return false;
-		if (dataAdmissao == null) {
-			if (other.dataAdmissao != null)
-				return false;
-		} else if (!dataAdmissao.equals(other.dataAdmissao))
-			return false;
-		if (dataDemissao == null) {
-			if (other.dataDemissao != null)
-				return false;
-		} else if (!dataDemissao.equals(other.dataDemissao))
-			return false;
-		if (dataExameAdmissional == null) {
-			if (other.dataExameAdmissional != null)
-				return false;
-		} else if (!dataExameAdmissional.equals(other.dataExameAdmissional))
-			return false;
-		if (emailDaEmpresa == null) {
-			if (other.emailDaEmpresa != null)
-				return false;
-		} else if (!emailDaEmpresa.equals(other.emailDaEmpresa))
-			return false;
-		if (emissaoCNH == null) {
-			if (other.emissaoCNH != null)
-				return false;
-		} else if (!emissaoCNH.equals(other.emissaoCNH))
-			return false;
-		if (emissaoReservista == null) {
-			if (other.emissaoReservista != null)
-				return false;
-		} else if (!emissaoReservista.equals(other.emissaoReservista))
-			return false;
-		if (exameAdmissional == null) {
-			if (other.exameAdmissional != null)
-				return false;
-		} else if (!exameAdmissional.equals(other.exameAdmissional))
-			return false;
-		if (frequencias == null) {
-			if (other.frequencias != null)
-				return false;
-		} else if (!frequencias.equals(other.frequencias))
-			return false;
-		if (funcao != other.funcao)
-			return false;
-		if (gradesHorario == null) {
-			if (other.gradesHorario != null)
-				return false;
-		} else if (!gradesHorario.equals(other.gradesHorario))
-			return false;
-		if (historico == null) {
-			if (other.historico != null)
-				return false;
-		} else if (!historico.equals(other.historico))
-			return false;
-		if (inicioExperiencia == null) {
-			if (other.inicioExperiencia != null)
-				return false;
-		} else if (!inicioExperiencia.equals(other.inicioExperiencia))
-			return false;
-		if (nomeMae == null) {
-			if (other.nomeMae != null)
-				return false;
-		} else if (!nomeMae.equals(other.nomeMae))
-			return false;
-		if (nomePai == null) {
-			if (other.nomePai != null)
-				return false;
-		} else if (!nomePai.equals(other.nomePai))
-			return false;
-		if (observacao == null) {
-			if (other.observacao != null)
-				return false;
-		} else if (!observacao.equals(other.observacao))
-			return false;
-		if (pis == null) {
-			if (other.pis != null)
-				return false;
-		} else if (!pis.equals(other.pis))
-			return false;
-		if (reservista == null) {
-			if (other.reservista != null)
-				return false;
-		} else if (!reservista.equals(other.reservista))
-			return false;
-		if (secao == null) {
-			if (other.secao != null)
-				return false;
-		} else if (!secao.equals(other.secao))
-			return false;
-		if (serieCarteiraDeTrabalho == null) {
-			if (other.serieCarteiraDeTrabalho != null)
-				return false;
-		} else if (!serieCarteiraDeTrabalho.equals(other.serieCarteiraDeTrabalho))
-			return false;
-		if (terminoExperiencia == null) {
-			if (other.terminoExperiencia != null)
-				return false;
-		} else if (!terminoExperiencia.equals(other.terminoExperiencia))
-			return false;
-		if (tipoFuncionario != other.tipoFuncionario)
-			return false;
-		if (titulo == null) {
-			if (other.titulo != null)
-				return false;
-		} else if (!titulo.equals(other.titulo))
-			return false;
-		if (validadeCNH == null) {
-			if (other.validadeCNH != null)
-				return false;
-		} else if (!validadeCNH.equals(other.validadeCNH))
-			return false;
-		if (valorAcerto == null) {
-			if (other.valorAcerto != null)
-				return false;
-		} else if (!valorAcerto.equals(other.valorAcerto))
-			return false;
-		if (zona == null) {
-			if (other.zona != null)
-				return false;
-		} else if (!zona.equals(other.zona))
-			return false;
-		return true;
-	}
-
-	public void desativa() {
-		this.setIsAtivo(false);
-	}
-
+	
 	public void addTelefoneEmpresa(Telefone telefoneEmpresa) {
 			if(!this.telefonesEmpresa.contains(telefoneEmpresa)) {
 				this.telefonesEmpresa.add(telefoneEmpresa);

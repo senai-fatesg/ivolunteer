@@ -129,7 +129,7 @@ public class FuncionarioControl {
 	public void excluir(Colaborador funcionario) {
 		try {
 			funcionario = this.desativarFuncionarioCompleto(funcionario);
-			funcionario.desativa();
+			//funcionario.desativa();
 			funcionarioDao.alterar(funcionario);
 			listarTodosFuncionarios(null);
 			UtilFaces.addMensagemFaces("Colaborador excluído com sucesso!");
@@ -142,7 +142,6 @@ public class FuncionarioControl {
 		Colaborador func = funcionarioDao.carregarFuncionarioComEnderecoTelefone(funcionario);
 		if (func.getListaEndereco().size() > 0) {
 			for (Endereco endereco : func.getListaEndereco()) {
-				endereco.inativaEndereco();
 				enderecoDao.alterar(endereco);
 			}
 		}

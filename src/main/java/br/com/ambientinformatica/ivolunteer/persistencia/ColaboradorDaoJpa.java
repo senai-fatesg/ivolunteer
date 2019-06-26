@@ -13,16 +13,53 @@ import br.com.ambientinformatica.ivolunteer.entidade.EnumCargo;
 import br.com.ambientinformatica.ivolunteer.entidade.EnumTipoFuncionario;
 import br.com.ambientinformatica.jpa.exception.PersistenciaException;
 import br.com.ambientinformatica.jpa.persistencia.PersistenciaJpa;
-import br.com.ambientinformatica.util.UtilLog;
 
 @Repository("colaboradorDao")
 public class ColaboradorDaoJpa extends PersistenciaJpa<Colaborador> implements ColaboradorDao {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public List<Colaborador> listarAtivos() {
+	public Colaborador carregarFuncionario(Colaborador funcionario) {
+
 		try {
-			Query query = em.createQuery("SELECT f FROM Colaborador f WHERE f.isAtivo = :true");
+			Query query = em.createQuery("select f from Funcionario f " + " left join fetch f.frequencias freq "
+					+ " left join fetch f.gradesHorario grade " + " left join fetch f.atividadesDiaria atividade "
+					+ " where f  = :funcionario");
+			query.setParameter("funcionario", funcionario);
+			return (Colaborador) query.getSingleResult();
+		} catch (NoResultException nre) {
+			return null;
+		}
+	}
+
+	public Colaborador carregarFuncionarioComEnderecoTelefone(Colaborador funcionario) {
+
+		try {
+			Query query = em.createQuery("select f from Funcionario f " + " left join fetch f.listaEndereco ListEnd "
+					+ " where f  = :funcionario");
+			query.setParameter("funcionario", funcionario);
+			funcionario = (Colaborador) query.setMaxResults(1).getSingleResult();
+			
+			Query carregaTelefones = em.createQuery("select f from Funcionario f left join fetch f.listaTelefone listaTelefone "
+					+ " where f = :funcionario");
+			carregaTelefones.setParameter("funcionario", funcionario);
+			funcionario =  (Colaborador) carregaTelefones.getSingleResult();
+			
+			Query telefonesEmpresa = em.createQuery("select f from Funcionario f left join fetch f.telefonesEmpresa telefonesEmpresa "
+					+ " where f = :funcionario");
+			telefonesEmpresa.setParameter("funcionario", funcionario);
+			funcionario = (Colaborador) telefonesEmpresa.getSingleResult();
+			
+			return (Colaborador) query.getSingleResult();
+		} catch (NoResultException nre) {
+			return null;
+		}
+	}
+
+	@Override
+	public List<Colaborador> listarFuncionariosAtivos() {
+		try {
+			Query query = em.createQuery("SELECT f FROM Funcionario f WHERE f.isAtivo = :true");
 			query.setParameter("true", true);
 			return (List<Colaborador>) query.getResultList();
 		} catch (NoResultException e) {
@@ -33,7 +70,7 @@ public class ColaboradorDaoJpa extends PersistenciaJpa<Colaborador> implements C
 	@Override
 	public List<Colaborador> listarPorNome(String nome) {
 		Query query = em.createQuery(
-				"SELECT f FROM Colaborador f WHERE UPPER(f.nomePessoa) like :nome");
+				"SELECT f FROM Funcionario f WHERE UPPER(f.nomePessoa) like :nome");
 		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
 		return (List<Colaborador>) query.getResultList();
 	}
@@ -41,7 +78,7 @@ public class ColaboradorDaoJpa extends PersistenciaJpa<Colaborador> implements C
 	@Override
 	public List<Colaborador> listarPorTipo(EnumTipoFuncionario tipo) {
 		Query query = em.createQuery(
-				"SELECT f FROM Colaborador f WHERE f.tipoFuncionario = :tipoFunc");
+				"SELECT f FROM Funcionario f WHERE f.tipoFuncionario = :tipoFunc");
 		query.setParameter("tipoFunc", tipo);
 		return (List<Colaborador>) query.getResultList();
 	}
@@ -55,7 +92,7 @@ public class ColaboradorDaoJpa extends PersistenciaJpa<Colaborador> implements C
 			} else {
 				st = false;
 			}
-			Query query = em.createQuery("SELECT f FROM Colaborador f WHERE isAtivo = :status");
+			Query query = em.createQuery("SELECT f FROM Funcionario f WHERE isAtivo = :status");
 			query.setParameter("status", st);
 			return (List<Colaborador>) query.getResultList();
 		} catch (NoResultException e) {
@@ -66,7 +103,7 @@ public class ColaboradorDaoJpa extends PersistenciaJpa<Colaborador> implements C
 	@Override
 	public List<Colaborador> listarPorNomeETipo(String nome, EnumTipoFuncionario tipo) {
 		Query query = em.createQuery(
-				"SELECT f FROM Colaborador f WHERE UPPER(f.nomePessoa) like :nome AND f.tipoFuncionario = :tipo");
+				"SELECT f FROM Funcionario f WHERE UPPER(f.nomePessoa) like :nome AND f.tipoFuncionario = :tipo");
 		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
 		query.setParameter("tipo", tipo);
 		return (List<Colaborador>) query.getResultList();
@@ -81,7 +118,7 @@ public class ColaboradorDaoJpa extends PersistenciaJpa<Colaborador> implements C
 			st = false;
 		}
 		Query query = em.createQuery(
-				"SELECT f FROM Colaborador f WHERE UPPER(f.nomePessoa) like :nome AND f.isAtivo = :status");
+				"SELECT f FROM Funcionario f WHERE UPPER(f.nomePessoa) like :nome AND f.isAtivo = :status");
 		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
 		query.setParameter("status", st);
 		return (List<Colaborador>) query.getResultList();
@@ -96,7 +133,7 @@ public class ColaboradorDaoJpa extends PersistenciaJpa<Colaborador> implements C
 			st = false;
 		}
 		Query query = em.createQuery(
-				"SELECT f FROM Colaborador f WHERE f.tipoFuncionario = :tipo AND f.isAtivo = :status");
+				"SELECT f FROM Funcionario f WHERE f.tipoFuncionario = :tipo AND f.isAtivo = :status");
 		query.setParameter("tipo", tipo);
 		query.setParameter("status", st);
 		return (List<Colaborador>) query.getResultList();
@@ -104,7 +141,7 @@ public class ColaboradorDaoJpa extends PersistenciaJpa<Colaborador> implements C
 
 	@Override
 	public List<Colaborador> buscaEducadorPorNome(String nome) {
-		Query query = em.createQuery("SELECT f FROM Colaborador f WHERE f.isAtivo = true AND "
+		Query query = em.createQuery("SELECT f FROM Funcionario f WHERE f.isAtivo = true AND "
 				+ " f.cargo = :tipoFuncionario AND "
 				+ " UPPER(f.nomePessoa) LIKE :nome");
 		query.setParameter("tipoFuncionario", EnumCargo.EDUCADOR);
@@ -115,15 +152,12 @@ public class ColaboradorDaoJpa extends PersistenciaJpa<Colaborador> implements C
 	@Override
 	public List<Colaborador> listarEducadoresAtivos() throws PersistenciaException {
 		try {
-			TypedQuery<Colaborador> query = em.createQuery("SELECT f FROM Colaborador f LEFT JOIN FETCH f.listaEndereco listaEnd "
-					+ "WHERE f.cargo = 'EDUCADOR' "
-					+ "AND f.status = 'ATIVO'", Colaborador.class);
+			TypedQuery<Colaborador> query = em.createQuery("SELECT c FROM Colaborador c where c.status = 'ATIVO' "
+					+ "and c.cargo = 'EDUCADOR'", Colaborador.class);
 			return query.getResultList();
 		} catch (Exception e) {
-			UtilLog.getLog().error(e);
-			throw new PersistenciaException("Erro ao listar educadores ativos!");
+			throw new PersistenciaException("Erro ao listar professores ativos!");
 		}
 	}
-
 
 }

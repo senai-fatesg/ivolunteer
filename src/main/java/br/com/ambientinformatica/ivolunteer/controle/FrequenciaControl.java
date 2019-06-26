@@ -77,7 +77,7 @@ public class FrequenciaControl {
 	}
 	
 	public void listarEducadores() {
-		this.educadores = funcionarioDao.listarEducadoresAtivos(EnumCargo.EDUCADOR);
+		this.educadores = funcionarioDao.listarEducadoresAtivos();
 	}
 	
 	public void listarCursos() {

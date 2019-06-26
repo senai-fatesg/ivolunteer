@@ -19,7 +19,6 @@ public class EnderecoDaoJpa extends PersistenciaJpa<Endereco> implements Enderec
 	@Override
 	public void desativaEndereco(Endereco endereco) {
 		Endereco end = em.find(Endereco.class, endereco.getId());
-		end.setIsAtivo(false);
 		em.merge(end);
 	}
 

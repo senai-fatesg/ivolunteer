@@ -448,22 +448,18 @@ public class CandidatoControl {
 		try {
 			if (candidatoOuResponsavel.equals("Responsavel")) {
 				if (endereco.getId() == null) {
-					endereco.inativaEndereco();
 					this.responsavel.addEndereco(endereco);
 					responsavelDao.alterar(this.responsavel);
 				} else {
-					endereco.inativaEndereco();
 					enderecoDao.alterar(endereco);
 				}
 				this.responsavel = responsavelDao.consultaResponsavelCompleto(this.responsavel);
 				UtilFaces.addMensagemFaces("Endereço de responsável desativado.");
 			} else if (candidatoOuResponsavel.equals("Candidato")) {
 				if (endereco.getId() == null) {
-					endereco.inativaEndereco();
 					this.candidato.addEndereco(endereco);
 					candidatoDao.alterar(this.candidato);
 				} else {
-					endereco.inativaEndereco();
 					enderecoDao.alterar(endereco);
 				}
 				this.candidato = candidatoDao.consultarCandidatoCompleto(this.candidato);
@@ -510,7 +506,6 @@ public class CandidatoControl {
 				Candidato cand = candidatoDao.consultarCandidatoCompleto(candidato);
 				if (cand.getListaEndereco().size() > 0) {
 					for (Endereco end : cand.getListaEndereco()) {
-						end.inativaEndereco();
 						enderecoDao.alterar(end);
 					}
 				}

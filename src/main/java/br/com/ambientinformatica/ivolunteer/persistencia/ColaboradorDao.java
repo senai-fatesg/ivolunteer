@@ -9,8 +9,11 @@ import br.com.ambientinformatica.jpa.persistencia.Persistencia;
 
 public interface ColaboradorDao extends Persistencia<Colaborador> {
 	
+	Colaborador carregarFuncionario(Colaborador funcionario);
 
-	public List<Colaborador> listarAtivos();
+	public Colaborador carregarFuncionarioComEnderecoTelefone(Colaborador funcionario);
+
+	public List<Colaborador> listarFuncionariosAtivos();
 
 	public List<Colaborador> listarPorNome(String nome);
 
@@ -26,6 +29,6 @@ public interface ColaboradorDao extends Persistencia<Colaborador> {
 
 	public List<Colaborador> buscaEducadorPorNome(String nome);
 
-	public List<Colaborador> listarEducadoresAtivos() throws PersistenciaException;
+	List<Colaborador> listarEducadoresAtivos() throws PersistenciaException;
 	
 }

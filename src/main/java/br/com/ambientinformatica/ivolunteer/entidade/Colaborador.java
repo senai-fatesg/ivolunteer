@@ -22,8 +22,9 @@ public class Colaborador extends Pessoa implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Enumerated(EnumType.STRING)
 	private EnumStatus status;
-	
+
 	private String pis;
 
 	private String carteiraDeTrabalho;
@@ -46,11 +47,11 @@ public class Colaborador extends Pessoa implements java.io.Serializable {
 	private String nomePai;
 
 	private String nomeMae;
-	
+
 	private String emailDoFuncionario;
 
 	private String emailDaEmpresa;
-	
+
 	private String titulo;
 
 	private String zona;
@@ -88,30 +89,30 @@ public class Colaborador extends Pessoa implements java.io.Serializable {
 
 	@Enumerated(EnumType.STRING)
 	private EnumTipoFuncionario tipoFuncionario;
-	
+
 	@Enumerated
 	private EnumFuncao funcao;
-	
+
 	@Enumerated
 	private EnumCargo cargo;
-	
+
 	// atributos de funcionario terceirizado
 	private String segmento;
-	
+
 	private String cnpj;
-	
-	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name = "empresa_id" )
-	private List<Telefone> telefonesEmpresa = new ArrayList<Telefone>() ; 
-	
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "empresa_id")
+	private List<Telefone> telefonesEmpresa = new ArrayList<Telefone>();
+
 	private String nomeEmpresa;
-	
+
 	private String site;
-	
+
 	// atributos de voluntário
 	@Temporal(TemporalType.DATE)
 	private Date dataEntrada;
-		
+
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "funcionario_id")
 	private List<Frequencia> frequencias = new ArrayList<Frequencia>();
@@ -128,21 +129,13 @@ public class Colaborador extends Pessoa implements java.io.Serializable {
 	private void cargaInicial() {
 		this.status = EnumStatus.ATIVO;
 	}
-	
+
 	public List<Telefone> getTelefonesEmpresa() {
 		return telefonesEmpresa;
 	}
 
 	public void setTelefonesEmpresa(List<Telefone> telefonesEmpresa) {
 		this.telefonesEmpresa = telefonesEmpresa;
-	}
-
-	public EnumStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(EnumStatus status) {
-		this.status = status;
 	}
 
 	public String getPis() {
@@ -264,7 +257,7 @@ public class Colaborador extends Pessoa implements java.io.Serializable {
 	public void setNomeMae(String nomeMae) {
 		this.nomeMae = nomeMae;
 	}
-	
+
 	public String getEmailDoFuncionario() {
 		return emailDoFuncionario;
 	}
@@ -449,24 +442,65 @@ public class Colaborador extends Pessoa implements java.io.Serializable {
 		this.atividadesDiaria = atividadesDiaria;
 	}
 
+	public EnumStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(EnumStatus status) {
+		this.status = status;
+	}
+
+	public void inativar() {
+		this.status = EnumStatus.INATIVO;
+	}
+
+	public void ativar() {
+		this.status = EnumStatus.ATIVO;
+	}
+
 	@Override
 	public String toString() {
 		return "Funcionario [pis=" + pis + ", carteiraDeTrabalho=" + carteiraDeTrabalho + ", serieCarteiraDeTrabalho="
 				+ serieCarteiraDeTrabalho + ", reservista=" + reservista + ", emissaoReservista=" + emissaoReservista
 				+ ", cNH=" + cNH + ", emissaoCNH=" + emissaoCNH + ", validadeCNH=" + validadeCNH + ", nomePai="
-				+ nomePai + ", nomeMae=" + nomeMae + ", emailDaEmpresa=" + emailDaEmpresa + ", titulo=" + titulo + ", zona=" + zona
-				+ ", secao=" + secao + ", exameAdmissional=" + exameAdmissional + ", dataExameAdmissional="
-				+ dataExameAdmissional + ", dataAdmissao=" + dataAdmissao + ", inicioExperiencia=" + inicioExperiencia
-				+ ", terminoExperiencia=" + terminoExperiencia + ", banco=" + banco + ", agencia=" + agencia
-				+ ", conta=" + conta + ", dataDemissao=" + dataDemissao + ", valorAcerto=" + valorAcerto
-				+ ", observacao=" + observacao + ", historico=" + historico + ", tipoFuncionario=" + tipoFuncionario
-				+ ", funcao=" + funcao + ", cargo=" + cargo + "]";
+				+ nomePai + ", nomeMae=" + nomeMae + ", emailDaEmpresa=" + emailDaEmpresa + ", titulo=" + titulo
+				+ ", zona=" + zona + ", secao=" + secao + ", exameAdmissional=" + exameAdmissional
+				+ ", dataExameAdmissional=" + dataExameAdmissional + ", dataAdmissao=" + dataAdmissao
+				+ ", inicioExperiencia=" + inicioExperiencia + ", terminoExperiencia=" + terminoExperiencia + ", banco="
+				+ banco + ", agencia=" + agencia + ", conta=" + conta + ", dataDemissao=" + dataDemissao
+				+ ", valorAcerto=" + valorAcerto + ", observacao=" + observacao + ", historico=" + historico
+				+ ", tipoFuncionario=" + tipoFuncionario + ", funcao=" + funcao + ", cargo=" + cargo + "]";
 	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((this.getId() == null) ? 0 : this.getId().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Colaborador other = (Colaborador) obj;
+		if (this.getId() == null) {
+			if (other.getId() != null)
+				return false;
+		} else if (!this.getId().equals(other.getId()))
+			return false;
+		return true;
+	}
+
 	public void addTelefoneEmpresa(Telefone telefoneEmpresa) {
-			if(!this.telefonesEmpresa.contains(telefoneEmpresa)) {
-				this.telefonesEmpresa.add(telefoneEmpresa);
-			}
+		if (!this.telefonesEmpresa.contains(telefoneEmpresa)) {
+			this.telefonesEmpresa.add(telefoneEmpresa);
+		}
 	}
-	
+
 }
